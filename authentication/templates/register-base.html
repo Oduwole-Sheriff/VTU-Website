@@ -1,0 +1,89 @@
+﻿{% load static %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, shrink-to-fit=no">
+<link href="{% static 'images/favicon.png' %}" rel="icon">
+<title>Oxyy - Login and Register Form Html Template</title>
+<meta name="description" content="Login and Register Form Html Template">
+<meta name="author" content="harnishdesign.net">
+
+<!-- Web Fonts
+========================= -->
+<!-- <link rel='stylesheet' href='../../../css?family=Poppins:100,200,300,400,500,600,700,800,900' type='text/css'> -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900" type="text/css">
+
+
+<!-- Stylesheet
+========================= -->
+<link rel="stylesheet" type="text/css" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'vendor/font-awesome/css/all.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/stylesheet.css' %}">
+<!-- Colors css -->
+<link id="color-switcher" type="text/css" rel="stylesheet" href="#">
+</head>
+<body>
+
+<!-- Preloader -->
+<div class="preloader">
+  <div class="lds-ellipsis">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+</div>
+<!-- Preloader End -->
+
+<div>
+  {% if messages %}
+      {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">
+              {{ message }}
+          </div>
+      {% endfor %}
+  {% endif %}
+  {% block content %}
+  
+  {% endblock %}
+</div>
+
+
+
+<!-- Styles Switcher -->
+<div id="styles-switcher" class="left">
+  <h5>Color Switcher</h5>
+  <hr>
+  <ul class="mb-0">
+    <li class="blue" data-bs-toggle="tooltip" title="Blue" data-path="#"></li>
+    <li class="indigo" data-bs-toggle="tooltip" title="Indigo" data-path="{% static 'css/color-indigo.css' %}"></li>
+    <li class="purple" data-bs-toggle="tooltip" title="Purple" data-path="{% static 'css/color-purple.css' %}"></li>
+    <li class="pink" data-bs-toggle="tooltip" title="Pink" data-path="{% static 'css/color-pink.css' %}"></li>
+    <li class="red" data-bs-toggle="tooltip" title="Red" data-path="{% static 'css/color-red.css' %}"></li>
+    <li class="orange" data-bs-toggle="tooltip" title="Orange" data-path="{% static 'css/color-orange.css' %}"></li>
+    <li class="yellow" data-bs-toggle="tooltip" title="Yellow" data-path="{% static 'css/color-yellow.css' %}"></li>
+    <li class="teal" data-bs-toggle="tooltip" title="Teal" data-path="{% static 'css/color-teal.css' %}"></li>
+    <li class="green" data-bs-toggle="tooltip" title="Green" data-path="{% static 'css/color-green.css' %}"></li>
+    <li class="cyan" data-bs-toggle="tooltip" title="Cyan" data-path="{% static 'css/color-cyan.css' %}"></li>
+    <li class="brown" data-bs-toggle="tooltip" title="Brown" data-path="{% static 'css/color-brown.css' %}"></li>
+  </ul>
+  <button class="btn switcher-toggle"><i class="fas fa-cog"></i></button>
+</div>
+<!-- Styles Switcher End --> 
+
+<!-- Script --> 
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script> 
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script> 
+<!-- Style Switcher --> 
+<script src="{% static 'js/switcher.min.js' %}"></script> 
+<script src="{% static 'js/theme.js' %}"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+</body>
+</html>

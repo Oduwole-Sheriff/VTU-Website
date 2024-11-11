@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="register">
+    <div class="dash-board-main-wrapper">
+        <div class="main-center-content-m-left center-content">
+            <div class="rts-register-area">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <!-- single login area start -->
+                            <div class="single-form-s-wrapper">
+                                <div class="head">
+                                    <h5 class="title">Airtime TopUp</h5>
+                                </div>
+                                <div class="body row">
+                                    <form action="#" class="px-md-3 col-sm-12">
+                                        <div class="input-wrapper">
+                                            <select name="network" class="select color-white-title-home" required="" id="id_network">
+                                                <option value="" disabled selected>Select Network</option>
+                                              
+                                                <option value="1">MTN</option>
+                                              
+                                                <option value="2">GLO</option>
+                                              
+                                                <option value="3">9MOBILE</option>
+                                              
+                                                <option value="4">AIRTEL</option>
+                                              
+                                            </select>
+                                            <select name="data_type" class="select color-white-title-home" id="id_data_type">
+                                                <option value="" disabled selected>Airtime Type</option>
+                                                <option value="VTU">VTU</option>
+                                                <option value="Share and Sell">Share and Sell</option>
+                                            </select>
+                                            <input type="text" placeholder="Mobile Number" name="mobile_number" maxlength="11" minlength="11" required="" id="id_mobile_number">
+                                            <input type="text" placeholder="Amount" name="amount" maxlength="11" minlength="2" required="" id="id_Amount">
+                                        </div>
+                                        <div class="check-wrapper">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    Bypass number validator
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <button class="rts-btn btn-primary">Buy Now</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- single login area end -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

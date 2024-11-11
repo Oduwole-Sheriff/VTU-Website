@@ -1,0 +1,239 @@
+.contact-box {
+    gap: 30px;
+    display: grid;
+    justify-content: space-between;
+    grid-template-columns: 43.5% 48.65%;
+}
+
+.contact-box-content span {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 20px;
+    margin-bottom: 27px;
+    color: var(--accent--color);
+}
+
+.contact-box-content h2 {
+    margin-bottom: 15px;
+}
+
+.contact-box-content p {
+    font-size: 16px;
+    line-height: 28px;
+    margin-bottom: 29px;
+}
+
+.contact-box-content small {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 18px;
+    margin-bottom: 28px;
+    color: var(--primary--color);
+}
+
+.guarantee-box ul {
+    gap: 20px;
+    display: flex;
+}
+
+.contact-form h3 {
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 30px;
+    margin-bottom: 20px;
+}
+
+.contact-form h3 img {
+    padding-right: 10px;
+}
+
+.contact-form p {
+    font-size: 16px;
+    line-height: 28px;
+    margin-bottom: 32px;
+}
+
+.main-form-box ul {
+    gap: 21px;
+    display: grid;
+    margin-bottom: 14px;
+    grid-template-columns: 48.15% 48.15%;
+}
+
+.main-form-box ul li input,
+.main-form-box ul li textarea {
+    width: 100%;
+    font-size: 16px;
+    line-height: 16px;
+    border-radius: 10px;
+    padding: 13px 20px 14px;
+    color: var(--text--color);
+    border: 1px solid rgb(0 123 255 / 20%);
+}
+
+.main-form-box ul li input::placeholder,
+.main-form-box ul li textarea::placeholder {
+    font-size: 16px;
+    line-height: 16px;
+    color: var(--text--color);
+}
+
+.main-form-box ul li input:focus,
+.main-form-box ul li textarea:focus {
+    border: 1px solid var(--accent--color);
+}
+
+.main-form-box ul li span {
+    font-size: 12px;
+    line-height: 12px;
+    font-weight: 400;
+    margin-top: 5px;
+    position: absolute;
+    display: block;
+    color: red;
+}
+
+.main-form-box ul li:last-child {
+    grid-column: 1/ -1;
+}
+
+.main-form-box ul li textarea {
+    resize: none;
+    height: 168px;
+}
+
+.submit-form-btn {
+    border: none;
+    background: var(--accent--color);
+    font-size: 16px;
+    line-height: 16px;
+    text-transform: uppercase;
+    color: var(--secondary--color);
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 17px 51px;
+}
+
+.submit-form-btn:hover {
+    background: var(--primary--color);
+}
+
+.submit-form-btn:focus,
+.main-form-box ul li input:focus,
+.main-form-box ul li textarea:focus {
+    outline: none;
+}
+
+@media only screen and (max-width: 1440px) {
+    .main-form-box ul li textarea {
+        height: 148px;
+    }
+    .contact-form p {
+        margin-bottom: 22px;
+    }
+    .contact-box-content span {
+        margin-bottom: 22px;
+    }
+}
+
+@media only screen and (max-width: 1199px) {
+    .contact-box-content small {
+        margin-bottom: 22px;
+    }
+    .contact-form h3 {
+        font-size: 26px;
+        line-height: 26px;
+    }
+    .main-form-box ul {
+        gap: 18px;
+    }
+}
+
+@media only screen and (max-width: 991px) {
+    .contact-box {
+        grid-template-columns: 100%;
+    }
+    .contact-box-content {
+        text-align: center;
+    }
+    .guarantee-box ul {
+        justify-content: center;
+    }
+    .contact-box-content span {
+        margin-bottom: 18px;
+        font-size: 18px;
+        line-height: 18px;
+    }
+    .contact-box-content p {
+        margin-bottom: 22px;
+    }
+    .submit-form-btn {
+        padding: 17px 41px;
+    }
+    .main-form-box ul li textarea {
+        height: 128px;
+    }
+    .main-form-box ul li input,
+    .main-form-box ul li textarea {
+        padding: 11px 20px 12px;
+    }
+    .main-form-box ul li span {
+        font-size: 10px;
+        line-height: 10px;
+        margin-top: 3px;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .contact-box-content p {
+        font-size: 14px;
+        line-height: 24px;
+    }
+    .contact-form p {
+        font-size: 14px;
+        line-height: 24px;
+        margin-bottom: 18px;
+    }
+    .contact-form h3 {
+        font-size: 22px;
+        line-height: 22px;
+    }
+    .main-form-box ul li textarea {
+        height: 98px;
+    }
+    .contact-box-content span {
+        margin-bottom: 16px;
+        font-size: 16px;
+        line-height: 16px;
+    }
+    .main-form-box ul li input,
+    .main-form-box ul li textarea {
+        font-size: 14px;
+        line-height: 14px;
+        padding: 11px 10px 12px;
+    }
+    .main-form-box ul li input::placeholder,
+    .main-form-box ul li textarea {
+        font-size: 14px;
+        line-height: 14px;
+    }
+}
+
+@media only screen and (max-width: 575px) {
+    .guarantee-box ul li img {
+        width: 70px;
+    }
+    .main-form-box ul {
+        gap: 10px;
+        grid-template-columns: 100%;
+    }
+    .submit-form-btn {
+        font-size: 14px;
+        line-height: 14px;
+        padding: 15px 31px;
+    }
+    .main-form-box ul li span {
+        margin: 6px 0 -4px;
+        position: relative;
+    }
+}

@@ -1,0 +1,903 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>BIG_SHERIFF</title>
+    <link rel="apple-touch-icon" sizes="57x57" href="{% static 'Dashboard/asset/images/favicon/apple-icon-57x57.png' %}">
+    <link rel="apple-touch-icon" sizes="60x60" href="{% static 'Dashboard/asset/images/favicon/apple-icon-60x60.png' %}">
+    <link rel="apple-touch-icon" sizes="72x72" href="{% static 'Dashboard/asset/images/favicon/apple-icon-72x72.png' %}">
+    <link rel="apple-touch-icon" sizes="76x76" href="{% static 'Dashboard/asset/images/favicon/apple-icon-76x76.png' %}">
+    <link rel="apple-touch-icon" sizes="114x114" href="{% static 'Dashboard/asset/images/favicon/apple-icon-114x114.png' %}">
+    <link rel="apple-touch-icon" sizes="120x120" href="{% static 'Dashboard/asset/images/favicon/apple-icon-120x120.png' %}">
+    <link rel="apple-touch-icon" sizes="144x144" href="{% static 'Dashboard/asset/images/favicon/apple-icon-144x144.png' %}">
+    <link rel="apple-touch-icon" sizes="152x152" href="{% static 'Dashboard/asset/images/favicon/apple-icon-152x152.png' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'Dashboard/asset/images/favicon/apple-icon-180x180.png' %}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{% static 'Dashboard/asset/images/favicon/android-icon-192x192.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'Dashboard/asset/images/favicon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{% static 'Dashboard/asset/images/favicon/favicon-96x96.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'Dashboard/asset/images/favicon/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'Dashboard/asset/images/favicon/manifest.json' %}">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+    <link rel="stylesheet" href="{% static 'Dashboard/asset/bootstrap/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'Dashboard/asset/css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'Dashboard/asset/css/owl.theme.default.min.css' %}">
+    <link rel="stylesheet" href="{% static 'Dashboard/asset/css/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'Dashboard/asset/css/contact-form.css' %}">
+    <link rel="stylesheet" href="{% static 'Dashboard/asset/css/blog.css' %}">
+    <link rel="stylesheet" href="{% static 'Dashboard/asset/css/faq.css' %}">
+    <link rel="stylesheet" href="{% static 'Dashboard/asset/css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'Dashboard/asset/css/domian.css' %}">
+    <link rel="stylesheet" href="{% static 'Dashboard/asset/css/testimonials.css' %}">
+    <link rel="stylesheet" href="{% static 'Dashboard/asset/css/support.css' %}">
+    <link rel="stylesheet" href="{% static 'Dashboard/asset/css/plan.css' %}">
+    <link rel="stylesheet" href="{% static 'Dashboard/asset/css/main-feature.cs' %}s">
+    <link rel="stylesheet" href="{% static 'Dashboard/asset/css/custom.css' %}">
+    <link rel="stylesheet" href="{% static 'Dashboard/asset/css/mobile.css' %}">
+    <link rel="stylesheet" href="{% static 'Dashboard/asset/css/aos.css' %}">
+    <link rel="stylesheet" href="{% static 'Dashboard/asset/css/drawer-menu2.css' %}">
+</head>
+
+<body>
+    <!-- HEADER SECTION -->
+    <header class="w-100 flaot-left header-con">
+        <nav class="navbar navbar-expand-lg navbar-light py-0">
+            <a class="navbar-brand" href="#">
+                <figure class="mb-0">
+                    <img src="{% static 'Dashboard/asset/images/white-logo-icon.png' %}" alt="white-logo-icon">
+                </figure>
+            </a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav m-auto">
+                    <li class="nav-item">
+                        <a class="nav-link p-0" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link p-0" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link p-0" href="#">Pricing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link p-0" href="#">Testimonial</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link p-0" href="#">FAQ</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- container -->
+        <!-- header-con -->
+    </header>
+
+    <!-- BANNER SECTION -->
+    <section class="w-100 float-left banner-con" style="background: rgb(1, 41, 163); background-image: url('{% static 'Dashboard/asset/images/banner-bg-img.jpg' %}');">
+
+        <div class="container">
+            <div class="banner-box">
+                <div class="banner-title" data-aos="fade-up">
+                    <span class="d-block"><i class="fa-solid fa-circle-check"></i> 30-days money back guarantee</span>
+                    <h1>Fully Managed VTU Website </h1>
+                    <p>With SheriffData, topping up your airtime, data subscription and bills payment will be a breeze.</p>
+                    <div class="banner-btn">
+                        <a href="{% url 'register' %}" class="started-btn">Get Started</a>
+                        <a href="{% url 'login' %}" class="read-more-btn">SIGN IN</a>
+                    </div>
+                    <!-- banner-title -->
+                </div>
+                <div class="banner-img">
+                    <figure class="mb-0">
+                        <img src="{% static 'Dashboard/asset/images/banner-img.png' %}" alt="banner-img">
+                    </figure>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PLAN SECTION -->
+    <section class="w-100 float-left plan-con padding-top padding-bottom">
+        <div class="container">
+            <div class="generic-title2 text-center" data-aos="fade-up">
+                <h2>Affordable Data Plans and Prices</h2>
+                <p>Be rest assured for unparalleled data, airtime, bills payment services and cash back experience. Join our satisfied customers who have unlocked the power of earning more while staying connected online. Enjoy the difference!</p>
+            </div>
+            <div class="plan-box" data-aos="fade-up">
+                <div class="plan-box-item">
+                    <figure>
+                        <img src="{% static 'Dashboard/asset/images/share-plan-icon.png' %}" alt="share-plan-icon">
+                    </figure>
+                    <h4 class="mb-2"> MTN DATA</h4>
+                    <ul class="list-unstyled">
+                        <li>500mb</li>
+                        <li>#120</li>
+                        <li>30days</li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>500mb</li>
+                        <li>#120</li>
+                        <li>30days</li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>500mb</li>
+                        <li>#120</li>
+                        <li>30days</li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>500mb</li>
+                        <li>#120</li>
+                        <li>30days</li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>500mb</li>
+                        <li>#120</li>
+                        <li>30days</li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>500mb</li>
+                        <li>#120</li>
+                        <li>30days</li>
+                    </ul>
+                    <div class="order-btn">
+                        <a href="#">Buy Now</a>
+                    </div>
+                </div>
+                <div class="plan-box-item">
+                    <figure>
+                        <img src="{% static 'Dashboard/asset/images/vps-plan-icon.png' %}" alt="share-plan-icon">
+                    </figure>
+                    <h4 class="mb-2"> GLO DATA</h4>
+                    <ul class="list-unstyled">
+                        <li>500mb</li>
+                        <li>#120</li>
+                        <li>30days</li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>500mb</li>
+                        <li>#120</li>
+                        <li>30days</li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>500mb</li>
+                        <li>#120</li>
+                        <li>30days</li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>500mb</li>
+                        <li>#120</li>
+                        <li>30days</li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>500mb</li>
+                        <li>#120</li>
+                        <li>30days</li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>500mb</li>
+                        <li>#120</li>
+                        <li>30days</li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>500mb</li>
+                        <li>#120</li>
+                        <li>30days</li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>500mb</li>
+                        <li>#120</li>
+                        <li>30days</li>
+                    </ul>
+                    <div class="order-btn">
+                        <a href="#">Buy Now</a>
+                    </div>
+                </div>
+                <div class="plan-box-item">
+                    <figure>
+                        <img src="{% static 'Dashboard/asset/images/dedicated-plan-icon.png' %}" alt="share-plan-icon">
+                    </figure>
+                    <h4 class="mb-2"> AIRTEL DATA</h4>
+                    <ul class="list-unstyled">
+                        <li>500mb</li>
+                        <li>#120</li>
+                        <li>30days</li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>500mb</li>
+                        <li>#120</li>
+                        <li>30days</li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>500mb</li>
+                        <li>#120</li>
+                        <li>30days</li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>500mb</li>
+                        <li>#120</li>
+                        <li>30days</li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>500mb</li>
+                        <li>#120</li>
+                        <li>30days</li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>500mb</li>
+                        <li>#120</li>
+                        <li>30days</li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>500mb</li>
+                        <li>#120</li>
+                        <li>30days</li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>500mb</li>
+                        <li>#120</li>
+                        <li>30days</li>
+                    </ul>
+                    <div class="order-btn">
+                        <a href="#">Buy Now</a>
+                    </div>
+                </div>
+                <div class="plan-box-item">
+                    <figure>
+                        <img src="{% static 'Dashboard/asset/images/glo-plan-icon.png' %}" alt="share-plan-icon">
+                    </figure>
+                    <h4 class="mb-2"> 9MOBILE DATA</h4>
+                    <ul class="list-unstyled">
+                        <li>500mb</li>
+                        <li>#120</li>
+                        <li>30days</li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>500mb</li>
+                        <li>#120</li>
+                        <li>30days</li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>500mb</li>
+                        <li>#120</li>
+                        <li>30days</li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>500mb</li>
+                        <li>#120</li>
+                        <li>30days</li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>500mb</li>
+                        <li>#120</li>
+                        <li>30days</li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>500mb</li>
+                        <li>#120</li>
+                        <li>30days</li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>500mb</li>
+                        <li>#120</li>
+                        <li>30days</li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>500mb</li>
+                        <li>#120</li>
+                        <li>30days</li>
+                    </ul>
+                    <div class="order-btn">
+                        <a href="#">Buy Now</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURE SECTION -->
+    <section class="w-100 float-left main-feature-con padding-top padding-bottom">
+        <div class="container">
+            <div class="generic-title2 text-center" data-aos="fade-up">
+                <h2>Our Services</h2>
+                <p>Be rest assured for unparalleled data, airtime, bills payment services and cash back experience. Join our satisfied customers who have unlocked the power of earning more while staying connected online. Enjoy the difference!</p>
+                <!-- generic-title2 -->
+            </div>
+            <div class="main-feature-box" data-aos="fade-up">
+                <div class="main-feature-box-item">
+                    <div class="feature-box-inner-item">
+                        <figure class="mb-0">
+                            <img src="{% static 'Dashboard/asset/images/protection-icon.png' %}" alt="uptime-icon">
+                        </figure>
+                        <div class="main-feature-box-content">
+                            <h4>Buy Airtime/Data</h4>
+                            <p class="mb-0">Never miss important calls or a beat online, use Superjara, reliable recharge services for your airtime and data at a very cost-effective rate. We've got you covered.
+                            </p>
+                            <!-- main-feature-box-content -->
+                        </div>
+                    </div>
+                    <!-- main-feature-box-item -->
+                </div>
+                <div class="main-feature-box-item">
+                    <div class="feature-box-inner-item">
+                        <figure class="mb-0">
+                            <img src="{% static 'Dashboard/asset/images/cable-icon.png' %}" alt="protection-icon">
+                        </figure>
+                        <div class="main-feature-box-content">
+                            <h4>Cable TV Subscription</h4>
+                            <p class="mb-0">Use our user-friendly platform for your cable TV subscription to suit your preferences and budgets. Welcome to the next generation of instant activation of cable TV subscription.
+                            </p>
+                            <!-- main-feature-box-content -->
+                        </div>
+                    </div>
+                    <!-- main-feature-box-item -->
+                </div>
+                <div class="main-feature-box-item">
+                    <div class="feature-box-inner-item">
+                        <figure class="mb-0">
+                            <img src="{% static 'Dashboard/asset/images/support-icon.png' %}" alt="help-icon">
+                        </figure>
+                        <div class="main-feature-box-content">
+                            <h4>Electricity Bill</h4>
+                            <p class="mb-0">With a few simple clicks, you will easily manage your electricity bills from your comfort zone. Say good-bye to the manual electricity bill payment and long queues..</p>
+                            <!-- main-feature-box-content -->
+                        </div>
+                    </div>
+                    <!-- main-feature-box-item -->
+                </div>
+                <div class="main-feature-box-item">
+                    <div class="feature-box-inner-item">
+                        <figure class="mb-0">
+                            <img src="{% static 'Dashboard/asset/images/protection-icon.png' %}" alt="support-icon">
+                        </figure>
+                        <div class="main-feature-box-content">
+                            <h4>Internet Bill</h4>
+                            <p class="mb-0">Welcome to the future of managing internet bills payment. With Superjara, you can choose to pay with your debit/credit card, net banking, USSD codes and other payment methods. The choice is yours!</p>
+                            <!-- main-feature-box-content -->
+                        </div>
+                    </div>
+                    <!-- main-feature-box-item -->
+                </div>
+                <div class="main-feature-box-item">
+                    <div class="feature-box-inner-item">
+                        <figure class="mb-0">
+                            <img src="{% static 'Dashboard/asset/images/cable-icon.png' %}" alt="domain-icon">
+                        </figure>
+                        <div class="main-feature-box-content">
+                            <h4>Education</h4>
+                            <p class="mb-0">Unlock the potential with our premium online education services. Embark on the transformative learning journey today as you can check your results.</p>
+                            <!-- main-feature-box-content -->
+                        </div>
+                    </div>
+                    <!-- main-feature-box-item -->
+                </div>
+                <div class="main-feature-box-item">
+                    <div class="feature-box-inner-item">
+                        <figure class="mb-0">
+                            <img src="{% static 'Dashboard/asset/images/support-icon.png' %}" alt="ssl-icon">
+                        </figure>
+                        <div class="main-feature-box-content">
+                            <h4>Airtime to Cash</h4>
+                            <p class="mb-0">Get ready to make extra cash! Convert your unused airtime to cash with our airtime to cash service. Say goodbye to wasted airtime and hello to instant cash in your wallet or bank account.</p>
+                            <!-- main-feature-box-content -->
+                        </div>
+                    </div>
+                    <!-- main-feature-box-item -->
+                </div>
+                <!-- main-feature-box -->
+            </div>
+            <!-- container -->
+        </div>
+        <!-- feature-con -->
+    </section>
+    <!-- FEATURE SECTION -->
+    <!-- support SECTION -->
+    <section class="w-100 float-left support-con padding-top padding-bottom">
+        <div class="container">
+            <div class="support-box">
+                <div class="support-box-img" data-aos="zoom-in">
+                    <figure class="mb-0">
+                        <img src="{% static 'Dashboard/asset/images/support-img.jpg' %}" alt="support-img">
+                    </figure>
+                    <div class="counter-box">
+                        <div class="d-inline-block position-relative">
+                            <div class="static-value count">25</div>
+                            <small class="plus">+</small>
+                        </div>
+                        <span class="d-block">Data Centers</span>
+                    </div>
+                </div>
+                <div class="support-box-title" data-aos="fade-up">
+                    <span class="d-block">Safe & Streamlined</span>
+                    <h2>Get Real-Time Support</h2>
+                    <p>Hosting statistics provide insights into the performance, reliability, and usage trends of your website. Key metrics such as uptime, speed, and resource usage help you monitor the health of your hosting environment.
+                    </p>
+                </div>
+                <!-- support-box -->
+            </div>
+            <!-- container -->
+        </div>
+        <!-- support-con -->
+    </section>
+    <!-- support SECTION -->
+    <!-- TESTIMONIALS SECTION -->
+    <section class="w-100 float-left testimonials-con padding-top padding-bottom">
+        <div class="container">
+            <div class="generic-title text-center" data-aos="fade-up">
+                <span class="d-block">Testimonials</span>
+                <h2>What’s Our Clients Saying</h2>
+                <!-- generic-title -->
+            </div>
+            <div class="testimonials-box" data-aos="fade-up">
+                <div class="owl-carousel owl-theme" id="testimonials-slider">
+                    <div class="item">
+                        <div class="testimonials-item text-center">
+                            <p>Lorem ipsum dolor sit amet consecter dipiscing elit, sed do eiusmod tempor dolor idunt ut labore et dolore magnia ad minim elialiqua.</p>
+                            <div class="client-info">
+                                <figure>
+                                    <img src="{% static 'Dashboard/asset/images/joseph-img.jpg' %}" alt="joseph-img">
+                                </figure>
+                                <h4>Rizwan Joseph</h4>
+                                <span class="d-block">Co-Founder</span>
+                            </div>
+                            <!-- testimonials-item -->
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="testimonials-item text-center">
+                            <p>Duis aute irure dolor in reprehenderit in emvoluptate velit esse cillum dolore eu dolo fugiat nulla pariatur. Excepteur sint anim id est laborum.</p>
+                            <div class="client-info">
+                                <figure>
+                                    <img src="{% static 'Dashboard/asset/images/alexandra-img.jpg' %}" alt="alexandra-img">
+                                </figure>
+                                <h4>Alexandra Jorden</h4>
+                                <span class="d-block">Cheif Executive</span>
+                            </div>
+                            <!-- testimonials-item -->
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="testimonials-item text-center">
+                            <p>Duis aute irure dolor in reprehenderit in emvoluptate velit esse cillum dolore eu dolo fugiat nulla pariatur. Excepteur sint anim id est laborum.</p>
+                            <div class="client-info">
+                                <figure>
+                                    <img src="{% static 'Dashboard/asset/images/anthory-img.jpg' %}" alt="anthory-img">
+                                </figure>
+                                <h4>Anthory Clark</h4>
+                                <span class="d-block">Director</span>
+                            </div>
+                            <!-- testimonials-item -->
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="testimonials-item text-center">
+                            <p>Lorem ipsum dolor sit amet consecter dipiscing elit, sed do eiusmod tempor dolor idunt ut labore et dolore magnia ad minim elialiqua.</p>
+                            <div class="client-info">
+                                <figure>
+                                    <img src="{% static 'Dashboard/asset/images/joseph-img.jpg' %}" alt="joseph-img">
+                                </figure>
+                                <h4>Rizwan Joseph</h4>
+                                <span class="d-block">Co-Founder</span>
+                            </div>
+                            <!-- testimonials-item -->
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="testimonials-item text-center">
+                            <p>Duis aute irure dolor in reprehenderit in emvoluptate velit esse cillum dolore eu dolo fugiat nulla pariatur. Excepteur sint anim id est laborum.</p>
+                            <div class="client-info">
+                                <figure>
+                                    <img src="{% static 'Dashboard/asset/images/alexandra-img.jpg' %}" alt="alexandra-img">
+                                </figure>
+                                <h4>Alexandra Jorden</h4>
+                                <span class="d-block">Cheif Executive</span>
+                            </div>
+                            <!-- testimonials-item -->
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="testimonials-item text-center">
+                            <p>Duis aute irure dolor in reprehenderit in emvoluptate velit esse cillum dolore eu dolo fugiat nulla pariatur. Excepteur sint anim id est laborum.</p>
+                            <div class="client-info">
+                                <figure>
+                                    <img src="{% static 'Dashboard/asset/images/anthory-img.jpg' %}" alt="anthory-img">
+                                </figure>
+                                <h4>Anthory Clark</h4>
+                                <span class="d-block">Director</span>
+                            </div>
+                            <!-- testimonials-item -->
+                        </div>
+                    </div>
+                </div>
+                <!-- testimonials-box -->
+            </div>
+            <!-- container -->
+        </div>
+        <!-- testimonials-con -->
+    </section>
+    <!-- TESTIMONIALS SECTION -->
+    <!-- FAQ SECTION -->
+    <section class="w-100 float-left faq-con padding-top padding-bottom">
+        <div class="container">
+            <div class="generic-title2 text-center" data-aos="fade-up">
+                <span class="d-block">Frequently Asked Questions</span>
+                <h2>We've got the answers you need.</h2>
+                <p>Our team of experts is here to provide you with the answers you need to make informed decisions and navigate the digital landscape with confidence.</p>
+                <!-- generic-title -->
+            </div>
+            <div class="faq-box" data-aos="fade-up">
+                <div class="faq-item">
+                    <div id="accordion">
+                        <div class="card">
+                            <div class="card-header" id="headingOne">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            1. Which button between SIGN IN and GET ... will I click to get started? 
+                          </button>
+                                </h5>
+                            </div>
+
+                            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                                <div class="card-body">
+                                    Kindly click on GET STARTED to start and SIGN IN button to access your dashboard after activating your account.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" id="headingTwo">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            2. How do I know if my account is activated and I can make a purchase?
+                          </button>
+                                </h5>
+                            </div>
+                            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                <div class="card-body">
+                                    Once you can access your dashboard, you have successfully registered. (Welcome On Board).
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" id="headingThree">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            3. What if I encounter an issue while registering, how do I get it sorted out?
+                          </button>
+                                </h5>
+                            </div>
+                            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                                <div class="card-body">
+                                    Our Customer Care Support Team is 24/7 available to attend to you, kindly contact us.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" id="headingfour">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapsefour" aria-expanded="false" aria-controls="collapsefour">
+                                4. How secure is my transaction history and can I access them anytime?
+                            </button>
+                                </h5>
+                            </div>
+                            <div id="collapsefour" class="collapse" aria-labelledby="headingfour" data-parent="#accordion">
+                                <div class="card-body">
+                                    Absolutely 100 percent secure! You can access your transaction history anytime, any day.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" id="headingfive">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapsefive" aria-expanded="false" aria-controls="collapsefive">
+                                5. How long does it take to register a domain name?
+                            </button>
+                                </h5>
+                            </div>
+                            <div id="collapsefive" class="collapse" aria-labelledby="headingfive" data-parent="#accordion">
+                                <div class="card-body">
+                                    Web hosting refers to a service that allows individuals and organizations to make their websites accessible on the internet. It involves storing website files, databases, and other resources on a server connected to the internet, thereby enabling users
+                                    to access and view the website.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" id="headingsix">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapsesix" aria-expanded="false" aria-controls="collapsesix">
+                                6. What are domain extensions or TLDs?
+                            </button>
+                                </h5>
+                            </div>
+                            <div id="collapsesix" class="collapse" aria-labelledby="headingsix" data-parent="#accordion">
+                                <div class="card-body">
+                                    Web hosting refers to a service that allows individuals and organizations to make their websites accessible on the internet. It involves storing website files, databases, and other resources on a server connected to the internet, thereby enabling users
+                                    to access and view the website.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- faq-item -->
+                </div>
+                <div class="faq-box-img" data-aos="zoom-in">
+                    <figure class="mb-0">
+                        <img src="{% static 'Dashboard/asset/images/faq-img.jpg' %}" alt="faq-img">
+                    </figure>
+                    <!-- faq-box-img -->
+                </div>
+                <!-- faq-box -->
+            </div>
+            <!-- container -->
+        </div>
+        <!-- faq-con -->
+    </section>
+    <!-- FAQ SECTION -->
+    <!-- BLOG SECTION -->
+    <section class="w-100 float-left blog-con padding-top padding-bottom">
+        <div class="container">
+            <div class="generic-title text-center" data-aos="fade-up">
+                <h3 class="d-inline-block text-muted mb-4">How We Stand Out?</h3>
+                <h4 class="text-muted mb-4">Join us today @ShegzyData and experience the difference. Stand out from the crowd by embracing the new way to recharge airtime, subscribe data and pay bills</h4>
+                <!-- generic-title -->
+            </div>
+            <div class="blog-box" data-aos="fade-up">
+                <div class="blog-box-item blog-lft-con">
+                    <figure class="mb-0">
+                        <img src="{% static 'Dashboard/asset/images/blog-img1.jpg' %}" alt="blog-img">
+                    </figure>
+                    <div class="blog-box-content">
+                        <h1 class="text-muted">01</h1>
+                        <p> <h3>One-stop solution</h3>
+                            Unlike manual methods that require multiple USSD CODES, Superjara offers an automated solution to recharge airtime, subscribe data, pay bills and cashback. 
+                        </p>
+                        <div class="read-btn">
+                            <a href="./single-blog.html">Read More</a>
+                        </div>
+                    </div>
+                    <!-- blog-box-item -->
+                </div>
+                <div class="blog-rt-con">
+                    <div class="blog-box-item">
+                        <figure class="mb-0">
+                            <img src="{% static 'Dashboard/asset/images/blog-img2.jpg' %}" alt="blog-img">
+                        </figure>
+                        <div class="blog-box-content">
+                            <h1 class="text-muted">02</h1>
+                            <p><h4>24/7 Customer Support</h4>Our Customer Service Support are always ready to attend to your request and sort out every challenge. Kindly, Get In Touch </p>
+                        </div>
+                        <!-- blog-box-item -->
+                    </div>
+                    <div class="blog-box-item">
+                        <figure class="mb-0">
+                            <img src="{% static 'Dashboard/asset/images/blog-img3.jpg' %}" alt="blog-img">
+                        </figure>
+                        <div class="blog-box-content">
+                            <h1 class="text-muted">03</h1>
+                            <p><h4>Latest Technology</h4>we leverage on the latest advancement in technology to bring you a remarkable experience. Get ready to do it better with Superjara. Enjoy!</p>
+                        </div>
+                        <!-- blog-box-item -->
+                    </div>
+                </div>
+                <!-- blog-box -->
+            </div>
+            <!-- container -->
+        </div>
+        <!-- blog-con -->
+    </section>
+    <!-- BLOG SECTION -->
+    <!-- CONTACT SECTION -->
+    <section class="w-100 float-left contact-con padding-top padding-bottom">
+        <div class="container">
+            <div class="contact-box">
+                <div class="contact-box-content" data-aos="fade-up">
+                    <span class="d-block">Get connected with us!</span>
+                    <h2>Have a project in mind? We're all ears and eager to hear from you.</h2>
+                    <p>We're excited to connect with you and discover the endless opportunities for your brand.</p>
+                    <small class="d-block">Our Guarantees!</small>
+                    <div class="guarantee-box">
+                        <ul class="list-unstyled mb-0">
+                            <li><img src="{% static 'Dashboard/asset/images/guarantee-icon1.png' %}" alt="guarantee-icon"></li>
+                            <li><img src="{% static 'Dashboard/asset/images/guarantee-icon2.png' %}" alt="guarantee-icon"></li>
+                            <li><img src="{% static 'Dashboard/asset/images/guarantee-icon3.png' %}" alt="guarantee-icon"></li>
+                        </ul>
+                    </div>
+
+                    <!-- contact-box-content -->
+                </div>
+                <div class="contact-form" data-aos="fade-up">
+                    <h3><img src="{% static 'Dashboard/asset/images/message-icon.png' %}" alt="message-icon"> Get in touch</h3>
+                    <p>Please share a bit about yourself and your needs below, and we'll respond within 24 hours.</p>
+                    <form class="main-form-box position-relative" id="contactpage" method="post">
+                        <ul class="list-unstyled">
+                            <li>
+                                <input type="text" placeholder="First Name" name="fname" id="fname">
+                            </li>
+                            <li>
+                                <input type="text" placeholder="Last Name" name="lname" id="lname">
+                            </li>
+                            <li>
+                                <input type="email" placeholder="Email" name="email" id="email">
+                            </li>
+                            <li>
+                                <input type="tel" placeholder="Phone" name="phone" id="phone">
+                            </li>
+                            <li>
+                                <textarea placeholder="Your Message..."></textarea>
+                            </li>
+                        </ul>
+                        <button type="submit" id="submit" class="submit-form-btn">SUBMIT</button>
+                    </form>
+                </div>
+                <!-- contact-box -->
+            </div>
+            <!-- container -->
+        </div>
+    </section>
+    <!-- CONTACT SECTION -->
+    <!-- FOOTER SECTION -->
+    <footer class="w-100 float-left footer-con">
+        <div class="footer-inner-con">
+            <div class="client-logo">
+                <ul class="list-unstyled mb-0">
+                    <li>
+                        <figure class="mb-0">
+                            <img src="{% static 'Dashboard/asset/images/cloud-icon.png' %}" alt="cloud-icon">
+                        </figure>
+                    </li>
+                    <li>
+                        <figure class="mb-0">
+                            <img src="{% static 'Dashboard/asset/images/digital-icon.png' %}" alt="digital-icon">
+                        </figure>
+                    </li>
+                    <li>
+                        <figure class="mb-0">
+                            <img src="{% static 'Dashboard/asset/images/aws-icon.png' %}" alt="aws-icon">
+                        </figure>
+                    </li>
+                    <li>
+                        <figure class="mb-0">
+                            <img src="{% static 'Dashboard/asset/images/linode-icon.png' %}" alt="linode-icon">
+                        </figure>
+                    </li>
+                    <li>
+                        <figure class="mb-0">
+                            <img src="{% static 'Dashboard/asset/images/vultr-icon.png' %}" alt="vultr-icon">
+                        </figure>
+                    </li>
+                    <li>
+                        <figure class="mb-0">
+                            <img src="{% static 'Dashboard/asset/images/malcare-icon.png' %}" alt="malcare-icon">
+                        </figure>
+                    </li>
+                </ul>
+            </div>
+            <div class="footer-box">
+                <div class="footer-logo">
+                    <a href="./index.html">
+                        <figure class="mb-0">
+                            <img src="{% static 'Dashboard/asset/images/white-logo-icon.png' %}" alt="footer-white-logo" loading="lazy">
+                        </figure>
+                    </a>
+                    <p>SheriffData is your one-stop solution platform for all your online daily needs. No longer do multiple USSD CODES for different services. We have made it recharge airtime, subscribe data, pay bills and cashback.
+                    </p>
+                    <!-- footer-logo -->
+                </div>
+                <div class="site-map">
+                    <h4>Services</h4>
+                    <ul class="list-unstyled mb-0">
+                        <li><a href="./hosting.html">Web Hosting</a></li>
+                        <li><a href="./reseller.html">Reseller Hosting</a></li>
+                        <li><a href="./hosting.html">Shared Hosting</a></li>
+                        <li><a href="./vps.html">Virtural Private Server</a></li>
+                        <li><a href="./hosting.html">WordPress Hosting</a></li>
+                        <li><a href="./dedicated.html">Dedicated Server</a></li>
+                    </ul>
+                    <!-- site-map -->
+                </div>
+                <div class="site-map">
+                    <h4>Quick Links</h4>
+                    <ul class="list-unstyled mb-0">
+                        <li><a href="./hosting.html">Hosting</a></li>
+                        <li><a href="./domain.html">Domain</a></li>
+                        <li><a href="./dedicated.html">Dedicated</a></li>
+                        <li><a href="./contact.html">Contact Us</a></li>
+                        <li><a href="./about.html">About Us</a></li>
+                    </ul>
+                    <!-- site-map -->
+                </div>
+                <div class="site-map">
+                    <h4>Resources</h4>
+                    <ul class="list-unstyled mb-0">
+                        <li><a href="./domain.html">Support Center</a></li>
+                        <li><a href="./about.html">Documentation</a></li>
+                        <li><a href="./index.html">Community</a></li>
+                        <li><a href="./hosting.html">Hosting</a></li>
+                    </ul>
+                    <!-- site-map -->
+                </div>
+                <div class="footer-info-box">
+                    <h4>Get in Touch</h4>
+                    <div class="social-box">
+                        <ul class="list-unstyled mb-0">
+                            <li><a href="https://www.facebook.com/"><i class="fa-brands fa-facebook-f"></i></a></li>
+                            <li><a href="https://www.linkedin.com/"><i class="fa-brands fa-linkedin-in"></i></a></li>
+                            <li><a href="https://twitter.com/"><i class="fa-brands fa-x-twitter"></i></a></li>
+                            <li><a href="https://www.youtube.com/"><i class="fa-brands fa-youtube"></i></a></li>
+                        </ul>
+                        <!-- social-box -->
+                    </div>
+                    <div class="footer-info-item">
+                        <ul class="list-unstyled mb-0">
+                            <li><i class="fa-regular fa-envelope"></i> <a href="mailto:info@resellpress.com">info@resellpress.com</a></li>
+                            <li><i class="fa-solid fa-phone"></i> <a href="tel:+0112346789">+01-1234-6789</a></li>
+                        </ul>
+                        <!-- footer-info-item -->
+                    </div>
+                    <!-- footer-info-box -->
+                </div>
+                <!-- footer-box -->
+            </div>
+        </div>
+        <div class="copyright-box">
+            <span class="d-inline-block">© Copyright 2023 SheriffData All rights reserved</span>
+            <div class="term-policy-con">
+                <ul class="list-unstyled mb-0">
+                    <li><a href="./terms-of-conditions.html">Terms & Conditions </a></li>
+                    <li><a href="./privacy-policy.html">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <!-- copyright-box -->
+        </div>
+        <!-- footer-con -->
+    </footer>
+    <!-- Back to top button -->
+    <a id="button"></a>
+    <!-- PRE LOADER -->
+    <div class="loader-mask">
+        <div class="loader">
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <!-- FOOTER SECTION -->
+    <script src="{% static 'Dashboard/asset/js/jquery-3.7.1.min.js' %}"></script>
+    <script src="{% static 'Dashboard/asset/js/popper.min.js' %}"></script>
+    <script src="{% static 'Dashboard/asset/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'Dashboard/asset/js/owl.carousel.js' %}"></script>
+    <script src="{% static 'Dashboard/asset/js/custom.js' %}"></script>
+    <script src="{% static 'Dashboard/asset/js/search.js' %}"></script>
+    <script src="{% static 'Dashboard/asset/js/contact-form.js' %}"></script>
+    <script src="{% static 'Dashboard/asset/js/contact-validate.js' %}"></script>
+    <script src="{% static 'Dashboard/asset/js/drawer-menu2.js' %}"></script>
+    <script src="{% static 'Dashboard/asset/js/aos.js' %}"></script>
+    <script src="{% static 'Dashboard/asset/js/animation.js' %}"></script>
+    <script src="{% static 'Dashboard/asset/js/preloader.js' %}"></script>
+    <script src="{% static 'Dashboard/asset/js/back-to-top-button.js' %}"></script>
+    <script>
+        $('#testimonials-slider').owlCarousel({
+            loop: true,
+            margin: 30,
+            nav: true,
+            navText: ["<i class='fa-solid fa-angle-left'></i>", "<i class='fa-solid fa-angle-right'></i>"],
+            responsive: {
+                0: {
+                    items: 1
+                },
+                768: {
+                    items: 2
+                },
+                992: {
+                    items: 3
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

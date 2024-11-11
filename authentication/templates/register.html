@@ -1,0 +1,119 @@
+{% extends 'register-base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+
+<div id="main-wrapper" class="oxyy-login-register">
+    <div class="container-fluid px-0">
+      <div class="row g-0 min-vh-100"> 
+        <!-- Welcome Text
+        ========================= -->
+        <div class="col-md-6">
+          <div class="hero-wrap d-flex align-items-center h-100">
+            <div class="hero-mask opacity-8 bg-primary"></div>
+            <div class="hero-bg hero-bg-scroll" style="background-image: url('{% static 'images/login-bg.jpg' %}')"></div>
+
+            <div class="hero-content w-100 min-vh-100 d-flex flex-column">
+              <div class="row g-0">
+                <div class="col-11 col-sm-10 col-lg-9 mx-auto">
+                  <div class="logo mt-5 mb-5 mb-md-0"> <a class="d-flex" href="index.html" title="Oxyy"><img src="{% static 'images/logo-light.png' %}" alt="Oxyy"></a> </div>
+                </div>
+              </div>
+              <div class="row g-0 my-auto">
+                <div class="col-11 col-sm-10 col-lg-9 mx-auto">
+                  <h1 class="text-11 text-white mb-4">Looks like you're new here!</h1>
+                  <p class="text-4 text-white lh-base mb-5">Join our group in few minutes! Sign up with your details to get started</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Welcome Text End --> 
+        
+        <!-- Register Form
+        ========================= -->
+        <div class="col-md-6 d-flex">
+          <div class="container my-auto py-5">
+            <div class="row g-0">
+              <div class="col-11 col-sm-10 col-lg-9 col-xl-8 mx-auto">
+  
+                <h3 class="fw-600 mb-4">Sign Up</h3>
+                <form id="registerForm" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <div class="mb-3">
+                      <label for="username" class="form-label">Username</label>
+                      {{ form.username|as_crispy_field }}
+                  </div>
+                  <div class="mb-3">
+                      <label for="email" class="form-label">Email Address</label>
+                      {{ form.email|as_crispy_field }}
+                  </div>
+                  <div class="mb-3">
+                      <label for="password" class="form-label">Password</label>
+                      {{ form.password|as_crispy_field }}
+                  </div>
+
+                  <div class="d-grid my-4">
+                      <button class="btn btn-primary" type="submit">Sign Up</button>
+                  </div>
+                </form>
+              
+              <p class="text-center text-muted mb-0">Already have an account? <a href="{% url 'login' %}">Log In</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Register Form End --> 
+      </div>
+    </div>
+  </div>
+
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+
+    $(document).ready(function() {
+
+      $('#registerForm').on('submit', function(event) {
+        event.preventDefault();
+
+        const csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+          // Serialize the form data
+        var formData = $('#registerForm').serialize();
+
+        $.ajax({
+            type: 'POST',
+            url: '/api/registration/', 
+            data: formData,
+            headers: {
+            'X-CSRFToken': csrfToken
+            },
+            success: function(response) {
+              Swal.fire({
+                    title: "Good job!",
+                    text: "Account created. You can now login.",
+                    icon: "success"
+                }).then(() => {
+                    // Redirect after the alert is closed
+                    window.location.href = "{% url 'login' %}";
+                });
+
+            },
+          error: function(xhr, status, error) {
+            Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong!",
+            footer: '<a href="#">Why do I have this issue?</a>'
+          });
+          }
+        });
+      });
+      
+    });
+
+  </script>
+
+
+{% endblock content %}

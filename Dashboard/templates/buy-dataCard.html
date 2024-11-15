@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="register">
+    <div class="dash-board-main-wrapper">
+        <div class="main-center-content-m-left center-content">
+            <div class="rts-register-area">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <!-- single login area start -->
+                            <div class="single-form-s-wrapper">
+                                <div class="head">
+                                    <h5 class="title">Buy Data Card</h5>
+                                    <p style="font-size:20px;" class="color-white-title-home mb-4">Dial *347*217*1*MTN NO*Pin# TO LOAD</p>
+                                </div>
+                                <div class="body row">
+                                    <form action="#" class="px-md-3 col-sm-12">
+                                        <div class="input-wrapper">
+                                            <select name="network" class="select color-white-title-home" required="" id="id_network">
+                                                <option value="" disabled selected>Plan</option>
+                                            </select>
+
+                                            <input type="text" placeholder="Name On Card" name="name_on_card" maxlength="100" class="textinput textInput" id="id_name_on_card">
+
+                                            <input type="number" placeholder="Quantity" name="quantity" value="1" min="1" max="40" class="numberinput" required="" id="id_quantity">
+
+                                            <input type="text" placeholder="Amount" required="" id="amount">
+                                        </div>
+                                        <button class="rts-btn btn-primary">Buy Now</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- single login area end -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

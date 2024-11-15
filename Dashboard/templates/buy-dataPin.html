@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="register">
+    <div class="dash-board-main-wrapper">
+        <div class="main-center-content-m-left center-content">
+            <div class="rts-register-area">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <!-- single login area start -->
+                            <div class="single-form-s-wrapper">
+                                <div class="head">
+                                    <h5 class="title">GENERATE MTN DATA E-PINS</h5>
+                                    <p style="font-size:20px;" class="color-white-title-home mb-4">MTN Data EPINS allow you to load data directly into your phones just like conventional airtime recharge cards!</p>
+                                </div>
+                                <div class="body row">
+                                    <form action="#" class="px-md-3 col-sm-12">
+                                        <div class="input-wrapper">
+                                            <select name="network" class="select color-white-title-home" required="" id="id_network">
+                                                <option value="" disabled selected>Data Plan</option>
+                                                <option value="5">3.0GB----N570</option>
+                                                <option value="6">5.0GB----N946</option>
+                                                <option value="7">2.0GB----N378</option>
+                                                <option value="8">1.5GB----N285</option>
+                                                <option value="9">750.0MB----N145</option>
+                                                <option value="10">1.0GB----N189</option>
+                                            </select>
+
+                                            <input type="number" placeholder="Quantity" name="quantity" value="1" min="1" max="24" class="numberinput" required="" id="id_quantity">
+
+                                            <input type="text" placeholder="Name On Card" name="name_on_card" maxlength="200" minlength="3" class="textinput textInput" required="" id="id_name_on_card">
+                                            <small id="hint_id_name_on_card" class="form-text text-muted">Your Company name to show on generated pin</small>
+                                            <p>To Load Your epin, Simple dial *460*6*1# and enter your coupon code(epin or license key) </p>
+                                        </div>
+                                        <button class="rts-btn btn-primary">Generate</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- single login area end -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

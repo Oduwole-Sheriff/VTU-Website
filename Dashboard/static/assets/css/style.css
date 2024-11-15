@@ -16804,6 +16804,12 @@ body.chatbot::-webkit-scrollbar {
   border-radius: 4px;
   margin: 10px 0;
 }
+.single-form-s-wrapper .body textarea {
+  border: 1px solid #E2E2FF;
+  border-radius: 4px;
+  margin: 10px 0;
+  color: rgb(73, 118, 150);
+}
 #id_network, #id_data_type{
   font-size: 16px !important;
   background: transparent;
@@ -18053,6 +18059,7 @@ body.modal-open {
 [data-theme=dark] .border-top,
 [data-theme=dark] .single-form-s-wrapper .body input,
 [data-theme=dark] .single-form-s-wrapper .body select,
+[data-theme=dark] .single-form-s-wrapper .body textarea,
 [data-theme=dark] .single-form-s-wrapper .sign-in-otherway .single {
   border-color: #e5e4ff1a !important;
 }
@@ -18174,6 +18181,9 @@ body.modal-open {
   background: #121b32;
 }
 [data-theme=dark] .single-form-s-wrapper .body input{
+  color: #fff;
+}
+[data-theme=dark] .single-form-s-wrapper .body textarea{
   color: #fff;
 }
 [data-theme=dark] #id_network{

@@ -5,7 +5,7 @@
     <div class="main-center-content-m-left main-center-content-m-left">
         <div class="banner-badge bg_image">
             <div class="inner">
-                <h3 class="title">Welcome to BigSheriffData</h3>
+                <h3 class="title">Welcome to <br> BigSheriffData</h3>
                 <p class="dsic">
                     Refer people to BigSheriff.com and get 5% of their first payment Referal Link: https://www.BigSheriff.com/signup/?referal=BigSheriff copy
                 </p>
@@ -18,7 +18,7 @@
         <div class="search__generator mt--50">
             <marquee class="color-white-title-home" style="background-color: rgba(255, 255, 255, 0);padding: 10px; font-size: 25px;">  Welcome to BIG_SHERIFF_DATA!We're here to help and support you every step of the way. Need assistance? Simply chat with us on WhatsApp at +2347046799872. Our team is ready to assist you!" </marquee>
 
-            <h4 class="title color-white-title-home">Welcome, BIG_SHERIFF</h4>
+            <h4 class="title color-white-title-home">Welcome, {{ request.user.username }}</h4>
 
             <div class="tab-content mt--50" id="pills-tabContent">
                 <!-- single tab content area start -->
@@ -26,14 +26,14 @@
                     <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12">
                         <!-- single image generator area start -->
                         <div class="single-image-generator">
-                            <a href="image-generator.html" class="thumbnail">
+                            <a href="#" class="thumbnail">
                                 <img src="{% static 'assets/images/generator/transactions-img.png' %}" alt="images">
                             </a>
                             <div class="inner-content">
                                 <div class="left-content-area">
                                     <h5 class="title">Wallet Balance</h5>
                                     <p class="disc">
-                                        Balance: #100,000
+                                        Balance: ₦{{ balance|floatformat:2 }}
                                     </p>
                                 </div>
                             </div>
@@ -43,14 +43,14 @@
                     <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12">
                         <!-- single image generator area start -->
                         <div class="single-image-generator">
-                            <a href="chatbot.html" class="thumbnail">
+                            <a href="#" class="thumbnail">
                                 <img src="{% static 'assets/images/generator/referer-img.png' %}" alt="images">
                             </a>
                             <div class="inner-content">
                                 <div class="left-content-area">
                                     <h5 class="title">Referral Bonus</h5>
                                     <p class="disc">
-                                        #10,000
+                                        ₦10,000
                                     </p>
                                 </div>
                             </div>
@@ -60,7 +60,7 @@
                     <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12">
                         <!-- single image generator area start -->
                         <div class="single-image-generator">
-                            <a href="voicegenerator.html" class="thumbnail">
+                            <a href="#" class="thumbnail">
                                 <img src="{% static 'assets/images/generator/total-referal.avif' %}" alt="images">
                             </a>
                             <div class="inner-content">
@@ -69,6 +69,20 @@
                                     <p class="disc">
                                         10
                                     </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- single image generator area end -->
+                    </div>
+                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <!-- single image generator area start -->
+                        <div class="single-image-generator">
+                            <a href="{% url 'transaction_history' %}" class="thumbnail">
+                                <img src="{% static 'assets/images/generator/transaction-history2.png' %}" alt="images">
+                            </a>
+                            <div class="inner-content">
+                                <div class="left-content-area">
+                                    <h5 class="title">My Transactions</h5>
                                 </div>
                             </div>
                         </div>

@@ -26,7 +26,7 @@
             <div class="col-lg-12">
                 <div class="header-inner-one">
                     <div class="left-logo-area">
-                        <a href="index.html" class="logo">
+                        <a href="{% url 'index' %}" class="logo">
                             <img src="{% static 'assets/images/logo/white-logo-icon.png' %}" alt="logo-image">
                         </a>
                         <div class="left-side-open-clouse" id="collups-left">
@@ -226,31 +226,51 @@
             <div class="overlay-mobile-area"></div>
             <div class="inner">
                 <div class="single-menu-wrapper">
+                    {% if request.path == '/index/' %}
                     <a href="{% url 'index' %}" class="single-menu active openuptip" flow="right" tooltip="Search">
+                        {% else %}
+                    <a href="{% url 'index' %}" class="single-menu openuptip" flow="right" tooltip="Search">
+                        {% endif %}
                         <div class="icon">
                             <img src="{% static 'assets/images/icons/01.png' %}" alt="icons">
                         </div>
                         <p>Home</p>
                     </a>
+                    {% if request.path == '/data/' %}
+                    <a href="{% url 'buydata' %}" class="single-menu active openuptip" flow="right" tooltip="Search">
+                        {% else %}
                     <a href="{% url 'buydata' %}" class="single-menu openuptip" flow="right" tooltip="Search">
+                        {% endif %}
                         <div class="icon" style="width: 20px;">
                             <img src="{% static 'assets/images/icons/wifi-icon.png' %}" alt="icons">
                         </div>
                         <p>Buy Data</p>
                     </a>
+                    {% if request.path == '/airtimeTopUp/' %}
+                    <a href="{% url 'buy_airtime' %}" class="single-menu active openuptip" flow="right" tooltip="Search">
+                        {% else %}
                     <a href="{% url 'buy_airtime' %}" class="single-menu openuptip" flow="right" tooltip="Search">
+                        {% endif %}
                         <div class="icon" style="width: 20px;">
                             <img src="{% static 'assets/images/icons/phone-icon.png' %}" alt="icons">
                         </div>
                         <p>Buy Airtime</p>
                     </a>
+                    {% if request.path == '/manageSubscription/' %}
+                    <a href="{% url 'manage_subscription' %}" class="single-menu active openuptip" flow="right" tooltip="Search">
+                        {% else %}
                     <a href="{% url 'manage_subscription' %}" class="single-menu openuptip" flow="right" tooltip="Search">
+                        {% endif %}
                         <div class="icon">
                             <img src="{% static 'assets/images/icons/03.png' %}" alt="icons">
                         </div>
                         <p>Manage Subscription</p>
                     </a>
+                    {% if request.path == '/billPayment/' or request.path == '/cableSubscription/' %}
+                    <a class="collapse-btn collapsed single-menu active" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                        {% else %}
                     <a class="collapse-btn collapsed single-menu" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                        {% endif %}
                         <div class="icon" style="width: 20px;">
                             <img src="{% static 'assets/images/icons/utility-bills-icon.webp' %}" alt="icons">
                         </div>
@@ -259,22 +279,32 @@
                     <div class="collapse" id="collapseExample">
                         <ul class="submenu rts-default-sidebar-list">
                             <li>
+                                {% if request.path == '/billPayment/' %}
+                                <a href="{% url 'bill_payment' %}" class="active">
+                                    {% else %}
                                 <a href="{% url 'bill_payment' %}">
-                                    <!-- <i class="fa-sharp fa-regular fa-user"></i> -->
+                                    {% endif %}
                                     <i class="fa-sharp fa-regular fa-dollar-sign"></i>
                                     <span>Bill Payment</span>
                                 </a>
                             </li>
                             <li>
+                                {% if request.path == '/cableSubscription/' %}
+                                <a href="{% url 'cable_subscription' %}" class="active">
+                                    {% else %}
                                 <a href="{% url 'cable_subscription' %}">
-                                    <!-- <i class="fa-sharp fa-regular fa-users"></i> -->
+                                    {% endif %}
                                     <i class="fa-solid fa-signal"></i>
                                     <span>Cable Subscription</span>
                                 </a>
                             </li>
                         </ul>
                     </div>
+                    {% if request.path == '/logout/' %}
+                    <a href="#" class="single-menu active" id="logout-link">
+                        {% else %}
                     <a href="#" class="single-menu" id="logout-link">
+                        {% endif%}
                         <div class="icon">
                             <img src="{% static 'assets/images/icons/09.png' %}" alt="icons">
                         </div>

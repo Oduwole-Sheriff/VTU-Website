@@ -17,9 +17,9 @@
         <tbody class="color-white-title-home">
             {% for transaction in transactions %}
             <tr>
-                <td>{{ transaction.get_transaction_type_display }}</td>
-                <td>#{{ transaction.amount|floatformat:2 }}</td>
-                <td>{{ transaction.created_at|date:"d M Y, H:i" }}</td>
+                <td>{{ transaction.transaction_type }}</td>
+                <td>{{ transaction.amount }}</td>
+                <td>{{ transaction.timestamp }}</td>
             </tr>
             {% empty %}
             <tr>

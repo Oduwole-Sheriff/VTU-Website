@@ -1,57 +1,96 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.contrib.auth.models import User
+from django.db import transaction as db_transaction
 
-class Wallet(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='wallet')
+class CustomUser(AbstractUser):
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-
+    
     def __str__(self):
-        return f"{self.user.username}'s Wallet"
+        return self.username
 
-    def deposit(self, amount):
-        """Deposit money into the wallet."""
+    def deposit(self, amount: float):
+        """ Method to deposit funds to the user balance """
         if amount <= 0:
             raise ValueError("Deposit amount must be positive.")
-        self.balance += amount
-        self.save()
+        
+        # Use an atomic transaction to ensure balance and transaction log are updated together
+        with db_transaction.atomic():
+            self.balance += amount
+            self.save()  # Save the updated balance
 
-    def withdraw(self, amount):
-        """Withdraw money from the wallet."""
+            # Log the deposit transaction
+            Transaction.objects.create(
+                user=self,
+                transaction_type='deposit',
+                amount=amount
+            )
+
+    def withdraw(self, amount: float):
+        """ Method to withdraw funds from the user balance """
         if amount <= 0:
             raise ValueError("Withdrawal amount must be positive.")
         if self.balance < amount:
-            raise ValueError("Insufficient funds.")
-        self.balance -= amount
-        self.save()
+            raise ValueError("Insufficient balance.")
+        
+        # Use an atomic transaction to ensure balance and transaction log are updated together
+        with db_transaction.atomic():
+            self.balance -= amount
+            self.save()  # Save the updated balance
 
-    def transfer(self, to_wallet, amount):
-        """Transfer money to another user's wallet."""
+            # Log the withdrawal transaction
+            Transaction.objects.create(
+                user=self,
+                transaction_type='withdrawal',
+                amount=amount
+            )
+
+    def transfer(self, recipient, amount: float):
+        """ Method to transfer funds from one user to another """
         if amount <= 0:
             raise ValueError("Transfer amount must be positive.")
         if self.balance < amount:
-            raise ValueError("Insufficient funds.")
-        self.withdraw(amount)
-        to_wallet.deposit(amount)
+            raise ValueError("Insufficient balance.")
+        
+        # Use an atomic transaction to ensure balance and transaction log are updated together
+        with db_transaction.atomic():
+            # Deduct from sender and add to recipient
+            self.balance -= amount
+            recipient.balance += amount
+            
+            # Save both sender and recipient balance updates
+            self.save()
+            recipient.save()
+
+            # Log the transaction for the sender
+            Transaction.objects.create(
+                user=self,
+                transaction_type='transfer',
+                amount=amount,
+                recipient=recipient
+            )
+
+            # Log the transaction for the recipient
+            Transaction.objects.create(
+                user=recipient,
+                transaction_type='transfer',
+                amount=amount,
+                recipient=self
+            )
+            
 
 class Transaction(models.Model):
-    TRANSACTION_TYPES = [
+    TRANSACTION_TYPES = (
         ('deposit', 'Deposit'),
         ('withdrawal', 'Withdrawal'),
         ('transfer', 'Transfer'),
-    ]
-
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    wallet = models.ForeignKey(Wallet, on_delete=models.CASCADE)
-    transaction_type = models.CharField(max_length=10, choices=TRANSACTION_TYPES)
+    )
+    
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)  # The user who initiated the transaction
+    transaction_type = models.CharField(choices=TRANSACTION_TYPES, max_length=10)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    created_at = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    recipient = models.ForeignKey(CustomUser, related_name='received_transactions', on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.transaction_type} - {self.amount} on {self.created_at}"
+        return f"{self.transaction_type} of {self.amount} by {self.user.username} on {self.timestamp}"
 
-    def save(self, *args, **kwargs):
-        if self.transaction_type == 'transfer':
-            # Ensure that the wallet belongs to the correct user
-            if self.user != self.wallet.user:
-                raise ValueError("The transaction's user and wallet owner must match.")
-        super().save(*args, **kwargs)

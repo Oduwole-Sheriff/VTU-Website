@@ -5,9 +5,5 @@ class DashboardConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'Dashboard'
 
-
-class WalletConfig(AppConfig):
-    name = 'wallet'
-
     def ready(self):
-        import wallet.signals
+        import Dashboard.signals

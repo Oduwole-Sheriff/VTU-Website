@@ -1,25 +1,27 @@
 from rest_framework import serializers
-from authentication.models import Profile
+from django.contrib.auth import get_user_model
+from Dashboard.models import CustomUser, Transaction
 
-from django.contrib.auth.models import User
+# Use get_user_model() to reference the custom user model
+User = get_user_model()
 
-from Dashboard.models import Wallet, Transaction
-
-
-class RegisterSerializer(serializers.Serializer):
-    username = serializers.CharField(max_length=150)
-    email = serializers.EmailField()
+class RegisterSerializer(serializers.ModelSerializer):
+    # Instead of manually creating a user, use ModelSerializer to take care of user creation.
     password = serializers.CharField(write_only=True, min_length=8)
 
+    class Meta:
+        model = User  # This will use the custom user model because we're using get_user_model().
+        fields = ['username', 'email', 'password']
+
     def validate(self, data):
+        # Validation to check if username or email already exists
         if User.objects.filter(username=data['username']).exists():
-            raise serializers.ValidationError('Username is taken')
+            raise serializers.ValidationError('Username is already taken.')
         
         if User.objects.filter(email=data['email']).exists():
-            raise serializers.ValidationError('Email is taken')
+            raise serializers.ValidationError('Email is already taken.')
 
         return data
-        print(data)
 
     def create(self, validated_data):
         user = User.objects.create(
@@ -29,22 +31,81 @@ class RegisterSerializer(serializers.Serializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
-    
+
 
 class LoginSerializer(serializers.Serializer):
-        username = serializers.CharField()
-        password = serializers.CharField()
+    username = serializers.CharField()
+    password = serializers.CharField()
 
 
-class WalletSerializer(serializers.ModelSerializer):
+class CustomUserSerializer(serializers.ModelSerializer):
+    # Serializer for CustomUser model to include the balance and other necessary fields
     class Meta:
-        model = Wallet
-        fields = ['user', 'balance']
+        model = CustomUser
+        fields = ['id', 'username', 'balance']
+
+
+class DepositSerializer(serializers.Serializer):
+    amount = serializers.DecimalField(max_digits=10, decimal_places=2)
+
+    def validate_amount(self, value):
+        # Ensure that deposit amount is positive
+        if value <= 0:
+            raise serializers.ValidationError("Deposit amount must be greater than 0.")
+        return value
+
+
+class WithdrawSerializer(serializers.Serializer):
+    amount = serializers.DecimalField(max_digits=10, decimal_places=2)
+
+    def validate_amount(self, value):
+        # Ensure withdrawal amount is positive
+        if value <= 0:
+            raise serializers.ValidationError("Withdrawal amount must be greater than 0.")
+        return value
+
+
+class TransferSerializer(serializers.Serializer):
+    recipient_id = serializers.IntegerField()
+    amount = serializers.DecimalField(max_digits=10, decimal_places=2)
+
+    def validate_amount(self, value):
+        # Ensure transfer amount is positive
+        if value <= 0:
+            raise serializers.ValidationError("Transfer amount must be greater than 0.")
+        return value
+
+    def validate_recipient_id(self, value):
+        # Ensure the recipient exists
+        try:
+            recipient = CustomUser.objects.get(id=value)
+        except CustomUser.DoesNotExist:
+            raise serializers.ValidationError("Recipient does not exist.")
+        return value
+
 
 class TransactionSerializer(serializers.ModelSerializer):
+    # Serializer to handle transactions. 
+    # Recipient can be null for deposit and withdrawal transactions.
+    recipient = CustomUserSerializer(read_only=True)
+
     class Meta:
         model = Transaction
-        fields = ['user', 'wallet', 'transaction_type', 'amount', 'created_at']
+        fields = ['id', 'transaction_type', 'amount', 'timestamp', 'recipient']
+        read_only_fields = ['id', 'timestamp', 'recipient']
+
+
+        
+
+# class WalletSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Wallet
+#         fields = ['user', 'balance']
+
+# class TransactionSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Transaction
+#         fields = ['user', 'wallet', 'transaction_type', 'amount', 'created_at']
 
 
 # class PostSerializer(serializers.ModelSerializer):

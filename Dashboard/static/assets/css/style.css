@@ -16411,6 +16411,13 @@ body.sal-disabled [data-sal|=flip] {
   color: #fff;
 }
 
+@media only screen and (max-width: 767px){
+  .pricing-button-one li button{
+    padding: 5px 12px;
+    font-size: 13px;
+  }
+}
+
 .single-pricing-single-two {
   padding: 50px 80px;
   box-shadow: 1px 2px 10px 4px rgba(223, 223, 223, 0.2);
@@ -16448,7 +16455,7 @@ body.sal-disabled [data-sal|=flip] {
   }
 }
 .single-pricing-single-two.active {
-  background: url("https://i.pinimg.com/originals/4d/14/42/4d1442bd6c1ab961e1fdb99498c10bfc.jpg");
+  background: url("https://t3.ftcdn.net/jpg/03/02/36/78/360_F_302367886_mqTFZnfDQWTjcY61uMeE0LHFOjxS2qwf.jpg");
   object-fit: cover !important;
   border-radius: 20px;
   background-repeat: no-repeat;
@@ -16457,7 +16464,7 @@ body.sal-disabled [data-sal|=flip] {
 }
 
 .single-pricing-single-two.palmpay.active {
-  background: url("https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L3JtMjE4YmF0Y2gxMC1teW50LTEyLmpwZw.jpg");
+  background: url("https://img.freepik.com/free-vector/abstract-purple-background_698452-1053.jpg?semt=ais_hybrid");
   object-fit: cover !important;
   border-radius: 20px;
   background-repeat: no-repeat;
@@ -16478,37 +16485,38 @@ body.sal-disabled [data-sal|=flip] {
 }
 
 .single-pricing-single-two .body .zenith-logo {
-  width: 80px;
+  width: 180px;
+}
+@media only screen and (max-width: 767px) {
+  .single-pricing-single-two .body .zenith-logo {
+    width: 90px;
+  }
+  .single-pricing-single-two .body .palmpay-logo {
+    width: 70px !important;
+  }
 }
 .single-pricing-single-two .body .palmpay-logo {
   width: 180px;
 }
 .single-pricing-single-two .body .check-wrapper {
   text-align: center;
-  margin-bottom: 45px;
-  padding-left: 32px;
 }
 @media only screen and (max-width: 575px) {
   .single-pricing-single-two .body .check-wrapper {
-    padding-left: 10px;
+    padding-left: 0px;
   }
 }
-.single-pricing-single-two .body .check-wrapper .check-area {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 15px 0;
+.single-pricing-single-two .body .check-wrapper ul{
+  padding: 0;
 }
-.single-pricing-single-two .body .check-wrapper .check-area i {
-  color: #ffffff;
-}
-.single-pricing-single-two .body .check-wrapper .check-area p {
+.single-pricing-single-two .body .check-wrapper ul li {
   color: #ffffff;
   margin: 0;
   font-weight: 500;
   font-size: 14px;
-  line-height: 24px;
   text-transform: capitalize;
+  list-style: none;
+  text-align: center;
 }
 
 .pricing-plane-area .title-conter-area {

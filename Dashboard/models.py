@@ -2,18 +2,21 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db import transaction as db_transaction
 
+
 class CustomUser(AbstractUser):
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    
+    bank_account = models.JSONField(blank=True, null=True)  # Bank account details as JSONField
+    nin = models.CharField(max_length=20, blank=True, null=True)
+
     def __str__(self):
         return self.username
+
 
     def deposit(self, amount: float):
         """ Method to deposit funds to the user balance """
         if amount <= 0:
             raise ValueError("Deposit amount must be positive.")
         
-        # Use an atomic transaction to ensure balance and transaction log are updated together
         with db_transaction.atomic():
             self.balance += amount
             self.save()  # Save the updated balance
@@ -32,7 +35,6 @@ class CustomUser(AbstractUser):
         if self.balance < amount:
             raise ValueError("Insufficient balance.")
         
-        # Use an atomic transaction to ensure balance and transaction log are updated together
         with db_transaction.atomic():
             self.balance -= amount
             self.save()  # Save the updated balance
@@ -51,13 +53,10 @@ class CustomUser(AbstractUser):
         if self.balance < amount:
             raise ValueError("Insufficient balance.")
         
-        # Use an atomic transaction to ensure balance and transaction log are updated together
         with db_transaction.atomic():
-            # Deduct from sender and add to recipient
             self.balance -= amount
             recipient.balance += amount
             
-            # Save both sender and recipient balance updates
             self.save()
             recipient.save()
 
@@ -66,7 +65,7 @@ class CustomUser(AbstractUser):
                 user=self,
                 transaction_type='transfer',
                 amount=amount,
-                recipient=recipient
+                recipient=recipient  # Ensure correct reference to recipient's user
             )
 
             # Log the transaction for the recipient
@@ -74,9 +73,9 @@ class CustomUser(AbstractUser):
                 user=recipient,
                 transaction_type='transfer',
                 amount=amount,
-                recipient=self
+                recipient=self  # Correct reference to sender's user
             )
-            
+
 
 class Transaction(models.Model):
     TRANSACTION_TYPES = (
@@ -85,7 +84,7 @@ class Transaction(models.Model):
         ('transfer', 'Transfer'),
     )
     
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)  # The user who initiated the transaction
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     transaction_type = models.CharField(choices=TRANSACTION_TYPES, max_length=10)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -94,3 +93,30 @@ class Transaction(models.Model):
     def __str__(self):
         return f"{self.transaction_type} of {self.amount} by {self.user.username} on {self.timestamp}"
 
+
+class WebsiteConfiguration(models.Model):
+    base_url = models.URLField(max_length=255, default='https://sandbox.monnify.com')  # Default Monnify base URL
+    auth_token = models.CharField(max_length=500, default='Basic TUtfVEVTVF9UN0I3Ukg4S1ZWOkVWTlNNVUtFM1lCMFdNWDRCTDk1OURGQkMySDFQMTFF')  # Default Monnify auth token
+    
+    def __str__(self):
+        return f"Monnify API Configuration"
+
+    @classmethod
+    def get_configuration(cls):
+        """
+        Method to retrieve the current Monnify API configuration
+        """
+        config = cls.objects.first()
+        if config:
+            return config.base_url, config.auth_token
+        return None, None
+
+    @classmethod
+    def update_configuration(cls, base_url, auth_token):
+        """
+        Method to update the Monnify API configuration in the database
+        """
+        config, created = cls.objects.get_or_create(id=1)  # Assuming only one configuration entry
+        config.base_url = base_url
+        config.auth_token = auth_token
+        config.save()

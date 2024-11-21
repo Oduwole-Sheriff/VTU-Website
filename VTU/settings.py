@@ -70,6 +70,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'Dashboard.context_processors.account_details',
             ],
         },
     },
@@ -149,3 +150,6 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_URL = 'login'
+
+MONNIFY_BASE_URL = 'https://sandbox.monnify.com'  # Or your actual Monnify base URL
+MONNIFY_AUTH_TOKEN = 'Basic TUtfVEVTVF9UN0I3Ukg4S1ZWOkVWTlNNVUtFM1lCMFdNWDRCTDk1OURGQkMySDFQMTFF'  

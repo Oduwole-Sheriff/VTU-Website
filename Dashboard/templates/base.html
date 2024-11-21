@@ -133,41 +133,53 @@
                                     </div>
                                 </div>
                             </div>
-
+                            <div class="nin-form-container mt-3">
+                                {% if not account_details %}
+                                    <form method="POST">
+                                        {% csrf_token %}
+                                        
+                                        <div class="form-group">
+                                            <label for="id_nin">Enter your NIN:</label>
+                                            <input type="text" name="nin" maxlength="11" required id="id_nin" class="bg bg-light">
+                                        </div>
+                                        
+                                        <button type="submit" class="btn btn-primary btn-lg">Submit NIN</button>
+                                    </form>
+                                {% endif %}
+                            </div>
                             <!-- tabs area start -->
                             <div class="tab-area-pricing-two mt--30">
                                 <ul class="nav nav-tabs pricing-button-one two" id="myTab" role="tablist">
                                     <li class="nav-item" role="presentation">
-                                        <button class="" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Zenith Bank</button>
+                                        <button class=" active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Sterling Bank</button>
                                     </li>
                                     <li class="nav-item" role="presentation">
-                                        <button class=" active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">PalmPay Bank</button>
+                                        <button class="" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Wema Bank</button>
                                     </li>
                                 </ul>
                                 <div class="tab-content mt--20" id="myTabContent">
-                                    <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                    <!-- Account 1 - Home Tab (Sterling Bank) -->
+                                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                                         <div class="row g-5 mt--10">
-                                              
                                             <div class="col-12">
                                                 <!-- single pricing-area -->
                                                 <div class="single-pricing-single-two active">
                                                     <div class="body">
-                                                        <img class="zenith-logo" src="{% static 'assets/images/logo/Zenith-Logo.jpg' %}" alt="zenith-logo">
+                                                        <img class="zenith-logo" src="{% static 'assets/images/logo/Sterling-bank.png' %}" alt="zenith-logo">
                                                         <div class="check-wrapper">
-                                                            <!-- single check -->
-                                                            <div class="check-area">
-                                                                <i class="fa-solid fa-check"></i>
-                                                                <p>Account Number: 2417372510</p>
-                                                            </div>
-                                                            <div class="check-area">
-                                                                <i class="fa-solid fa-check"></i>
-                                                                <p>Account Name: SHERIFFDATA - BigSheriff</p>
-                                                            </div>
-                                                            <div class="check-area">
-                                                                <i class="fa-solid fa-check"></i>
-                                                                <p>Bank Name: Zenith Bank</p>
-                                                            </div>
-                                                            <!-- single check end-->
+                                                            {% if account_details %}
+                                                                <!-- Displaying Bank Account Details for Sterling Bank -->
+                                                                <ul>
+                                                                    <li>Bank Name: {{ account_details.0.bank_name }}</li>
+                                                                    <li>Account Name: {{ account_details.0.account_name }}</li>
+                                                                    <li>Account Number: {{ account_details.0.account_number }}</li>
+                                                                </ul>
+
+                                                            {% else %}
+                                                                <ul>
+                                                                    <li>Input Your NIN to get Your Account Details</li>
+                                                                </ul>
+                                                            {% endif %}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -175,32 +187,29 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                
+                                    <!-- Account 2 - Profile Tab (Wema Bank) -->
+                                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                                         <div class="row g-5 mt--10">
-                                            
                                             <div class="col-12">
                                                 <!-- single pricing-area -->
                                                 <div class="single-pricing-single-two palmpay active">
                                                     <div class="body">
-                                                        <img class="palmpay-logo" src="{% static 'assets/images/logo/palmpay.png' %}" alt="palmpay-logo">
-
+                                                        <img class="palmpay-logo" src="{% static 'assets/images/logo/wema-bank.jpg' %}" alt="palmpay-logo">
+                                
                                                         <div class="check-wrapper">
-                                                            <!-- single check -->
-                                                            <div class="check-area">
-                                                                <i class="fa-solid fa-check"></i>
-                                                                <p>Account Number: 7046799872</p>
-                                                            </div>
-                                                            <!-- single check end-->
-                                                            <!-- single check -->
-                                                            <div class="check-area">
-                                                                <i class="fa-solid fa-check"></i>
-                                                                <p>Account Name: SHERIFFDATA - BigSheriff</p>
-                                                            </div>
-                                                            <!-- single check end-->
-                                                            <div class="check-area">
-                                                                <i class="fa-solid fa-check"></i>
-                                                                <p>Bank Name: PalmPay</p>
-                                                            </div>
+                                                            {% if account_details %}
+                                                                <!-- Displaying Bank Account Details for Wema Bank -->
+                                                                <ul>
+                                                                    <li>Bank Name: {{ account_details.1.bank_name }}</li>
+                                                                    <li>Account Name: {{ account_details.1.account_name }}</li>
+                                                                    <li>Account Number: {{ account_details.1.account_number }}</li>
+                                                                </ul>
+                                                            {% else %}
+                                                                <ul>
+                                                                    <li>Input Your NIN to get Your Account Details</li>
+                                                                </ul>
+                                                            {% endif %}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -208,7 +217,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div>                                
                             </div>
                             <!-- tabs area end -->
                         </div>

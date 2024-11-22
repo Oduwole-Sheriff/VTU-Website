@@ -8,7 +8,7 @@ import base64
 import json
 
 # Your input string
-input_string = "MK_TEST_T7B7RH8KVV:EVNSMUKE3YB0WMX4BL959DFBC2H1P11E"
+input_string = "MK_TEST_36CS1B1AD6:R29WUNU3GGP276CXDVJYUPW0JZKUTEQ8"
 
 # Convert string to bytes
 input_bytes = input_string.encode('utf-8')

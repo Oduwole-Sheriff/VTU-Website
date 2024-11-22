@@ -95,9 +95,9 @@ class Transaction(models.Model):
 
 
 class WebsiteConfiguration(models.Model):
-    base_url = models.URLField(max_length=255, default='https://sandbox.monnify.com')  # Default Monnify base URL
-    auth_token = models.CharField(max_length=500, default='Basic TUtfVEVTVF9UN0I3Ukg4S1ZWOkVWTlNNVUtFM1lCMFdNWDRCTDk1OURGQkMySDFQMTFF')  # Default Monnify auth token
-    
+    base_url = models.URLField(max_length=255)
+    auth_token = models.CharField(max_length=500)
+
     def __str__(self):
         return f"Monnify API Configuration"
 
@@ -119,4 +119,3 @@ class WebsiteConfiguration(models.Model):
         config, created = cls.objects.get_or_create(id=1)  # Assuming only one configuration entry
         config.base_url = base_url
         config.auth_token = auth_token
-        config.save()

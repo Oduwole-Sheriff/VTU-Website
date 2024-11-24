@@ -43,9 +43,10 @@
                   <label for="username" class="form-label">Username</label>
                   <input type="text" class="form-control" id="username" name="username" required placeholder="Enter Your Username">
                 </div>
-                <div class="mb-3">
+                <div class="mb-3 password-field">
                   <label for="loginPassword" class="form-label">Password</label>
                   <input type="password" class="form-control" id="loginPassword" name="password" required placeholder="Enter Password">
+                  <img src="{% static 'images/password-eye/eye-close.png' %}" id="eyeicon">
                 </div>
                 <div class="row mt-4">
                   <div class="col">
@@ -57,7 +58,8 @@
                   <div class="col text-end"><a href="forgot-password.html">Forgot Password ?</a></div>
                 </div>
                 <div class="d-grid my-4">
-					        <button class="btn btn-primary" type="submit">Login</button>
+					        <button class="btn btn-primary" type="submit" id="loginButton">Login</button>
+                  <button class="btn btn-primary" type="button" id="authButton" style="display: none;" disabled>Authenticating...</button>
 				        </div>
               </form>
               <p class="text-center text-muted mb-0">Don't have an account? <a class="link-primary" href="{% url 'register' %}">Sign Up</a></p>
@@ -73,68 +75,96 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 
-    $(document).ready(function() {
+  let password = document.getElementById("loginPassword");
+  let eyeicon = document.getElementById("eyeicon");
 
-      $('#loginForm').on('submit', function(event) {
-        event.preventDefault();
+  eyeicon.onclick = function() {
+    if (password.type == "password") {
+      password.type = "text";
+      eyeicon.src = "{% static 'images/password-eye/eye-open.png' %}";
+    } else {
+      password.type = "password";
+      eyeicon.src = "{% static 'images/password-eye/eye-close.png' %}";
+    }
+  }
 
-        const csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+  $(document).ready(function() {
 
-        var formData = $('#loginForm').serialize();
+    $('#loginForm').on('submit', function(event) {
+      event.preventDefault();
 
-        $.ajax({
-          type: 'POST',
-          url: '/api/login/',
-          data: formData,
-          headers: {
-            'X-CSRFToken': csrfToken
-          },
-          success: function(response) { 
-            console.log(response); // Log the entire response object for debugging
+      // Hide the login button and show the authentication button
+      $('#loginButton').hide();
+      $('#authButton').show();
 
-            const token = response.token;
-            if (token) {
-              // Show the SweetAlert auto-close message
-              let timerInterval;
-              Swal.fire({
-                title: "Welcome!",
-                html: "You are now logged in. Redirecting in <b></b> milliseconds.",
-                timer: 2000,
-                timerProgressBar: true,
-                didOpen: () => {
-                  Swal.showLoading();
-                  const timer = Swal.getPopup().querySelector("b");
-                  timerInterval = setInterval(() => {
-                      timer.textContent = `${Swal.getTimerLeft()}`;
-                  }, 100);
-                },
+      const csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+      var formData = $('#loginForm').serialize();
+
+      $.ajax({
+        type: 'POST',
+        url: '/api/login/',
+        data: formData,
+        headers: {
+          'X-CSRFToken': csrfToken
+        },
+        success: function(response) { 
+          console.log(response); // Log the entire response object for debugging
+
+          const token = response.token;
+          if (token) {
+            // Show the SweetAlert auto-close message
+            let timerInterval;
+            Swal.fire({
+              title: "Welcome!",
+              html: "You are now logged in. Redirecting in <b></b> milliseconds.",
+              timer: 2000,
+              timerProgressBar: true,
+              didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                    timer.textContent = `${Swal.getTimerLeft()}`;
+                }, 100);
+              },
               willClose: () => {
                   clearInterval(timerInterval);
               }
-              }).then((result) => {
-                if (result.dismiss === Swal.DismissReason.timer) {
-                    console.log("I was closed by the timer");
-                }
-                // Redirect to the profile page
-                window.location.href = "{% url 'index' %}";
-              });
-
-              localStorage.setItem('token', token);
-            } else {
-              alert('Token not received in response.');
-            }
-          },
-          error: function(xhr, status, error) {
-            Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: "Something went wrong!",
-              footer: '<a href="#">Why do I have this issue?</a>'
+            }).then((result) => {
+              if (result.dismiss === Swal.DismissReason.timer) {
+                console.log("I was closed by the timer");
+              }
+              // Redirect to the profile page
+              window.location.href = "{% url 'index' %}";
             });
+
+            localStorage.setItem('token', token);
+          } else {
+            alert('Token not received in response.');
           }
-        });
+          // Hide the authentication button and show the login button again (in case of error)
+          $('#authButton').hide();
+          $('#loginButton').show();
+        },
+        error: function(xhr, status, error) {
+          // Parse the error response from the server
+          const errorResponse = xhr.responseJSON;
+          const errorMessage = errorResponse.message || "Something went wrong!"; // Default message
+
+          // Display SweetAlert with the error message
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: errorMessage,
+            footer: '<a href="#">Why do I have this issue?</a>'
+          });
+
+          // Show the login button again
+          $('#authButton').hide();
+          $('#loginButton').show();
+        }
       });
     });
+  });
     
 </script>
 

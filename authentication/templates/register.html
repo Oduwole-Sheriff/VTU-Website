@@ -36,33 +36,48 @@
           <div class="container my-auto py-5">
             <div class="row g-0">
               <div class="col-11 col-sm-10 col-lg-9 col-xl-8 mx-auto">
-  
                 <h3 class="fw-600 mb-4">Sign Up</h3>
                 <form id="registerForm" method="post" enctype="multipart/form-data">
                   {% csrf_token %}
                   <div class="mb-3">
-                      <label for="username" class="form-label">Username</label>
-                      {{ form.username|as_crispy_field }}
+                    <label for="username" class="form-label">Username</label>
+                    {{ form.username|as_crispy_field }}
                   </div>
+
                   <div class="mb-3">
-                      <label for="email" class="form-label">Email Address</label>
-                      {{ form.email|as_crispy_field }}
+                    <label for="email" class="form-label">Email Address</label>
+                    {{ form.email|as_crispy_field }}
                   </div>
+
+                  <div class="mb-3 password-field">
+                    <label for="password" class="form-label">Password</label>
+                    {{ form.password|as_crispy_field }}
+                    <img src="{% static 'images/password-eye/eye-close.png' %}" id="eyeicon">
+                    <small class="form-text text-muted" style="color: #c4c2c2 !important;">password must contain at least 8 characters</small>
+                  </div>
+
                   <div class="mb-3">
-                      <label for="password" class="form-label">Password</label>
-                      {{ form.password|as_crispy_field }}
+                    <label for="phone_number" class="form-label">Phone Number</label>
+                    {{ form.phone_number|as_crispy_field }}
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="address" class="form-label">Address</label>
+                    {{ form.address|as_crispy_field }}
                   </div>
 
                   <div class="d-grid my-4">
-                      <button class="btn btn-primary" type="submit">Sign Up</button>
+                    <button class="btn btn-primary" type="submit" id="signupButton">Sign Up</button>
+                    <button class="btn btn-primary" type="button" id="authButton" style="display: none;" disabled>Authenticating...</button>
                   </div>
                 </form>
-              
-              <p class="text-center text-muted mb-0">Already have an account? <a href="{% url 'login' %}">Log In</a></p>
+  
+                <p class="text-center text-muted mb-0">Already have an account? <a href="{% url 'login' %}">Log In</a></p>
               </div>
             </div>
           </div>
         </div>
+      
         <!-- Register Form End --> 
       </div>
     </div>
@@ -72,48 +87,95 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
 
-    $(document).ready(function() {
+  let password = document.getElementById("id_password");
+  let eyeicon = document.getElementById("eyeicon");
 
+  eyeicon.onclick = function() {
+    if (password.type == "password") {
+      password.type = "text";
+      eyeicon.src = "{% static 'images/password-eye/eye-open.png' %}";
+    } else {
+      password.type = "password";
+      eyeicon.src = "{% static 'images/password-eye/eye-close.png' %}";
+    }
+  }
+
+    $(document).ready(function() {
       $('#registerForm').on('submit', function(event) {
         event.preventDefault();
 
+        // Hide the signup button and show the authentication button
+        $('#signupButton').hide();
+        $('#authButton').show();
+  
         const csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
-
-          // Serialize the form data
+  
+        // Serialize the form data
         var formData = $('#registerForm').serialize();
-
+  
         $.ajax({
-            type: 'POST',
-            url: '/api/registration/', 
-            data: formData,
-            headers: {
+          type: 'POST',
+          url: '/api/registration/', 
+          data: formData,
+          headers: {
             'X-CSRFToken': csrfToken
-            },
-            success: function(response) {
+          },
+          success: function(response) {
+            // Check if the status is true and display the success message
+            if (response.status) {
               Swal.fire({
-                    title: "Good job!",
-                    text: "Account created. You can now login.",
-                    icon: "success"
-                }).then(() => {
-                    // Redirect after the alert is closed
-                    window.location.href = "{% url 'login' %}";
-                });
-
-            },
+                title: "Great!",
+                text: `Your account has been created, ${response.username}! You can now log in.`,
+                icon: "success"
+              }).then(() => {
+                // Redirect to the login page after the alert is closed
+                window.location.href = "{% url 'login' %}";
+              });
+            } else {
+              // Handle other responses if needed
+              Swal.fire({
+                title: "Error",
+                text: response.message || "Something went wrong.",
+                icon: "error"
+              });
+            }
+             // Hide the authentication button and show the signup button again (in case of error)
+            $('#authButton').hide();
+            $('#signupButton').show();
+          },
           error: function(xhr, status, error) {
+            // Handle errors from the server (e.g., validation errors)
+            let errorMessages = [];
+  
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+              // Collect and display error messages
+              if (xhr.responseJSON.message.non_field_errors) {
+                errorMessages.push(xhr.responseJSON.message.non_field_errors.join(' '));
+              }
+              if (xhr.responseJSON.message.username) {
+                errorMessages.push(xhr.responseJSON.message.username.join(' '));
+              }
+              if (xhr.responseJSON.message.email) {
+                errorMessages.push(xhr.responseJSON.message.email.join(' '));
+              }
+              if (xhr.responseJSON.message.password) {
+                errorMessages.push(xhr.responseJSON.message.password.join(' '));
+              }
+            }
+  
             Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Something went wrong!",
-            footer: '<a href="#">Why do I have this issue?</a>'
-          });
+              icon: "error",
+              title: "Oops...",
+              text: errorMessages.join(' '), // Display all error messages
+              footer: '<a href="#">Why do I have this issue?</a>'
+            });
           }
         });
       });
-      
     });
-
   </script>
+  
+  
 
 
 {% endblock content %}

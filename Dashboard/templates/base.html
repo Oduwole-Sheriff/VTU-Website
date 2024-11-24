@@ -129,7 +129,11 @@
                                         <h2 class="title">
                                             Automated Bank Transfer
                                         </h2>
+                                        {% if account_details %}
                                         <span class="pre-title-bg">Make Transfer to any Bank of your choice to Fund Wallet</span>
+                                        {% else %}
+                                        <span class="pre-title-bg">Fill this form to generate your account details</span>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -138,36 +142,66 @@
                                     <form method="POST">
                                         {% csrf_token %}
                                         
+                                        <!-- Full Name Field -->
                                         <div class="form-group">
+                                            <label for="id_full_name">Full Name: (as registered on your id card)</label>
+                                            <input type="text" name="full_name" required id="id_full_name" class="bg bg-light">
+                                        </div>
+
+                                        <!-- Date of Birth Field -->
+                                        <div class="form-group">
+                                            <label for="id_dob">Date of Birth:</label>
+                                            <input type="date" name="dob" required id="id_dob" class="bg bg-light">
+                                        </div>
+                                        
+                                        <!-- Document Type Selection (NIN or BVN) -->
+                                        <div class="form-group">
+                                            <label for="id_document_type">Select Identity Type:</label>
+                                            <select name="document_type" id="id_document_type" class="form-control" required>
+                                                <option value="nin">National Identification Number (NIN)</option>
+                                                <option value="bvn">Bank Verification Number (BVN)</option>
+                                            </select>
+                                        </div>
+
+                                        <!-- NIN Field -->
+                                        <div id="nin_field" class="form-group">
                                             <label for="id_nin">Enter your NIN:</label>
                                             <input type="text" name="nin" maxlength="11" required id="id_nin" class="bg bg-light">
                                         </div>
                                         
-                                        <button type="submit" class="btn btn-primary btn-lg">Submit NIN</button>
+                                        <!-- BVN Field -->
+                                        <div id="bvn_field" class="form-group" style="display:none;">
+                                            <label for="id_bvn">Enter your BVN:</label>
+                                            <input type="text" name="bvn" maxlength="11" required id="id_bvn" class="bg bg-light">
+                                        </div>
+                                        
+                                        <!-- Submit Button -->
+                                        <button type="submit" class="btn btn-primary btn-lg">Submit</button>
                                     </form>
                                 {% endif %}
                             </div>
-                            <!-- tabs area start -->
-                            <div class="tab-area-pricing-two mt--30">
-                                <ul class="nav nav-tabs pricing-button-one two" id="myTab" role="tablist">
-                                    <li class="nav-item" role="presentation">
-                                        <button class=" active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Sterling Bank</button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button class="" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Wema Bank</button>
-                                    </li>
-                                </ul>
-                                <div class="tab-content mt--20" id="myTabContent">
-                                    <!-- Account 1 - Home Tab (Sterling Bank) -->
-                                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                        <div class="row g-5 mt--10">
-                                            <div class="col-12">
-                                                <!-- single pricing-area -->
-                                                <div class="single-pricing-single-two active">
-                                                    <div class="body">
-                                                        <img class="zenith-logo" src="{% static 'assets/images/logo/Sterling-bank.png' %}" alt="zenith-logo">
-                                                        <div class="check-wrapper">
-                                                            {% if account_details %}
+                            {% if account_details %}
+                                <!-- tabs area start -->
+                                <div class="tab-area-pricing-two mt--30">
+                                    <ul class="nav nav-tabs pricing-button-one two" id="myTab" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <button class=" active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Sterling Bank</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Wema Bank</button>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content mt--20" id="myTabContent">
+                                        <!-- Account 1 - Home Tab (Sterling Bank) -->
+                                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                            <div class="row g-5 mt--10">
+                                                <div class="col-12">
+                                                    <!-- single pricing-area -->
+                                                    <div class="single-pricing-single-two active">
+                                                        <div class="body">
+                                                            <img class="zenith-logo" src="{% static 'assets/images/logo/Sterling-bank.png' %}" alt="zenith-logo">
+                                                            <div class="check-wrapper">
+                                                            
                                                                 <!-- Displaying Bank Account Details for Sterling Bank -->
                                                                 <ul>
                                                                     <li>Bank Name: {{ account_details.0.bank_name }}</li>
@@ -175,50 +209,48 @@
                                                                     <li>Account Number: {{ account_details.0.account_number }}</li>
                                                                 </ul>
 
-                                                            {% else %}
                                                                 <ul>
                                                                     <li>Input Your NIN to get Your Account Details</li>
                                                                 </ul>
-                                                            {% endif %}
+                                                            </div>
                                                         </div>
                                                     </div>
+                                                    <!-- single pricing-area end -->
                                                 </div>
-                                                <!-- single pricing-area end -->
                                             </div>
                                         </div>
-                                    </div>
-                                
-                                    <!-- Account 2 - Profile Tab (Wema Bank) -->
-                                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                        <div class="row g-5 mt--10">
-                                            <div class="col-12">
-                                                <!-- single pricing-area -->
-                                                <div class="single-pricing-single-two palmpay active">
-                                                    <div class="body">
-                                                        <img class="palmpay-logo" src="{% static 'assets/images/logo/wema-bank.jpg' %}" alt="palmpay-logo">
-                                
-                                                        <div class="check-wrapper">
-                                                            {% if account_details %}
+                                    
+                                        <!-- Account 2 - Profile Tab (Wema Bank) -->
+                                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                            <div class="row g-5 mt--10">
+                                                <div class="col-12">
+                                                    <!-- single pricing-area -->
+                                                    <div class="single-pricing-single-two palmpay active">
+                                                        <div class="body">
+                                                            <img class="palmpay-logo" src="{% static 'assets/images/logo/wema-bank.jpg' %}" alt="palmpay-logo">
+                                    
+                                                            <div class="check-wrapper">
+                                                            
                                                                 <!-- Displaying Bank Account Details for Wema Bank -->
                                                                 <ul>
                                                                     <li>Bank Name: {{ account_details.1.bank_name }}</li>
                                                                     <li>Account Name: {{ account_details.1.account_name }}</li>
                                                                     <li>Account Number: {{ account_details.1.account_number }}</li>
                                                                 </ul>
-                                                            {% else %}
+                                                            
                                                                 <ul>
                                                                     <li>Input Your NIN to get Your Account Details</li>
                                                                 </ul>
-                                                            {% endif %}
+                                                            </div>
                                                         </div>
                                                     </div>
+                                                    <!-- single pricing-area end -->
                                                 </div>
-                                                <!-- single pricing-area end -->
                                             </div>
                                         </div>
-                                    </div>
-                                </div>                                
-                            </div>
+                                    </div>                                
+                                </div>
+                            {% endif %}
                             <!-- tabs area end -->
                         </div>
                     </div>
@@ -366,6 +398,18 @@
         document.getElementById('logout-link').addEventListener('click', function(e) {
             e.preventDefault(); // Prevent the default link behavior
             document.getElementById('logout-form').submit(); // Submit the logout form
+        });
+
+        // Handle showing the correct input field based on the user's selection
+        document.getElementById("id_document_type").addEventListener("change", function() {
+            var selectedValue = this.value;
+            if (selectedValue === "nin") {
+                document.getElementById("nin_field").style.display = "block";
+                document.getElementById("bvn_field").style.display = "none";
+            } else if (selectedValue === "bvn") {
+                document.getElementById("nin_field").style.display = "none";
+                document.getElementById("bvn_field").style.display = "block";
+            }
         });
     </script>
 </body>

@@ -1,17 +1,19 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from Dashboard.models import CustomUser, Transaction
+from authentication.models import Profile
 
 # Use get_user_model() to reference the custom user model
 User = get_user_model()
 
 class RegisterSerializer(serializers.ModelSerializer):
-    # Instead of manually creating a user, use ModelSerializer to take care of user creation.
     password = serializers.CharField(write_only=True, min_length=8)
+    phone_number = serializers.CharField(max_length=15, required=False, allow_blank=True)
+    address = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:
-        model = User  # This will use the custom user model because we're using get_user_model().
-        fields = ['username', 'email', 'password']
+        model = User
+        fields = ['username', 'email', 'password', 'phone_number', 'address']
 
     def validate(self, data):
         # Validation to check if username or email already exists
@@ -24,13 +26,32 @@ class RegisterSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
+        # Extract phone number and address before user creation
+        phone_number = validated_data.pop('phone_number', None)
+        address = validated_data.pop('address', None)
+
+        # Create user
         user = User.objects.create(
             username=validated_data['username'],
             email=validated_data['email']
         )
         user.set_password(validated_data['password'])
         user.save()
+
+        # Check if the profile already exists for this user
+        profile, created = Profile.objects.get_or_create(
+            user=user,
+            defaults={'phone_number': phone_number, 'address': address}
+        )
+
+        # If the profile already exists, update it with the new data
+        if not created:
+            profile.phone_number = phone_number or profile.phone_number
+            profile.address = address or profile.address
+            profile.save()
+        
         return user
+
 
 
 class LoginSerializer(serializers.Serializer):

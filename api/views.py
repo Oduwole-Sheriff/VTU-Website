@@ -28,43 +28,74 @@ class RegisterAPI(APIView):
 
     def post(self, request):
         data = request.data
-        serializer = RegisterSerializer(data = data)
-        serializer.is_valid(raise_exception=True)
-
+        serializer = RegisterSerializer(data=data)
+        
         if not serializer.is_valid():
             return Response({
                 'status': False,
-                'message': serializer.errors
-            }, status.HTTP_400_BAD_REQUEST)
+                'message': serializer.errors  # Ensure serializer.errors are passed correctly here
+            }, status=status.HTTP_400_BAD_REQUEST)
 
-        serializer.save()
-        
-        return Response({'status': True, 'message': 'user created'}, status.HTTP_201_CREATED)
+        # Save the user object after serializer validation
+        user = serializer.save()
+
+        # Return the username of the newly created user
+        return Response({
+            'status': True,
+            'message': 'User created',
+            'username': user.username  # Add the username here
+        }, status=status.HTTP_201_CREATED)
+
 
 
 class LoginAPI(APIView):
     def post(self, request):
         data = request.data
-        serializer = LoginSerializer(data = data)
+        serializer = LoginSerializer(data=data)
+        
+        # Validate the serializer
         if not serializer.is_valid():
             return Response({
                 'status': False,
                 'message': serializer.errors
-            }, status.HTTP_400_BAD_REQUEST)
-        print(serializer.data)
-        user = authenticate(request, username=serializer.data['username'], password=serializer.data['password'])
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        # Extract username and password from the validated data
+        username = serializer.data['username']
+        password = serializer.data['password']
+        
+        # Try to authenticate the user
+        user = authenticate(request, username=username, password=password)
+        
+        # Check if the user exists
         if not user:
-            return Response({
-                'status': False,
-                'message': "invalid credentials"
-            }, status.HTTP_400_BAD_REQUEST)
+            # Check if the username exists in the database
+            if not CustomUser.objects.filter(username=username).exists():
+                return Response({
+                    'status': False,
+                    'message': "Username does not exist"
+                }, status=status.HTTP_400_BAD_REQUEST)
+            # If username exists but password is incorrect
+            else:
+                return Response({
+                    'status': False,
+                    'message': "Invalid password"
+                }, status=status.HTTP_400_BAD_REQUEST)
 
+        # If authentication is successful, get or create the token
         token, created = Token.objects.get_or_create(user=user)
-        print(token)
-        if user:
-            login(request, user)
-            return Response({'status': True, 'message': 'User logged in', 'token': token.key, 'redirect_url': '/'}, status=status.HTTP_200_OK)
+        
+        # Log the user in
+        login(request, user)
 
+        # Return a successful response with the token
+        return Response({
+            'status': True, 
+            'message': 'User logged in',
+            'token': token.key,
+            'redirect_url': '/'
+        }, status=status.HTTP_200_OK)
+    
 class DepositView(APIView):
     permission_classes = [IsAuthenticated]
     def post(self, request):

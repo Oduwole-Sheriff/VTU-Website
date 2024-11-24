@@ -1194,6 +1194,18 @@ iframe {
   border-color: var(--bs-themecolor) !important;
 }
 
+.password-field{
+  position: relative !important;
+}
+
+#eyeicon{
+  width: 20px !important;
+  cursor: pointer !important;
+  position: absolute;
+  top: 47px;
+  right: 10px;
+}
+
 .oxyy-login-register .form-border .form-control:not(output):-moz-ui-invalid:not(:focus), .oxyy-login-register .form-border .form-control:not(output):-moz-ui-invalid:-moz-focusring:not(:focus) {
   border-bottom-color: #e10203;
   box-shadow: none;

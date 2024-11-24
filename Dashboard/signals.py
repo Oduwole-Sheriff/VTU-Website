@@ -99,6 +99,7 @@ def create_account_details_for_new_user(sender, instance, created, **kwargs):
                 "contractCode": "5347308431",
                 "customerEmail": instance.email,  # Use the user's email
                 "customerName": instance.username,  # Use the user's name
+                "bvn": instance.bvn, # Use the user's BVN
                 "nin": instance.nin,  # Use the user's NIN
                 "getAllAvailableBanks": True
             }

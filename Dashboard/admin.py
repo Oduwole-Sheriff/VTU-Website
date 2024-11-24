@@ -11,20 +11,20 @@ class CustomUserAdmin(UserAdmin):
     add_form = CustomUserForm  # Use the same form for creating users
     
     # Specify the fields that should be visible in the admin interface
-    list_display = ['username', 'balance', 'email', 'nin', 'is_active', 'is_staff', 'get_bank_account']
+    list_display = ['username', 'balance', 'email', 'nin', 'bvn', 'is_active', 'is_staff', 'get_bank_account']
     search_fields = ['username', 'email']
     ordering = ['username']
     
     # Fields for add and change user forms
     fieldsets = (
-        (None, {'fields': ('username', 'password1', 'password2', 'balance', 'bank_account', 'nin')}),  # Add nin to fieldsets, remove first_name and last_name
+        (None, {'fields': ('username', 'password1', 'password2', 'balance', 'bank_account', 'nin', 'bvn')}),  # Add bvn to fieldsets
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser')}),  # permissions
         ('Important dates', {'fields': ('last_login', 'date_joined')}),           # important date fields
     )
     
     # Fields for the 'Add User' form
     add_fieldsets = (
-        (None, {'fields': ('username', 'password1', 'password2', 'balance', 'bank_account', 'nin')}),  # Add nin to the 'Add User' form
+        (None, {'fields': ('username', 'password1', 'password2', 'balance', 'bank_account', 'nin', 'bvn')}),  # Add bvn to the 'Add User' form
     )
     
     # Exclude any fields you do not want to display in the admin form (like 'usable_password' if it exists)

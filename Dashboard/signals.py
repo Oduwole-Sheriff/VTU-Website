@@ -57,8 +57,8 @@ def log_transfer(sender, instance, created, **kwargs):
 def create_account_details_for_new_user(sender, instance, created, **kwargs):
     if created:
         # Step 1: Prepare the Basic Authorization Header
-        client_id = "MK_TEST_36CS1B1AD6"  # Replace with your Monnify client ID
-        client_secret = "R29WUNU3GGP276CXDVJYUPW0JZKUTEQ8"  # Replace with your Monnify client secret
+        client_id = "MK_TEST_XZMGHMDDFF"  # Replace with your Monnify client ID
+        client_secret = "WEDYDDCGYEX98Z7L31R1RZ4V6LK12JK9"  # Replace with your Monnify client secret
 
         # Create a Basic Auth string in the format client_id:client_secret
         credentials = f"{client_id}:{client_secret}"

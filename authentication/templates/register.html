@@ -162,7 +162,9 @@
                 errorMessages.push(xhr.responseJSON.message.password.join(' '));
               }
             }
-  
+            $('#authButton').hide();
+            $('#signupButton').show();
+            
             Swal.fire({
               icon: "error",
               title: "Oops...",

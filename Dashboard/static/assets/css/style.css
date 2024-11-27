@@ -16531,6 +16531,11 @@ body.sal-disabled [data-sal|=flip] {
   }
 }
 
+#id_document_type{
+  font-size: 14px !important;
+  color: rgb(73, 118, 150);
+}
+
 .accordion-area-one {
   padding: 0 200px;
 }

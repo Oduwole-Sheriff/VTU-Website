@@ -1,5 +1,5 @@
 from django.urls import path
-from api.views import RegisterAPI, LoginAPI, DepositView, WithdrawView, TransferView, TransactionListView
+from api.views import RegisterAPI, LoginAPI, DepositView, WithdrawView, TransferView, TransactionListView, SubmitAccountDetailsView
 
 urlpatterns = [
     path('registration/', RegisterAPI.as_view()),
@@ -8,5 +8,6 @@ urlpatterns = [
     path('withdraw/', WithdrawView.as_view(), name='withdraw'),
     path('transfer/', TransferView.as_view(), name='transfer'),
     path('transactions/', TransactionListView.as_view(), name='transaction_list'),
+    path('submit-account-details/', SubmitAccountDetailsView.as_view(), name='submit_account_details'),
 ]   
     

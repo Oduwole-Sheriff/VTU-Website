@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth import logout
 # from django.contrib.auth.forms import UserCreationForm
 from .forms import UserRegisterForm, UserUpdateForm
 from django.contrib import messages
@@ -48,3 +49,16 @@ def profile(request):
     }
     return render(request, "profile.html", context)
 
+def custom_logout(request):
+    # Save the form_submitted state before logging out
+    form_submitted = request.session.get('form_submitted', False)
+    
+    # Log the user out
+    logout(request)
+    
+    # Re-set the form_submitted flag
+    if form_submitted:
+        request.session['form_submitted'] = True
+    
+    # Redirect to the home page or login page after logout
+    return redirect('home-page')  # You can change this to whatever page you want to redirect to after logout

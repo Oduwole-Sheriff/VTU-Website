@@ -12,6 +12,7 @@
     <link rel="stylesheet preload" href="{% static 'assets/css/plugins/fontawesome-6.css' %}" as="style">
     <link rel="stylesheet preload" href="{% static 'assets/css/plugins/swiper.css' %}" as="style">
     <link rel="stylesheet preload" href="{% static 'assets/css/vendor/bootstrap.min.css' %}" as="style">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.min.css" rel="stylesheet">
     <link rel="stylesheet preload" href="{% static 'assets/css/style.css' %}" as="style">
 
 </head>
@@ -126,9 +127,7 @@
                             <div class="row">
                                 <div class="col-lgl-12">
                                     <div class="title-conter-area">
-                                        <h2 class="title">
-                                            Automated Bank Transfer
-                                        </h2>
+                                        <h2 class="title">Automated Bank Transfer</h2>
                                         {% if account_details %}
                                         <span class="pre-title-bg">Make Transfer to any Bank of your choice to Fund Wallet</span>
                                         {% else %}
@@ -137,11 +136,73 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="nin-form-container mt-3">
-                                {% if not account_details %}
-                                    <form method="POST">
+    
+                            {% if request.session.form_submitted %}
+                                <!-- Display the Account Details or Error Message -->
+                                <div id="account-details-container">
+                                    {% if account_details %}
+                                        <div class="tab-area-pricing-two mt--30">
+                                            <ul class="nav nav-tabs pricing-button-one two" id="myTab" role="tablist">
+                                                <li class="nav-item" role="presentation">
+                                                    <button class="active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Sterling Bank</button>
+                                                </li>
+                                                <li class="nav-item" role="presentation">
+                                                    <button class="" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Wema Bank</button>
+                                                </li>
+                                            </ul>
+                                            <div class="tab-content mt--20" id="myTabContent">
+                                                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                                    <div class="row g-5 mt--10">
+                                                        <div class="col-12">
+                                                            <div class="single-pricing-single-two active">
+                                                                <div class="body">
+                                                                    <img class="zenith-logo" src="{% static 'assets/images/logo/Sterling-bank.png' %}" alt="zenith-logo">
+                                                                    <div class="check-wrapper">
+                                                                        <ul>
+                                                                            <li>Bank Name: {{ account_details.0.bank_name }}</li>
+                                                                            <li>Account Name: {{ account_details.0.account_name }}</li>
+                                                                            <li>Account Number: {{ account_details.0.account_number }}</li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            
+                                                <!-- Account 2 - Wema Bank -->
+                                                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                                    <div class="row g-5 mt--10">
+                                                        <div class="col-12">
+                                                            <div class="single-pricing-single-two palmpay active">
+                                                                <div class="body">
+                                                                    <img class="palmpay-logo" src="{% static 'assets/images/logo/wema-bank.jpg' %}" alt="palmpay-logo">
+                                                                    <div class="check-wrapper">
+                                                                        <ul>
+                                                                            <li>Bank Name: {{ account_details.1.bank_name }}</li>
+                                                                            <li>Account Name: {{ account_details.1.account_name }}</li>
+                                                                            <li>Account Number: {{ account_details.1.account_number }}</li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <!-- Display error message if no account details -->
+                                        <div class="alert alert-warning mt-3">
+                                            {{ account_message }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% else %}
+                                <!-- Show the Form to Submit Account Details -->
+                                <div class="nin-form-container mt-3" id="account-form-container">
+                                    <form id="account-details-form" method="POST">
                                         {% csrf_token %}
-                                        
                                         <!-- Full Name Field -->
                                         <div class="form-group">
                                             <label for="id_full_name">Full Name: (as registered on your id card)</label>
@@ -153,7 +214,7 @@
                                             <label for="id_dob">Date of Birth:</label>
                                             <input type="date" name="dob" required id="id_dob" class="bg bg-light">
                                         </div>
-                                        
+
                                         <!-- Document Type Selection (NIN or BVN) -->
                                         <div class="form-group">
                                             <label for="id_document_type">Select Identity Type:</label>
@@ -166,92 +227,20 @@
                                         <!-- NIN Field -->
                                         <div id="nin_field" class="form-group">
                                             <label for="id_nin">Enter your NIN:</label>
-                                            <input type="text" name="nin" maxlength="11" required id="id_nin" class="bg bg-light">
+                                            <input type="text" name="nin" maxlength="11" id="id_nin" class="bg bg-light">
                                         </div>
-                                        
+
                                         <!-- BVN Field -->
                                         <div id="bvn_field" class="form-group" style="display:none;">
                                             <label for="id_bvn">Enter your BVN:</label>
-                                            <input type="text" name="bvn" maxlength="11" required id="id_bvn" class="bg bg-light">
+                                            <input type="text" name="bvn" maxlength="11" id="id_bvn" class="bg bg-light">
                                         </div>
-                                        
+
                                         <!-- Submit Button -->
                                         <button type="submit" class="btn btn-primary btn-lg">Submit</button>
                                     </form>
-                                {% endif %}
-                            </div>
-                            {% if account_details %}
-                                <!-- tabs area start -->
-                                <div class="tab-area-pricing-two mt--30">
-                                    <ul class="nav nav-tabs pricing-button-one two" id="myTab" role="tablist">
-                                        <li class="nav-item" role="presentation">
-                                            <button class=" active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Sterling Bank</button>
-                                        </li>
-                                        <li class="nav-item" role="presentation">
-                                            <button class="" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Wema Bank</button>
-                                        </li>
-                                    </ul>
-                                    <div class="tab-content mt--20" id="myTabContent">
-                                        <!-- Account 1 - Home Tab (Sterling Bank) -->
-                                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                            <div class="row g-5 mt--10">
-                                                <div class="col-12">
-                                                    <!-- single pricing-area -->
-                                                    <div class="single-pricing-single-two active">
-                                                        <div class="body">
-                                                            <img class="zenith-logo" src="{% static 'assets/images/logo/Sterling-bank.png' %}" alt="zenith-logo">
-                                                            <div class="check-wrapper">
-                                                            
-                                                                <!-- Displaying Bank Account Details for Sterling Bank -->
-                                                                <ul>
-                                                                    <li>Bank Name: {{ account_details.0.bank_name }}</li>
-                                                                    <li>Account Name: {{ account_details.0.account_name }}</li>
-                                                                    <li>Account Number: {{ account_details.0.account_number }}</li>
-                                                                </ul>
-
-                                                                <ul>
-                                                                    <li>Input Your NIN to get Your Account Details</li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- single pricing-area end -->
-                                                </div>
-                                            </div>
-                                        </div>
-                                    
-                                        <!-- Account 2 - Profile Tab (Wema Bank) -->
-                                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                            <div class="row g-5 mt--10">
-                                                <div class="col-12">
-                                                    <!-- single pricing-area -->
-                                                    <div class="single-pricing-single-two palmpay active">
-                                                        <div class="body">
-                                                            <img class="palmpay-logo" src="{% static 'assets/images/logo/wema-bank.jpg' %}" alt="palmpay-logo">
-                                    
-                                                            <div class="check-wrapper">
-                                                            
-                                                                <!-- Displaying Bank Account Details for Wema Bank -->
-                                                                <ul>
-                                                                    <li>Bank Name: {{ account_details.1.bank_name }}</li>
-                                                                    <li>Account Name: {{ account_details.1.account_name }}</li>
-                                                                    <li>Account Number: {{ account_details.1.account_number }}</li>
-                                                                </ul>
-                                                            
-                                                                <ul>
-                                                                    <li>Input Your NIN to get Your Account Details</li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- single pricing-area end -->
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>                                
                                 </div>
                             {% endif %}
-                            <!-- tabs area end -->
                         </div>
                     </div>
                     <!-- rts pricing plane area end -->
@@ -259,6 +248,7 @@
             </div>
         </div>
     </div>
+    
     <!-- header area End -->
 
 
@@ -380,6 +370,8 @@
     <script src="{% static 'assets/js/plugins/bootstrap.min.js' %}" defer></script>
     <!-- custom js -->
     <script src="{% static 'assets/js/main.js' %}" defer></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.all.min.js"></script>
 
     <script>
         // Check if user has already set a theme preference
@@ -400,17 +392,60 @@
             document.getElementById('logout-form').submit(); // Submit the logout form
         });
 
-        // Handle showing the correct input field based on the user's selection
-        document.getElementById("id_document_type").addEventListener("change", function() {
-            var selectedValue = this.value;
-            if (selectedValue === "nin") {
-                document.getElementById("nin_field").style.display = "block";
-                document.getElementById("bvn_field").style.display = "none";
-            } else if (selectedValue === "bvn") {
-                document.getElementById("nin_field").style.display = "none";
-                document.getElementById("bvn_field").style.display = "block";
-            }
+
+        $(document).ready(function() {
+            $('#account-details-form').submit(function(event) {
+                event.preventDefault(); // Prevent the default form submission
+
+                // Gather form data
+                var formData = {
+                    'full_name': $('#id_full_name').val(),
+                    'dob': $('#id_dob').val(),
+                    'document_type': $('#id_document_type').val(),
+                };
+
+                var documentType = $('#id_document_type').val();
+                if (documentType === 'nin') {
+                    formData['nin'] = $('#id_nin').val();  // Include NIN
+                } else if (documentType === 'bvn') {
+                    formData['bvn'] = $('#id_bvn').val();  // Include BVN
+                }
+
+                // Make the AJAX request to submit the form data
+                $.ajax({
+                    url: '/api/submit-account-details/',  // The API endpoint
+                    type: 'POST',
+                    data: JSON.stringify(formData),  // Send form data as JSON
+                    contentType: 'application/json',  // Specify content type as JSON
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',  // Include CSRF token
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // Show SweetAlert
+                            Swal.fire({
+                                title: 'Thank You!',
+                                text: 'Your details have been submitted successfully.',
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            }).then(function() {
+                                // Reload the page after SweetAlert is closed
+                                window.location.reload();
+                            });
+                        } else {
+                            // Handle any other errors (e.g., validation errors) here
+                            alert('There was an error. Please try again.');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle any AJAX errors here
+                        alert('A server error occurred. Please try again later.');
+                    }
+                });
+            });
         });
+
+
     </script>
 </body>
 

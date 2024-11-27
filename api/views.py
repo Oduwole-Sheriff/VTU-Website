@@ -11,7 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 # from django.contrib.auth import authenticate
 # from drf_yasg.utils import swagger_auto_schema
 
-from api.serializer import RegisterSerializer, LoginSerializer, CustomUserSerializer, DepositSerializer, WithdrawSerializer, TransferSerializer, TransactionSerializer
+from api.serializer import RegisterSerializer, LoginSerializer, CustomUserSerializer, DepositSerializer, WithdrawSerializer, TransferSerializer, TransactionSerializer, AccountDetailsSerializer
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework import status
@@ -19,6 +19,7 @@ from rest_framework.response import Response
 
 from django.contrib.auth import authenticate, login
 from Dashboard.models import CustomUser, Transaction
+from django.db import IntegrityError
 
 from django.contrib.auth import get_user_model
 User = get_user_model()  # Get the custom user model
@@ -95,6 +96,54 @@ class LoginAPI(APIView):
             'token': token.key,
             'redirect_url': '/'
         }, status=status.HTTP_200_OK)
+    
+class SubmitAccountDetailsView(APIView):
+    def post(self, request):
+        user = request.user  # Get the current logged-in user
+        serializer = AccountDetailsSerializer(user, data=request.data)
+
+        if serializer.is_valid():
+            try:
+                # Attempt to update the user
+                serializer.save()
+
+                # Fetch the account details after saving
+                account_details = _get_account_details(user)
+
+                # Store a session flag to indicate form submission was successful
+                request.session['form_submitted'] = True
+                
+                # Return the updated account details in the response
+                return Response({
+                    "success": True,
+                    "account_details": account_details
+                }, status=status.HTTP_200_OK)
+
+            except IntegrityError:
+                return Response({
+                    "success": False,
+                    "error": "The BVN is already associated with another user."
+                }, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({
+                "success": False,
+                "errors": serializer.errors
+            }, status=status.HTTP_400_BAD_REQUEST)
+    
+def _get_account_details(user):
+    """ Helper function to extract bank account details """
+    account_details = []
+    if user.bank_account and 'accounts' in user.bank_account:
+        for account in user.bank_account['accounts']:
+            account_info = {
+                'bank_name': account.get('bankName', 'No Bank Name'),
+                'account_name': account.get('accountName', 'No Account Name'),
+                'account_number': account.get('accountNumber', 'No Account Number')
+            }
+            account_details.append(account_info)
+    return account_details
+
+
     
 class DepositView(APIView):
     permission_classes = [IsAuthenticated]

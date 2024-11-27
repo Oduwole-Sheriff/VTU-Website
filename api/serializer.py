@@ -59,6 +59,39 @@ class LoginSerializer(serializers.Serializer):
     password = serializers.CharField()
 
 
+class AccountDetailsSerializer(serializers.ModelSerializer):
+    full_name = serializers.CharField(max_length=255, required=False)
+    dob = serializers.DateField(required=False)
+    document_type = serializers.ChoiceField(choices=[('nin', 'National Identification Number (NIN)'), ('bvn', 'Bank Verification Number (BVN)')])
+    nin = serializers.CharField(max_length=11, required=False, allow_blank=True)
+    bvn = serializers.CharField(max_length=11, required=False, allow_blank=True)
+
+    class Meta:
+        model = CustomUser
+        fields = ['full_name', 'dob', 'document_type', 'nin', 'bvn']
+
+    def validate(self, data):
+        # Ensure that nin or bvn is provided based on the selected document_type
+        if data['document_type'] == 'nin' and not data.get('nin'):
+            raise serializers.ValidationError("NIN is required for the selected identity type.")
+        elif data['document_type'] == 'bvn' and not data.get('bvn'):
+            raise serializers.ValidationError("BVN is required for the selected identity type.")
+
+        # Check if the BVN already exists (except for the current user)
+        bvn = data.get('bvn')
+        if bvn and CustomUser.objects.filter(bvn=bvn).exclude(id=self.instance.id).exists():
+            raise serializers.ValidationError("The BVN already exists for another user.")
+
+        return data
+
+    def update(self, instance, validated_data):
+        # Proceed with the update logic if no errors
+        instance.nin = validated_data.get('nin', instance.nin)
+        instance.bvn = validated_data.get('bvn', instance.bvn)
+        instance.save()
+        return instance
+
+
 class CustomUserSerializer(serializers.ModelSerializer):
     # Serializer for CustomUser model to include the balance and other necessary fields
     class Meta:

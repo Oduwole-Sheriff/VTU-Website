@@ -37,40 +37,49 @@
             <div class="row g-0">
               <div class="col-11 col-sm-10 col-lg-9 col-xl-8 mx-auto">
                 <h3 class="fw-600 mb-4">Sign Up</h3>
+
                 <form id="registerForm" method="post" enctype="multipart/form-data">
                   {% csrf_token %}
+                  
                   <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
                     {{ form.username|as_crispy_field }}
                   </div>
-
+                
                   <div class="mb-3">
                     <label for="email" class="form-label">Email Address</label>
                     {{ form.email|as_crispy_field }}
                   </div>
-
-                  <div class="mb-3 password-field">
-                    <label for="password" class="form-label">Password</label>
-                    {{ form.password|as_crispy_field }}
-                    <img src="{% static 'images/password-eye/eye-close.png' %}" id="eyeicon">
-                    <small class="form-text text-muted" style="color: #c4c2c2 !important;">password must contain at least 8 characters</small>
-                  </div>
-
+                
                   <div class="mb-3">
                     <label for="phone_number" class="form-label">Phone Number</label>
                     {{ form.phone_number|as_crispy_field }}
                   </div>
-
+                
                   <div class="mb-3">
                     <label for="address" class="form-label">Address</label>
                     {{ form.address|as_crispy_field }}
                   </div>
 
+                  <div class="mb-3 password-field">
+                    <label for="password1" class="form-label">Password</label>
+                    {{ form.password1|as_crispy_field }}
+                    <img src="{% static 'images/password-eye/eye-close.png' %}" id="eyeicon1">
+                    <small class="form-text text-muted" style="color: #c4c2c2 !important;">Password must contain at least 8 characters</small>
+                  </div>
+                
+                  <div class="mb-3 password-field">
+                    <label for="password2" class="form-label">Confirm Password</label>
+                    {{ form.password2|as_crispy_field }}
+                    <img src="{% static 'images/password-eye/eye-close.png' %}" id="eyeicon2">
+                    <small class="form-text text-muted" style="color: #c4c2c2 !important;">Enter the same password as above for verification</small>
+                  </div>
+                
                   <div class="d-grid my-4">
                     <button class="btn btn-primary" type="submit" id="signupButton">Sign Up</button>
                     <button class="btn btn-primary" type="button" id="authButton" style="display: none;" disabled>Authenticating...</button>
                   </div>
-                </form>
+                </form>                
   
                 <p class="text-center text-muted mb-0">Already have an account? <a href="{% url 'login' %}">Log In</a></p>
               </div>
@@ -87,18 +96,28 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
 
-  let password = document.getElementById("id_password");
-  let eyeicon = document.getElementById("eyeicon");
+    let password1 = document.getElementById("id_password1");
+    let password2 = document.getElementById("id_password2");
+    let eyeicon1 = document.getElementById("eyeicon1");
+    let eyeicon2 = document.getElementById("eyeicon2");
 
-  eyeicon.onclick = function() {
-    if (password.type == "password") {
-      password.type = "text";
-      eyeicon.src = "{% static 'images/password-eye/eye-open.png' %}";
-    } else {
-      password.type = "password";
-      eyeicon.src = "{% static 'images/password-eye/eye-close.png' %}";
+    function togglePasswordVisibility(passwordField, eyeIcon) {
+      if (passwordField.type === "password") {
+        passwordField.type = "text";
+        eyeIcon.src = "{% static 'images/password-eye/eye-open.png' %}";
+      } else {
+        passwordField.type = "password";
+        eyeIcon.src = "{% static 'images/password-eye/eye-close.png' %}";
+      }
     }
-  }
+
+    eyeicon1.onclick = function() {
+      togglePasswordVisibility(password1, eyeicon1);
+    };
+
+    eyeicon2.onclick = function() {
+      togglePasswordVisibility(password2, eyeicon2);
+    };
 
     $(document).ready(function() {
       $('#registerForm').on('submit', function(event) {
@@ -107,12 +126,12 @@
         // Hide the signup button and show the authentication button
         $('#signupButton').hide();
         $('#authButton').show();
-  
+      
         const csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
-  
+      
         // Serialize the form data
         var formData = $('#registerForm').serialize();
-  
+      
         $.ajax({
           type: 'POST',
           url: '/api/registration/', 
@@ -139,42 +158,60 @@
                 icon: "error"
               });
             }
-             // Hide the authentication button and show the signup button again (in case of error)
+
+            // Hide the authentication button and show the signup button again (in case of error)
             $('#authButton').hide();
             $('#signupButton').show();
           },
           error: function(xhr, status, error) {
             // Handle errors from the server (e.g., validation errors)
             let errorMessages = [];
-  
-            if (xhr.responseJSON && xhr.responseJSON.message) {
-              // Collect and display error messages
-              if (xhr.responseJSON.message.non_field_errors) {
-                errorMessages.push(xhr.responseJSON.message.non_field_errors.join(' '));
+
+            if (xhr.responseJSON && xhr.responseJSON.errors) {
+              // Collect and display error messages correctly
+              
+              // Handle non_field_errors if they exist
+              if (xhr.responseJSON.errors.non_field_errors) {
+                errorMessages.push(xhr.responseJSON.errors.non_field_errors.join(' '));
               }
-              if (xhr.responseJSON.message.username) {
-                errorMessages.push(xhr.responseJSON.message.username.join(' '));
+
+              // Handle specific field errors like username, email, password1, password2, etc.
+              if (xhr.responseJSON.errors.username) {
+                errorMessages.push(xhr.responseJSON.errors.username.join(' '));
               }
-              if (xhr.responseJSON.message.email) {
-                errorMessages.push(xhr.responseJSON.message.email.join(' '));
+              if (xhr.responseJSON.errors.email) {
+                errorMessages.push(xhr.responseJSON.errors.email.join(' '));
               }
-              if (xhr.responseJSON.message.password) {
-                errorMessages.push(xhr.responseJSON.message.password.join(' '));
+              if (xhr.responseJSON.errors.phone_number) {
+                errorMessages.push(xhr.responseJSON.errors.phone_number.join(' '));
+              }
+              if (xhr.responseJSON.errors.address) {
+                errorMessages.push(xhr.responseJSON.errors.address.join(' '));
+              }
+              if (xhr.responseJSON.errors.password1) {
+                errorMessages.push(xhr.responseJSON.errors.password1.join(' '));
+              }
+              if (xhr.responseJSON.errors.password2) {
+                errorMessages.push(xhr.responseJSON.errors.password2.join(' '));
               }
             }
+
+            // After errors are collected, hide the auth button and show the signup button again
             $('#authButton').hide();
             $('#signupButton').show();
-            
+
+            // Show collected error messages in SweetAlert
             Swal.fire({
               icon: "error",
               title: "Oops...",
-              text: errorMessages.join(' '), // Display all error messages
+              text: errorMessages.join(' '), // Display all error messages in one string
               footer: '<a href="#">Why do I have this issue?</a>'
             });
           }
         });
       });
     });
+
   </script>
   
   

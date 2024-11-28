@@ -394,6 +394,18 @@
 
 
         $(document).ready(function() {
+
+            $('#id_document_type').change(function() {
+                var documentType = $(this).val();
+                if (documentType === 'bvn') {
+                    $('#bvn_field').show();  // Show the BVN input field
+                    $('#nin_field').hide();  // Hide the NIN input field
+                } else {
+                    $('#bvn_field').hide();  // Hide the BVN input field
+                    $('#nin_field').show();  // Show the NIN input field
+                }
+            });
+
             $('#account-details-form').submit(function(event) {
                 event.preventDefault(); // Prevent the default form submission
 
@@ -422,7 +434,7 @@
                     },
                     success: function(response) {
                         if (response.success) {
-                            // Show SweetAlert
+                            // Show SweetAlert for successful submission
                             Swal.fire({
                                 title: 'Thank You!',
                                 text: 'Your details have been submitted successfully.',
@@ -433,13 +445,24 @@
                                 window.location.reload();
                             });
                         } else {
-                            // Handle any other errors (e.g., validation errors) here
-                            alert('There was an error. Please try again.');
+                            // Handle any other non-field or validation errors here
+                            Swal.fire({
+                                title: 'Error!',
+                                text: response.errors.non_field_errors.join(', '),
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
                         }
                     },
                     error: function(xhr, status, error) {
-                        // Handle any AJAX errors here
-                        alert('A server error occurred. Please try again later.');
+                        // Handle any AJAX errors here (e.g., network errors, server errors)
+                        var errorMessage = xhr.responseJSON ? xhr.responseJSON.errors : 'A server error occurred. Please try again later.';
+                        Swal.fire({
+                            title: 'Error!',
+                            text: errorMessage,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
                     }
                 });
             });

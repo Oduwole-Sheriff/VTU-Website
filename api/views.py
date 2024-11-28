@@ -28,23 +28,27 @@ User = get_user_model()  # Get the custom user model
 class RegisterAPI(APIView):
 
     def post(self, request):
+        # Parse incoming request data
         data = request.data
         serializer = RegisterSerializer(data=data)
         
+        # Validate the data
         if not serializer.is_valid():
+            # Return validation errors if serializer is invalid
             return Response({
                 'status': False,
-                'message': serializer.errors  # Ensure serializer.errors are passed correctly here
+                'message': 'Validation failed',
+                'errors': serializer.errors  # Provide detailed validation errors
             }, status=status.HTTP_400_BAD_REQUEST)
 
-        # Save the user object after serializer validation
+        # Save the user after validation
         user = serializer.save()
 
-        # Return the username of the newly created user
+        # Return success response with username of the newly created user
         return Response({
             'status': True,
-            'message': 'User created',
-            'username': user.username  # Add the username here
+            'message': 'User successfully created',
+            'username': user.username  # Return the username of the created user
         }, status=status.HTTP_201_CREATED)
 
 

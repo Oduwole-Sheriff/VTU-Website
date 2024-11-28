@@ -2,27 +2,39 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from Dashboard.models import CustomUser, Transaction
 from authentication.models import Profile
+from django.contrib.auth.password_validation import validate_password
 
 # Use get_user_model() to reference the custom user model
 User = get_user_model()
 
 class RegisterSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True, min_length=8)
+    password1 = serializers.CharField(write_only=True, min_length=8)
+    password2 = serializers.CharField(write_only=True, min_length=8)
     phone_number = serializers.CharField(max_length=15, required=False, allow_blank=True)
     address = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password', 'phone_number', 'address']
-
+        fields = ['username', 'email', 'phone_number', 'address', 'password1', 'password2']  # password fields last
+    
     def validate(self, data):
-        # Validation to check if username or email already exists
+        # Check if the passwords match
+        if data['password1'] != data['password2']:
+            raise serializers.ValidationError("Passwords must match.")
+        
+        # Validate if the username or email already exists
         if User.objects.filter(username=data['username']).exists():
             raise serializers.ValidationError('Username is already taken.')
         
         if User.objects.filter(email=data['email']).exists():
             raise serializers.ValidationError('Email is already taken.')
 
+        # Validate password strength
+        try:
+            validate_password(data['password1'])
+        except Exception as e:
+            raise serializers.ValidationError(f"Password error: {str(e)}")
+        
         return data
 
     def create(self, validated_data):
@@ -35,7 +47,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             username=validated_data['username'],
             email=validated_data['email']
         )
-        user.set_password(validated_data['password'])
+        user.set_password(validated_data['password1'])  # Set password from password1
         user.save()
 
         # Check if the profile already exists for this user
@@ -85,10 +97,17 @@ class AccountDetailsSerializer(serializers.ModelSerializer):
         return data
 
     def update(self, instance, validated_data):
-        # Proceed with the update logic if no errors
+        # Update the user model
         instance.nin = validated_data.get('nin', instance.nin)
         instance.bvn = validated_data.get('bvn', instance.bvn)
         instance.save()
+
+        # Update the associated profile with full_name and dob
+        profile = instance.profile  # Assuming a 1-to-1 relationship exists between User and Profile
+        profile.full_name = validated_data.get('full_name', profile.full_name)
+        profile.dob = validated_data.get('dob', profile.dob)
+        profile.save()
+
         return instance
 
 

@@ -6,7 +6,7 @@ from django.db import transaction as db_transaction
 class CustomUser(AbstractUser):
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     bank_account = models.JSONField(blank=True, null=True)  # Bank account details as JSONField
-    nin = models.CharField(max_length=20, blank=True, null=True)
+    nin = models.CharField(max_length=11, blank=True, null=True)
     bvn = models.CharField(max_length=11, blank=True, null=True, unique=True)  # BVN field added
 
     def __str__(self):

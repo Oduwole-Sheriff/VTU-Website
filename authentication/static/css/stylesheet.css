@@ -1198,7 +1198,7 @@ iframe {
   position: relative !important;
 }
 
-#eyeicon{
+#eyeicon, #eyeicon1, #eyeicon2{
   width: 20px !important;
   cursor: pointer !important;
   position: absolute;

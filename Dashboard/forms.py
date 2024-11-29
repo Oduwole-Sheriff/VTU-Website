@@ -1,5 +1,5 @@
 from django import forms
-from .models import CustomUser
+from .models import CustomUser, BuyAirtime
 
 class CustomUserForm(forms.ModelForm):
     class Meta:
@@ -40,3 +40,22 @@ class NINForm(forms.Form):
         if len(nin) != 11:  # Assuming the NIN is 20 digits long
             raise forms.ValidationError('NIN should be 11 characters long.')
         return nin
+
+class BuyAirtimeForm(forms.ModelForm):
+    class Meta:
+        model = BuyAirtime
+        fields = ['network', 'data_type', 'mobile_number', 'amount', 'bypass_validator']
+        widgets = {
+            'mobile_number': forms.TextInput(attrs={'placeholder': 'Mobile Number', 'maxlength': '11', 'minlength': '11'}),
+            'amount': forms.NumberInput(attrs={'placeholder': 'Amount', 'min': '2', 'maxlength': '11'}),
+            'network': forms.Select(attrs={'class': 'select color-white-title-home'}),
+            'data_type': forms.Select(attrs={'class': 'select color-white-title-home'}),
+            'bypass_validator': forms.CheckboxInput(attrs={'class': 'form-check-input'})
+        }
+
+    # Don't require the user field in the form (we will set it manually)
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)  # Get the user from the view
+        super().__init__(*args, **kwargs)
+        if user:
+            self.instance.user = user  # Set the user field manually

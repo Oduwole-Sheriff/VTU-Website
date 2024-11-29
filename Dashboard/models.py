@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db import transaction as db_transaction
+from django.core.exceptions import ValidationError
 
 
 class CustomUser(AbstractUser):
@@ -83,13 +84,15 @@ class Transaction(models.Model):
         ('deposit', 'Deposit'),
         ('withdrawal', 'Withdrawal'),
         ('transfer', 'Transfer'),
+        ('airtime_purchase', 'Airtime Purchase'),  # Add airtime_purchase as a new type
     )
     
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    transaction_type = models.CharField(choices=TRANSACTION_TYPES, max_length=10)
+    transaction_type = models.CharField(choices=TRANSACTION_TYPES, max_length=20)  # Increase max_length if needed
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     timestamp = models.DateTimeField(auto_now_add=True)
     recipient = models.ForeignKey(CustomUser, related_name='received_transactions', on_delete=models.SET_NULL, null=True, blank=True)
+    description = models.TextField(blank=True, null=True)  # Optional field for additional details
 
     def __str__(self):
         return f"{self.transaction_type} of {self.amount} by {self.user.username} on {self.timestamp}"
@@ -120,3 +123,49 @@ class WebsiteConfiguration(models.Model):
         config, created = cls.objects.get_or_create(id=1)  # Assuming only one configuration entry
         config.base_url = base_url
         config.auth_token = auth_token
+
+class BuyAirtime(models.Model):
+    NETWORK_CHOICES = [
+        (1, 'MTN'),
+        (2, 'GLO'),
+        (3, '9MOBILE'),
+        (4, 'AIRTEL'),
+    ]
+
+    DATA_TYPE_CHOICES = [
+        ('VTU', 'VTU'),
+        ('Share and Sell', 'Share and Sell'),
+    ]
+
+    network = models.IntegerField(choices=NETWORK_CHOICES)
+    data_type = models.CharField(max_length=20, choices=DATA_TYPE_CHOICES)
+    mobile_number = models.CharField(max_length=11)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)  # Amount of airtime to be bought
+    bypass_validator = models.BooleanField(default=False)
+    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='airtime_purchases')
+
+    def __str__(self):
+        return f"{self.network} - {self.mobile_number} - {self.amount}"
+
+    def process_purchase(self):
+        """ Deduct the amount from the user's balance when purchasing airtime and log the transaction """
+        if self.amount <= 0:
+            raise ValidationError("Amount must be positive.")
+
+        # Ensure user has enough balance
+        if self.user.balance < self.amount:
+            raise ValidationError("Insufficient balance to complete the purchase.")
+
+        with db_transaction.atomic():
+            # Deduct the amount from user's balance
+            self.user.balance -= self.amount
+            self.user.save()
+
+            # Log the airtime purchase transaction
+            Transaction.objects.create(
+                user=self.user,
+                transaction_type='airtime_purchase',  # Custom type for airtime purchase
+                amount=self.amount,
+                recipient=None,  # No recipient in airtime purchase
+                description=f"Purchase of {self.data_type} airtime for {self.mobile_number}"  # Custom description
+            )

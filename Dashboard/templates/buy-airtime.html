@@ -15,37 +15,40 @@
                                     <h5 class="title">Airtime TopUp</h5>
                                 </div>
                                 <div class="body row">
-                                    <form action="#" class="px-md-3 col-sm-12">
-                                        <div class="input-wrapper">
-                                            <select name="network" class="select color-white-title-home" required="" id="id_network">
-                                                <option value="" disabled selected>Select Network</option>
-                                              
-                                                <option value="1">MTN</option>
-                                              
-                                                <option value="2">GLO</option>
-                                              
-                                                <option value="3">9MOBILE</option>
-                                              
-                                                <option value="4">AIRTEL</option>
-                                              
-                                            </select>
-                                            <select name="data_type" class="select color-white-title-home" id="id_data_type">
-                                                <option value="" disabled selected>Airtime Type</option>
-                                                <option value="VTU">VTU</option>
-                                                <option value="Share and Sell">Share and Sell</option>
-                                            </select>
-                                            <input type="text" placeholder="Mobile Number" name="mobile_number" maxlength="11" minlength="11" required="" id="id_mobile_number">
-                                            <input type="text" placeholder="Amount" name="amount" maxlength="11" minlength="2" required="" id="id_Amount">
+                                    <form id="buy-airtime-form" method="post">
+                                        {% csrf_token %}
+                    
+                                        <!-- Network Dropdown with Placeholder -->
+                                        <div class="form-group">
+                                            {{ form.network }}
                                         </div>
-                                        <div class="check-wrapper">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                                <label class="form-check-label" for="flexCheckDefault">
-                                                    Bypass number validator
-                                                </label>
+                                
+                                        <!-- Airtime Type Dropdown with Placeholder -->
+                                        <div class="form-group">
+                                            {{ form.data_type }}
+                                        </div>
+                                
+                                        <!-- Mobile Number Field -->
+                                        <div class="form-group">
+                                            {{ form.mobile_number }}  <!-- Mobile Number Field -->
+                                        </div>
+                                
+                                        <!-- Amount Field -->
+                                        <div class="form-group">
+                                            {{ form.amount }}  <!-- Amount Field -->
+                                        </div>
+                                
+                                        <!-- Bypass Validator Checkbox -->
+                                        <div class="form-group">
+                                            <div class="check-wrapper">
+                                                <div class="form-check">
+                                                    <label for="{{ form.bypass_validator.id_for_label }}">Bypass Number Validator</label>
+                                                    {{ form.bypass_validator }}  <!-- Checkbox Field -->
+                                                </div>
                                             </div>
                                         </div>
-                                        <button class="rts-btn btn-primary">Buy Now</button>
+                                
+                                        <button type="submit" class="rts-btn btn-primary mt-1">Buy Now</button>
                                     </form>
                                 </div>
                             </div>
@@ -57,5 +60,101 @@
         </div>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    //Customizing the select options (this will be rendered as the first option in the select)
+    document.addEventListener('DOMContentLoaded', function() {
+        let select = document.getElementById("{{ form.network.id_for_label }}");
+        if(select) {
+            let firstOption = document.createElement("option");
+            firstOption.value = "";
+            firstOption.disabled = true;
+            firstOption.selected = true;
+            firstOption.textContent = "Select Network";
+            select.prepend(firstOption);  // Insert it as the first option
+        }
+    });
+
+    // Customizing the select options (this will be rendered as the first option in the select)
+    document.addEventListener('DOMContentLoaded', function() {
+        let select = document.getElementById("{{ form.data_type.id_for_label }}");
+        if(select) {
+            let firstOption = document.createElement("option");
+            firstOption.value = "";
+            firstOption.disabled = true;
+            firstOption.selected = true;
+            firstOption.textContent = "Airtime Type";
+            select.prepend(firstOption);  // Insert it as the first option
+        }
+    });
+
+    $(document).ready(function() {
+        $('#buy-airtime-form').on('submit', function(event) {
+            event.preventDefault();  // Prevent the default form submission
+
+            // Serialize the form data
+            var formData = $(this).serializeArray();
+            var data = {};
+
+            // Convert form data into an object
+            $(formData).each(function(index, obj) {
+                data[obj.name] = obj.value;
+            });
+
+            // Get CSRF token from the form's hidden input field
+            var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+            // Send AJAX request
+            $.ajax({
+                url: '/api/buy-airtime/',  // URL where the form data is being sent
+                type: 'POST',  // HTTP method
+                data: JSON.stringify(data),  // Send data as JSON string
+                contentType: 'application/json',  // Set content type to JSON
+                headers: {
+                    'X-CSRFToken': csrfToken  // Add CSRF token to the request headers
+                },
+                success: function(response) {
+                    if (response.status === 'success') {
+                        // Success alert with remaining balance
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Airtime Purchase Successful',
+                            text: 'Remaining balance: ' + response.remaining_balance,
+                            confirmButtonText: 'OK'
+                        });
+                    } else {
+                        // Error alert with message
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: response.message || 'An error occurred. Please try again.',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Check if response contains a "detail" error message
+                    var errorMessage = 'An error occurred. Please try again later.';  // Default error message
+
+                    // If the backend returns a JSON response with a "detail" field (e.g. validation error)
+                    if (xhr.responseJSON && xhr.responseJSON.detail) {
+                        errorMessage = xhr.responseJSON.detail;  // Get the specific error message from backend
+                    }
+
+                    // Display the error message in SweetAlert
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: errorMessage,
+                        confirmButtonText: 'OK'
+                    });
+                }
+            });
+        });
+    });
+
+</script>
 
 {% endblock content %}

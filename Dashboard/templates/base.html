@@ -278,9 +278,9 @@
                         <p>Buy Data</p>
                     </a>
                     {% if request.path == '/airtimeTopUp/' %}
-                    <a href="{% url 'buy_airtime' %}" class="single-menu active openuptip" flow="right" tooltip="Search">
+                    <a href="{% url 'airtime-topUp' %}" class="single-menu active openuptip" flow="right" tooltip="Search">
                         {% else %}
-                    <a href="{% url 'buy_airtime' %}" class="single-menu openuptip" flow="right" tooltip="Search">
+                    <a href="{% url 'airtime-topUp' %}" class="single-menu openuptip" flow="right" tooltip="Search">
                         {% endif %}
                         <div class="icon" style="width: 20px;">
                             <img src="{% static 'assets/images/icons/phone-icon.png' %}" alt="icons">

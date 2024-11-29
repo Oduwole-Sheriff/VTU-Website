@@ -11,7 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 # from django.contrib.auth import authenticate
 # from drf_yasg.utils import swagger_auto_schema
 
-from api.serializer import RegisterSerializer, LoginSerializer, CustomUserSerializer, DepositSerializer, WithdrawSerializer, TransferSerializer, TransactionSerializer, AccountDetailsSerializer
+from api.serializer import RegisterSerializer, LoginSerializer, CustomUserSerializer, DepositSerializer, WithdrawSerializer, TransferSerializer, TransactionSerializer, AccountDetailsSerializer, BuyAirtimeSerializer
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework import status
@@ -20,6 +20,8 @@ from rest_framework.response import Response
 from django.contrib.auth import authenticate, login
 from Dashboard.models import CustomUser, Transaction
 from django.db import IntegrityError
+from django.http import JsonResponse
+from rest_framework.exceptions import ValidationError
 
 from django.contrib.auth import get_user_model
 User = get_user_model()  # Get the custom user model
@@ -243,6 +245,54 @@ class TransactionListView(APIView):
         serializer = TransactionSerializer(transactions, many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
+class BuyAirtimeView(APIView):
+    def post(self, request, *args, **kwargs):
+        # Ensure the user is logged in
+        if not request.user.is_authenticated:
+            return JsonResponse({'status': 'error', 'message': 'Authentication required'}, status=status.HTTP_401_UNAUTHORIZED)
+
+        # Add the user to the request data (automatically set the logged-in user as the 'user')
+        request.data['user'] = request.user.id
+        
+        # Create the serializer instance with the request data
+        serializer = BuyAirtimeSerializer(data=request.data)
+
+        # Get the 'amount' from the request data
+        amount = request.data.get('amount')
+
+        if amount is None:
+            return JsonResponse({'status': 'error', 'message': 'Amount is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Check if the user has enough balance
+        if request.user.balance < float(amount):
+            raise ValidationError({"detail": "Insufficient balance to complete the purchase."})
+
+        # Check if the data is valid
+        if serializer.is_valid():
+            try:
+                # Save the airtime purchase and handle the balance deduction
+                airtime_purchase = serializer.save()
+
+                # Calculate the remaining balance from the user’s balance
+                remaining_balance = airtime_purchase.user.balance
+
+                # Return success response with remaining balance
+                return Response({
+                    'status': 'success',
+                    'remaining_balance': str(remaining_balance)  # Returning as string for better formatting
+                }, status=200)
+            except Exception as e:
+                # Handle unexpected errors during the purchase process
+                return Response({'status': 'error', 'message': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            # Return validation errors if data is invalid
+            return Response({
+                'status': 'error',
+                'errors': serializer.errors  # Return serializer validation errors
+            }, status=status.HTTP_400_BAD_REQUEST)
+
     
 
 # class TransactionListView(APIView):

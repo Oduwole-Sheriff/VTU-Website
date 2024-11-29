@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from .models import CustomUser, Transaction
+from .forms import BuyAirtimeForm
+from django.http import JsonResponse
 # from django.contrib import messages
 
 # Create your views here.
@@ -35,7 +37,44 @@ def BuyData(request):
 
 @login_required
 def BuyAirtime(request):
-    return render(request, 'buy-airtime.html')
+    if request.method == 'POST':
+        # Pass the logged-in user to the form
+        form = BuyAirtimeForm(request.POST, user=request.user)  # Set the user
+
+        if form.is_valid():
+            buy_airtime = form.save(commit=False)  # Do not commit yet, to perform additional actions
+
+            # Deduct the amount from the user's balance
+            user = buy_airtime.user
+            amount = form.cleaned_data['amount']
+
+            if user.balance < amount:
+                return JsonResponse({'status': 'error', 'message': "Insufficient balance to complete the purchase."})
+
+            # Proceed with saving the BuyAirtime record
+            buy_airtime.save()  # Save the airtime purchase record
+
+            # Update user's balance
+            user.balance -= amount
+            user.save()  # Save the updated balance
+
+            # Log the transaction for the airtime purchase
+            Transaction.objects.create(
+                user=user,
+                transaction_type='airtime_purchase',
+                amount=amount,
+                recipient=None,  # No recipient in airtime purchase
+                description=f"Purchase of {buy_airtime.data_type} airtime for {buy_airtime.mobile_number}"
+            )
+
+            # Return success response
+            return JsonResponse({'status': 'success'})
+
+    else:
+        form = BuyAirtimeForm()
+
+    # Render the form in the 'buy_airtime.html' template
+    return render(request, 'buy-airtime.html', {'form': form})
 
 @login_required
 def ManageSubscription(request):

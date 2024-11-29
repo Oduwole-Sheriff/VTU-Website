@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from Dashboard.models import CustomUser, Transaction
+from Dashboard.models import CustomUser, Transaction, BuyAirtime
 from authentication.models import Profile
 from django.contrib.auth.password_validation import validate_password
 
@@ -167,6 +167,55 @@ class TransactionSerializer(serializers.ModelSerializer):
         fields = ['id', 'transaction_type', 'amount', 'timestamp', 'recipient']
         read_only_fields = ['id', 'timestamp', 'recipient']
 
+
+class BuyAirtimeSerializer(serializers.ModelSerializer):
+    # Nested serializer to display user information
+    user = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
+    
+    # Calculate the remaining balance after airtime purchase (optional field)
+    remaining_balance = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
+
+    class Meta:
+        model = BuyAirtime
+        fields = ['id', 'user', 'network', 'data_type', 'mobile_number', 'amount', 'bypass_validator', 'remaining_balance']
+    
+    def create(self, validated_data):
+        """Override the create method to handle balance deduction when purchasing airtime"""
+        user = validated_data['user']
+        amount = validated_data['amount']
+        
+        # Ensure the user has enough balance before creating the airtime purchase
+        if user.balance < amount:
+            raise serializers.ValidationError("Insufficient balance to complete the purchase.")
+        
+        # Deduct the amount from the user's balance
+        user.balance -= amount
+        user.save()
+
+        # Create the BuyAirtime instance
+        buy_airtime = BuyAirtime.objects.create(**validated_data)
+        
+        # Log the airtime purchase transaction (if you have a Transaction model)
+        Transaction.objects.create(
+            user=user,
+            transaction_type='airtime_purchase',
+            amount=amount,
+            recipient=None,  # No recipient for airtime purchase
+            description=f"Purchase of {buy_airtime.data_type} airtime for {buy_airtime.mobile_number}"
+        )
+
+        return buy_airtime
+    
+    def update(self, instance, validated_data):
+        """Override the update method if you need to handle updates to the airtime purchase."""
+        # This method is optional depending on your use case
+        instance.network = validated_data.get('network', instance.network)
+        instance.data_type = validated_data.get('data_type', instance.data_type)
+        instance.mobile_number = validated_data.get('mobile_number', instance.mobile_number)
+        instance.amount = validated_data.get('amount', instance.amount)
+        instance.bypass_validator = validated_data.get('bypass_validator', instance.bypass_validator)
+        instance.save()
+        return instance
 
         
 

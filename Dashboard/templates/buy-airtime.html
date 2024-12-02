@@ -116,6 +116,7 @@
                     'X-CSRFToken': csrfToken  // Add CSRF token to the request headers
                 },
                 success: function(response) {
+                    console.log(response)
                     if (response.status === 'success') {
                         // Success alert with remaining balance
                         Swal.fire({
@@ -135,12 +136,28 @@
                     }
                 },
                 error: function(xhr, status, error) {
-                    // Check if response contains a "detail" error message
-                    var errorMessage = 'An error occurred. Please try again later.';  // Default error message
+                    // Default error message
+                    var errorMessage = 'An error occurred. Please try again later.';
 
-                    // If the backend returns a JSON response with a "detail" field (e.g. validation error)
-                    if (xhr.responseJSON && xhr.responseJSON.detail) {
-                        errorMessage = xhr.responseJSON.detail;  // Get the specific error message from backend
+                    // Check if response contains a "detail" or "errors" field
+                    if (xhr.responseJSON) {
+                        // Check if there are validation errors (e.g., invalid network choice)
+                        if (xhr.responseJSON.errors) {
+                            var errorText = '';
+                            // Loop through all errors in the response
+                            $.each(xhr.responseJSON.errors, function(field, messages) {
+                                // Customize the error message for the 'data_type' and other fields
+                                if (field === "data_type") {
+                                    errorText += "Invalid choice in field: Data Type\n";
+                                } else {
+                                    errorText += "Invalid choice in field: " + field + "\n";
+                                }
+                            });
+                            errorMessage = errorText;  // Set the error text
+                        } else if (xhr.responseJSON.detail) {
+                            // If a general error message exists (like "Insufficient balance")
+                            errorMessage = xhr.responseJSON.detail;
+                        }
                     }
 
                     // Display the error message in SweetAlert
@@ -154,6 +171,7 @@
             });
         });
     });
+
 
 </script>
 

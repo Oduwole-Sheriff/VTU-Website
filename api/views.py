@@ -23,6 +23,12 @@ from django.db import IntegrityError
 from django.http import JsonResponse
 from rest_framework.exceptions import ValidationError
 
+from RestAPI.AirtimeAPI import VTPassAPI
+import uuid
+from datetime import datetime
+import logging
+import json
+
 from django.contrib.auth import get_user_model
 User = get_user_model()  # Get the custom user model
 
@@ -248,6 +254,14 @@ class TransactionListView(APIView):
     
 
 class BuyAirtimeView(APIView):
+
+    NETWORK_MAP = {
+        1: 'MTN',
+        2: 'GLO',
+        3: 'ETISALAT',
+        4: 'AIRTEL'
+    }
+
     def post(self, request, *args, **kwargs):
         # Ensure the user is logged in
         if not request.user.is_authenticated:
@@ -255,7 +269,7 @@ class BuyAirtimeView(APIView):
 
         # Add the user to the request data (automatically set the logged-in user as the 'user')
         request.data['user'] = request.user.id
-        
+
         # Create the serializer instance with the request data
         serializer = BuyAirtimeSerializer(data=request.data)
 
@@ -278,20 +292,185 @@ class BuyAirtimeView(APIView):
                 # Calculate the remaining balance from the user’s balance
                 remaining_balance = airtime_purchase.user.balance
 
-                # Return success response with remaining balance
-                return Response({
-                    'status': 'success',
-                    'remaining_balance': str(remaining_balance)  # Returning as string for better formatting
-                }, status=200)
+                # Generate a unique request_id for this transaction
+                request_id = self.generate_request_id()
+
+                # Get the network integer from the request
+                network_id = int(request.data.get('network', 0))
+
+                # Map the network ID to the corresponding network string
+                network = self.NETWORK_MAP.get(network_id, None)
+
+                if not network:
+                    return JsonResponse({
+                        'status': 'error',
+                        'message': 'Invalid network. Valid options are: MTN, GLO, AIRTEL, ETISALAT'
+                    }, status=status.HTTP_400_BAD_REQUEST)
+
+                # Call the VTPassAPI to process the airtime purchase
+                api = VTPassAPI(
+                    base_url="https://sandbox.vtpass.com",
+                    auth_token="Token be76014119dd44b12180ab93a92d63a2", 
+                    secret_key="SK_873dc5215f9063f6539ec2249c8268bb788b3150386"
+                )
+
+                # Prepare data for VTPassAPI
+                api_data = {
+                    'request_id': request_id,  # Include the generated request_id
+                    'serviceID': network,  # Use the network string (e.g., MTN)
+                    'amount': amount,
+                    'phone': request.data.get('mobile_number'),
+                }
+
+                # Call the API and get the transaction response
+                response = api.buy_airtime(api_data)
+
+                # Debug: Print raw response from VTPass
+                print(f"Raw response from VTPass: {response}")
+
+                # If the response is a string (transaction ID), convert it to JSON
+                if isinstance(response, str):
+                    response = {
+                        "status": "failed",  # Treat as failed transaction
+                        "transactionId": response,
+                        "product_name": "Unknown Product"  # Default product name if not provided
+                    }
+                    print(f"Converted string response to JSON: {response}")
+
+                # Handle the response as JSON
+                if isinstance(response, dict):
+                    transaction_status = response.get('status', 'failed')
+                    transaction_id = response.get('transactionId', '')
+                    product_name = response.get('content', {}).get('transactions', {}).get('product_name', 'Unknown Product')
+
+                    # Handle failed transaction
+                    if transaction_status == 'failed':
+                        print(f"Transaction failed with transaction ID: {transaction_id}")
+                        return self.handle_failed_transaction(transaction_id, response)  # Pass the response here
+
+                    # If the transaction is successful
+                    elif transaction_status == 'success':
+                        # Save the transaction as successful
+                        Transaction.objects.create(
+                            user=request.user,
+                            transaction_type='airtime_purchase',
+                            amount=amount,
+                            status='success',  # Mark as successful
+                            product_name=product_name,  # Use the product_name from the API response
+                            unique_element=request.data.get('mobile_number'),
+                            unit_price=amount,
+                            description=f"Airtime purchase for {request.data.get('mobile_number')}",
+                            transaction_id=transaction_id  # Save the transaction ID
+                        )
+
+                        # Debug: Print successful response
+                        print(f"Transaction successful. Product Name: {product_name}, Transaction ID: {transaction_id}")
+
+                        return Response({
+                            'status': 'success',
+                            'remaining_balance': str(remaining_balance),
+                            'transaction_id': transaction_id,  # Include the transaction ID from VTPassAPI
+                            'product_name': product_name  # Include the product name in the response
+                        }, status=status.HTTP_200_OK)
+
+                    else:
+                        # Handle unexpected responses
+                        print(f"Unexpected response from VTPass: {response}")
+                        return Response({
+                            'status': 'error',
+                            'message': 'Transaction failed. Please check the details or try again.',
+                            'response': response  # For debugging purposes
+                        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+                else:
+                    # If response is not a string or dictionary, return error
+                    print(f"Invalid response type from VTPass: {type(response)}. Response: {response}")
+                    return Response({
+                        'status': 'error',
+                        'message': 'Invalid response from VTPass. Expected a JSON object or transaction ID.',
+                        'response': response  # Include the raw response for debugging
+                    }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
             except Exception as e:
                 # Handle unexpected errors during the purchase process
+                print(f"Unexpected error: {str(e)}")
                 return Response({'status': 'error', 'message': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
         else:
+            # Print validation errors
+            print(f"Validation errors: {serializer.errors}")
             # Return validation errors if data is invalid
             return Response({
                 'status': 'error',
                 'errors': serializer.errors  # Return serializer validation errors
             }, status=status.HTTP_400_BAD_REQUEST)
+
+    def generate_request_id(self):
+        """Generate a unique request ID using timestamp and UUID"""
+        timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+        unique_id = uuid.uuid4().hex
+        return f"{timestamp}_{unique_id}"
+
+    def handle_failed_transaction(self, transaction_id, api_response):
+        """Handle failed transaction and log it"""
+        # Log the failure for debugging
+        print(f"Transaction failed with transaction ID: {transaction_id}")
+        print(f"API Response: {api_response}")  # Debug: Print the full API response
+
+        # Extract the product name from the API response
+        try:
+            # Check if 'product_name' exists in the response and extract it correctly
+            product_name = api_response.get('content', {}).get('transactions', {}).get('product_name', 'Unknown Product')
+
+            if not product_name:
+                # If no product_name, use a fallback
+                print("Product name not found in the API response. Using fallback value.")
+                product_name = 'Unknown Product'
+            
+        except KeyError as e:
+            # Catch any key errors and log
+            print(f"Error accessing product_name: {e}")
+            product_name = 'Unknown Product'
+
+        # Log the extracted product name
+        print(f"Extracted Product Name: {product_name}")
+
+        # Create and save the failed transaction in the database
+        Transaction.objects.create(
+            user=self.request.user,
+            transaction_type='airtime_purchase',
+            amount=self.request.data.get('amount'),
+            status='failed',  # Explicitly set the status to 'failed'
+            product_name=product_name,  # Use the extracted product name
+            unique_element=self.request.data.get('mobile_number'),
+            unit_price=self.request.data.get('amount'),
+            description=f"Airtime purchase for {self.request.data.get('mobile_number')}",
+            transaction_id=transaction_id  # Save the transaction ID
+        )
+
+        # Return the failure response
+        return Response({
+            'status': 'failed',
+            'message': 'Transaction failed. Please check the details or try again.',
+            'transaction_id': transaction_id,
+            'product_name': product_name  # Include the product name in the response
+        }, status=status.HTTP_200_OK)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     
 

@@ -16010,6 +16010,65 @@ body.sal-disabled [data-sal|=flip] {
   }
 }
 
+/* Style for the pagination buttons */
+.pagination a {
+  text-decoration: none;
+  color: #fff;
+  background-color: #007bff;
+  border: 1px solid #007bff;
+  padding: 6px 12px; /* Reduced padding for smaller buttons */
+  border-radius: 4px;
+  font-size: 12px; /* Smaller font size */
+  transition: background-color 0.3s, border 0.3s;
+}
+
+/* Add hover effect for pagination buttons */
+.pagination a:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+/* Styling for the current page text */
+.pagination .current-page {
+  font-weight: bold;
+  color: #333;
+  font-size: 14px; /* Slightly larger font size for current page */
+}
+
+/* Add spacing between pagination elements */
+.pagination {
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.pagination .btn {
+  margin: 0 5px;
+}
+
+/* Optional: Style for disabled buttons (when no previous or next page) */
+.pagination .disabled {
+  background-color: #e0e0e0;
+  border-color: #e0e0e0;
+  cursor: not-allowed;
+}
+
+.pagination .disabled a {
+  color: #999;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 576px) {
+  .pagination a {
+      padding: 4px 8px;  /* Further reduce padding on smaller screens */
+      font-size: 10px;   /* Even smaller font size on mobile */
+  }
+
+  .pagination .current-page {
+      font-size: 12px; /* Slightly smaller font size for mobile */
+  }
+}
+
+
 .search__generator {
   margin: auto;
   margin-top: 50px;

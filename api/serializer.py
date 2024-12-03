@@ -168,18 +168,17 @@ class TransactionSerializer(serializers.ModelSerializer):
 
 
 class BuyAirtimeSerializer(serializers.ModelSerializer):
-    # Nested serializer to display user information
     user = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
     
     # Calculate the remaining balance after airtime purchase (read-only field)
     remaining_balance = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
-    
+
     class Meta:
         model = BuyAirtime
         fields = ['id', 'user', 'network', 'data_type', 'mobile_number', 'amount', 'bypass_validator', 'remaining_balance', 'airtime_response']
 
     def create(self, validated_data):
-        """Override the create method to handle balance deduction when purchasing airtime"""
+        """Override the create method to handle balance deduction without creating a transaction"""
         user = validated_data['user']
         amount = validated_data['amount']
         
@@ -191,34 +190,15 @@ class BuyAirtimeSerializer(serializers.ModelSerializer):
         user.balance -= amount
         user.save()
 
-        # Create the BuyAirtime instance
+        # Create the BuyAirtime instance (without creating a transaction here)
         buy_airtime = BuyAirtime.objects.create(**validated_data)
         
-        # Log the airtime purchase transaction
-        Transaction.objects.create(
-            user=user,
-            transaction_type='airtime_purchase',  # Correctly logs the airtime purchase type
-            amount=amount,
-            recipient=None,  # No recipient for airtime purchase
-            description=f"Purchase of {buy_airtime.data_type} airtime for {buy_airtime.mobile_number}"  # Detailed description
-        )
-
         # Update the 'remaining_balance' to reflect the new balance after the purchase
         buy_airtime.remaining_balance = user.balance
         buy_airtime.save()
 
         return buy_airtime
-    
-    def update(self, instance, validated_data):
-        """Override the update method if you need to handle updates to the airtime purchase."""
-        # This method is optional depending on your use case
-        instance.network = validated_data.get('network', instance.network)
-        instance.data_type = validated_data.get('data_type', instance.data_type)
-        instance.mobile_number = validated_data.get('mobile_number', instance.mobile_number)
-        instance.amount = validated_data.get('amount', instance.amount)
-        instance.bypass_validator = validated_data.get('bypass_validator', instance.bypass_validator)
-        instance.save()
-        return instance
+
         
 
 # class WalletSerializer(serializers.ModelSerializer):

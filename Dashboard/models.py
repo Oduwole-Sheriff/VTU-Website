@@ -170,7 +170,7 @@ class BuyAirtime(models.Model):
         return f"{self.network} - {self.mobile_number} - {self.amount}"
 
     def process_purchase(self):
-        """ Deduct the amount from the user's balance when purchasing airtime and log the transaction """
+        """ Deduct the amount from the user's balance when purchasing airtime """
         if self.amount <= 0:
             raise ValidationError("Amount must be positive.")
 
@@ -183,11 +183,10 @@ class BuyAirtime(models.Model):
             self.user.balance -= self.amount
             self.user.save()
 
-            # Log the airtime purchase transaction
-            Transaction.objects.create(
-                user=self.user,
-                transaction_type='airtime_purchase',  # Custom type for airtime purchase
-                amount=self.amount,
-                recipient=None,  # No recipient in airtime purchase
-                description=f"Purchase of {self.data_type} airtime for {self.mobile_number}"  # Custom description
-            )
+            # Only return the data to the view, no automatic transaction creation here
+            return {
+                'user': self.user,
+                'amount': self.amount,
+                'mobile_number': self.mobile_number,
+                'network': self.network,
+            }

@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from .models import CustomUser, Transaction
 from .forms import BuyAirtimeForm
 from django.http import JsonResponse
+from django.core.paginator import Paginator
 # from django.contrib import messages
 
 # Create your views here.
@@ -29,7 +30,16 @@ def transaction_history(request):
     """Render the transaction history for the logged-in user."""
     transactions = Transaction.objects.filter(user=request.user).order_by('-timestamp')  # Correcting field name to 'timestamp'
 
-    return render(request, 'transaction_history.html', {'transactions': transactions})
+    # Paginate the transactions (10 transactions per page, you can change this number)
+    paginator = Paginator(transactions, 10)
+    
+    # Get the current page number from the request
+    page_number = request.GET.get('page')
+    
+    # Get the transactions for the current page
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'transaction_history.html', {'transactions': transactions, 'page_obj': page_obj})
 
 @login_required
 def BuyData(request):

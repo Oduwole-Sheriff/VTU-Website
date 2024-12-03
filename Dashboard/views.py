@@ -47,17 +47,18 @@ def BuyData(request):
 
 @login_required
 def BuyAirtime(request):
+    user = request.user  # Get the logged-in user
+
     if request.method == 'POST':
         # Pass the logged-in user to the form
-        form = BuyAirtimeForm(request.POST, user=request.user)  # Set the user
+        form = BuyAirtimeForm(request.POST, user=user)  # Set the user
 
         if form.is_valid():
             buy_airtime = form.save(commit=False)  # Do not commit yet, to perform additional actions
 
-            # Deduct the amount from the user's balance
-            user = buy_airtime.user
             amount = form.cleaned_data['amount']
 
+            # Check if the user's balance is less than the amount
             if user.balance < amount:
                 return JsonResponse({'status': 'error', 'message': "Insufficient balance to complete the purchase."})
 
@@ -83,8 +84,8 @@ def BuyAirtime(request):
     else:
         form = BuyAirtimeForm()
 
-    # Render the form in the 'buy_airtime.html' template
-    return render(request, 'buy-airtime.html', {'form': form})
+    # Render the form in the 'buy-airtime.html' template
+    return render(request, 'buy-airtime.html', {'form': form, 'user_balance': user.balance})
 
 @login_required
 def ManageSubscription(request):

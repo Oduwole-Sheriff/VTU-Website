@@ -178,25 +178,9 @@ class BuyAirtimeSerializer(serializers.ModelSerializer):
         fields = ['id', 'user', 'network', 'data_type', 'mobile_number', 'amount', 'bypass_validator', 'remaining_balance', 'airtime_response']
 
     def create(self, validated_data):
-        """Override the create method to handle balance deduction without creating a transaction"""
-        user = validated_data['user']
-        amount = validated_data['amount']
-        
-        # Ensure the user has enough balance before creating the airtime purchase
-        if user.balance < amount:
-            raise serializers.ValidationError("Insufficient balance to complete the purchase.")
-        
-        # Deduct the amount from the user's balance
-        user.balance -= amount
-        user.save()
-
-        # Create the BuyAirtime instance (without creating a transaction here)
+        """Override the create method to create the BuyAirtime instance without balance deduction"""
+        # Create the BuyAirtime instance
         buy_airtime = BuyAirtime.objects.create(**validated_data)
-        
-        # Update the 'remaining_balance' to reflect the new balance after the purchase
-        buy_airtime.remaining_balance = user.balance
-        buy_airtime.save()
-
         return buy_airtime
 
         

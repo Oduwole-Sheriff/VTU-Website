@@ -337,7 +337,7 @@ class BuyAirtimeView(APIView):
                     product_name = transactions.get('product_name', 'Unknown Product')
 
                     # Extract phone and unit price
-                    phone_number = transactions.get('unique_element', '')
+                    phone_number = transactions.get('unique_element', 'None')
                     unit_price = transactions.get('unit_price', 0)
 
                     # Save the API response into airtime_response field
@@ -351,6 +351,10 @@ class BuyAirtimeView(APIView):
 
                     # If successful, save the transaction and return response
                     elif transaction_status == 'success':
+                        # Deduct balance and save the successful transaction
+                        request.user.balance -= float(amount)
+                        request.user.save()
+
                         Transaction.objects.create(
                             user=request.user,
                             transaction_type='airtime_purchase',
@@ -414,6 +418,12 @@ class BuyAirtimeView(APIView):
         print(f"Transaction failed with transaction ID: {transaction_id}")
         print(f"API Response: {api_response}")
 
+        # Check for the specific error code
+        if api_response.get("code") == "017":
+            message = "The amount exceeds the maximum allowed for this transaction."
+        else:
+            message = "An unknown error occurred during the transaction."
+
         # Extract data from the API response
         transactions = api_response.get('content', {}).get('transactions', {})
         product_name = transactions.get('product_name', 'Unknown Product')
@@ -432,13 +442,13 @@ class BuyAirtimeView(APIView):
             unit_price=unit_price,  # Save the unit price from the response
         )
 
-
         return Response({
             'status': 'failed',
-            'message': 'Transaction failed. Please check the details or try again.',
+            'message': message,
             'transaction_id': transaction_id,
             'response': api_response  # For debugging purposes
         }, status=status.HTTP_200_OK)
+
 
 
 

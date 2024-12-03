@@ -22,22 +22,22 @@
                                         <div class="form-group">
                                             {{ form.network }}
                                         </div>
-                                
+                                  
                                         <!-- Airtime Type Dropdown with Placeholder -->
                                         <div class="form-group">
                                             {{ form.data_type }}
                                         </div>
-                                
+                                  
                                         <!-- Mobile Number Field -->
                                         <div class="form-group">
                                             {{ form.mobile_number }}  <!-- Mobile Number Field -->
                                         </div>
-                                
+                                  
                                         <!-- Amount Field -->
                                         <div class="form-group">
                                             {{ form.amount }}  <!-- Amount Field -->
                                         </div>
-                                
+                                  
                                         <!-- Bypass Validator Checkbox -->
                                         <div class="form-group">
                                             <div class="check-wrapper">
@@ -47,7 +47,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                
+                                  
                                         <button type="submit" class="rts-btn btn-primary mt-1">Buy Now</button>
                                     </form>
                                 </div>
@@ -62,9 +62,8 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <script>
-    //Customizing the select options (this will be rendered as the first option in the select)
+    // Customizing the select options (this will be rendered as the first option in the select)
     document.addEventListener('DOMContentLoaded', function() {
         let select = document.getElementById("{{ form.network.id_for_label }}");
         if(select) {
@@ -91,6 +90,19 @@
     });
 
     $(document).ready(function() {
+        // Show SweetAlert if user balance is below 50
+        {% if user_balance < 50 %}
+        Swal.fire({
+            icon: 'warning',
+            title: 'Balance Too Low',
+            text: 'Your balance is too low to make this transaction. Please top up your account.',
+            confirmButtonText: 'OK'
+        }).then(() => {
+            // Redirect after the alert
+            window.location.href = "{% url 'index' %}";
+        });
+        {% endif %}
+
         $('#buy-airtime-form').on('submit', function(event) {
             event.preventDefault();  // Prevent the default form submission
 
@@ -124,6 +136,9 @@
                             title: 'Airtime Purchase Successful',
                             text: 'Remaining balance: ' + response.remaining_balance,
                             confirmButtonText: 'OK'
+                        }).then(() => {
+                            // Redirect after the success alert
+                            window.location.href = "{% url 'index' %}";
                         });
                     } else {
                         // Error alert with message
@@ -132,6 +147,9 @@
                             title: 'Error',
                             text: response.message || 'An error occurred. Please try again.',
                             confirmButtonText: 'OK'
+                        }).then(() => {
+                            // Reset the form data if the response is not successful
+                            $('#buy-airtime-form')[0].reset();  // This clears all form fields
                         });
                     }
                 },
@@ -166,13 +184,14 @@
                         title: 'Oops...',
                         text: errorMessage,
                         confirmButtonText: 'OK'
+                    }).then(() => {
+                        // Reset the form data if there is an error
+                        $('#buy-airtime-form')[0].reset();  // This clears all form fields
                     });
                 }
             });
         });
     });
-
-
 </script>
 
 {% endblock content %}

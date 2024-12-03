@@ -337,7 +337,7 @@ class BuyAirtimeView(APIView):
                     product_name = transactions.get('product_name', 'Unknown Product')
 
                     # Extract phone and unit price
-                    phone = transactions.get('unique_element', '')
+                    phone_number = transactions.get('unique_element', '')
                     unit_price = transactions.get('unit_price', 0)
 
                     # Save the API response into airtime_response field
@@ -358,7 +358,7 @@ class BuyAirtimeView(APIView):
                             status='success',
                             product_name=product_name,
                             transaction_id=transaction_id,
-                            phone=phone,
+                            unique_element=phone_number,
                             unit_price=unit_price,
                         )
 
@@ -369,7 +369,7 @@ class BuyAirtimeView(APIView):
                             'remaining_balance': str(remaining_balance),
                             'transaction_id': transaction_id,
                             'product_name': product_name,
-                            'phone': phone,
+                            'phone': phone_number,
                             'unit_price': unit_price
                         }, status=status.HTTP_200_OK)
 
@@ -414,15 +414,24 @@ class BuyAirtimeView(APIView):
         print(f"Transaction failed with transaction ID: {transaction_id}")
         print(f"API Response: {api_response}")
 
+        # Extract data from the API response
+        transactions = api_response.get('content', {}).get('transactions', {})
+        product_name = transactions.get('product_name', 'Unknown Product')
+        phone_number = transactions.get('unique_element', '')  # Get the phone number from unique_element
+        unit_price = transactions.get('unit_price', 0)  # Get the unit price
+
         # Create and save the failed transaction in the database
         Transaction.objects.create(
             user=self.request.user,
             transaction_type='airtime_purchase',
             amount=self.request.data.get('amount'),
             status='failed',
-            product_name=api_response.get('content', {}).get('transactions', {}).get('product_name', 'Unknown Product'),
+            product_name=product_name,
             transaction_id=transaction_id,  # Save the transaction ID
+            unique_element=phone_number,  # Save the phone number from unique_element
+            unit_price=unit_price,  # Save the unit price from the response
         )
+
 
         return Response({
             'status': 'failed',

@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 from .forms import CustomUserForm
-from .models import CustomUser, Transaction, WebsiteConfiguration
+from .models import CustomUser, Transaction, WebsiteConfiguration, BuyAirtime
 
 CustomUser = get_user_model()
 
@@ -50,5 +50,86 @@ class WebsiteConfigurationAdmin(admin.ModelAdmin):
     list_display = ('base_url', 'auth_token')
 
 
+@admin.register(Transaction)
+class TransactionAdmin(admin.ModelAdmin):
+    list_display = (
+        'user', 'transaction_type', 'amount', 'timestamp', 'status', 
+        'product_name', 'unique_element', 'unit_price', 'transaction_id'
+    )
+    search_fields = ('user__username', 'transaction_id', 'unique_element', 'product_name')
+    list_filter = ('transaction_type', 'status', 'timestamp')
+    ordering = ('-timestamp',)
+
+    # Custom method to display the username of the user who made the transaction
+    def user(self, obj):
+        return obj.user.username
+    user.short_description = 'User'
+
+    # Custom method to display the formatted amount
+    def amount(self, obj):
+        return f"₦{obj.amount:.2f}"
+    amount.short_description = 'Amount'
+
+    # Custom method to display the formatted unit price
+    def unit_price(self, obj):
+        return f"₦{obj.unit_price:.2f}" if obj.unit_price else 'Not available'
+    unit_price.short_description = 'Unit Price'
+
+    # Custom method to display the status
+    def status(self, obj):
+        return obj.status.capitalize() if obj.status else 'Not available'
+    status.short_description = 'Status'
+
+    # Custom method to display the product name
+    def product_name(self, obj):
+        return obj.product_name.capitalize() if obj.product_name else 'Not available'
+    product_name.short_description = 'Product Name'
+
+    # Custom method to display unique element (e.g., phone number for airtime)
+    def unique_element(self, obj):
+        return obj.unique_element if obj.unique_element else 'Not available'
+    unique_element.short_description = 'Unique Element'
+
+    # Custom method to display transaction ID
+    def transaction_id(self, obj):
+        return obj.transaction_id if obj.transaction_id else 'Not available'
+    transaction_id.short_description = 'Transaction ID'
+
+
+@admin.register(BuyAirtime)
+class BuyAirtimeAdmin(admin.ModelAdmin):
+    list_display = (
+        'user', 'network', 'mobile_number', 'amount', 'status', 'date_created', 'date_updated'
+    )
+    search_fields = ('user__username', 'mobile_number', 'network', 'status')
+    list_filter = ('status', 'network', 'date_created')
+    ordering = ('-date_created',)  # Show the most recent airtime purchases first
+
+    # Add a custom method to display the user (if needed, otherwise it's already part of list_display)
+    def user(self, obj):
+        return obj.user.username  # Show the username of the user who made the airtime purchase
+
+    # Customize column headers for clarity
+    user.short_description = 'User'
+
+    # You can also add a method to display the network type in the admin view
+    def network(self, obj):
+        # Return a readable network name (assuming 'network' is stored as an integer)
+        network_map = {
+            1: 'MTN',
+            2: 'GLO',
+            3: 'ETISALAT',
+            4: 'AIRTEL'
+        }
+        return network_map.get(obj.network, 'Unknown Network')
+
+    network.short_description = 'Network'
+
+    # You can also add methods to display other relevant information about the airtime purchase
+    def amount(self, obj):
+        return f"₦{obj.amount}"
+
+    amount.short_description = 'Amount (₦)'  # Customize the column header for the 'amount'
+
+
 admin.site.register(CustomUser, CustomUserAdmin)
-admin.site.register(Transaction)

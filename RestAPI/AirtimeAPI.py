@@ -22,21 +22,16 @@ class VTPassAPI():
         
         response = requests.post(url, json=data, auth=HTTPBasicAuth('oduwolesheriff001@gmail.com', 'Olamilekan1212'))
         print("Actual status code:", response.status_code)
-        # print("Response content:", response.content)
 
         try:
-            result = json.loads(response.text)
-            json_str = json.dumps(result, indent=4)
-            print("JSON POST response body: ", json_str)
-            transaction_id = result["content"]["transactions"]["transactionId"]
-            product_name = result["content"]["transactions"]["product_name"]
-            print(f"Hellp Sheriff, you have successfully purchased {product_name} from vtpass, using transation id: {transaction_id}")
-            return transaction_id
+            result = response.json()  # Directly parse the JSON response
+            print("JSON POST response body: ", json.dumps(result, indent=4))
+            return result  # Return the full response (not just transaction ID)
         except json.JSONDecodeError:
             print("Error decoding JSON response. Response content:")
             print(response.text)
+            return None
 
-        return None
 
 if __name__ == "__main__":
     base_url = "https://sandbox.vtpass.com"

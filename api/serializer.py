@@ -176,7 +176,7 @@ class BuyAirtimeSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = BuyAirtime
-        fields = ['id', 'user', 'network', 'data_type', 'mobile_number', 'amount', 'bypass_validator', 'remaining_balance']
+        fields = ['id', 'user', 'network', 'data_type', 'mobile_number', 'amount', 'bypass_validator', 'remaining_balance', 'airtime_response']
 
     def create(self, validated_data):
         """Override the create method to handle balance deduction when purchasing airtime"""

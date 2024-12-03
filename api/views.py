@@ -322,73 +322,72 @@ class BuyAirtimeView(APIView):
                     'phone': request.data.get('mobile_number'),
                 }
 
-                # Call the API and get the transaction response
+                # Call the API and get the full transaction response
                 response = api.buy_airtime(api_data)
 
-                # Debug: Print raw response from VTPass
+                # Log the raw response for debugging
                 print(f"Raw response from VTPass: {response}")
 
-                # If the response is a string (transaction ID), convert it to JSON
-                if isinstance(response, str):
-                    response = {
-                        "status": "failed",  # Treat as failed transaction
-                        "transactionId": response,
-                        "product_name": "Unknown Product"  # Default product name if not provided
-                    }
-                    print(f"Converted string response to JSON: {response}")
+                # Check if the response is valid (not None)
+                if response:
+                    # Extract details from the response
+                    transactions = response.get('content', {}).get('transactions', {})
+                    transaction_status = transactions.get('status', 'failed')
+                    transaction_id = transactions.get('transactionId', '')
+                    product_name = transactions.get('product_name', 'Unknown Product')
 
-                # Handle the response as JSON
-                if isinstance(response, dict):
-                    transaction_status = response.get('status', 'failed')
-                    transaction_id = response.get('transactionId', '')
-                    product_name = response.get('content', {}).get('transactions', {}).get('product_name', 'Unknown Product')
+                    # Extract phone and unit price
+                    phone = transactions.get('unique_element', '')
+                    unit_price = transactions.get('unit_price', 0)
 
-                    # Handle failed transaction
+                    # Save the API response into airtime_response field
+                    airtime_purchase.airtime_response = response  # Save the full response
+                    airtime_purchase.save()
+
+                    # Handle transaction status
                     if transaction_status == 'failed':
                         print(f"Transaction failed with transaction ID: {transaction_id}")
-                        return self.handle_failed_transaction(transaction_id, response)  # Pass the response here
+                        return self.handle_failed_transaction(transaction_id, response)
 
-                    # If the transaction is successful
+                    # If successful, save the transaction and return response
                     elif transaction_status == 'success':
-                        # Save the transaction as successful
                         Transaction.objects.create(
                             user=request.user,
                             transaction_type='airtime_purchase',
                             amount=amount,
-                            status='success',  # Mark as successful
-                            product_name=product_name,  # Use the product_name from the API response
-                            unique_element=request.data.get('mobile_number'),
-                            unit_price=amount,
-                            description=f"Airtime purchase for {request.data.get('mobile_number')}",
-                            transaction_id=transaction_id  # Save the transaction ID
+                            status='success',
+                            product_name=product_name,
+                            transaction_id=transaction_id,
+                            phone=phone,
+                            unit_price=unit_price,
                         )
 
-                        # Debug: Print successful response
-                        print(f"Transaction successful. Product Name: {product_name}, Transaction ID: {transaction_id}")
+                        airtime_purchase.save()  # Ensure the purchase is saved after updating the response
 
                         return Response({
                             'status': 'success',
                             'remaining_balance': str(remaining_balance),
-                            'transaction_id': transaction_id,  # Include the transaction ID from VTPassAPI
-                            'product_name': product_name  # Include the product name in the response
+                            'transaction_id': transaction_id,
+                            'product_name': product_name,
+                            'phone': phone,
+                            'unit_price': unit_price
                         }, status=status.HTTP_200_OK)
 
                     else:
-                        # Handle unexpected responses
                         print(f"Unexpected response from VTPass: {response}")
                         return Response({
                             'status': 'error',
                             'message': 'Transaction failed. Please check the details or try again.',
-                            'response': response  # For debugging purposes
+                            'response': response
                         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+
                 else:
-                    # If response is not a string or dictionary, return error
-                    print(f"Invalid response type from VTPass: {type(response)}. Response: {response}")
+                    # If no response or invalid response from VTPass
+                    print("Invalid or empty response from VTPass.")
                     return Response({
                         'status': 'error',
-                        'message': 'Invalid response from VTPass. Expected a JSON object or transaction ID.',
-                        'response': response  # Include the raw response for debugging
+                        'message': 'Invalid response from VTPass. Please try again.',
                     }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
             except Exception as e:
@@ -399,7 +398,6 @@ class BuyAirtimeView(APIView):
         else:
             # Print validation errors
             print(f"Validation errors: {serializer.errors}")
-            # Return validation errors if data is invalid
             return Response({
                 'status': 'error',
                 'errors': serializer.errors  # Return serializer validation errors
@@ -413,48 +411,26 @@ class BuyAirtimeView(APIView):
 
     def handle_failed_transaction(self, transaction_id, api_response):
         """Handle failed transaction and log it"""
-        # Log the failure for debugging
         print(f"Transaction failed with transaction ID: {transaction_id}")
-        print(f"API Response: {api_response}")  # Debug: Print the full API response
-
-        # Extract the product name from the API response
-        try:
-            # Check if 'product_name' exists in the response and extract it correctly
-            product_name = api_response.get('content', {}).get('transactions', {}).get('product_name', 'Unknown Product')
-
-            if not product_name:
-                # If no product_name, use a fallback
-                print("Product name not found in the API response. Using fallback value.")
-                product_name = 'Unknown Product'
-            
-        except KeyError as e:
-            # Catch any key errors and log
-            print(f"Error accessing product_name: {e}")
-            product_name = 'Unknown Product'
-
-        # Log the extracted product name
-        print(f"Extracted Product Name: {product_name}")
+        print(f"API Response: {api_response}")
 
         # Create and save the failed transaction in the database
         Transaction.objects.create(
             user=self.request.user,
             transaction_type='airtime_purchase',
             amount=self.request.data.get('amount'),
-            status='failed',  # Explicitly set the status to 'failed'
-            product_name=product_name,  # Use the extracted product name
-            unique_element=self.request.data.get('mobile_number'),
-            unit_price=self.request.data.get('amount'),
-            description=f"Airtime purchase for {self.request.data.get('mobile_number')}",
-            transaction_id=transaction_id  # Save the transaction ID
+            status='failed',
+            product_name=api_response.get('content', {}).get('transactions', {}).get('product_name', 'Unknown Product'),
+            transaction_id=transaction_id,  # Save the transaction ID
         )
 
-        # Return the failure response
         return Response({
             'status': 'failed',
             'message': 'Transaction failed. Please check the details or try again.',
             'transaction_id': transaction_id,
-            'product_name': product_name  # Include the product name in the response
+            'response': api_response  # For debugging purposes
         }, status=status.HTTP_200_OK)
+
 
 
 

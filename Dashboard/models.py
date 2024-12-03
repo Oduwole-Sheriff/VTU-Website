@@ -3,6 +3,7 @@ from django.db import models
 from django.db import transaction as db_transaction
 from django.core.exceptions import ValidationError
 from django.conf import settings
+from django.utils import timezone
 
 
 
@@ -160,6 +161,10 @@ class BuyAirtime(models.Model):
     bypass_validator = models.BooleanField(default=False)
     user = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='airtime_purchases')
     request_id = models.CharField(max_length=100, unique=True, blank=True, null=True)  # Add this field
+    status = models.CharField(max_length=20, choices=[('success', 'Success'), ('failed', 'Failed')], default='failed')
+    airtime_response = models.JSONField(null=True, blank=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.network} - {self.mobile_number} - {self.amount}"

@@ -46,10 +46,10 @@ class BuyAirtimeForm(forms.ModelForm):
         model = BuyAirtime
         fields = ['network', 'data_type', 'mobile_number', 'amount', 'bypass_validator']
         widgets = {
-            'mobile_number': forms.TextInput(attrs={'placeholder': 'Mobile Number', 'maxlength': '11', 'minlength': '11'}),
-            'amount': forms.NumberInput(attrs={'placeholder': 'Amount', 'min': '2', 'maxlength': '11'}),
-            'network': forms.Select(attrs={'class': 'select color-white-title-home'}),
-            'data_type': forms.Select(attrs={'class': 'select color-white-title-home'}),
+            'mobile_number': forms.TextInput(attrs={'maxlength': '11', 'minlength': '11'}),
+            'amount': forms.NumberInput(attrs={'min': '2', 'maxlength': '11'}),
+            'network': forms.Select(attrs={'id': '', 'name': 'network'}),
+            'data_type': forms.Select(attrs={'id': '', 'name': 'data_type'}),
             'bypass_validator': forms.CheckboxInput(attrs={'class': 'form-check-input'})
         }
 

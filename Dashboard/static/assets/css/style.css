@@ -15348,13 +15348,21 @@ body.sal-disabled [data-sal|=flip] {
 }
 
 .dash-board-main-wrapper {
-  padding: 40px 10px 0 40px;
-  margin-top: 120px;
+  padding: 40px 10px 0 70px !important;
+  margin-top: 0px !important;
   padding-top: 0;
 }
+
+@media only screen and (min-width: 767px){
+  .dash-board-main-wrapper {
+    padding: 40px 10px 0 60px !important;
+  }
+}
+
 @media only screen and (max-width: 575px) {
   .dash-board-main-wrapper {
-    padding: 0 15px;
+    padding: 0 10px !important;
+    margin-top: 80px !important;
   }
 }
 .dash-board-main-wrapper .left-side-bar {
@@ -15760,10 +15768,12 @@ body.sal-disabled [data-sal|=flip] {
   padding: 40px;
   background-image: url(../images/bg/01.jpg);
   position: relative;
+  margin-top: 80px;
 }
 @media only screen and (max-width: 575px) {
   .main-center-content-m-left .banner-badge {
     padding: 25px;
+    margin-top: 100px;
   }
 }
 .main-center-content-m-left .banner-badge .inner {
@@ -15794,6 +15804,11 @@ body.sal-disabled [data-sal|=flip] {
 .main-center-content-m-left .banner-badge .inner p.dsic {
   font-size: 16px;
   color: #fff;
+}
+@media only screen and (max-width: 575px){
+  .main-center-content-m-left .banner-badge .inner p.dsic{
+    font-size: 12px;
+  }
 }
 .main-center-content-m-left .banner-badge .inner .inner-right-iamge {
   position: absolute;

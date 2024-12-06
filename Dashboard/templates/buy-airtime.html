@@ -2,42 +2,65 @@
 {% load static %}
 {% block content %}
 
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css " />
+
+    <!-- theme colors -->
+    <link rel="stylesheet" href="{% static 'formCSS/assets/css/colors.css' %}" />
+
+    <!-- Theme Style -->
+    <link rel="stylesheet" href="{% static 'formCSS/assets/css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'formCSS/assets/css/animation.css' %}" />
+    <link rel="stylesheet" href="{% static 'formCSS/assets/css/responsive.css' %}" />
+
 <div class="register">
     <div class="dash-board-main-wrapper">
         <div class="main-center-content-m-left center-content">
             <div class="rts-register-area">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <!-- single login area start -->
-                            <div class="single-form-s-wrapper">
-                                <div class="head">
-                                    <h5 class="title">Airtime TopUp</h5>
-                                </div>
-                                <div class="body row">
-                                    <form id="buy-airtime-form" method="post">
-                                        {% csrf_token %}
-                    
-                                        <!-- Network Dropdown with Placeholder -->
-                                        <div class="form-group">
-                                            {{ form.network }}
+                <section class="FormMain">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-12 lap-sm-100 tab-100">
+                                <form class="formStyle step" id="buy-airtime-form" novalidate onsubmit="return false">
+                                    {% csrf_token %}
+                                    <article class="formHeading">
+                                        <p>TopUp your Airtime With BigSheriffData</p>
+                                        <h2>Airtime TopUp</h2>
+                                    </article>
+                                
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="inputField inputFieldDropdown">
+                                                <label>Select Network</label>
+                                                {{ form.network }}
+                                                <div class="formStyle"></div>
+                                            </div>
                                         </div>
-                                  
-                                        <!-- Airtime Type Dropdown with Placeholder -->
-                                        <div class="form-group">
-                                            {{ form.data_type }}
+                                
+                                        <div class="col-md-12">
+                                            <div class="inputField inputFieldDropdown">
+                                                <label>Airtime Type</label>
+                                                {{ form.data_type }}
+                                                <div class="formStyle"></div>
+                                            </div>
                                         </div>
-                                  
-                                        <!-- Mobile Number Field -->
-                                        <div class="form-group">
-                                            {{ form.mobile_number }}  <!-- Mobile Number Field -->
+                                
+                                        <div class="col-md-12">
+                                            <div class="inputField">
+                                                <label>Mobile Number</label>
+                                                {{ form.mobile_number }}
+                                                <div class="formStyle"></div>
+                                            </div>
                                         </div>
-                                  
-                                        <!-- Amount Field -->
-                                        <div class="form-group">
-                                            {{ form.amount }}  <!-- Amount Field -->
+                                
+                                        <div class="col-md-12">
+                                            <div class="inputField">
+                                                <label>Amount</label>
+                                                {{ form.amount }}
+                                                <div class="formStyle"></div>
+                                            </div>
                                         </div>
-                                  
+                                
                                         <!-- Bypass Validator Checkbox -->
                                         <div class="form-group">
                                             <div class="check-wrapper">
@@ -47,12 +70,16 @@
                                                 </div>
                                             </div>
                                         </div>
-                                  
-                                        <button type="submit" class="rts-btn btn-primary mt-1">Buy Now</button>
-                                    </form>
-                                </div>
+                                
+                                        <div class="col-md-12">
+                                            <button type="submit" class="form-Btn w-100">
+                                                Buy Now
+                                                <div class="formStyle"></div>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
-                            <!-- single login area end -->
                         </div>
                     </div>
                 </div>
@@ -63,31 +90,6 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    // Customizing the select options (this will be rendered as the first option in the select)
-    document.addEventListener('DOMContentLoaded', function() {
-        let select = document.getElementById("{{ form.network.id_for_label }}");
-        if(select) {
-            let firstOption = document.createElement("option");
-            firstOption.value = "";
-            firstOption.disabled = true;
-            firstOption.selected = true;
-            firstOption.textContent = "Select Network";
-            select.prepend(firstOption);  // Insert it as the first option
-        }
-    });
-
-    // Customizing the select options (this will be rendered as the first option in the select)
-    document.addEventListener('DOMContentLoaded', function() {
-        let select = document.getElementById("{{ form.data_type.id_for_label }}");
-        if(select) {
-            let firstOption = document.createElement("option");
-            firstOption.value = "";
-            firstOption.disabled = true;
-            firstOption.selected = true;
-            firstOption.textContent = "Airtime Type";
-            select.prepend(firstOption);  // Insert it as the first option
-        }
-    });
 
     $(document).ready(function() {
         // Show SweetAlert if user balance is below 50

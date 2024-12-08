@@ -1,0 +1,102 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Hide the default vertical and horizontal scrollbars */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Center content vertically and horizontally */
+    background-color: #f4f4f4; /* Optional background color */
+}
+
+.circle-container {
+    display: flex;
+    flex-wrap: wrap; /* Allow the circles to wrap to the next line when necessary */
+    justify-content: center;
+    gap: 30px;
+    margin-top: 50px;
+    padding: 0 10px; /* Add some horizontal padding */
+}
+
+.circle {
+    width: 150px;
+    height: 150px;
+    background-color: #3498db;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Hover effect */
+.circle:hover {
+    transform: scale(1.1);
+}
+
+/* Modal styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 50%;
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .circle-container {
+        gap: 20px;
+        margin-top: 20px;
+        padding-left: 10px; /* Add some space on the left side */
+        padding-right: 10px; /* Add some space on the right side */
+    }
+
+    .circle {
+        width: 120px;
+        height: 120px;
+    }
+}
+
+@media (max-width: 575px){
+    .circle-container {
+        gap: 15px;
+        margin-top: 15px;
+    }
+
+    .circle {
+        width: 130px;
+        height: 130px;
+    }
+}
+
+/* Style for the form section */
+form {
+    display: none; /* Hide forms by default */
+}
+
+form.active {
+    display: block; /* Show the active form */
+}

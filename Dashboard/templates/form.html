@@ -147,3 +147,112 @@
         </div>
 
 </form>
+
+
+
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css " />
+
+    <!-- theme colors -->
+    <link rel="stylesheet" href="{% static 'formCSS/assets/css/colors.css' %}" />
+
+    <!-- Theme Style -->
+    <link rel="stylesheet" href="{% static 'formCSS/assets/css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'formCSS/assets/css/animation.css' %}" />
+    <link rel="stylesheet" href="{% static 'formCSS/assets/css/responsive.css' %}" />
+
+<div class="register">
+    <div class="dash-board-main-wrapper">
+        <div class="main-center-content-m-left center-content">
+            <div class="rts-register-area">
+                <section class="FormMain">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-12 lap-sm-100 tab-100">
+                                <!-- FOrm -->
+                                <form class="formStyle step" novalidate onsubmit="return false">
+                                    <article class="formHeading">
+                                        <p>Start your Journey with the</p>
+                                        <h2>BigSheriffData</h2>
+                                    </article>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="inputField inputFieldDropdown">
+                                                <label>Network</label>
+                                                <select name="network">
+                                                  
+                                                    <option value="" disabled selected>------</option>
+
+                                                    <option value="1">MTN</option>
+                                                  
+                                                    <option value="2">GLO</option>
+                                                  
+                                                    <option value="3">9MOBILE</option>
+                                                  
+                                                    <option value="4">AIRTEL</option>
+                                                  
+                                                </select>
+                                                <div class="formStyle"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="inputField inputFieldDropdown">
+                                                <label>Data Type</label>
+                                                <select name="data_type">
+                                                    <option value="" disabled selected>------</option>
+                                                  
+                                                    <option value="CORPORATE GIFTING">CORPORATE GIFTING</option>
+                                                  
+                                                    <option value="GIFTING">GIFTING</option>
+                                                  
+                                                    <option value="SME">SME</option>
+                                                  
+                                                    <option value="SME2">SME2</option>
+                                                  
+                                                    <option value="DATA COUPONS" style="display: none;">DATA COUPONS</option>
+                                                  
+                                                    <option value="DATA SHARE">DATA SHARE</option>
+                                                  
+                                                    <option value="AWOOF GIFTING">AWOOF GIFTING</option>
+                                                  
+                                                </select>
+                                                <div class="formStyle"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="inputField">
+                                                <label>Mobile Number</label>
+                                                <input type="text" name="mobile_number" maxlength="11" minlength="11" required="">
+                                                <div class="formStyle"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="inputField">
+                                                <label>Amount</label>
+                                                <input type="text" name="amount" maxlength="11" minlength="2" required="">
+                                                <div class="formStyle"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button class="form-Btn w-100">
+                                                Buy Now
+                                                <div class="formStyle"></div>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

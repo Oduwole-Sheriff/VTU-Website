@@ -47,13 +47,34 @@ body {
     background-color: rgba(0, 0, 0, 0.5);
 }
 
-.modal-content {
+/* .modal-content {
     background-color: white;
     margin: 15% auto;
     padding: 20px;
     border-radius: 8px;
     width: 50%;
     position: relative;
+} */
+
+/* Adjust form steps and progress bar container */
+.modal-content {
+    display: flex;
+    flex-direction: column; /* Stack the form steps and progress bar */
+    align-items: flex-start;
+    justify-content: center;
+    width: 50%; /* Adjust the width of the modal */
+    height: 550px;
+    padding: 20px 30px;
+    margin: 6% auto;
+    background-color: white;
+    border-radius: 10px;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#modalFormContainer{
+    width: 100%;
+    height: 100%;
 }
 
 /* .close {
@@ -92,53 +113,6 @@ body {
     }
 }
 
-/* Style for the form section */
-form {
-    display: none; /* Hide forms by default */
-}
-
-form.active {
-    display: block; /* Show the active form */
-}
-
-
-/* Progress Bar Styles */
-/* .progress-bar {
-    width: 100%;
-    background-color: #f3f3f3;
-    height: 10px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-}
-
-.progress {
-    height: 100%;
-    width: 33.33%;
-    background-color: #3498db;
-    border-radius: 5px;
-} */
-
-/* Hide form preview and receipt by default */
-/* #step2, #step3 {
-    display: none;
-}
-
-#form1.active, #step2.active, #step3.active {
-    display: block;
-} */
-
-
-/* General Modal Styling */
-.modal-content {
-    background-color: white;
-    margin: 10% auto;
-    padding: 20px;
-    border-radius: 10px;
-    width: 50%;
-    position: relative;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
 /* Close Button */
 .close {
     position: absolute;
@@ -162,27 +136,13 @@ form.active {
     background-color: #f3f3f3;
     height: 10px;
     border-radius: 5px;
-    margin-top: 20px;
+    margin: 30px 0px;
     display: block; /* Ensures it's always visible */
-}
-
-/* Adjust form steps and progress bar container */
-.modal-content {
-    display: flex;
-    flex-direction: column; /* Stack the form steps and progress bar */
-    align-items: flex-start;
-    justify-content: center;
-    width: 50%; /* Adjust the width of the modal */
-    padding: 20px;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Display each form step using flex to align the progress bar correctly */
 form.active, #step2.active, #step3.active {
-    display: flex;
-    flex-direction: column; /* Stack form elements vertically */
+    display: block;
     align-items: center; /* Center content */
     width: 100%; /* Ensure the form takes up the full width */
 }
@@ -196,6 +156,7 @@ form, #step2, #step3 {
 form input, #step2 p, #step3 p {
     margin-bottom: 10px;
     width: 100%;
+    border-radius: 50px !important;
 }
 
 /* Progress Bar Update */
@@ -208,7 +169,7 @@ form input, #step2 p, #step3 p {
 
 
 /* Form input fields */
-input[type="text"], input[type="email"] {
+input[type="text"] {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -217,9 +178,26 @@ input[type="text"], input[type="email"] {
     font-size: 16px;
 }
 
-input[type="text"]:focus, input[type="email"]:focus {
+input[type="text"]:focus {
     border-color: #3498db;
     outline: none;
+}
+
+select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 50px;
+    width: 100%;
+    margin: 10px 0;
+    font-size: 16px;
+    background-color: #fff;
+}
+
+/* Focus state for select field */
+select:focus {
+    border-color: #3498db;
+    outline: none;
+    background-color: #f0f8ff; /* Optional: light blue background on focus */
 }
 
 /* Form Buttons */
@@ -232,6 +210,7 @@ button {
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 25px;
 }
 
 /* Button Hover Effect */
@@ -256,10 +235,20 @@ button:active {
 }
 
 /* Mobile responsiveness */
+
+@media only screen and (min-width: 768px) and (max-width: 1115px) {
+    .modal-content {
+        width: 70%;
+        padding: 15px;
+        margin: 10% auto;
+    }
+}
+
 @media (max-width: 768px) {
     .modal-content {
         width: 80%; /* Make modal wider on mobile devices */
         padding: 15px;
+        margin: 12% auto;
     }
 
     .close {
@@ -269,5 +258,21 @@ button:active {
     button {
         width: 100%; /* Make buttons full width on small screens */
         font-size: 14px;
+    }
+}
+
+@media (max-width: 640px) {
+    .modal-content {
+        width: 80%; /* Make modal wider on mobile devices */
+        padding: 15px;
+        margin: 15% auto;
+    }
+}
+
+@media only screen and (max-width: 575px) {
+    .modal-content {
+        width: 80%; /* Make modal wider on mobile devices */
+        padding: 15px;
+        margin: 160px auto;
     }
 }

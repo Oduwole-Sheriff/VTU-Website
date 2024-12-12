@@ -7,10 +7,10 @@
 <div class="container">
     <div class="square-container">
         <!-- Squares with clickable text and checkmark -->
-        <div class="square" onclick="showForm('MTN', this)" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/9/93/New-mtn-logo.jpg');"><div class="checkmark">✔</div></div>
-        <div class="square" onclick="showForm('AIRTEL', this)" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIld5zDrdD73UXq1qRvX7fwf7gQQ3wFjP7-g&s');"><div class="checkmark">✔</div></div>
-        <div class="square" onclick="showForm('GLO', this)" style="background-image: url('https://www.ikonlinestore.com/wp-content/uploads/2020/06/glo.jpg');"><div class="checkmark">✔</div></div>
-        <div class="square" onclick="showForm('9MOBILE', this)" style="background-image: url('https://www.thecable.ng/wp-content/uploads/2017/07/9mobile-e1554374273945.jpg');"><div class="checkmark">✔</div></div>
+        <div class="square" onclick="showForm('1', this)" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/9/93/New-mtn-logo.jpg');"><div class="checkmark">✔</div></div>
+        <div class="square" onclick="showForm('4', this)" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIld5zDrdD73UXq1qRvX7fwf7gQQ3wFjP7-g&s');"><div class="checkmark">✔</div></div>
+        <div class="square" onclick="showForm('2', this)" style="background-image: url('https://www.ikonlinestore.com/wp-content/uploads/2020/06/glo.jpg');"><div class="checkmark">✔</div></div>
+        <div class="square" onclick="showForm('3', this)" style="background-image: url('https://www.thecable.ng/wp-content/uploads/2017/07/9mobile-e1554374273945.jpg');"><div class="checkmark">✔</div></div>
     </div>
 
     <!-- Hidden form that will be displayed when a square is clicked -->
@@ -25,31 +25,29 @@
                 <div class="col-md-12">
                     <div class="inputField">
                         <label>Network</label>
-                        <input type="text" id="network" readonly>
+                        {{ form.network }}
+                        <input type="hidden" id="network" name="network">
                     </div>
                 </div>
 
                 <div class="col-md-12">
                     <div class="inputField inputFieldDropdown">
                         <label>Airtime Type</label>
-                        <select id="data_type">
-                            <option value="voice">VTU</option>
-                            <option value="data">Share and Sell</option>
-                        </select>
+                        {{ form.data_type }}
                     </div>
                 </div>
 
                 <div class="col-md-12">
                     <div class="inputField">
                         <label>Mobile Number</label>
-                        <input type="text" id="mobile_number" placeholder="Enter Mobile Number" required>
+                        {{ form.mobile_number }}
                     </div>
                 </div>
 
                 <div class="col-md-12">
                     <div class="inputField">
                         <label>Amount</label>
-                        <input type="text" id="amount" placeholder="Enter Amount" required>
+                        {{ form.amount }}
                     </div>
                 </div>
 

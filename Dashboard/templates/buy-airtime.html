@@ -2,91 +2,76 @@
 {% load static %}
 {% block content %}
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css " />
+    <link rel="stylesheet" href="{% static 'AirtimeCSS/style.css' %}">
 
-    <!-- theme colors -->
-    <link rel="stylesheet" href="{% static 'formCSS/assets/css/colors.css' %}" />
+<div class="container">
+    <div class="square-container">
+        <!-- Squares with clickable text and checkmark -->
+        <div class="square" onclick="showForm('MTN', this)" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/9/93/New-mtn-logo.jpg');"><div class="checkmark">✔</div></div>
+        <div class="square" onclick="showForm('AIRTEL', this)" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIld5zDrdD73UXq1qRvX7fwf7gQQ3wFjP7-g&s');"><div class="checkmark">✔</div></div>
+        <div class="square" onclick="showForm('GLO', this)" style="background-image: url('https://www.ikonlinestore.com/wp-content/uploads/2020/06/glo.jpg');"><div class="checkmark">✔</div></div>
+        <div class="square" onclick="showForm('9MOBILE', this)" style="background-image: url('https://www.thecable.ng/wp-content/uploads/2017/07/9mobile-e1554374273945.jpg');"><div class="checkmark">✔</div></div>
+    </div>
 
-    <!-- Theme Style -->
-    <link rel="stylesheet" href="{% static 'formCSS/assets/css/style.css' %}" />
-    <link rel="stylesheet" href="{% static 'formCSS/assets/css/animation.css' %}" />
-    <link rel="stylesheet" href="{% static 'formCSS/assets/css/responsive.css' %}" />
+    <!-- Hidden form that will be displayed when a square is clicked -->
+    <div class="form-container" id="form-container">
+        <form class="formStyle step" id="buy-airtime-form" novalidate onsubmit="return false">
+            <article class="formHeading">
+                <p>TopUp your Airtime With BigSheriffData</p>
+                <h2>Airtime TopUp</h2>
+            </article>
 
-<div class="register">
-    <div class="dash-board-main-wrapper">
-        <div class="main-center-content-m-left center-content">
-            <div class="rts-register-area">
-                <section class="FormMain">
-                    <div class="container">
-                        <div class="row align-items-center">
-                            <div class="col-12 lap-sm-100 tab-100">
-                                <form class="formStyle step" id="buy-airtime-form" novalidate onsubmit="return false">
-                                    {% csrf_token %}
-                                    <article class="formHeading">
-                                        <p>TopUp your Airtime With BigSheriffData</p>
-                                        <h2>Airtime TopUp</h2>
-                                    </article>
-                                
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="inputField inputFieldDropdown">
-                                                <label>Select Network</label>
-                                                {{ form.network }}
-                                                <div class="formStyle"></div>
-                                            </div>
-                                        </div>
-                                
-                                        <div class="col-md-12">
-                                            <div class="inputField inputFieldDropdown">
-                                                <label>Airtime Type</label>
-                                                {{ form.data_type }}
-                                                <div class="formStyle"></div>
-                                            </div>
-                                        </div>
-                                
-                                        <div class="col-md-12">
-                                            <div class="inputField">
-                                                <label>Mobile Number</label>
-                                                {{ form.mobile_number }}
-                                                <div class="formStyle"></div>
-                                            </div>
-                                        </div>
-                                
-                                        <div class="col-md-12">
-                                            <div class="inputField">
-                                                <label>Amount</label>
-                                                {{ form.amount }}
-                                                <div class="formStyle"></div>
-                                            </div>
-                                        </div>
-                                
-                                        <!-- Bypass Validator Checkbox -->
-                                        <div class="form-group">
-                                            <div class="check-wrapper">
-                                                <div class="form-check">
-                                                    <label for="{{ form.bypass_validator.id_for_label }}">Bypass Number Validator</label>
-                                                    {{ form.bypass_validator }}  <!-- Checkbox Field -->
-                                                </div>
-                                            </div>
-                                        </div>
-                                
-                                        <div class="col-md-12">
-                                            <button type="submit" class="form-Btn w-100">
-                                                Buy Now
-                                                <div class="formStyle"></div>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="inputField">
+                        <label>Network</label>
+                        <input type="text" id="network" readonly>
                     </div>
                 </div>
+
+                <div class="col-md-12">
+                    <div class="inputField inputFieldDropdown">
+                        <label>Airtime Type</label>
+                        <select id="data_type">
+                            <option value="voice">VTU</option>
+                            <option value="data">Share and Sell</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="inputField">
+                        <label>Mobile Number</label>
+                        <input type="text" id="mobile_number" placeholder="Enter Mobile Number" required>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="inputField">
+                        <label>Amount</label>
+                        <input type="text" id="amount" placeholder="Enter Amount" required>
+                    </div>
+                </div>
+
+                <!-- Bypass Validator Checkbox -->
+                <div class="form-group">
+                    <div class="check-wrapper">
+                        <input type="checkbox" id="bypass_validator">
+                        <label for="bypass_validator">Bypass Number Validator</label>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <button type="submit" class="form-Btn">
+                        Buy Now
+                    </button>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>
+
+<script src="{% static 'AirtimeCSS/script.js' %}"></script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>

@@ -256,3 +256,93 @@
 </div>
 
 {% endblock content %}
+
+
+
+<!-- AIRTIME -->
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css " />
+
+    <!-- theme colors -->
+    <link rel="stylesheet" href="{% static 'formCSS/assets/css/colors.css' %}" />
+
+    <!-- Theme Style -->
+    <link rel="stylesheet" href="{% static 'formCSS/assets/css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'formCSS/assets/css/animation.css' %}" />
+    <link rel="stylesheet" href="{% static 'formCSS/assets/css/responsive.css' %}" />
+
+<div class="register">
+    <div class="dash-board-main-wrapper">
+        <div class="main-center-content-m-left center-content">
+            <div class="rts-register-area">
+                <section class="FormMain">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-12 lap-sm-100 tab-100">
+                                <form class="formStyle step" id="buy-airtime-form" novalidate onsubmit="return false">
+                                    {% csrf_token %}
+                                    <article class="formHeading">
+                                        <p>TopUp your Airtime With BigSheriffData</p>
+                                        <h2>Airtime TopUp</h2>
+                                    </article>
+                                
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="inputField inputFieldDropdown">
+                                                <label>Select Network</label>
+                                                {{ form.network }}
+                                                <div class="formStyle"></div>
+                                            </div>
+                                        </div>
+                                
+                                        <div class="col-md-12">
+                                            <div class="inputField inputFieldDropdown">
+                                                <label>Airtime Type</label>
+                                                {{ form.data_type }}
+                                                <div class="formStyle"></div>
+                                            </div>
+                                        </div>
+                                
+                                        <div class="col-md-12">
+                                            <div class="inputField">
+                                                <label>Mobile Number</label>
+                                                {{ form.mobile_number }}
+                                                <div class="formStyle"></div>
+                                            </div>
+                                        </div>
+                                
+                                        <div class="col-md-12">
+                                            <div class="inputField">
+                                                <label>Amount</label>
+                                                {{ form.amount }}
+                                                <div class="formStyle"></div>
+                                            </div>
+                                        </div>
+                                
+                                        <!-- Bypass Validator Checkbox -->
+                                        <div class="form-group">
+                                            <div class="check-wrapper">
+                                                <div class="form-check">
+                                                    <label for="{{ form.bypass_validator.id_for_label }}">Bypass Number Validator</label>
+                                                    {{ form.bypass_validator }}  <!-- Checkbox Field -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                
+                                        <div class="col-md-12">
+                                            <button type="submit" class="form-Btn w-100">
+                                                Buy Now
+                                                <div class="formStyle"></div>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

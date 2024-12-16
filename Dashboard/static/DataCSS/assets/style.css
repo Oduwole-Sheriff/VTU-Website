@@ -1,18 +1,19 @@
-/* Overall page styling */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f9f9f9;
-    color: #333;
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+body {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    background-color: #f9f9f9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     flex-direction: column;
 }
 
-/* Parent container to hold squares and form */
 .container {
     display: flex;
     flex-direction: column; /* Stacked by default */
@@ -21,79 +22,81 @@ body {
     max-width: 800px;
 }
 
-/* Square container styling */
-.square-container {
+.circle-container {
     display: flex;
-    justify-content: space-around;
-    margin-top: 30px;
-    width: 60%;
-    margin-bottom: 30px;
-    flex-wrap: wrap; /* Allow wrapping of squares */
+    gap: 20px;
     justify-content: center;
+    margin-top: 45px;
+    margin-bottom: 30px;
+    width: 60%;
+    flex-wrap: wrap; /* Allow wrapping of circles */
 }
 
-/* Basic styling for squares */
-.square {
-    width: 120px;
-    height: 120px;
+.circle {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background-color: #f0f0f0;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #f0f0f0;
-    border-radius: 10px;
-    text-align: center;
-    position: relative;
-    cursor: pointer;
     font-size: 18px;
     font-weight: bold;
+    color: #333;
+    position: relative;
+    cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    margin: 10px; /* Space between squares */
+    border: 3px solid transparent; /* Default border */
     background-size: cover;
     background-position: center;
 }
 
-.square:hover {
+.circle:hover {
     background-color: #e2e2e2;
-    transform: translateY(-5px); /* Hover effect */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Hover shadow effect */
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* Checkmark styling for the selected square */
-.checkmark {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    width: 20px;
-    height: 20px;
+.circle.selected {
     background-color: #4CAF50;
     color: white;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    border: 1px solid #4caf4fa4; 
+}
+
+.checkmark {
+    position: absolute;
+    top: 17px;
+    right: 17px;
+    width: 20px;
+    height: 20px;
+    background-color: #fff;
+    color: #4CAF50;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
     font-size: 14px;
     font-weight: bold;
-    visibility: hidden; /* Hidden initially */
+    visibility: hidden;  /* Initially hidden */
 }
 
-.square.selected .checkmark {
-    visibility: visible; /* Show the checkmark when selected */
+.circle.selected .checkmark {
+    visibility: visible;  /* Show checkmark when selected */
 }
 
-/* Form container styling */
 .form-container {
     display: none;
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     padding: 30px;
-    width: 400px;
     max-width: 100%;
+    width: 400px;
     animation: fadeInForm 0.5s ease-out;
 }
 
-/* Animation for the form fade-in */
 @keyframes fadeInForm {
     from {
         opacity: 0;
@@ -105,7 +108,6 @@ body {
     }
 }
 
-/* Styling for the form title */
 .formHeading {
     text-align: center;
     margin-bottom: 30px;
@@ -114,6 +116,7 @@ body {
 .formHeading p {
     font-size: 18px;
     color: #555;
+    margin-bottom: 20px;
 }
 
 .formHeading h2 {
@@ -121,7 +124,6 @@ body {
     color: #333;
 }
 
-/* Input field styling */
 .inputField {
     margin-bottom: 20px;
 }
@@ -149,7 +151,6 @@ body {
     outline: none;
 }
 
-/* Submit button styling */
 .form-Btn {
     background-color: #4CAF50;
     color: white;
@@ -166,39 +167,26 @@ body {
     background-color: #45a049;
 }
 
-/* Checkbox styling */
-/* .check-wrapper {
-    display: flex;
-    align-items: center;
-}
-
-.check-wrapper input[type="checkbox"] {
-    margin-right: 10px;
-} */
-
-/* Media Queries for smaller screens */
 @media (max-width: 768px) {
-    .square-container {
-        width: 100%; /* Full width for smaller screens */
-        justify-content: center; /* Center the squares */
+    .circle-container {
+        width: 100%;
+        justify-content: center;
     }
 
-    /* Adjust the form on very small screens */
     .form-container {
         width: 90%;
     }
 }
 
-/* Media Queries for larger screens */
 @media (min-width: 980px) {
     .container {
-        flex-direction: row; /* Display squares and form side by side */
+        flex-direction: row; /* Display circles and form side by side */
         justify-content: space-between;
         align-items: center;
     }
 
-    .square-container {
-        width: 100%; /* Narrow the squares container */
+    .circle-container {
+        width: 100%;
     }
 
     .form-container {

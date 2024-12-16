@@ -2,85 +2,63 @@
 {% load static %}
 {% block content %}
 
-    <link rel="stylesheet" href="{% static 'formStyle/assets/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'DataCSS/assets/style.css' %}" />
 
-    <h4 class="color-white-title-home text-center">Welcome to BigSheriffData</h4>
-
-    <h2 class="color-white-title-home text-center">Buy data at the best rate!</h2>
-
-    <div class="circle-container">
-        <div class="circle" id="circleAirtel" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIld5zDrdD73UXq1qRvX7fwf7gQQ3wFjP7-g&s');"></div>
-        <div class="circle" id="circleMTN" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/9/93/New-mtn-logo.jpg');"></div>
-        <div class="circle" id="circle9Mobile" style="background-image: url('https://www.thecable.ng/wp-content/uploads/2017/07/9mobile-e1554374273945.jpg');"></div>
-        <div class="circle" id="circleGlo" style="background-image: url('https://www.ikonlinestore.com/wp-content/uploads/2020/06/glo.jpg');"></div>
-    </div>
-
-    <!-- Modal -->
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <span class="close" id="closeModal">&times;</span>
-
-            <!-- Progress Bar -->
-            <div id="progressBar" class="progress-bar">
-                <div id="progress" class="progress"></div>
+    <div class="container">
+        <div class="circle-container">
+            <div class="circle" id="circle1" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/9/93/New-mtn-logo.jpg');" data-network="MTN">
+                <div class="checkmark">✔</div>
             </div>
+            <div class="circle" id="circle2" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIld5zDrdD73UXq1qRvX7fwf7gQQ3wFjP7-g&s');" data-network="Airtel">
+                <div class="checkmark">✔</div>
+            </div>
+            <div class="circle" id="circle3" style="background-image: url('https://www.ikonlinestore.com/wp-content/uploads/2020/06/glo.jpg');" data-network="Glo">
+                <div class="checkmark">✔</div>
+            </div>
+            <div class="circle" id="circle4" style="background-image: url('https://www.thecable.ng/wp-content/uploads/2017/07/9mobile-e1554374273945.jpg');" data-network="9mobile">
+                <div class="checkmark">✔</div>
+            </div>
+        </div>
 
-            <h3 class="color-white-title-home" id="modalTitle"></h3>
-
-            <div class="color-white-title-home" id="modalFormContainer">
-                <!-- Step 1: New Form for Circle Selection -->
-                <form id="form1" class="form active">
-                    <div class="col-md-12">
-                        <div class="inputField inputFieldDropdown">
-                            <label for="dataPlanSelect">Data Plan</label>
-                            <select name="data_plan" id="dataPlanSelect">
-                                <option value="">Select a Data Plan</option>
-                                <!-- Dynamic options will be added here based on the circle selection -->
-                            </select>
-                            <div class="formStyle"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="inputField">
-                            <label for="mobile_number">Mobile Number</label>
-                            <input type="text" name="mobile_number" id="mobile_number" maxlength="11" minlength="11" required="" placeholder="Enter Mobile Number">
-                            <div class="formStyle"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="inputField">
-                            <label for="amount">Amount</label>
-                            <input type="text" name="amount" id="amount" maxlength="11" minlength="2" required="" placeholder="Enter Amount">
-                            <div class="formStyle"></div>
-                        </div>
-                    </div>
-                    <button type="button" id="nextBtn1">Next</button>
-                </form>
-
-                <!-- Step 2: Preview of Form 1 Input and Progress Bar -->
-                <div class="color-white-title-home" id="step2" class="form">
-                    <h3 class="color-white-title-home">Review your details from Step 1:</h3>
-                    <p class="color-white-title-home"><strong>Data Plan:</strong> <span id="reviewDataPlan"></span></p>
-                    <p class="color-white-title-home"><strong>Mobile Number:</strong> <span id="reviewMobileNumber"></span></p>
-                    <p class="color-white-title-home"><strong>Amount:</strong> <span id="reviewAmount"></span></p>
-                    <button type="button" id="prevBtn1">Previous</button>
-                    <button type="button" id="nextBtn2">Submit</button>
+        <div class="form-container" id="formContainer">
+            <form class="formStyle step" novalidate onsubmit="return false">
+                <article class="formHeading">
+                    <p>TopUp your Data With BigSheriffData</p>
+                    <h2 id="networkName">Data Bundles</h2>
+                </article>
+                <div class="inputField">
+                    <label>Network</label>
+                    <input type="text" id="network" name="network" readonly> 
+                </div>
+                <div class="inputField inputFieldDropdown">
+                    <label>Data Plan</label>
+                    <select name="data_plan" id="dataPlan">
+                        <!-- Options will be populated dynamically by JS -->
+                    </select>
+                </div>
+                
+                <!-- This will be the new Data Type field for Glo -->
+                <div class="inputField inputFieldDropdown" id="dataTypeContainer" style="display: none;">
+                    <label>Data Type</label>
+                    <select name="data_type" id="dataType">
+                        <option value="Glo Data">Glo Data</option>
+                        <option value="Glo SME Data">Glo SME Data</option>
+                    </select>
                 </div>
 
-                <!-- Step 3: Receipt (no form) -->
-                <div class="color-white-title-home" id="step3" class="form">
-                    <h3 class="color-white-title-home" >Your Receipt:(Successful)</h3>
-                    <p class="color-white-title-home" ><strong>Data Plan:</strong> <span id="receiptDataPlan"></span></p>
-                    <p class="color-white-title-home" ><strong>Mobile Number:</strong> <span id="receiptMobileNumber"></span></p>
-                    <p class="color-white-title-home" ><strong>Amount:</strong> <span id="receiptAmount"></span></p>
-                    <h4 class="color-white-title-home" >Thanks For Using BigSheriffData</h4>
-                    <!-- <button type="button" id="prevBtn2">Previous</button> -->
-                    <button type="submit">Thank You</button>
+                <div class="inputField">
+                    <label>Mobile Number</label>
+                    <input type="text" name="mobile_number" maxlength="11" minlength="11" required=""/>
                 </div>
-            </div>
+                <div class="inputField">
+                    <label>Amount</label>
+                    <input type="text" name="amount" maxlength="11" minlength="2" required=""/>
+                </div>
+                <button class="form-Btn w-100">Buy Now</button>
+            </form>
         </div>
     </div>
 
-    <script src="{% static 'formStyle/assets/script.js' %}"></script>
+    <script src="{% static 'DataCSS/assets/script.js' %}"></script>
 
 {% endblock content %}

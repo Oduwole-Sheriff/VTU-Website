@@ -3,6 +3,8 @@ from django.db import models
 from django.db import transaction as db_transaction
 from django.core.exceptions import ValidationError
 from django.conf import settings
+from django.db.models import F
+from django.db import transaction
 from django.utils import timezone
 
 
@@ -88,6 +90,7 @@ class Transaction(models.Model):
         ('withdrawal', 'Withdrawal'),
         ('transfer', 'Transfer'),
         ('airtime_purchase', 'Airtime Purchase'),  # Airtime purchase type
+        ('data_purchase', 'Data Purchase'),  # Data purchase type
     )
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -97,23 +100,24 @@ class Transaction(models.Model):
     recipient = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='received_transactions', on_delete=models.SET_NULL, null=True, blank=True)
     description = models.TextField(blank=True, null=True)
 
-    # Additional fields for airtime purchase
+    # Additional fields for airtime and data purchase
     status = models.CharField(max_length=50, blank=True, null=True)
-    product_name = models.CharField(max_length=100, blank=True, null=True)
-    unique_element = models.CharField(max_length=20, blank=True, null=True)
+    product_name = models.CharField(max_length=100, blank=True, null=True)  # Network name (MTN, GLO, etc.)
+    unique_element = models.CharField(max_length=20, blank=True, null=True)  # Mobile number
     unit_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    
+    # Data plan for data purchase transactions
+    data_plan = models.CharField(max_length=100, blank=True, null=True)  # New field for data plan
 
     # Add transaction_id field to store the VTPass transaction ID
-    transaction_id = models.CharField(max_length=255, blank=True, null=True)  # New field
+    transaction_id = models.CharField(max_length=255, blank=True, null=True)  # VTPass transaction ID
 
     def __str__(self):
         return f"{self.transaction_type} of {self.amount} by {self.user.username} on {self.timestamp}"
 
     class Meta:
-        ordering = ['-timestamp']  # Orders transactions from most recent to oldest by default
+        ordering = ['-timestamp']  # Orders transactions from most recent to oldest
 
-
-        
 
 class WebsiteConfiguration(models.Model):
     base_url = models.URLField(max_length=255)
@@ -140,6 +144,7 @@ class WebsiteConfiguration(models.Model):
         config, created = cls.objects.get_or_create(id=1)  # Assuming only one configuration entry
         config.base_url = base_url
         config.auth_token = auth_token
+
 
 class BuyAirtime(models.Model):
     NETWORK_CHOICES = [
@@ -190,3 +195,55 @@ class BuyAirtime(models.Model):
                 'mobile_number': self.mobile_number,
                 'network': self.network,
             }
+
+
+class BuyData(models.Model):
+    NETWORK_CHOICES = [
+        (1, 'MTN'),
+        (2, 'GLO'),
+        (3, '9MOBILE'),
+        (4, 'AIRTEL'),
+    ]
+
+    DATA_TYPE_CHOICES = [
+        ('Glo Data', 'Glo Data'),
+        ('Glo SME Data', 'Glo SME Data'),
+        ('9mobile Data', '9mobile Data'),
+        ('9mobile SME Data', '9mobile SME Data'),
+    ]
+
+    network = models.IntegerField(choices=NETWORK_CHOICES)
+    data_type = models.CharField(max_length=20, choices=DATA_TYPE_CHOICES, blank=True, null=True)
+    mobile_number = models.CharField(max_length=11)
+    data_plan = models.CharField(max_length=100)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)  # Amount of data to be bought
+    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='data_purchases')
+    request_id = models.CharField(max_length=100, unique=True, blank=True, null=True)  # Add this field
+    status = models.CharField(max_length=20, choices=[('success', 'Success'), ('failed', 'Failed')], default='failed')
+    data_response = models.JSONField(null=True, blank=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.network} - {self.mobile_number} - {self.data_plan} - {self.amount}"
+
+    def process_purchase(self):
+        """ Deduct the amount from the user's balance when purchasing data """
+        if self.amount <= 0:
+            raise ValidationError("Amount must be positive.")
+
+        # Ensure user has enough balance
+        if self.user.balance < self.amount:
+            raise ValidationError("Insufficient balance to complete the purchase.")
+
+        # Start a transaction to ensure atomicity
+        with db_transaction.atomic():
+            # Use F() expressions to safely update the user's balance
+            self.user.balance = F('balance') - self.amount
+            self.user.save()
+
+            # Fetch the user instance again to get the updated balance
+            self.user.refresh_from_db()
+
+            # Return the updated user model instance
+            return self.user  # Return the whole user model instance (CustomUser)

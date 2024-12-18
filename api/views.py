@@ -11,14 +11,16 @@ from rest_framework.permissions import IsAuthenticated
 # from django.contrib.auth import authenticate
 # from drf_yasg.utils import swagger_auto_schema
 
-from api.serializer import RegisterSerializer, LoginSerializer, CustomUserSerializer, DepositSerializer, WithdrawSerializer, TransferSerializer, TransactionSerializer, AccountDetailsSerializer, BuyAirtimeSerializer
+from decimal import Decimal
+
+from api.serializer import RegisterSerializer, LoginSerializer, CustomUserSerializer, DepositSerializer, WithdrawSerializer, TransferSerializer, TransactionSerializer, AccountDetailsSerializer, BuyAirtimeSerializer, BuyDataSerializer
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
 
 from django.contrib.auth import authenticate, login
-from Dashboard.models import CustomUser, Transaction
+from Dashboard.models import CustomUser, Transaction, BuyData
 from django.db import IntegrityError
 from django.http import JsonResponse
 from rest_framework.exceptions import ValidationError
@@ -450,6 +452,54 @@ class BuyAirtimeView(APIView):
         }, status=status.HTTP_200_OK)
 
 
+class BuyDataAPIView(APIView):
+    
+    def get(self, request, *args, **kwargs):
+        """
+        Retrieve all BuyData records.
+        """
+        # Fetch all data purchases
+        data_purchases = BuyData.objects.all()
+        serializer = BuyDataSerializer(data_purchases, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        """
+        Create a new BuyData record and process the purchase.
+        """
+        # Serialize the input data
+        serializer = BuyDataSerializer(data=request.data)
+        
+        if serializer.is_valid():
+            try:
+                # Extract the amount to be purchased from the data
+                amount = serializer.validated_data.get('amount', 0)
+                
+                # Convert the amount to Decimal for precision
+                amount_decimal = Decimal(str(amount))  # Ensure proper conversion to Decimal
+                
+                # Check if the user has enough balance
+                if request.user.balance < amount_decimal:
+                    raise ValidationError({"detail": "Insufficient balance to complete this purchase."})
+                
+                # Proceed with saving the data instance if balance is sufficient
+                buy_data_instance = serializer.save()
+
+                # Now buy_data_instance is the CustomUser instance, directly access the balance
+                remaining_balance = request.user.balance - amount_decimal  # Deduct the amount from the balance
+
+                # Return the response with the updated balance
+                return Response({
+                    'message': 'Data purchase successful!',
+                    'remaining_balance': str(remaining_balance),  # Return the updated balance
+                }, status=status.HTTP_201_CREATED)
+
+            except ValidationError as e:
+                # Catch validation errors raised for insufficient funds or other validation issues
+                return Response({'error': e.detail}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            # If serializer is invalid, return the errors
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 

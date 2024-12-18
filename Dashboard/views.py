@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from .models import CustomUser, Transaction
-from .forms import BuyAirtimeForm
+from .forms import BuyAirtimeForm, BuyDataForm
 from django.http import JsonResponse
 from django.core.paginator import Paginator
+from django.db import transaction as db_transaction
 # from django.contrib import messages
 
 # Create your views here.
@@ -41,9 +42,54 @@ def transaction_history(request):
 
     return render(request, 'transaction_history.html', {'transactions': transactions, 'page_obj': page_obj})
 
+
 @login_required
 def BuyData(request):
-    return render(request, 'buy-data.html')
+    user = request.user  # Get the logged-in user
+
+    if request.method == 'POST':
+        # Pass the logged-in user to the form
+        form = BuyDataForm(request.POST)
+
+        if form.is_valid():
+            buy_data = form.save(commit=False)  # Do not commit yet, to perform additional actions
+            amount = form.cleaned_data['amount']
+
+            # Check if the user's balance is less than the amount
+            if user.balance < amount:
+                return JsonResponse({'status': 'error', 'message': "Insufficient balance to complete the purchase."})
+
+            # Proceed with saving the BuyData record
+            buy_data.user = user  # Set the user manually before saving
+            buy_data.save()  # Save the data purchase record
+
+            # Update user's balance
+            user.balance -= amount
+            user.save()  # Save the updated balance
+
+            # Log the transaction for the data purchase
+            with db_transaction.atomic():  # Ensure the balance update and transaction creation happen atomically
+                Transaction.objects.create(
+                    user=user,
+                    transaction_type='data_purchase',
+                    amount=amount,
+                    recipient=None,  # No recipient in data purchase
+                    description=f"Purchase of {buy_data.data_plan} data plan for {buy_data.mobile_number}"
+                )
+
+            # Return success response
+            return JsonResponse({'status': 'success', 'message': 'Data purchase successful.'})
+
+        else:
+            # If the form is invalid, return the error message
+            return JsonResponse({'status': 'error', 'message': 'Form is invalid.'})
+
+    else:
+        form = BuyDataForm()
+
+    # Render the form in the 'buy-data.html' template
+    return render(request, 'buy-data.html', {'form': form, 'user_balance': user.balance})
+
 
 @login_required
 def BuyAirtime(request):

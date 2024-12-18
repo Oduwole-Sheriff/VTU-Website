@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 from .forms import CustomUserForm
-from .models import CustomUser, Transaction, WebsiteConfiguration, BuyAirtime
+from .models import CustomUser, Transaction, WebsiteConfiguration, BuyAirtime, BuyData
 
 CustomUser = get_user_model()
 
@@ -54,7 +54,7 @@ class WebsiteConfigurationAdmin(admin.ModelAdmin):
 class TransactionAdmin(admin.ModelAdmin):
     list_display = (
         'user', 'transaction_type', 'amount', 'timestamp', 'status', 
-        'product_name', 'unique_element', 'unit_price', 'transaction_id'
+        'product_name', 'unique_element', 'unit_price', 'transaction_id', 'data_plan'
     )
     search_fields = ('user__username', 'transaction_id', 'unique_element', 'product_name')
     list_filter = ('transaction_type', 'status', 'timestamp')
@@ -95,6 +95,11 @@ class TransactionAdmin(admin.ModelAdmin):
         return obj.transaction_id if obj.transaction_id else 'Not available'
     transaction_id.short_description = 'Transaction ID'
 
+    # Custom method to display the data plan (for data purchases)
+    def data_plan(self, obj):
+        return obj.data_plan if obj.data_plan else 'Not available'
+    data_plan.short_description = 'Data Plan'
+
 
 @admin.register(BuyAirtime)
 class BuyAirtimeAdmin(admin.ModelAdmin):
@@ -130,6 +135,44 @@ class BuyAirtimeAdmin(admin.ModelAdmin):
         return f"₦{obj.amount}"
 
     amount.short_description = 'Amount (₦)'  # Customize the column header for the 'amount'
+
+@admin.register(BuyData)
+class BuyDataAdmin(admin.ModelAdmin):
+    list_display = (
+        'user', 'network', 'mobile_number', 'data_plan', 'amount', 'status', 'date_created', 'date_updated'
+    )
+    search_fields = ('user__username', 'mobile_number', 'network', 'status', 'data_plan')
+    list_filter = ('status', 'network', 'date_created')
+    ordering = ('-date_created',)
+
+    # Add a custom method to display the user (if needed, otherwise it's already part of list_display)
+    def user(self, obj):
+        return obj.user.username  # Show the username of the user who made the data purchase
+
+    user.short_description = 'User'
+
+    # Customize column headers for clarity
+    def network(self, obj):
+        # Return a readable network name (assuming 'network' is stored as an integer)
+        network_map = {
+            1: 'MTN',
+            2: 'GLO',
+            3: '9MOBILE',
+            4: 'AIRTEL'
+        }
+        return network_map.get(obj.network, 'Unknown Network')
+
+    network.short_description = 'Network'
+
+    def amount(self, obj):
+        return f"₦{obj.amount}"
+
+    amount.short_description = 'Amount (₦)'  # Customize the column header for the 'amount'
+
+    def data_plan(self, obj):
+        return obj.data_plan
+
+    data_plan.short_description = 'Data Plan'  # Add a column for the data plan
 
 
 admin.site.register(CustomUser, CustomUserAdmin)

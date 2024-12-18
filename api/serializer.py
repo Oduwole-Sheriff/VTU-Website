@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from Dashboard.models import CustomUser, Transaction, BuyAirtime
+from Dashboard.models import CustomUser, Transaction, BuyAirtime, BuyData
 from authentication.models import Profile
 from django.contrib.auth.password_validation import validate_password
 
@@ -183,7 +183,37 @@ class BuyAirtimeSerializer(serializers.ModelSerializer):
         buy_airtime = BuyAirtime.objects.create(**validated_data)
         return buy_airtime
 
-        
+
+class BuyDataSerializer(serializers.ModelSerializer):
+    network = serializers.ChoiceField(choices=BuyData.NETWORK_CHOICES)
+    data_type = serializers.ChoiceField(choices=BuyData.DATA_TYPE_CHOICES, allow_blank=True, required=False)
+    mobile_number = serializers.CharField(max_length=11)
+    data_plan = serializers.CharField(max_length=100)
+    amount = serializers.DecimalField(max_digits=10, decimal_places=2)
+    user = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
+    request_id = serializers.CharField(max_length=100, required=False, allow_blank=True)
+    status = serializers.ChoiceField(choices=[('success', 'Success'), ('failed', 'Failed')], default='failed')
+    data_response = serializers.JSONField(required=False, allow_null=True)
+    date_created = serializers.DateTimeField(read_only=True)
+    date_updated = serializers.DateTimeField(read_only=True)
+
+    # Calculate the remaining balance after airtime purchase (read-only field)
+    remaining_balance = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
+
+    class Meta:
+        model = BuyData
+        fields = '__all__'
+
+    def create(self, validated_data):
+        """
+        Override create method to handle data purchase and transaction creation.
+        """
+        # Create BuyData instance
+        buy_data_instance = BuyData.objects.create(**validated_data)
+
+        # Process the purchase (call the process_purchase method)
+        return buy_data_instance.process_purchase()
+
 
 # class WalletSerializer(serializers.ModelSerializer):
 #     class Meta:

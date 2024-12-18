@@ -1,5 +1,6 @@
 from django import forms
-from .models import CustomUser, BuyAirtime
+from .models import CustomUser, BuyAirtime, BuyData
+from django.core.exceptions import ValidationError
 
 class CustomUserForm(forms.ModelForm):
     class Meta:
@@ -59,3 +60,59 @@ class BuyAirtimeForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         if user:
             self.instance.user = user  # Set the user field manually
+
+
+class BuyDataForm(forms.ModelForm):
+    class Meta:
+        model = BuyData
+        fields = ['network', 'data_type', 'mobile_number', 'data_plan', 'amount']
+
+    # Custom validation for mobile number to check the length
+    def clean_mobile_number(self):
+        mobile_number = self.cleaned_data['mobile_number']
+        if len(mobile_number) != 11:
+            raise ValidationError("Mobile number must be 11 digits long.")
+        return mobile_number
+
+    # You can add custom clean methods for other fields if necessary, for example:
+    def clean_amount(self):
+        amount = self.cleaned_data['amount']
+        if amount <= 0:
+            raise ValidationError("Amount must be positive.")
+        return amount
+
+    # Custom method to validate if the selected network and data type match
+    def clean(self):
+        cleaned_data = super().clean()
+        network = cleaned_data.get('network')
+        data_type = cleaned_data.get('data_type')
+
+        # If the network is Glo or 9Mobile, data_type must be selected
+        if network in [2, 3]:  # Glo or 9Mobile
+            if not data_type:
+                raise ValidationError('Please select a data type for the selected network.')
+
+        return cleaned_data
+
+    # You can add a method to dynamically handle the available data types based on the network
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Hide data_type field initially if network is not Glo or 9mobile
+        if self.instance and self.instance.network not in [2, 3]:
+            self.fields['data_type'].widget = forms.HiddenInput()
+        elif self.instance and self.instance.network == 2:  # Glo
+            self.fields['data_type'].queryset = BuyData.DATA_TYPE_CHOICES[:2]  # Glo Data types
+        elif self.instance and self.instance.network == 3:  # 9mobile
+            self.fields['data_type'].queryset = BuyData.DATA_TYPE_CHOICES[2:]  # 9mobile Data types
+        else:
+            self.fields['data_type'].widget = forms.HiddenInput()
+
+    def save(self, commit=True):
+        # You can override the save method to add custom logic if needed
+        # For instance, adding additional fields or setting default values
+        instance = super().save(commit=False)
+        if commit:
+            instance.save()
+        return instance
+

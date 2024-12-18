@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block content %}
+
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="{% static 'DataCSS/assets/style.css' %}" />
 
@@ -21,7 +24,8 @@
         </div>
 
         <div class="form-container" id="formContainer">
-            <form class="formStyle step" novalidate onsubmit="return false">
+            <form class="formStyle step" id="buyDataForm" novalidate>
+                {% csrf_token %}
                 <article class="formHeading">
                     <p>TopUp your Data With BigSheriffData</p>
                     <h2 id="networkName">Data Bundles</h2>
@@ -37,14 +41,21 @@
                     </select>
                 </div>
                 
-                <!-- This will be the new Data Type field for Glo -->
-                <div class="inputField inputFieldDropdown" id="dataTypeContainer" style="display: none;">
+                <div class="inputField inputFieldDropdown" id="gloDataTypeContainer" style="display: none;">
                     <label>Data Type</label>
-                    <select name="data_type" id="dataType">
+                    <select name="data_type" id="gloDataType">
                         <option value="Glo Data">Glo Data</option>
                         <option value="Glo SME Data">Glo SME Data</option>
                     </select>
                 </div>
+
+                <div class="inputField inputFieldDropdown" id="nineMobileDataTypeContainer" style="display: none;">
+                    <label>Data Type</label>
+                    <select name="data_type" id="nineMobileDataType">
+                        <option value="9mobile Data">9mobile Data</option>
+                        <option value="9mobile SME Data">9mobile SME Data</option>
+                    </select>
+                </div>               
 
                 <div class="inputField">
                     <label>Mobile Number</label>
@@ -52,13 +63,124 @@
                 </div>
                 <div class="inputField">
                     <label>Amount</label>
-                    <input type="text" name="amount" maxlength="11" minlength="2" required=""/>
-                </div>
-                <button class="form-Btn w-100">Buy Now</button>
+                    <input type="text" name="amount" id="amountField" maxlength="11" minlength="2" required="" disabled/>
+                </div>                
+                <button type="submit" class="form-Btn w-100">Buy Now</button>
             </form>
         </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{% static 'DataCSS/assets/script.js' %}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Handle network circle selection
+            $('.circle').click(function() {
+                var network = $(this).data('network');
+                var networkMap = {
+                    "MTN": 1,
+                    "Airtel": 2,
+                    "Glo": 3,
+                    "9mobile": 4
+                };
+                var networkId = networkMap[network];
+                $('#network').val(network);  // Display the network name in the text field
+                $('#network').data('network-id', networkId); // Store the network number in a data attribute
+            });
+
+            // Enable amount field before submitting
+            $('#buyDataForm').submit(function(e) {
+                e.preventDefault();  // Prevent the default form submission
+
+                // Check if the mobile number field is empty
+                var mobileNumber = $('input[name="mobile_number"]').val();
+                if (!mobileNumber) {
+                    // Show SweetAlert if mobile number is not entered
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Mobile Number Missing',
+                        text: 'Please enter your mobile number.',
+                        confirmButtonText: 'OK'
+                    });
+                    return;  // Stop the form submission
+                }
+
+                // Get the amount from the amountField and remove the "N" prefix
+                var amount = $('#amountField').val().replace('N', '');  // Remove the "N" character
+
+                // Check if the amount is empty or not a valid number
+                if (!amount || isNaN(amount) || amount <= 0) {
+                    // Show SweetAlert if the amount is not entered or invalid
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Invalid Amount',
+                        text: 'Please enter a valid amount greater than zero.',
+                        confirmButtonText: 'OK'
+                    });
+                    return;  // Stop the form submission
+                }
+
+                // Ensure the amount field is enabled and has a valid value
+                $('#amountField').prop('disabled', false);  // Enable the amount field if it's disabled
+
+                // Update the amount value in the hidden input field (if necessary)
+                $('#amountField').val(amount);  // This ensures the amount is sent without the "N" prefix
+
+                // Get the network value (number) from the data attribute
+                var networkId = $('#network').data('network-id');
+
+                // Add the network ID to the form data
+                var formData = $(this).serialize();  // Serialize the form data
+                formData += "&network=" + networkId;  // Append the network ID
+
+                // Add the user ID from the server context (ensure the user ID is passed from Django)
+                formData += "&user={{ user.id }}";  // Add user ID to the form data
+
+                // Send the data using AJAX
+                $.ajax({
+                    url: "/api/buy-data/",  // Replace with your Django URL for form submission
+                    type: "POST",
+                    data: formData,
+                    success: function(response) {
+                        // Display success message using SweetAlert with the updated balance
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: 'Data purchase successful! Your remaining balance is: ₦' + response.remaining_balance,
+                            confirmButtonText: 'OK'
+                        });
+
+                        // Optionally reset the form
+                        $('#buyDataForm')[0].reset();
+                        $('#amountField').prop('disabled', true); 
+                    },
+                    error: function(xhr, status, error) {
+                        // Check if the response contains the 'detail' field with the error message
+                        var errorMessage = "There was an error. Please try again.";  // Default error message
+                        
+                        // If there is a 'detail' field in the response (e.g., Insufficient balance)
+                        if (xhr.responseJSON && xhr.responseJSON.error && xhr.responseJSON.error.detail) {
+                            errorMessage = xhr.responseJSON.error.detail;
+                        }
+
+                        // Display the error message using SweetAlert
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: errorMessage,  // Display the error message from the server
+                            confirmButtonText: 'OK'
+                        });
+                        // Optionally reset the form
+                        $('#buyDataForm')[0].reset();
+                        $('#amountField').prop('disabled', true);  
+                    }
+                });
+            });
+        });
+
+    </script>
+    
 
 {% endblock content %}

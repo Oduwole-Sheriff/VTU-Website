@@ -5,8 +5,8 @@ from datetime import datetime as Mdate
 import random
 import uuid
 
-# VTPassAPI class definition
-class VTPassAPI:
+# VTPassDataAPI class definition
+class VTPassDataAPI:
     def __init__(self, base_url, auth_token, secret_key):
         self.base_url = base_url
         self.auth_token = auth_token
@@ -48,8 +48,8 @@ if __name__ == "__main__":
     auth_token = "Token be76014119dd44b12180ab93a92d63a2"
     secret_key = "SK_873dc5215f9063f6539ec2249c8268bb788b3150386"
 
-    # Instantiate VTPassAPI object
-    api = VTPassAPI(base_url, auth_token, secret_key)
+    # Instantiate VTPassDataAPI object
+    api = VTPassDataAPI(base_url, auth_token, secret_key)
 
     # Data for POST request
     date_time_format = Mdate.now().strftime("%Y%m%d%H%M%S")

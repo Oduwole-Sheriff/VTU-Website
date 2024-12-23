@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from Dashboard.models import CustomUser, Transaction, BuyAirtime, BuyData
 from authentication.models import Profile
 from django.contrib.auth.password_validation import validate_password
+from django.db import transaction as db_transaction
 
 # Use get_user_model() to reference the custom user model
 User = get_user_model()
@@ -208,11 +209,20 @@ class BuyDataSerializer(serializers.ModelSerializer):
         """
         Override create method to handle data purchase and transaction creation.
         """
-        # Create BuyData instance
-        buy_data_instance = BuyData.objects.create(**validated_data)
+        # Start a transaction to ensure atomicity of the entire operation
+        with db_transaction.atomic():
+            # Create BuyData instance first
+            buy_data_instance = BuyData.objects.create(**validated_data)
 
-        # Process the purchase (call the process_purchase method)
-        return buy_data_instance.process_purchase()
+            # Process the purchase (balance deduction and other actions)
+            user = buy_data_instance.process_purchase()
+
+            # Update the remaining balance in the response
+            validated_data['remaining_balance'] = user.balance  # Assuming 'user' is the CustomUser instance
+
+            # Return the BuyData instance (which includes the updated remaining balance)
+            return buy_data_instance
+
 
 
 # class WalletSerializer(serializers.ModelSerializer):

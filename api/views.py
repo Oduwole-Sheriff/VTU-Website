@@ -25,11 +25,15 @@ from django.db import IntegrityError
 from django.http import JsonResponse
 from rest_framework.exceptions import ValidationError
 
+from django.db import transaction as db_transaction
+
 from RestAPI.AirtimeAPI import VTPassAPI
+from RestAPI.DataAPI import VTPassDataAPI
 import uuid
 from datetime import datetime
 import logging
 import json
+import random
 
 from django.contrib.auth import get_user_model
 User = get_user_model()  # Get the custom user model
@@ -453,54 +457,113 @@ class BuyAirtimeView(APIView):
 
 
 class BuyDataAPIView(APIView):
-    
-    def get(self, request, *args, **kwargs):
-        """
-        Retrieve all BuyData records.
-        """
-        # Fetch all data purchases
-        data_purchases = BuyData.objects.all()
-        serializer = BuyDataSerializer(data_purchases, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # Define a mapping for the network IDs to their respective network names
+    NETWORK_MAP = {
+        1: 'MTN',
+        2: 'GLO',
+        3: 'ETISALAT',
+        4: 'AIRTEL'
+    }
 
     def post(self, request, *args, **kwargs):
         """
-        Create a new BuyData record and process the purchase.
+        Create a new BuyData record, process the purchase, and call the external API to complete the transaction.
         """
         # Serialize the input data
         serializer = BuyDataSerializer(data=request.data)
-        
+
         if serializer.is_valid():
             try:
-                # Extract the amount to be purchased from the data
-                amount = serializer.validated_data.get('amount', 0)
-                
-                # Convert the amount to Decimal for precision
-                amount_decimal = Decimal(str(amount))  # Ensure proper conversion to Decimal
-                
-                # Check if the user has enough balance
-                if request.user.balance < amount_decimal:
-                    raise ValidationError({"detail": "Insufficient balance to complete this purchase."})
-                
-                # Proceed with saving the data instance if balance is sufficient
-                buy_data_instance = serializer.save()
+                # Start a transaction to ensure atomicity of the entire process
+                with db_transaction.atomic():
+                    # Extract the amount to be purchased
+                    amount = serializer.validated_data.get('amount', 0)
+                    amount_decimal = Decimal(str(amount))  # Convert to Decimal for precision
 
-                # Now buy_data_instance is the CustomUser instance, directly access the balance
-                remaining_balance = request.user.balance - amount_decimal  # Deduct the amount from the balance
+                    # Check if the user has enough balance
+                    if request.user.balance < amount_decimal:
+                        raise ValidationError({"detail": "Insufficient balance to complete this purchase."})
 
-                # Return the response with the updated balance
-                return Response({
-                    'message': 'Data purchase successful!',
-                    'remaining_balance': str(remaining_balance),  # Return the updated balance
-                }, status=status.HTTP_201_CREATED)
+                    # Save the BuyData instance (this will also trigger the process_purchase method)
+                    buy_data_instance = serializer.save()
+
+                    # Get the network ID from the request data and map it to the network string
+                    network_id = int(request.data.get('network', 0))
+                    network = self.NETWORK_MAP.get(network_id, None)
+
+                    if not network:
+                        return JsonResponse({
+                            'status': 'error',
+                            'message': 'Invalid network. Valid options are: MTN, GLO, AIRTEL, ETISALAT'
+                        }, status=status.HTTP_400_BAD_REQUEST)
+
+                    # Call the external API to complete the data purchase
+                    api_response = self.call_external_api(buy_data_instance, network)
+
+                    # If the API call is successful, update the status and user balance
+                    if api_response and api_response.get("status") == "success":
+                        # API was successful, update the user balance and return success response
+                        user = buy_data_instance.process_purchase()  # Deduct the balance
+                        remaining_balance = user.balance  # Updated balance after purchase
+
+                        return Response({
+                            'message': 'Data purchase successful!',
+                            'remaining_balance': str(remaining_balance),  # Return updated balance
+                        }, status=status.HTTP_201_CREATED)
+                    else:
+                        # Handle API failure response and set the purchase status as failed
+                        buy_data_instance.status = 'failed'
+                        buy_data_instance.save()
+
+                        return Response({
+                            'error': 'Failed to complete the transaction with the external API.'
+                        }, status=status.HTTP_400_BAD_REQUEST)
 
             except ValidationError as e:
-                # Catch validation errors raised for insufficient funds or other validation issues
+                # Catch validation errors (e.g., insufficient funds, etc.)
                 return Response({'error': e.detail}, status=status.HTTP_400_BAD_REQUEST)
+
         else:
             # If serializer is invalid, return the errors
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def call_external_api(self, buy_data_instance, network):
+        """ Helper method to call the external API for purchasing data. """
+        base_url = "https://sandbox.vtpass.com"
+        auth_token = "Token be76014119dd44b12180ab93a92d63a2"
+        secret_key = "SK_873dc5215f9063f6539ec2249c8268bb788b3150386"
+        api = VTPassDataAPI(base_url, auth_token, secret_key)
+
+        # Prepare the data for the external API request
+        date_time_format = datetime.now().strftime("%Y%m%d%H%M%S")
+        request_id = str(date_time_format) + create_random_id()
+
+        # Map the network ID to the network name using NETWORK_MAP
+        network_name = self.NETWORK_MAP.get(buy_data_instance.network, "").lower()
+
+        if not network_name:
+            # Handle the case where the network name is not found in the NETWORK_MAP
+            raise ValueError(f"Invalid network ID: {buy_data_instance.network}")
+
+        data = {
+            'request_id': request_id,
+            "serviceID": f"{network_name}-data",  # Now using the network name (e.g., mtn-data)
+            "billerCode": "07046799872",  # Example biller code
+            "variation_code": f"{network_name}-50mb-200",  # Example variation code using network name
+            "phone": buy_data_instance.mobile_number
+        }
+
+        # Call the external API and return the response
+        return api.buy_data(data)
+
+
+# Helper function to create random ID
+def create_random_id():
+    num = random.randint(1000, 4999)
+    num_2 = random.randint(5000, 8000)
+    num_3 = random.randint(111, 999) * 2
+    return str(num) + str(num_2) + str(num_3) + str(uuid.uuid4())
 
 
 

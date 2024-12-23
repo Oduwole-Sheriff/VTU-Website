@@ -498,8 +498,8 @@ class BuyDataAPIView(APIView):
                             'message': 'Invalid network. Valid options are: MTN, GLO, AIRTEL, ETISALAT'
                         }, status=status.HTTP_400_BAD_REQUEST)
 
-                    # Call the external API to complete the data purchase
-                    api_response = self.call_external_api(buy_data_instance, network)
+                    # Call the external API to complete the data purchase and fetch service variations
+                    api_response, service_variations = self.call_external_api(buy_data_instance, network)
 
                     # If the API call is successful, update the status and user balance
                     if api_response and api_response.get("status") == "success":
@@ -510,6 +510,7 @@ class BuyDataAPIView(APIView):
                         return Response({
                             'message': 'Data purchase successful!',
                             'remaining_balance': str(remaining_balance),  # Return updated balance
+                            'service_variations': service_variations  # Return service variations
                         }, status=status.HTTP_201_CREATED)
                     else:
                         # Handle API failure response and set the purchase status as failed
@@ -529,7 +530,7 @@ class BuyDataAPIView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def call_external_api(self, buy_data_instance, network):
-        """ Helper method to call the external API for purchasing data. """
+        """ Helper method to call the external API for purchasing data and fetching service variations. """
         base_url = "https://sandbox.vtpass.com"
         auth_token = "Token be76014119dd44b12180ab93a92d63a2"
         secret_key = "SK_873dc5215f9063f6539ec2249c8268bb788b3150386"
@@ -554,8 +555,17 @@ class BuyDataAPIView(APIView):
             "phone": buy_data_instance.mobile_number
         }
 
-        # Call the external API and return the response
-        return api.buy_data(data)
+        # Call the external API to make the purchase
+        api_response = api.buy_data(data)
+
+        # Now, also fetch the service variations
+        service_variations = api.fetch_service_variations(network_name)
+        
+        # Print the service variations for debugging
+        # print(f"Service Variations for {network_name}: {service_variations}")
+        
+        return api_response, service_variations
+
 
 
 # Helper function to create random ID
@@ -564,6 +574,7 @@ def create_random_id():
     num_2 = random.randint(5000, 8000)
     num_3 = random.randint(111, 999) * 2
     return str(num) + str(num_2) + str(num_3) + str(uuid.uuid4())
+
 
 
 

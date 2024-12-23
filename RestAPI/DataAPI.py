@@ -33,6 +33,30 @@ class VTPassDataAPI:
             print("Error decoding JSON response. Response content:")
             print(response.text)
             return None
+        
+    def fetch_service_variations(self, network_name):
+        """
+        Helper method to fetch service variations from the external API.
+        """
+        url = "https://sandbox.vtpass.com/api/service-variations?serviceID="
+        payload = json.dumps({
+            "serviceID": f"{network_name}-data"
+        })
+        headers = {
+            'Authorization': '',
+            'Content-Type': 'application/json',
+            'Cookie': 'bootstrap_coli_ce=eyJpdiI6ImlGWE1HUjRMeVhPTDI0cFZ1ZXVaSHc9PSIsInZhbHVlIjoieEtsbCsyVkhHS3hMNGVJb1JNUklWc2FOYVwvdWtBZDlJM2xJY3NDTm5LdEJHb0hRaEZtNXdpbTZBXC9oVTRWQjlxIiwibWFjIjoiNjY2YTRjYjE5MzZiZjY1ZGM4YjUyMWI2Y2FjM2U3YjEzYWViOTdjYmVkM2MzMGU2ZDUxYzEzY2MwNTc4NDYyYiJ9; laravel_session=eyJpdiI6IjFJcXRPZlBqcUR6SEREcE5sTnZQVFE9PSIsInZhbHVlIjoiOERMXC96azRwb3l2UUE4R1hMMkVyYllEZVZJNHJzZmN1NmtCaGd5ZVZKWTRkeWpHTWZQZ29tYWtQYWZWMXRPcEdcL1A3R0owMlYweFdHMGJkck9IN1wvMWc9PSIsIm1hYyI6IjdmZDM1M2ZhNzg0MGNlNThhNTkyZTEwZDcwMzI5ODZlMjAyZmVhODI5Yjk1Yjc5MDQ5OTkwNDQxODFlMTliZWYifQ%3D%3D'
+        }
+
+        # External GET request to retrieve service variations
+        response = requests.get(url, headers=headers, data=payload)
+        
+        # Print the raw response for debugging purposes
+        print(f"Service Variations for {network_name}: {response.text}")
+        # print(f"Raw Response from fetch_service_variations: {response.text}")
+
+        return response.text
+
 
 # Helper function to create random ID
 def create_random_id():
@@ -62,19 +86,9 @@ if __name__ == "__main__":
     }
 
     # Call the buy_data method to make the payment request
-    api.buy_data(data)
+    buy_response = api.buy_data(data)
 
-    # External API request for service variations (not integrated into the class)
-    url = "https://sandbox.vtpass.com/api/service-variations?serviceID="
-    payload = json.dumps({
-        "serviceID": "mtn-data"
-    })
-    headers = {
-        'Authorization': '',
-        'Content-Type': 'application/json',
-        'Cookie': 'bootstrap_coli_ce=eyJpdiI6ImlGWE1HUjRMeVhPTDI0cFZ1ZXVaSHc9PSIsInZhbHVlIjoieEtsbCsyVkhHS3hMNGVJb1JNUklWc2FOYVwvdWtBZDlJM2xJY3NDTm5LdEJHb0hRaEZtNXdpbTZBXC9oVTRWQjlxIiwibWFjIjoiNjY2YTRjYjE5MzZiZjY1ZGM4YjUyMWI2Y2FjM2U3YjEzYWViOTdjYmVkM2MzMGU2ZDUxYzEzY2MwNTc4NDYyYiJ9; laravel_session=eyJpdiI6IjFJcXRPZlBqcUR6SEREcE5sTnZQVFE9PSIsInZhbHVlIjoiOERMXC96azRwb3l2UUE4R1hMMkVyYllEZVZJNHJzZmN1NmtCaGd5ZVZKWTRkeWpHTWZQZ29tYWtQYWZWMXRPcEdcL1A3R0owMlYweFdHMGJkck9IN1wvMWc9PSIsIm1hYyI6IjdmZDM1M2ZhNzg0MGNlNThhNTkyZTEwZDcwMzI5ODZlMjAyZmVhODI5Yjk1Yjc5MDQ5OTkwNDQxODFlMTliZWYifQ%3D%3D'
-    }
-
-    # External GET request to retrieve service variations
-    response = requests.get(url, headers=headers, data=payload)
-    print(response.text)
+    # Fetch service variations using the fetch_service_variations method
+    network_name = "mtn"
+    service_variations = api.fetch_service_variations(network_name)
+    print("Service Variations Response: ", service_variations)

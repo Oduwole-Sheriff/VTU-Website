@@ -208,20 +208,11 @@ class BuyDataSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         """
         Override create method to handle data purchase and transaction creation.
+        We will remove the balance deduction here since it's handled in the view.
         """
-        # Start a transaction to ensure atomicity of the entire operation
-        with db_transaction.atomic():
-            # Create BuyData instance first
-            buy_data_instance = BuyData.objects.create(**validated_data)
-
-            # Process the purchase (balance deduction and other actions)
-            user = buy_data_instance.process_purchase()
-
-            # Update the remaining balance in the response
-            validated_data['remaining_balance'] = user.balance  # Assuming 'user' is the CustomUser instance
-
-            # Return the BuyData instance (which includes the updated remaining balance)
-            return buy_data_instance
+        # Simply create the BuyData instance and return
+        buy_data_instance = BuyData.objects.create(**validated_data)
+        return buy_data_instance
 
 
 

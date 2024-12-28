@@ -237,13 +237,7 @@ class BuyData(models.Model):
             raise ValidationError("Insufficient balance to complete the purchase.")
 
         # Start a transaction to ensure atomicity
-        with db_transaction.atomic():
-            # Use F() expressions to safely update the user's balance
-            self.user.balance = F('balance') - self.amount
-            self.user.save()
-
-            # Fetch the user instance again to get the updated balance
-            self.user.refresh_from_db()
-
-            # Return the updated user model instance
-            return self.user  # Return the whole user model instance (CustomUser)
+        self.user.balance -= self.amount  # Deduct the balance directly
+        self.user.save()  # Save the user balance deduction
+        self.user.refresh_from_db()  # Refresh the user instance to get the updated balance
+        return self.user  # Return the user instance after deduction

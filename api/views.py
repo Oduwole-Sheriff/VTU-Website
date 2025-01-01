@@ -13,7 +13,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from decimal import Decimal
 
-from api.serializer import RegisterSerializer, LoginSerializer, CustomUserSerializer, DepositSerializer, WithdrawSerializer, TransferSerializer, TransactionSerializer, AccountDetailsSerializer, BuyAirtimeSerializer, BuyDataSerializer
+from api.serializer import RegisterSerializer, LoginSerializer, CustomUserSerializer, DepositSerializer, WithdrawSerializer, TransferSerializer, TransactionSerializer, AccountDetailsSerializer, BuyAirtimeSerializer, BuyDataSerializer, TVServiceSerializer
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework import status
@@ -116,6 +116,7 @@ class LoginAPI(APIView):
         }, status=status.HTTP_200_OK)
     
 class SubmitAccountDetailsView(APIView):
+    permission_classes = [IsAuthenticated]
     def post(self, request):
         user = request.user  # Get the current logged-in user
         serializer = AccountDetailsSerializer(user, data=request.data)
@@ -459,6 +460,7 @@ class BuyAirtimeView(APIView):
 
 
 class BuyDataAPIView(APIView):
+    permission_classes = [IsAuthenticated]
     NETWORK_MAP = {
         1: 'MTN',
         2: 'GLO',
@@ -654,6 +656,28 @@ def create_random_id():
     num_2 = random.randint(5000, 8000)
     num_3 = random.randint(111, 999) * 2
     return str(num) + str(num_2) + str(num_3) + str(uuid.uuid4())
+
+
+class TVServiceAPIView(APIView):
+    permission_classes = [IsAuthenticated]  # Ensure the user is authenticated
+
+    def post(self, request, *args, **kwargs):
+        """
+        Create a new TV service subscription.
+        """
+        # Make request.data mutable so that we can modify it
+        data = request.data.copy()
+
+        # Pass the request context to the serializer to access the authenticated user
+        serializer = TVServiceSerializer(data=data, context={'request': request})
+        
+        if serializer.is_valid():
+            # If valid, create the instance and process the purchase
+            tv_service = serializer.save()
+            tv_service.process_purchase()  # Process the purchase logic here
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 

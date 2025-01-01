@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from Dashboard.models import CustomUser, Transaction, BuyAirtime, BuyData
+from Dashboard.models import CustomUser, Transaction, BuyAirtime, BuyData, TVService
 from authentication.models import Profile
 from django.contrib.auth.password_validation import validate_password
 from django.db import transaction as db_transaction
@@ -213,6 +213,31 @@ class BuyDataSerializer(serializers.ModelSerializer):
         # Simply create the BuyData instance and return
         buy_data_instance = BuyData.objects.create(**validated_data)
         return buy_data_instance
+
+
+class TVServiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TVService
+        fields = [
+            'tv_service',
+            'smartcard_number',
+            'iuc_number',
+            'action',
+            'bouquet',
+            'phone_number',
+            'amount',
+            'startimes_smartcard',
+            'showmax_type'
+        ]
+
+    def create(self, validated_data):
+        """Override the create method to add the user to the validated data"""
+        user = self.context['request'].user  # Get the user from the request context
+        validated_data['user'] = user  # Add the user to the validated data
+        
+        # Create and return the TVService instance
+        tv_service = TVService.objects.create(**validated_data)
+        return tv_service
 
 
 

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from .models import CustomUser, Transaction
-from .forms import BuyAirtimeForm, BuyDataForm
+from .forms import BuyAirtimeForm, BuyDataForm, TVServiceForm
 from django.http import JsonResponse
 from django.core.paginator import Paginator
 from django.db import transaction as db_transaction
@@ -142,8 +142,44 @@ def BillPayment(request):
     return render(request, 'bill-payment.html')
 
 @login_required
-def CableSubscription(request):
-    return render(request, 'cable-subscription.html')
+def TVSubscription(request):
+    if request.method == 'POST':
+        form = TVServiceForm(request.POST)
+        
+        # Validate the form first
+        if form.is_valid():
+            tv_service_instance = form.save(commit=False)  # Don't save to DB yet
+            try:
+                # Call the process_purchase method to check if balance is sufficient and deduct the amount
+                tv_service_instance.process_purchase()
+
+                # After successful processing, return a success response (simulating a transaction)
+                # Optionally, you can simulate a transaction log here
+                Transaction.objects.create(
+                    user=user,
+                    transaction_type='airtime_purchase',
+                    amount=amount,
+                    recipient=None,  # No recipient in airtime purchase
+                    description=f"Purchase of {buy_airtime.data_type} airtime for {buy_airtime.mobile_number}"
+                )
+
+                # Return the response as JSON
+                return JsonResponse(Transaction, {'status': 'success'}, status=400)
+            except ValidationError as e:
+                # Return an error response in case of insufficient balance or invalid amount
+                error_data = {
+                    'status': 'error',
+                    'message': str(e),
+                }
+                return JsonResponse(error_data, status=400)
+        else:
+            # Return an error response if the form is not valid
+            return JsonResponse({'status': 'error', 'message': 'Form is invalid'}, status=400)
+    else:
+        form = TVServiceForm()
+    
+    return render(request, 'tv-subscription.html', {'form': form})
+
 
 @login_required
 def BuyDataCard(request):

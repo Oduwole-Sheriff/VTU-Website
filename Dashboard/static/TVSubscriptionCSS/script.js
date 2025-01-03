@@ -124,18 +124,21 @@ function updateFormFields(tvImage) {
     if (tvImage === 'GOTV') {
         fields['GOTV'].label.style.display = 'block';
         fields['GOTV'].input.style.display = 'block';
+        fields['GOTV'].input.setAttribute('required', 'true');
         fields['action'].label.style.display = 'block';
         fields['action'].input.style.display = 'block';
         fields['action'].input.setAttribute('required', 'true');
     } else if (tvImage === 'DSTV') {
         fields['DSTV'].label.style.display = 'block';
         fields['DSTV'].input.style.display = 'block';
+        fields['DSTV'].input.setAttribute('required', 'true');
         fields['action'].label.style.display = 'block';
         fields['action'].input.style.display = 'block';
         fields['action'].input.setAttribute('required', 'true');
     } else if (tvImage === 'STARTIMES') {
         fields['STARTIMES'].label.style.display = 'block';
         fields['STARTIMES'].input.style.display = 'block';
+        fields['STARTIMES'].input.setAttribute('required', 'true');
         fields['bouquet'].label.style.display = 'block';
         fields['bouquet'].input.style.display = 'block';
         fields['bouquet'].input.setAttribute('required', 'true');

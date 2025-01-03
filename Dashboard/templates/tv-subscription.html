@@ -74,13 +74,65 @@
 
 <script>
     $(document).ready(function () {
+        // Function to verify the smartcard number via API
+        function verifySmartcard(smartcardNumber, serviceID) {
+            return $.ajax({
+                url: "/api/tvservice/",  // Replace with your backend API endpoint for verification
+                type: 'POST',
+                data: {
+                    'billersCode': smartcardNumber,
+                    'serviceID': serviceID,
+                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+                },
+                success: function (response) {
+                    if (response.status === 'success') {
+                        console.log('Smartcard verified');
+                        return true;
+                    } else {
+                        alert('Smartcard verification failed');
+                        return false;
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                    alert('Error during smartcard verification. Please try again.');
+                    return false;
+                }
+            });
+        }
+
+        // Listen for changes in the smartcard number fields
+        $('#smartcard-number-DSTV, #smartcard-number-GOTV, #smartcard-number-STARTIMES').on('input', function () {
+            const smartcardNumber = $(this).val();
+            let serviceID = "";
+
+            // Determine the serviceID based on which input field is being updated
+            if ($(this).attr('id') === 'smartcard-number-DSTV') {
+                serviceID = "DSTV";  // Replace with actual serviceID for DStv
+            } else if ($(this).attr('id') === 'smartcard-number-GOTV') {
+                serviceID = "GOTV";  // Replace with actual serviceID for GOtv
+            } else if ($(this).attr('id') === 'smartcard-number-STARTIMES') {
+                serviceID = "STARTIMES";  // Replace with actual serviceID for Startimes
+            }
+
+            // Only verify if the smartcard number is 10 characters
+            if (smartcardNumber.length === 10) {
+                verifySmartcard(smartcardNumber, serviceID).then(function (isVerified) {
+                    if (isVerified) {
+                        // Update the hidden field for tv_service with the selected serviceID
+                        $('#tv_service').val(serviceID);
+                    }
+                });
+            }
+        });
+
         // Handle form submission using AJAX
         $('#tvForm').on('submit', function (e) {
             e.preventDefault(); // Prevent the default form submission
 
             // Collect form data
             var formData = {
-                'tv-service': $('#tv_service').val(),
+                'tv_service': $('#tv_service').val(),
                 'smartcard-number': $('#smartcard-number-DSTV').val(),
                 'iuc-number': $('#smartcard-number-GOTV').val(),
                 'startimes-smartcard': $('#smartcard-number-STARTIMES').val(),
@@ -91,29 +143,29 @@
                 'type': $('#type').val(),
                 'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val() // CSRF token
             };
-        
+
+            // Clean up data to ensure only non-empty fields are submitted
+            if (!formData['smartcard-number']) delete formData['smartcard-number'];
+            if (!formData['iuc-number']) delete formData['iuc-number'];
+            if (!formData['startimes-smartcard']) delete formData['startimes-smartcard'];
+
             // Send AJAX request
             $.ajax({
                 url: "/api/tvservice/",  // URL to your API endpoint
-                type: 'POST',  // Use the appropriate method, POST in this case
+                type: 'POST',
                 data: formData,
                 success: function (response) {
-                    console.log(formData);
                     // Handle success, display message or update UI
-                    alert('Subscription successful!'); // You can customize this alert
-                    // Optionally, clear the form fields after submission
-                    $('#tvForm')[0].reset();
+                    alert('Subscription successful!');
+                    $('#tvForm')[0].reset();  // Optionally, clear the form fields after submission
                 },
                 error: function (xhr, status, error) {
                     // Handle error
-                    console.log(formData);
                     alert('There was an error processing your subscription. Please try again.');
-                    console.log(xhr.responseText); // You can log the error response for debugging
                 }
             });
         });
     });
-
 </script>
 
 {% endblock content %}

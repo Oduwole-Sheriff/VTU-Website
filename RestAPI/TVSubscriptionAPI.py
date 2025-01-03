@@ -18,7 +18,7 @@ class VTPassTVSubscription:
 
     def verify_smartCard_number(self, data):
         url = "https://sandbox.vtpass.com/api/merchant-verify"
-        print("POST URL: " + url)
+        print("Sending data to API:", data)
         
         # Sending POST request to the API
         response = requests.post(url, json=data, auth=HTTPBasicAuth('oduwolesheriff001@gmail.com', 'Olamilekan1212'))

@@ -29,6 +29,7 @@ from django.db import transaction as db_transaction
 
 from RestAPI.AirtimeAPI import VTPassAPI
 from RestAPI.DataAPI import VTPassDataAPI
+from RestAPI.TVSubscriptionAPI import  VTPassTVSubscription
 import uuid
 from datetime import datetime
 import logging
@@ -658,26 +659,128 @@ def create_random_id():
     return str(num) + str(num_2) + str(num_3) + str(uuid.uuid4())
 
 
+
 class TVServiceAPIView(APIView):
     permission_classes = [IsAuthenticated]  # Ensure the user is authenticated
 
     def post(self, request, *args, **kwargs):
         """
-        Create a new TV service subscription.
+        Create a new TV service subscription and process the purchase.
         """
         # Make request.data mutable so that we can modify it
         data = request.data.copy()
 
+        print('Request Data:', data)
+
         # Pass the request context to the serializer to access the authenticated user
         serializer = TVServiceSerializer(data=data, context={'request': request})
-        
+
+        print('Request serializer:', serializer)
+
         if serializer.is_valid():
-            # If valid, create the instance and process the purchase
-            tv_service = serializer.save()
-            tv_service.process_purchase()  # Process the purchase logic here
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        
+            try:
+                # Extract the amount and convert to Decimal
+                amount = serializer.validated_data.get('amount', 0)
+                amount_decimal = Decimal(str(amount)) 
+
+                # Check if the user has enough balance to complete the purchase
+                if request.user.balance < amount_decimal:
+                    raise ValidationError("Insufficient balance to complete this purchase.")
+
+                # Extract data from serializer
+                tv_service = serializer.save()
+
+                # Instantiate VTPassTVSubscription API class
+                api = VTPassTVSubscription(
+                    base_url="https://sandbox.vtpass.com", 
+                    auth_token="Token be76014119dd44b12180ab93a92d63a2",  # Replace with your actual token
+                    secret_key="SK_873dc5215f9063f6539ec2249c8268bb788b3150386"  # Replace with your actual secret key
+                )
+
+                # Determine which field (smartcard, IUC, or startimes smartcard) to use for verification
+                service_data = {}
+                if tv_service.smartcard_number:
+                    service_data = {
+                        "billersCode": tv_service.smartcard_number.strip(),
+                        "serviceID": tv_service.tv_service.strip().lower()
+                    }
+                elif tv_service.iuc_number:
+                    service_data = {
+                        "billersCode": tv_service.iuc_number.strip(),
+                        "serviceID": tv_service.tv_service.strip().lower()
+                    }
+                elif tv_service.startimes_smartcard:
+                    service_data = {
+                        "billersCode": tv_service.startimes_smartcard.strip(),
+                        "serviceID": tv_service.tv_service.strip().lower()
+                    }
+
+                # Log the final service_data for verification
+                print("Service Data for Verification: ", service_data)
+
+                # Call the verify_smartCard_number method with the correct data
+                verify_result = api.verify_smartCard_number(service_data)
+
+                # Proceed with the verification response handling
+                if verify_result and verify_result.get('status') == 'success':
+                    # Proceed with creating a transaction if verification is successful
+                    transaction = Transaction.objects.create(
+                        user=tv_service.user,  
+                        transaction_type='TV_Subscription',
+                        amount=tv_service.amount,  
+                        description=f"TV Subscription to {tv_service.tv_service} (Bouquet: {tv_service.bouquet})",
+                        status="Pending",  
+                        product_name=tv_service.tv_service,
+                        unique_element=tv_service.smartcard_number or tv_service.iuc_number or tv_service.startimes_smartcard,
+                        unit_price=tv_service.amount,
+                        transaction_id=None,
+                    )
+
+                    tv_service.process_purchase()
+
+                    # Finalize the transaction
+                    transaction.status = 'Completed'
+                    transaction.save()
+
+                    return Response({"message": "Subscription successful!"}, status=status.HTTP_200_OK)
+                else:
+                    return Response({"error": "Smartcard verification failed."}, status=status.HTTP_400_BAD_REQUEST)
+
+                # If bouquet change is required, make the request to change bouquet
+                if tv_service.action == 'change':
+                    bouquet_payload = {
+                        'request_id': str(datetime.now().strftime("%Y%m%d%H%M%S")) + create_random_id(),
+                        "serviceID": tv_service.tv_service.lower(),
+                        "billersCode": tv_service.smartcard_number,
+                        "variation_code": tv_service.bouquet,
+                        "phone": tv_service.phone_number,
+                    }
+                    bouquet_change_result = api.bouquet_change(bouquet_payload)
+
+                    if bouquet_change_result and bouquet_change_result.get('status') == 'success':
+                        # If bouquet change was successful, finalize transaction
+                        transaction.status = 'Completed'
+                        transaction.save()
+                        return Response({"message": "Subscription successful, and bouquet changed!"}, status=status.HTTP_200_OK)
+                    else:
+                        # Handle bouquet change failure
+                        transaction.status = 'Failed'
+                        transaction.save()
+                        return Response({"error": "Bouquet change failed."}, status=status.HTTP_400_BAD_REQUEST)
+
+
+            except ValidationError as e:
+                # Handle errors during the purchase processing (e.g., insufficient funds)
+                return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Return validation errors from the serializer
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
 
 
 

@@ -79,9 +79,9 @@ if __name__ == "__main__":
     date_time_format = Mdate.now().strftime("%Y%m%d%H%M%S")
     data = {
         'request_id': str(date_time_format) + create_random_id(),
-        "serviceID": "mtn-data",
+        "serviceID": "9mobile-data",
         "billerCode": "07046799872",
-        "variation_code": "mtn-50mb-200",
+        "variation_code": "eti-sme-100",
         "phone": "07046799872"
     }
 
@@ -89,6 +89,6 @@ if __name__ == "__main__":
     buy_response = api.buy_data(data)
 
     # Fetch service variations using the fetch_service_variations method
-    network_name = "mtn"
+    network_name = "glo-sme"
     service_variations = api.fetch_service_variations(network_name)
-    print("Service Variations Response: ", service_variations)
+    # print("Service Variations Response: ", service_variations)

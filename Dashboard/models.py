@@ -91,6 +91,7 @@ class Transaction(models.Model):
         ('transfer', 'Transfer'),
         ('airtime_purchase', 'Airtime Purchase'),  # Airtime purchase type
         ('data_purchase', 'Data Purchase'),  # Data purchase type
+        ('TV_Subscription', 'TV SUBSCRIPTION'),  # TV SERVICE SUBSCRIPTION
     )
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -237,13 +238,70 @@ class BuyData(models.Model):
             raise ValidationError("Insufficient balance to complete the purchase.")
 
         # Start a transaction to ensure atomicity
-        with db_transaction.atomic():
-            # Use F() expressions to safely update the user's balance
-            self.user.balance = F('balance') - self.amount
-            self.user.save()
+        self.user.balance -= self.amount  # Deduct the balance directly
+        self.user.save()  # Save the user balance deduction
+        self.user.refresh_from_db()  # Refresh the user instance to get the updated balance
+        return self.user  # Return the user instance after deduction
 
-            # Fetch the user instance again to get the updated balance
-            self.user.refresh_from_db()
 
-            # Return the updated user model instance
-            return self.user  # Return the whole user model instance (CustomUser)
+
+class TVService(models.Model):
+    DSTV = 'DSTV'
+    GOTV = 'GOTV'
+    STARTIMES = 'STARTIMES'
+    SHOWMAX = 'SHOWMAX'
+    
+    TV_CHOICES = [
+        (DSTV, 'DStv'),
+        (GOTV, 'GOtv'),
+        (STARTIMES, 'Startimes'),
+        (SHOWMAX, 'Showmax'),
+    ]    
+    tv_service = models.CharField(
+        max_length=10,
+        choices=TV_CHOICES,
+        default=DSTV,
+    )
+    smartcard_number = models.CharField(max_length=100, null=True, blank=True) # Fields for DStv
+    iuc_number = models.CharField(max_length=100, null=True, blank=True)  # For GOtv
+    # What do you want to do? and Bouquet selection
+    action = models.CharField(max_length=100, choices=[
+        ('renew', 'Renew Current Bouquet'),
+        ('change', 'Change Bouquet'),
+    ], null=True, blank=True)
+
+    bouquet = models.CharField(max_length=100, null=True, blank=True)  # Dynamic field for bouquet
+    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='TV_Subscription')
+    phone_number = models.CharField(max_length=15, null=True, blank=True)
+    amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    startimes_smartcard = models.CharField(max_length=100, null=True, blank=True)  # For Startimes
+    SHOWMAX_CHOICES = [
+        ('full', 'Full - N2,900'),
+        ('mobile_only', 'Mobile Only - N1,450'),
+        ('sports_full', 'Sports Full - N6,300'),
+        ('sports_mobile_only', 'Sports Mobile Only - N3,200'),
+    ]
+    showmax_type = models.CharField(
+        max_length=20, 
+        null=True, 
+        blank=True, 
+        choices=SHOWMAX_CHOICES
+    )
+
+    def __str__(self):
+        return f"{self.tv_service} Form Submission"
+
+    def process_purchase(self):
+        """ Deduct the amount from the user's balance when subscribing on your TV cable """
+        if self.amount <= 0:
+            raise ValidationError("Amount must be positive.")
+
+        # Ensure user has enough balance
+        if self.user.balance < self.amount:
+            raise ValidationError("Insufficient balance to complete the purchase.")
+
+        # Start a transaction to ensure atomicity
+        self.user.balance -= self.amount  # Deduct the balance directly
+        self.user.save()  # Save the user balance deduction
+        self.user.refresh_from_db()  # Refresh the user instance to get the updated balance
+        return self.user  # Return the user instance after deduction

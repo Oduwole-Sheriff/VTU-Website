@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from Dashboard.models import CustomUser, Transaction, BuyAirtime, BuyData
+from Dashboard.models import CustomUser, Transaction, BuyAirtime, BuyData, TVService
 from authentication.models import Profile
 from django.contrib.auth.password_validation import validate_password
 from django.db import transaction as db_transaction
@@ -208,20 +208,36 @@ class BuyDataSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         """
         Override create method to handle data purchase and transaction creation.
+        We will remove the balance deduction here since it's handled in the view.
         """
-        # Start a transaction to ensure atomicity of the entire operation
-        with db_transaction.atomic():
-            # Create BuyData instance first
-            buy_data_instance = BuyData.objects.create(**validated_data)
+        # Simply create the BuyData instance and return
+        buy_data_instance = BuyData.objects.create(**validated_data)
+        return buy_data_instance
 
-            # Process the purchase (balance deduction and other actions)
-            user = buy_data_instance.process_purchase()
 
-            # Update the remaining balance in the response
-            validated_data['remaining_balance'] = user.balance  # Assuming 'user' is the CustomUser instance
+class TVServiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TVService
+        fields = [
+            'tv_service',
+            'smartcard_number',
+            'iuc_number',
+            'action',
+            'bouquet',
+            'phone_number',
+            'amount',
+            'startimes_smartcard',
+            'showmax_type'
+        ]
 
-            # Return the BuyData instance (which includes the updated remaining balance)
-            return buy_data_instance
+    def create(self, validated_data):
+        """Override the create method to add the user to the validated data"""
+        user = self.context['request'].user  # Get the user from the request context
+        validated_data['user'] = user  # Add the user to the validated data
+        
+        # Create and return the TVService instance
+        tv_service = TVService.objects.create(**validated_data)
+        return tv_service
 
 
 

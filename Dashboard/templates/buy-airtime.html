@@ -16,6 +16,7 @@
     <!-- Hidden form that will be displayed when a square is clicked -->
     <div class="form-container" id="form-container">
         <form class="formStyle step" id="buy-airtime-form" novalidate onsubmit="return false">
+            {% csrf_token %}
             <article class="formHeading">
                 <p>TopUp your Airtime With BigSheriffData</p>
                 <h2>Airtime TopUp</h2>

@@ -1,5 +1,5 @@
 from django.urls import path
-from api.views import RegisterAPI, LoginAPI, DepositView, WithdrawView, TransferView, TransactionListView, SubmitAccountDetailsView, BuyAirtimeView, BuyDataAPIView
+from api.views import RegisterAPI, LoginAPI, DepositView, WithdrawView, TransferView, TransactionListView, SubmitAccountDetailsView, BuyAirtimeView, BuyDataAPIView, TVServiceAPIView
 
 urlpatterns = [
     path('registration/', RegisterAPI.as_view()),
@@ -11,5 +11,6 @@ urlpatterns = [
     path('submit-account-details/', SubmitAccountDetailsView.as_view(), name='submit_account_details'),
     path('buy-airtime/', BuyAirtimeView.as_view(), name='buy_airtime'),
     path('buy-data/', BuyDataAPIView.as_view(), name='buy-data'),
+    path('tvservice/', TVServiceAPIView.as_view(), name='tvservice'),
 ]   
     

@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'TVSubscriptionCSS/styles.css' %}">
+
+<h1 class="color-white-title-home">Interactive TV Remote Control for TVSubscription</h1>
+
+<div id="current-tv">
+    <!-- Current TV image will be shown dynamically -->
+</div>
+
+<div id="form-container">
+    <form id="tvForm">
+        {% csrf_token %}
+        <article class="formHeading" style="text-align: center;">
+            <p>Subscribe On Your Favourite TV Cable With BigSheriffData</p>
+            <h2>We've Got You Covered</h2>
+        </article>
+
+        <!-- Hidden field for TV service -->
+        <input type="hidden" id="tv_service" name="tv_service" value="">
+
+        <label for="smartcard-number" id="smartcard-label-DSTV" style="display: none;">DStv Smartcard Number:</label>
+        <input type="text" placeholder="Enter your DStv Smartcard Number" id="smartcard-number-DSTV" name="smartcard-number" style="display: none;" required>
+
+        <label for="iuc-number" id="smartcard-label-GOTV" style="display: none;">GOtv IUC NUMBER:</label>
+        <input type="text" placeholder="Enter your GOtv IUC NUMBER" id="smartcard-number-GOTV" name="iuc-number" style="display: none;" required>
+
+        <label for="startimes-smartcard" id="smartcard-label-STARTIMES" style="display: none;">Startimes Smartcard / eWallet Number:</label>
+        <input type="text" placeholder="Enter your Startimes Smartcard / eWallet Number" id="smartcard-number-STARTIMES" name="startimes-smartcard" style="display: none;" required>
+        
+        <label for="action" id="action-label">What do you want to do?</label>
+        <select id="action" name="action" required>
+            <option value="" disabled selected>Select an option</option>
+            <option value="renew">Renew Current Bouquet</option>
+            <option value="change">Change Bouquet</option>
+        </select>
+
+        <label for="bouquet" id="bouquet-label" style="display: none;">Bouquet:</label>
+        <select id="bouquet" name="bouquet" style="display: none;" required>
+            <option value="" disabled selected>Select a bouquet</option>
+            <!-- Options will be dynamically populated -->
+        </select>
+
+        <label for="type" id="type-label" style="display: none;">TYPE</label>
+        <select id="type" name="type" style="display: none;" required>
+            <option value="" disabled selected>Select a type</option>
+            <option value="full">Full - N2,900</option>
+            <option value="mobile_only">Mobile Only - N1,450</option>
+            <option value="sports_full">Sports Full - N6,300</option>
+            <option value="sports_mobile_only">Sports Mobile Only - N3,200</option>
+        </select>
+
+        <label for="phone-number">Phone Number:</label>
+        <input type="tel" placeholder="Enter Mobile Number" id="phone-number" name="phone-number" required>
+
+        <label for="amount">Amount:</label>
+        <input type="number" placeholder="Amount" id="amount" name="amount" required>
+
+        <button type="submit" class="form-Btn">Submit</button>
+
+    </form>
+</div>
+
+<div class="tv-images">
+    <!-- Remote Control image -->
+    <img src="{% static 'TVSubscriptionCSS/images/tv-remote.jpg' %}" id="remote-control" alt="Remote Control">
+</div>
+
+<script src="{% static 'TVSubscriptionCSS/script.js' %}"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // Function to verify the smartcard number via API
+        function verifySmartcard(smartcardNumber, serviceID) {
+            return $.ajax({
+                url: "/api/tvservice/",  // Replace with your backend API endpoint for verification
+                type: 'POST',
+                data: {
+                    'billersCode': smartcardNumber,
+                    'serviceID': serviceID,
+                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+                },
+                success: function (response) {
+                    if (response.status === 'success') {
+                        console.log('Smartcard verified');
+                        return true;
+                    } else {
+                        alert('Smartcard verification failed');
+                        return false;
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                    alert('Error during smartcard verification. Please try again.');
+                    return false;
+                }
+            });
+        }
+
+        // Listen for changes in the smartcard number fields
+        $('#smartcard-number-DSTV, #smartcard-number-GOTV, #smartcard-number-STARTIMES').on('input', function () {
+            const smartcardNumber = $(this).val();
+            let serviceID = "";
+
+            // Determine the serviceID based on which input field is being updated
+            if ($(this).attr('id') === 'smartcard-number-DSTV') {
+                serviceID = "DSTV";  // Replace with actual serviceID for DStv
+            } else if ($(this).attr('id') === 'smartcard-number-GOTV') {
+                serviceID = "GOTV";  // Replace with actual serviceID for GOtv
+            } else if ($(this).attr('id') === 'smartcard-number-STARTIMES') {
+                serviceID = "STARTIMES";  // Replace with actual serviceID for Startimes
+            }
+
+            // Only verify if the smartcard number is 10 characters
+            if (smartcardNumber.length === 10) {
+                verifySmartcard(smartcardNumber, serviceID).then(function (isVerified) {
+                    if (isVerified) {
+                        // Update the hidden field for tv_service with the selected serviceID
+                        $('#tv_service').val(serviceID);
+                    }
+                });
+            }
+        });
+
+        // Handle form submission using AJAX
+        $('#tvForm').on('submit', function (e) {
+            e.preventDefault(); // Prevent the default form submission
+
+            // Collect form data
+            var formData = {
+                'tv_service': $('#tv_service').val(),
+                'smartcard-number': $('#smartcard-number-DSTV').val(),
+                'iuc-number': $('#smartcard-number-GOTV').val(),
+                'startimes-smartcard': $('#smartcard-number-STARTIMES').val(),
+                'action': $('#action').val(),
+                'bouquet': $('#bouquet').val(),
+                'phone-number': $('#phone-number').val(),
+                'amount': $('#amount').val(),
+                'type': $('#type').val(),
+                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val() // CSRF token
+            };
+
+            // Clean up data to ensure only non-empty fields are submitted
+            if (!formData['smartcard-number']) delete formData['smartcard-number'];
+            if (!formData['iuc-number']) delete formData['iuc-number'];
+            if (!formData['startimes-smartcard']) delete formData['startimes-smartcard'];
+
+            // Send AJAX request
+            $.ajax({
+                url: "/api/tvservice/",  // URL to your API endpoint
+                type: 'POST',
+                data: formData,
+                success: function (response) {
+                    // Handle success, display message or update UI
+                    alert('Subscription successful!');
+                    $('#tvForm')[0].reset();  // Optionally, clear the form fields after submission
+                },
+                error: function (xhr, status, error) {
+                    // Handle error
+                    alert('There was an error processing your subscription. Please try again.');
+                }
+            });
+        });
+    });
+</script>
+
+{% endblock content %}

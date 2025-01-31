@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 from .forms import CustomUserForm
-from .models import CustomUser, Transaction, WebsiteConfiguration, BuyAirtime, BuyData
+from .models import CustomUser, Transaction, WebsiteConfiguration, BuyAirtime, BuyData, TVService
 
 CustomUser = get_user_model()
 
@@ -173,6 +173,11 @@ class BuyDataAdmin(admin.ModelAdmin):
         return obj.data_plan
 
     data_plan.short_description = 'Data Plan'  # Add a column for the data plan
+
+
+@admin.register(TVService)
+class TVServiceAdmin(admin.ModelAdmin):
+    list_display = ['tv_service', 'smartcard_number', 'iuc_number', 'action', 'bouquet', 'phone_number', 'amount']
 
 
 admin.site.register(CustomUser, CustomUserAdmin)

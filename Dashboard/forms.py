@@ -1,5 +1,5 @@
 from django import forms
-from .models import CustomUser, BuyAirtime, BuyData
+from .models import CustomUser, BuyAirtime, BuyData, TVService
 from django.core.exceptions import ValidationError
 
 class CustomUserForm(forms.ModelForm):
@@ -116,3 +116,25 @@ class BuyDataForm(forms.ModelForm):
             instance.save()
         return instance
 
+
+class TVServiceForm(forms.ModelForm):
+    class Meta:
+        model = TVService
+        fields = ['tv_service', 'smartcard_number', 'iuc_number', 'action', 'bouquet', 'phone_number', 'amount', 'startimes_smartcard', 'showmax_type']
+
+    def clean(self):
+        cleaned_data = super().clean()
+        
+        # Get the user instance from the request (assuming the user is logged in)
+        user = self.instance.user
+
+        # Check if the amount is valid and if the user has sufficient balance
+        amount = cleaned_data.get('amount')
+
+        if amount is not None and amount <= 0:
+            raise ValidationError("Amount must be greater than zero.")
+        
+        if amount is not None and user.balance < amount:
+            raise ValidationError("Insufficient balance to complete the purchase.")
+        
+        return cleaned_data

@@ -667,15 +667,35 @@ class TVServiceAPIView(APIView):
         """
         Create a new TV service subscription and process the purchase.
         """
-        # Make request.data mutable so that we can modify it
-        data = request.data.copy()
+        # Directly access the data fields from request.data
+        billers_code = request.data.get('billersCode', None)
+        service_id = request.data.get('serviceID', None)
 
-        print('Request Data:', data)
+        # Log request data for debugging purposes
+        print("Request Data:", request.data)
+        print(f"Billers Code: {billers_code}, Service ID: {service_id}")
+
+        # Ensure that we have the full and correct values
+        if billers_code and service_id:
+            # If data exists, strip whitespaces and process
+            service_data = {
+                "billersCode": billers_code.strip(),
+                "serviceID": service_id.strip().lower()
+            }
+
+            # Log final service data
+            print("Service Data for Verification:", service_data)
+
+        # Now let's create the serializer data
+        data = {
+            "billersCode": billers_code.strip(),
+            "serviceID": service_id.strip().lower()
+        }
 
         # Pass the request context to the serializer to access the authenticated user
         serializer = TVServiceSerializer(data=data, context={'request': request})
 
-        print('Request serializer:', serializer)
+        # print('Request serializer:', serializer)
 
         if serializer.is_valid():
             try:
@@ -697,54 +717,41 @@ class TVServiceAPIView(APIView):
                     secret_key="SK_873dc5215f9063f6539ec2249c8268bb788b3150386"  # Replace with your actual secret key
                 )
 
-                # Determine which field (smartcard, IUC, or startimes smartcard) to use for verification
-                service_data = {}
-                if tv_service.smartcard_number:
-                    service_data = {
-                        "billersCode": tv_service.smartcard_number.strip(),
-                        "serviceID": tv_service.tv_service.strip().lower()
-                    }
-                elif tv_service.iuc_number:
-                    service_data = {
-                        "billersCode": tv_service.iuc_number.strip(),
-                        "serviceID": tv_service.tv_service.strip().lower()
-                    }
-                elif tv_service.startimes_smartcard:
-                    service_data = {
-                        "billersCode": tv_service.startimes_smartcard.strip(),
-                        "serviceID": tv_service.tv_service.strip().lower()
-                    }
-
                 # Log the final service_data for verification
-                print("Service Data for Verification: ", service_data)
+                # print("Service Data for Verification: ", service_data)
 
                 # Call the verify_smartCard_number method with the correct data
                 verify_result = api.verify_smartCard_number(service_data)
 
-                # Proceed with the verification response handling
-                if verify_result and verify_result.get('status') == 'success':
-                    # Proceed with creating a transaction if verification is successful
-                    transaction = Transaction.objects.create(
-                        user=tv_service.user,  
-                        transaction_type='TV_Subscription',
-                        amount=tv_service.amount,  
-                        description=f"TV Subscription to {tv_service.tv_service} (Bouquet: {tv_service.bouquet})",
-                        status="Pending",  
-                        product_name=tv_service.tv_service,
-                        unique_element=tv_service.smartcard_number or tv_service.iuc_number or tv_service.startimes_smartcard,
-                        unit_price=tv_service.amount,
-                        transaction_id=None,
-                    )
-
-                    tv_service.process_purchase()
-
-                    # Finalize the transaction
-                    transaction.status = 'Completed'
-                    transaction.save()
-
+                if verify_result and verify_result.get('status') == 'Open':
                     return Response({"message": "Subscription successful!"}, status=status.HTTP_200_OK)
                 else:
-                    return Response({"error": "Smartcard verification failed."}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({"error": "Smartcard verification failed."}, status=status.HTTP_200_OK)
+
+                # Proceed with the verification response handling
+                # if verify_result and verify_result.get('status') == 'success':
+                #     # Proceed with creating a transaction if verification is successful
+                #     transaction = Transaction.objects.create(
+                #         user=tv_service.user,  
+                #         transaction_type='TV_Subscription',
+                #         amount=tv_service.amount,  
+                #         description=f"TV Subscription to {tv_service.tv_service} (Bouquet: {tv_service.bouquet})",
+                #         status="Pending",  
+                #         product_name=tv_service.tv_service,
+                #         unique_element=tv_service.smartcard_number or tv_service.iuc_number or tv_service.startimes_smartcard,
+                #         unit_price=tv_service.amount,
+                #         transaction_id=None,
+                #     )
+
+                #     tv_service.process_purchase()
+
+                #     # Finalize the transaction
+                #     transaction.status = 'Completed'
+                #     transaction.save()
+
+                #     return Response({"message": "Subscription successful!"}, status=status.HTTP_200_OK)
+                # else:
+                #     return Response({"error": "Smartcard verification failed."}, status=status.HTTP_400_BAD_REQUEST)
 
                 # If bouquet change is required, make the request to change bouquet
                 if tv_service.action == 'change':

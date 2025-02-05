@@ -171,6 +171,7 @@ class BuyAirtime(models.Model):
     airtime_response = models.JSONField(null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
+    transaction_id = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return f"{self.network} - {self.mobile_number} - {self.amount}"
@@ -224,6 +225,7 @@ class BuyData(models.Model):
     data_response = models.JSONField(null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
+    transaction_id = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return f"{self.network} - {self.mobile_number} - {self.data_plan} - {self.amount}"
@@ -262,6 +264,7 @@ class TVService(models.Model):
         choices=TV_CHOICES,
         default=DSTV,
     )
+    data_response = models.JSONField(null=True, blank=True)
     smartcard_number = models.CharField(max_length=100, null=True, blank=True) # Fields for DStv
     iuc_number = models.CharField(max_length=100, null=True, blank=True)  # For GOtv
     # What do you want to do? and Bouquet selection
@@ -275,6 +278,10 @@ class TVService(models.Model):
     phone_number = models.CharField(max_length=15, null=True, blank=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     startimes_smartcard = models.CharField(max_length=100, null=True, blank=True)  # For Startimes
+    transaction_id = models.CharField(max_length=255, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)  # Automatically sets on creation
+    updated_at = models.DateTimeField(auto_now=True)  # Automatically updates on save
+
     SHOWMAX_CHOICES = [
         ('full', 'Full - N2,900'),
         ('mobile_only', 'Mobile Only - N1,450'),

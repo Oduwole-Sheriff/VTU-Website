@@ -18,7 +18,7 @@
                         <th>Status</th>
                         <th>Product Name</th>
                         <th>Unit Number</th>
-                        <th>Unit Price</th>
+                        <th>Transaction Id</th>
                     </tr>
                 </thead>
                 <tbody class="color-white-title-home">
@@ -38,7 +38,7 @@
                         </td>
                         <td>{{ transaction.product_name }}</td>
                         <td>{{ transaction.unique_element }}</td>
-                        <td>{{ transaction.unit_price }}</td>
+                        <td>{{ transaction.transaction_id }}</td>
                     </tr>
                     {% empty %}
                     <tr>

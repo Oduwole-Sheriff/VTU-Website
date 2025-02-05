@@ -54,7 +54,7 @@ class WebsiteConfigurationAdmin(admin.ModelAdmin):
 class TransactionAdmin(admin.ModelAdmin):
     list_display = (
         'user', 'transaction_type', 'amount', 'timestamp', 'status', 
-        'product_name', 'unique_element', 'unit_price', 'transaction_id', 'data_plan'
+        'product_name', 'unique_element', 'unit_price', 'transaction_id'
     )
     search_fields = ('user__username', 'transaction_id', 'unique_element', 'product_name')
     list_filter = ('transaction_type', 'status', 'timestamp')
@@ -104,9 +104,9 @@ class TransactionAdmin(admin.ModelAdmin):
 @admin.register(BuyAirtime)
 class BuyAirtimeAdmin(admin.ModelAdmin):
     list_display = (
-        'user', 'network', 'mobile_number', 'amount', 'status', 'date_created', 'date_updated'
+        'user', 'network', 'mobile_number', 'amount', 'status', 'transaction_id', 'date_created', 'date_updated' 
     )
-    search_fields = ('user__username', 'mobile_number', 'network', 'status')
+    search_fields = ('user__username', 'mobile_number', 'network', 'status', 'transaction_id')
     list_filter = ('status', 'network', 'date_created')
     ordering = ('-date_created',)  # Show the most recent airtime purchases first
 
@@ -139,9 +139,9 @@ class BuyAirtimeAdmin(admin.ModelAdmin):
 @admin.register(BuyData)
 class BuyDataAdmin(admin.ModelAdmin):
     list_display = (
-        'user', 'network', 'mobile_number', 'data_plan', 'amount', 'status', 'date_created', 'date_updated'
+        'user', 'network', 'mobile_number', 'data_plan', 'amount', 'status', 'transaction_id', 'date_created', 'date_updated'
     )
-    search_fields = ('user__username', 'mobile_number', 'network', 'status', 'data_plan')
+    search_fields = ('user__username', 'mobile_number', 'network', 'status', 'data_plan', 'transaction_id')
     list_filter = ('status', 'network', 'date_created')
     ordering = ('-date_created',)
 
@@ -177,7 +177,21 @@ class BuyDataAdmin(admin.ModelAdmin):
 
 @admin.register(TVService)
 class TVServiceAdmin(admin.ModelAdmin):
-    list_display = ['tv_service', 'smartcard_number', 'iuc_number', 'action', 'bouquet', 'phone_number', 'amount']
+    list_display = [
+        'tv_service', 'smartcard_number', 'action', 'bouquet', 
+        'phone_number', 'amount', 'transaction_id', 'created_at', 'updated_at'
+    ]
+    
+    # Add filtering options in the admin panel (example: filter by tv_service, action, and created_at)
+    list_filter = ['tv_service', 'action', 'created_at']
+    
+    # Set default ordering, e.g., ordering by 'created_at' in descending order
+    ordering = ['-created_at']  # This orders by 'created_at' in descending order (latest first)
 
+    # Optional: Add search functionality (optional but helpful)
+    search_fields = ['tv_service', 'smartcard_number', 'iuc_number', 'phone_number', 'transaction_id']
+
+    # Optional: Limit the number of displayed records per page
+    list_per_page = 20  # Set how many records you want to display per page
 
 admin.site.register(CustomUser, CustomUserAdmin)

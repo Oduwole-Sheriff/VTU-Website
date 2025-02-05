@@ -149,8 +149,8 @@ function updateFormFields(tvImage) {
         fields['type'].input.setAttribute('required', 'true');
 
         let form = document.getElementById('tvForm');
-        form.insertBefore(fields['type'].label, document.getElementById('phone-number'));
-        form.insertBefore(fields['type'].input, document.getElementById('phone-number'));
+        form.After(fields['type'].label, document.getElementById('phone-number'));
+        form.After(fields['type'].input, document.getElementById('phone-number'));
     }
 }
 

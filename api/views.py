@@ -20,7 +20,7 @@ from rest_framework import status
 from rest_framework.response import Response
 
 from django.contrib.auth import authenticate, login
-from Dashboard.models import CustomUser, Transaction, BuyData
+from Dashboard.models import CustomUser, Transaction, TVService
 from django.db import IntegrityError
 from django.http import JsonResponse
 from rest_framework.exceptions import ValidationError
@@ -341,7 +341,7 @@ class BuyAirtimeView(APIView):
                     # Extract details from the response
                     transactions = response.get('content', {}).get('transactions', {})
                     transaction_status = transactions.get('status', 'failed')
-                    transaction_id = transactions.get('transactionId', '')
+                    transaction_id = response.get("requestId", 'N/A')
                     product_name = transactions.get('product_name', 'Unknown Product')
 
                     # Extract phone and unit price
@@ -350,6 +350,7 @@ class BuyAirtimeView(APIView):
 
                     # Save the API response into airtime_response field
                     airtime_purchase.airtime_response = response  # Save the full response
+                    airtime_purchase.transaction_id = response.get("requestId", 'N/A')
                     airtime_purchase.save()
 
                     # Handle transaction status
@@ -423,8 +424,8 @@ class BuyAirtimeView(APIView):
 
     def handle_failed_transaction(self, transaction_id, api_response):
         """Handle failed transaction and log it"""
-        print(f"Transaction failed with transaction ID: {transaction_id}")
-        print(f"API Response: {api_response}")
+        # print(f"Transaction failed with transaction ID: {transaction_id}")
+        # print(f"API Response: {api_response}")
 
         # Check for the specific error code
         if api_response.get("code") == "017":
@@ -500,6 +501,7 @@ class BuyDataAPIView(APIView):
                         product_name=self.NETWORK_MAP.get(buy_data_instance.network, ""),  # Set the network as product_name
                         unit_price=buy_data_instance.amount,  # Set the unit_price to the amount
                         unique_element=buy_data_instance.mobile_number,
+                        transaction_id=None,
                     )
 
                     # Deduct balance from user account using process_purchase
@@ -532,7 +534,10 @@ class BuyDataAPIView(APIView):
 
                     # Save the API response in the data_response field
                     buy_data_instance.data_response = api_response
+                    buy_data_instance.transaction_id = api_response.get("requestId", 'N/A')
                     buy_data_instance.save()
+
+                    transaction.transaction_id = api_response.get("requestId", 'N/A')
 
                     if api_response and api_response.get("status") == "success":
                         # If API call is successful, mark transaction as completed
@@ -675,6 +680,130 @@ class TVServiceAPIView(APIView):
         print("Request Data:", request.data)
         print(f"Billers Code: {billers_code}, Service ID: {service_id}")
 
+        action = request.data.get('action', None)
+
+        # If action is 'change', proceed to bouquet change
+        if action == 'change':
+            bouquet_code = request.data.get('bouquet', None)
+            smartcard_number = billers_code
+            phone_number = request.data.get('phone_number', None)
+            amount = request.data.get('amount', None)
+
+            # Ensure required fields are present
+            if not bouquet_code or not smartcard_number or not phone_number:
+                return Response({"error": "Missing bouquet, smartcard number, or phone number."}, status=status.HTTP_400_BAD_REQUEST)
+
+            # Check if user has sufficient balance
+            if request.user.balance < Decimal(str(amount)):
+                return Response({"error": "Insufficient balance to proceed with the bouquet change."}, status=status.HTTP_400_BAD_REQUEST)
+
+            # Deduct the amount from user's balance
+            request.user.balance -= Decimal(str(amount))
+            request.user.save()
+
+            # Create the transaction record before making the API call
+            transaction = Transaction.objects.create(
+                user=request.user,
+                transaction_type='TV_Subscription',
+                amount=Decimal(str(amount)),
+                description=f"TV Subscription for bouquet {bouquet_code}",
+                status="Pending",  # Mark as "Pending" initially
+                product_name=service_id,
+                unique_element=smartcard_number,
+                unit_price=Decimal(str(amount)),
+                transaction_id=None,
+            )
+
+            # Instantiate API class
+            api = VTPassTVSubscription(
+                base_url="https://sandbox.vtpass.com", 
+                auth_token="Token be76014119dd44b12180ab93a92d63a2",  # Replace with your actual token
+                secret_key="SK_873dc5215f9063f6539ec2249c8268bb788b3150386"  # Replace with your actual secret key
+            )
+
+            # Fetch service variations
+            fetch_service_variations = api.fetch_service_variations(service_id)
+            # print("Fetch Service Variations Response Type:", type(fetch_service_variations))
+            # print("Fetch Service Variations Response:", fetch_service_variations)
+
+            # If the response is a string, parse it as JSON
+            if isinstance(fetch_service_variations, str):
+                fetch_service_variations = json.loads(fetch_service_variations)
+
+            # print("Parsed Service Variations:", fetch_service_variations)
+
+            # if not fetch_service_variations or fetch_service_variations.get('response_description') != '000':
+            #     return Response({"error": "Failed to fetch service variations."}, status=status.HTTP_400_BAD_REQUEST)
+
+            # Find the variation_code based on the provided amount
+            variation_code = None
+            for variation in fetch_service_variations.get('content', {}).get('variations', []):
+                if float(variation.get('variation_amount', 0)) == float(amount):
+                    variation_code = variation.get('variation_code')
+                    break
+
+            # If no matching variation is found, return an error
+            if not variation_code:
+                return Response({"error": "No matching variation found for the provided amount."}, status=status.HTTP_400_BAD_REQUEST)
+
+            # Prepare bouquet payload with the correct variation_code
+            bouquet_payload = {
+                'request_id': str(datetime.now().strftime("%Y%m%d%H%M%S")) + create_random_id(),
+                "serviceID": service_id,
+                "billersCode": smartcard_number,
+                "variation_code": variation_code,  # Use the dynamic variation_code
+                'amount': amount,
+                "phone": phone_number,
+            }
+
+            # Call bouquet change API
+            bouquet_change_result = api.bouquet_change(bouquet_payload)
+
+             # Save the API response in the transaction's `data_response` field
+            transaction.data_response = bouquet_change_result  # Save the response here
+            transaction.transaction_id = bouquet_change_result.get("requestId", 'N/A')
+
+            # Regardless of transaction success, create the TVService instance
+            tv_service = TVService.objects.create(
+                user=request.user,
+                tv_service=service_id,  # For example, assuming the service is DSTV (replace with actual logic)
+                action="change",
+                bouquet=bouquet_code,
+                amount=Decimal(str(amount)),
+                smartcard_number=smartcard_number,
+                phone_number=phone_number,
+                data_response=bouquet_change_result,  # Save the response
+                transaction_id=None,
+            )
+
+            tv_service.transaction_id = bouquet_change_result.get("requestId", 'N/A')
+            tv_service.save()  # Don't forget to save it
+
+             # Update the transaction status based on the API result
+            if bouquet_change_result and bouquet_change_result.get('status') == 'success':
+                # Mark the transaction as completed
+                transaction.status = 'Completed'
+                transaction.transaction_id = bouquet_change_result.get("requestId", 'N/A')
+                transaction.save()
+
+                return Response({"message": "Bouquet change successful!"}, status=status.HTTP_200_OK)
+            else:
+                # If the API failed, refund the deducted amount and mark the transaction as failed
+                request.user.balance += Decimal(str(amount))
+                request.user.save()
+
+                # Update transaction status to 'Failed'
+                transaction.status = 'Failed'
+                transaction.save()
+
+                return Response({"error": "Bouquet change failed. Refund issued."}, status=status.HTTP_200_OK)
+
+
+            # Handle other actions like 'renew' (this part is kept intact)
+            # else:
+            #     # If action is 'renew', you can implement the renew logic here
+            #     return Response({"message": "Renewal or other action successful!"}, status=status.HTTP_200_OK)
+
         # Ensure that we have the full and correct values
         if billers_code and service_id:
             # If data exists, strip whitespaces and process
@@ -685,6 +814,18 @@ class TVServiceAPIView(APIView):
 
             # Log final service data
             print("Service Data for Verification:", service_data)
+
+        # Ensure that billers_code is not None before trying to strip
+        if billers_code:
+            billers_code = billers_code.strip()
+        else:
+            return Response({"error": "Billers code is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Ensure service_id is not None before trying to strip
+        if service_id:
+            service_id = service_id.strip().lower()
+        else:
+            return Response({"error": "Service ID is required."}, status=status.HTTP_400_BAD_REQUEST)
 
         # Now let's create the serializer data
         data = {
@@ -699,17 +840,6 @@ class TVServiceAPIView(APIView):
 
         if serializer.is_valid():
             try:
-                # Extract the amount and convert to Decimal
-                amount = serializer.validated_data.get('amount', 0)
-                amount_decimal = Decimal(str(amount)) 
-
-                # Check if the user has enough balance to complete the purchase
-                if request.user.balance < amount_decimal:
-                    raise ValidationError("Insufficient balance to complete this purchase.")
-
-                # Extract data from serializer
-                tv_service = serializer.save()
-
                 # Instantiate VTPassTVSubscription API class
                 api = VTPassTVSubscription(
                     base_url="https://sandbox.vtpass.com", 
@@ -724,64 +854,17 @@ class TVServiceAPIView(APIView):
                 verify_result = api.verify_smartCard_number(service_data)
 
                 if verify_result and verify_result.get('status') == 'Open':
-                    return Response({"message": "Subscription successful!"}, status=status.HTTP_200_OK)
+                    return Response({"message": "Subscription successful!", "data": verify_result}, status=status.HTTP_200_OK)
                 else:
-                    return Response({"error": "Smartcard verification failed."}, status=status.HTTP_200_OK)
-
-                # Proceed with the verification response handling
-                # if verify_result and verify_result.get('status') == 'success':
-                #     # Proceed with creating a transaction if verification is successful
-                #     transaction = Transaction.objects.create(
-                #         user=tv_service.user,  
-                #         transaction_type='TV_Subscription',
-                #         amount=tv_service.amount,  
-                #         description=f"TV Subscription to {tv_service.tv_service} (Bouquet: {tv_service.bouquet})",
-                #         status="Pending",  
-                #         product_name=tv_service.tv_service,
-                #         unique_element=tv_service.smartcard_number or tv_service.iuc_number or tv_service.startimes_smartcard,
-                #         unit_price=tv_service.amount,
-                #         transaction_id=None,
-                #     )
-
-                #     tv_service.process_purchase()
-
-                #     # Finalize the transaction
-                #     transaction.status = 'Completed'
-                #     transaction.save()
-
-                #     return Response({"message": "Subscription successful!"}, status=status.HTTP_200_OK)
-                # else:
-                #     return Response({"error": "Smartcard verification failed."}, status=status.HTTP_400_BAD_REQUEST)
-
-                # If bouquet change is required, make the request to change bouquet
-                if tv_service.action == 'change':
-                    bouquet_payload = {
-                        'request_id': str(datetime.now().strftime("%Y%m%d%H%M%S")) + create_random_id(),
-                        "serviceID": tv_service.tv_service.lower(),
-                        "billersCode": tv_service.smartcard_number,
-                        "variation_code": tv_service.bouquet,
-                        "phone": tv_service.phone_number,
-                    }
-                    bouquet_change_result = api.bouquet_change(bouquet_payload)
-
-                    if bouquet_change_result and bouquet_change_result.get('status') == 'success':
-                        # If bouquet change was successful, finalize transaction
-                        transaction.status = 'Completed'
-                        transaction.save()
-                        return Response({"message": "Subscription successful, and bouquet changed!"}, status=status.HTTP_200_OK)
-                    else:
-                        # Handle bouquet change failure
-                        transaction.status = 'Failed'
-                        transaction.save()
-                        return Response({"error": "Bouquet change failed."}, status=status.HTTP_400_BAD_REQUEST)
-
+                    return Response({"error": "Smartcard verification failed.", "details": verify_result}, status=status.HTTP_200_OK)
 
             except ValidationError as e:
                 # Handle errors during the purchase processing (e.g., insufficient funds)
                 return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
+        
         # Return validation errors from the serializer
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        if not serializer.is_valid():
+            return Response({"error": "Validation failed", "details": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
 

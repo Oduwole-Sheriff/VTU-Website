@@ -176,7 +176,7 @@ class BuyAirtimeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BuyAirtime
-        fields = ['id', 'user', 'network', 'data_type', 'mobile_number', 'amount', 'bypass_validator', 'remaining_balance', 'airtime_response']
+        fields = ['id', 'user', 'network', 'data_type', 'mobile_number', 'amount', 'bypass_validator', 'remaining_balance', 'airtime_response', 'transaction_id']
 
     def create(self, validated_data):
         """Override the create method to create the BuyAirtime instance without balance deduction"""
@@ -197,6 +197,7 @@ class BuyDataSerializer(serializers.ModelSerializer):
     data_response = serializers.JSONField(required=False, allow_null=True)
     date_created = serializers.DateTimeField(read_only=True)
     date_updated = serializers.DateTimeField(read_only=True)
+    transaction_id = serializers.CharField(max_length=255, required=False, allow_blank=True)
 
     # Calculate the remaining balance after airtime purchase (read-only field)
     remaining_balance = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
@@ -227,7 +228,8 @@ class TVServiceSerializer(serializers.ModelSerializer):
             'phone_number',
             'amount',
             'startimes_smartcard',
-            'showmax_type'
+            'showmax_type',
+            'data_response'
         ]
 
     def create(self, validated_data):

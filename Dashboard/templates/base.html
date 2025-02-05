@@ -297,7 +297,7 @@
                         </div>
                         <p>Manage Subscription</p>
                     </a>
-                    {% if request.path == '/billPayment/' or request.path == '/cableSubscription/' %}
+                    {% if request.path == '/billpayment/' or request.path == '/cableSubscription/' %}
                     <a class="collapse-btn collapsed single-menu active" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
                         {% else %}
                     <a class="collapse-btn collapsed single-menu" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
@@ -310,7 +310,7 @@
                     <div class="collapse" id="collapseExample">
                         <ul class="submenu rts-default-sidebar-list">
                             <li>
-                                {% if request.path == '/billPayment/' %}
+                                {% if request.path == '/billpayment/' %}
                                 <a href="{% url 'bill_payment' %}" class="active">
                                     {% else %}
                                 <a href="{% url 'bill_payment' %}">

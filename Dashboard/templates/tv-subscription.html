@@ -60,7 +60,11 @@
         <label for="amount">Amount:</label>
         <input type="number" placeholder="Amount" id="amount" name="amount" required>
 
-        <button type="submit" class="form-Btn">Submit</button>
+        <!-- Submit Button with Loading State -->
+        <button type="submit" class="form-Btn" id="submit-btn">Submit</button>
+        <button type="button" id="loading-btn" class="form-Btn" style="display: none;" disabled>
+            <span>Please Wait...<i class="fa fa-spinner fa-spin"></i></span>
+        </button>
 
     </form>
 </div>
@@ -77,8 +81,23 @@
 
 <script>
     $(document).ready(function () {
+        // Show SweetAlert if user balance is below 50
+        {% if user_balance < 50 %}
+        Swal.fire({
+            icon: 'warning',
+            title: 'Balance Too Low',
+            text: 'Your balance is too low to make this transaction. Please top up your account.',
+            confirmButtonText: 'OK'
+        }).then(() => {
+            // Redirect after the alert
+            window.location.href = "{% url 'index' %}";
+        });
+        {% endif %}
+
         // Function to verify the smartcard number via API
         function verifySmartcard(smartcardNumber, serviceID) {
+            $('#submit-btn').hide();
+            $('#loading-btn').show();
             return $.ajax({
                 url: "/api/tvservice/",  // Replace with your backend API endpoint for verification
                 type: 'POST',
@@ -88,36 +107,55 @@
                     'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
                 },
                 success: function (response) {
+                    // Prepare a message to display in SweetAlert, based on the response
+                    let message = response.details && response.details.content && response.details.content.error
+                        ? response.details.content.error
+                        : 'No additional details available.';
+
                     if (response.status === 'Open') {
-                        // Use SweetAlert to show a success message
+                        // If status is 'Open', show success message along with content.error
                         Swal.fire({
                             title: 'Success!',
-                            text: 'Smartcard verified.',
+                            text: 'Smartcard verified.\n\nDetails: ' + message,
                             icon: 'success',
                             confirmButtonText: 'OK'
                         });
-                        return true;
                     } else {
-                        // Use SweetAlert to show a failure message
+                        // If not 'Open', show failure message along with content.error
+                        let errorMessage = response.error || 'Smartcard verification failed.';
                         Swal.fire({
                             title: 'Error!',
-                            text: 'Smartcard verification failed.',
+                            text: errorMessage + '\n\nDetails: ' + message,
                             icon: 'error',
                             confirmButtonText: 'OK'
                         });
-                        return false;
                     }
+                    $('#loading-btn').hide();  // Hide loading button after success/error
+                    $('#submit-btn').show();   // Show original submit button again
+                    return true;  // Return true after handling success
                 },
                 error: function (xhr, status, error) {
                     console.log(error);
-                    // Use SweetAlert to show an error message
+
+                    // Prepare a message to display in SweetAlert, based on the error response
+                    let errorMessage = 'Error during smartcard verification. Please try again.';
+                    let responseDetails = 'No additional details available.';
+
+                    // Check if the backend returns a detailed error and extract it
+                    if (xhr.responseJSON && xhr.responseJSON.details && xhr.responseJSON.details.content) {
+                        responseDetails = xhr.responseJSON.details.content.error || responseDetails;
+                    }
+
+                    // Use SweetAlert to show the error message and response details
                     Swal.fire({
                         title: 'Error!',
-                        text: 'Error during smartcard verification. Please try again.',
+                        text: errorMessage + '\n\nDetails: ' + responseDetails,
                         icon: 'error',
                         confirmButtonText: 'OK'
                     });
-                    return false;
+                    $('#loading-btn').hide();  // Hide loading button after success/error
+                    $('#submit-btn').show();   // Show original submit button again
+                    return false;  // Return false after handling error
                 }
             });
         }
@@ -150,6 +188,10 @@
         // Handle form submission using AJAX
         $('#tvForm').on('submit', function (e) {
             e.preventDefault(); // Prevent the default form submission
+
+            // Show the loading button and hide the submit button
+            $('#submit-btn').hide();
+            $('#loading-btn').show();
 
             // Collect form data
             var formData = {
@@ -184,6 +226,9 @@
                             text: 'Subscription successful!',
                             icon: 'success',
                             confirmButtonText: 'OK'
+                        }).then(() => {
+                            $('#loading-btn').hide();  // Hide loading button after success/error
+                            $('#submit-btn').show();   // Show original submit button again
                         });
                         return true;
                     } else {
@@ -193,6 +238,9 @@
                             text: 'Subscription failed! Refund has been issued.',
                             icon: 'error',
                             confirmButtonText: 'OK'
+                        }).then(() => {
+                            $('#loading-btn').hide();  // Hide loading button after success/error
+                            $('#submit-btn').show();   // Show original submit button again
                         });
                         return false;
                     }
@@ -205,6 +253,9 @@
                         text: 'There was an error processing your subscription. Please try again.',
                         icon: 'error',
                         confirmButtonText: 'OK'
+                    }).then(() => {
+                        $('#loading-btn').hide();  // Hide loading button after success/error
+                        $('#submit-btn').show();   // Show original submit button again
                     });
                 }
             });

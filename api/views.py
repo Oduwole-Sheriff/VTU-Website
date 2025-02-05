@@ -681,17 +681,18 @@ class TVServiceAPIView(APIView):
         print(f"Billers Code: {billers_code}, Service ID: {service_id}")
 
         action = request.data.get('action', None)
+        type_field = request.data.get('type', None)  # Fetch the 'type' field
 
         # If action is 'change', proceed to bouquet change
-        if action == 'change':
+        if action == 'change' or type_field is not None:
             bouquet_code = request.data.get('bouquet', None)
             smartcard_number = billers_code
             phone_number = request.data.get('phone_number', None)
             amount = request.data.get('amount', None)
 
             # Ensure required fields are present
-            if not bouquet_code or not smartcard_number or not phone_number:
-                return Response({"error": "Missing bouquet, smartcard number, or phone number."}, status=status.HTTP_400_BAD_REQUEST)
+            # if not bouquet_code or not smartcard_number or not phone_number:
+            #     return Response({"error": "Missing bouquet, smartcard number, or phone number."}, status=status.HTTP_400_BAD_REQUEST)
 
             # Check if user has sufficient balance
             if request.user.balance < Decimal(str(amount)):

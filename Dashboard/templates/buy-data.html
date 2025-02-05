@@ -65,7 +65,13 @@
                     <label>Amount</label>
                     <input type="text" name="amount" id="amountField" maxlength="11" minlength="2" required="" disabled/>
                 </div>                
-                <button type="submit" class="form-Btn w-100">Buy Now</button>
+                <button type="submit" class="form-Btn w-100" id="submitButton">
+                    Buy Now
+                </button>
+                <button type="button" id="loadingSpinner" class="form-Btn w-100"  style="display: none;" disabled>
+                    <span>Please Wait...<i class="fa fa-spinner fa-spin"></i></span>
+                </button>
+                
             </form>
         </div>
     </div>
@@ -76,6 +82,19 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.js"></script>
     <script>
         $(document).ready(function() {
+            // Show SweetAlert if user balance is below 50
+            {% if user_balance < 50 %}
+            Swal.fire({
+                icon: 'warning',
+                title: 'Balance Too Low',
+                text: 'Your balance is too low to make this transaction. Please top up your account.',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                // Redirect after the alert
+                window.location.href = "{% url 'index' %}";
+            });
+            {% endif %}
+            
             // Handle network circle selection
             $('.circle').click(function() {
                 var network = $(this).data('network');
@@ -93,6 +112,10 @@
             // Enable amount field before submitting
             $('#buyDataForm').submit(function(e) {
                 e.preventDefault();  // Prevent the default form submission
+
+                // Show loading spinner and change button text
+                $('#submitButton').hide(); // hide the submit button
+                $('#loadingSpinner').show();  // Show the loading spinner
 
                 // Check if the mobile number field is empty
                 var mobileNumber = $('input[name="mobile_number"]').val();
@@ -158,6 +181,8 @@
                         // Optionally reset the form
                         $('#buyDataForm')[0].reset();
                         $('#amountField').prop('disabled', true);
+                        $('#loadingSpinner').hide();
+                        $('#submitButton').show();
                     },
                     error: function(xhr, status, error) {
                         // Default error message
@@ -219,6 +244,8 @@
                             // Reset the form data if there is an error
                             $('#buyDataForm')[0].reset();
                             $('#amountField').prop('disabled', true);
+                            $('#loadingSpinner').hide();
+                            $('#submitButton').show();
                         });
                     }
                 });

@@ -2,67 +2,79 @@
 {% load static %}
 {% block content %}
 
-<div class="register">
-    <div class="dash-board-main-wrapper">
-        <div class="main-center-content-m-left center-content">
-            <div class="rts-register-area">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <!-- single login area start -->
-                            <div class="single-form-s-wrapper">
-                                <div class="head">
-                                    <h5 class="title">Electricity Bill Payment</h5>
-                                </div>
-                                <div class="body row">
-                                    <form action="#" class="px-md-3 col-sm-12">
-                                        <div class="input-wrapper">
-                                            <select name="network" class="select color-white-title-home" required="" id="id_network">
-                                                <option value="" disabled selected>Disco Name</option>
-                      
-                                                <option value="1">Ikeja Electric</option>
-                                              
-                                                <option value="2">Eko Electric</option>
-                                              
-                                                <option value="3">Abuja Electric</option>
-                                              
-                                                <option value="4">Kano Electric</option>
-                                              
-                                                <option value="5">Enugu Electric</option>
-                                              
-                                                <option value="6">Port Harcourt Electric</option>
-                                              
-                                                <option value="7">Ibadan Electric</option>
-                                              
-                                                <option value="8">Kaduna Electric</option>
-                                              
-                                                <option value="9">Jos Electric</option>
-                                              
-                                                <option value="11">Yola Electric</option>
-                                              
-                                                <option value="13">Benin Electric</option>                        
-                                              
-                                            </select>
-                                            <input type="text" placeholder="Meter number" name="mobile_number" maxlength="11" minlength="11" required="" id="id_mobile_number">
-                                            <select name="data_type" class="select color-white-title-home" id="id_data_type">
-                                                <option value="" disabled selected>MeterType</option>
-                                                <option value="VTU">Prepaid</option>
-                                                <option value="Share and Sell">Postpaid</option>
-                                            </select>
-                                            <input type="text" placeholder="Customer Number" name="mobile_number" maxlength="11" minlength="11" required="" id="id_mobile_number">
-                                            <input type="text" placeholder="Amount" name="amount" maxlength="11" minlength="2" required="" id="id_Amount">
-                                        </div>
-                                        <button class="rts-btn btn-primary">Validate</button>
-                                    </form>
-                                </div>
-                            </div>
-                            <!-- single login area end -->
-                        </div>
-                    </div>
-                </div>
+<link rel="stylesheet" href="{% static 'ElectricityCSS/style.css' %}">
+
+    <h1 class="color-white-title-home">Stay Charged: Hassle-Free Electricity Bill Payments!</h1>
+    <div class="carousel-container">
+        <div class="carousel">
+            <div class="carousel-images">
+                <img src="https://www.ikejaelectric.com/wp-content/uploads/2020/03/Ikeja-Electric.jpg" id="Ikeja-electricity" alt="Ikeja Electricity Payment" class="carousel-image">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQloSv2EA95GWteNFQ92menPxXEDm10AWIbqA&s" id="Eko-electricity" alt="Eko Electricity Payment" class="carousel-image">
+                <img src="https://ait.live/wp-content/uploads/2024/06/AIT-IMAGES-4-1.png" id="Abuja" alt="Abuja Electricity Distribution Company- AEDC" class="carousel-image">
+                <img src="https://nairadata.com.ng/wp-content/uploads/2020/07/Kano-Electric.jpg" id="KEDCO" alt="KEDCO - Kano Electric" class="carousel-image">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5XUXI5rFKP0fkues4k_LQ0FfPRxoDvWR5YA&s" id="PHED" alt="PHED - Port Harcourt Electric" class="carousel-image">
+                <img src="https://pbs.twimg.com/profile_images/898118928404295681/qqSdt2Ir_400x400.jpg" id="Jos" alt="Jos Electric - JED" class="carousel-image">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNG7zor5MbIm3di44lL51qAIMQIt-bqrlPZA&s" id="Kaduna" alt="Kaduna Electric - KAEDCO" class="carousel-image">
+                <img src="https://pbs.twimg.com/profile_images/1162387741910454275/WF1aMEiU_400x400.jpg" id="Enugu" alt="Enugu Electric - EEDC" class="carousel-image">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnpU2-RwCZVmMLVlj-hFd_k6sBnxzemkD__w&s" id="IBEDC" alt="IBEDC - Ibadan Electricity Distribution Company" class="carousel-image">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCZ9oJUd7dxVJrQRBgQv5LWnHE5QjYgrylXA&s" id="Benin" alt="Benin Electricity - BEDC" class="carousel-image">
+                <img src="https://media.licdn.com/dms/image/v2/C4E0BAQHO6lxDRjwQIQ/company-logo_200_200/company-logo_200_200/0/1670230041021?e=2147483647&v=beta&t=Y9Qj5dCj82KMLNblF1TX2Ux4dUwhUWtObjRij5MzKLg" id="Aba" alt="Aba Electric Payment - ABEDC" class="carousel-image">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdetOBuUodzK4QU13Kmfnr9RRmaKe2ap91tQ&s" id="Yola" alt="Yola Electric Disco Payment - YEDC" class="carousel-image">
             </div>
+            <span class="carousel-btn prev-btn">&#10094;</span>
+            <span class="carousel-btn next-btn">&#10095;</span>
+        </div>
+        <div class="carousel-dots">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
         </div>
     </div>
-</div>
+    <!-- Form Below the Carousel -->
+    <div class="form-container">
+        <article class="formHeading" style="text-align: center;">
+            <p>Pay Your Electricity Bill With BigSheriffData</p>
+            <h2 class="image-name"></h2>
+        </article>
+        <form id="form">
+            <div class="form-group">
+                <label for="serviceID">Electricity:</label>
+                <input type="text" placeholder="Electricity Service" id="serviceID" name="serviceID" readonly>
+            </div>
+            <div class="form-group">
+                <label for="meter-number">Meter Number:</label>
+                <input type="text" placeholder="Verify Your Meter Number" id="meter-number" name="meter-number" required>
+            </div>
+            <div class="form-group">
+                <label for="meter-type">Meter Type:</label>
+                <select name="data_type" id="gloDataType">
+                <option value="" disabled selected>Select Meter Type</option>
+                <option value="Prepaid">Prepaid</option>
+                <option value="Postpaid">Postpaid</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="phone-number">Phone Number:</label>
+                <input type="text" placeholder="Enter Mobile Number" id="phone-number" name="phone-number" required>
+            </div>
+            <div class="form-group">
+                <label for="amount">Amount:</label>
+                <input type="number" placeholder="Amount" id="amount" name="amount" required>
+            </div>
+            <button type="submit">Pay Now</button>
+        </form>
+    </div>
+
+    <script src="{% static 'ElectricityCSS/script.js' %}"></script>
+
 
 {% endblock content %}

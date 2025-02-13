@@ -1,0 +1,249 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  h1 {
+    font-size: 28px;
+    color: #444;
+    margin-top: 70px;
+    text-align: center;
+ }
+  
+  .carousel-container {
+    position: relative;
+    width: 55%;
+    margin: auto;
+    margin-top: 20px;
+    overflow: hidden;
+  }
+  
+  .carousel {
+    display: flex;
+    transition: transform 1s ease-in-out;
+  }
+  
+  .carousel-images {
+    display: flex;
+    transition: transform 1s ease-in-out;
+    gap: 20px;
+  }
+  
+  .carousel-image {
+    width: 100%;
+    max-width: 200px; /* Initial size of small images */
+    height: auto;
+    display: block;
+    transition: transform 0.3s ease, opacity 0.3s ease, filter 0.3s ease; /* Add filter transition */
+    opacity: 0.7;
+    object-fit: cover; /* Ensure images cover the space properly */
+  }
+  
+  .carousel-image.active {
+    transform: scale(1.2); /* Zoom effect for the active image */
+    opacity: 1;
+    filter: brightness(1.2); /* Optional: Add a slight brightness to active images */
+  }
+  
+  /* Button Styling */
+  .carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 10;
+    font-size: 24px;
+    border-radius: 50%;
+    opacity: 0.7;
+  }
+  
+  .carousel-btn:hover {
+    opacity: 1;
+  }
+  
+  .prev-btn {
+    left: 10px;
+  }
+  
+  .next-btn {
+    right: 10px;
+  }
+  
+  /* Dots for image indicators */
+  .carousel-dots {
+    text-align: center;
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+    gap: 3px;
+    flex-wrap: wrap;
+  }
+  
+  .dot {
+    height: 10px;
+    width: 10px;
+    margin: 0 5px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .dot.active {
+    background-color: #717171;
+    transform: scale(1.2); /* Enlarge the active dot */
+  }
+  
+  /* Mobile responsive styling */
+  @media (max-width: 768px) {
+    .carousel-container {
+      width: 100%;
+    }
+  
+    .carousel-image {
+      max-width: 150px;
+    }
+  }
+  
+  /* Initially hide the form */
+  .form-container {
+    margin-top: 40px;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    width: 400px;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    animation: fadeInForm 0.5s ease-out;
+  }
+  
+  /* Animation for the form fade-in */
+  @keyframes fadeInForm {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+  }
+  
+  /* When the form is shown (added with JS class) */
+  .form-container.show {
+    display: block; /* Show the form */
+    opacity: 1;
+    transform: translateY(0); /* Slide in to its original position */
+  }
+  
+  .formHeading {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .formHeading p {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 15px;
+  }
+  
+  .formHeading h2 {
+    font-size: 24px;
+    color: #333;
+  }
+  
+  /* Form title (name of the image) */
+  h2.image-name {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+    font-weight: 600;
+  }
+  
+  /* Form fields */
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #444;
+  }
+  
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    padding: 15px;
+    color: rgb(73, 118, 150);
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+  }
+  
+  .form-group input:focus,
+  .form-group select:focus {
+    border-color: #4CAF50;
+    outline: none;
+  }
+  
+  button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #45a049;
+  }
+  
+  /* Form container responsiveness */
+  @media (max-width: 768px) {
+    .form-container {
+        width: 90%;
+        max-width: 400px;
+    }
+
+  }
+  
+  @media (max-width: 480px) {
+    .form-container {
+      padding: 25px;
+      width: 100%;
+      max-width: 350px;
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 50px;
+    }
+  }

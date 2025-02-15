@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from .models import CustomUser, Transaction
-from .forms import BuyAirtimeForm, BuyDataForm, TVServiceForm
+from .forms import BuyAirtimeForm, BuyDataForm, TVServiceForm, ElectricityBillForm
 from django.http import JsonResponse
 from django.core.paginator import Paginator
 from django.db import transaction as db_transaction
@@ -138,33 +138,87 @@ def ManageSubscription(request):
     return render(request, 'manage-subscription.html')
 
 @login_required
-def BillPayment(request):
-    return render(request, 'bill-payment.html')
+def ElectricityBillPayment(request):
+    user = request.user  # Get the logged-in user
+
+    if request.method == 'POST':
+        form = ElectricityBillForm(request.POST)
+
+        if form.is_valid():
+            electricity_bill = form.save(commit=False)  # Don’t save yet to perform additional actions
+
+            amount = form.cleaned_data['amount']
+
+            # Check if the user's balance is sufficient to pay for the electricity bill
+            if user.balance < amount:
+                return JsonResponse({'status': 'error', 'message': "Insufficient balance to complete the payment."})
+
+            # Save the electricity bill purchase record
+            electricity_bill.save()
+
+            # Deduct the amount from the user's balance
+            user.balance -= amount
+            user.save()  # Save the updated balance
+
+            # Log the transaction for the electricity bill payment
+            Transaction.objects.create(
+                user=user,
+                transaction_type='electricity_payment',
+                amount=amount,
+                recipient=None,  # No recipient for electricity payment
+                description=f"Payment for electricity bill with meter number {electricity_bill.meter_number}"
+            )
+
+            # Return a success response
+            return JsonResponse({'status': 'success', 'message': 'Payment successful!'})
+
+    else:
+        form = ElectricityBillForm()
+
+    # Render the form in the template
+    return render(request, 'bill-payment.html', {'form': form, 'user_balance': user.balance})
 
 @login_required
 def TVSubscription(request):
+    user = request.user  # Get the logged-in user
+
     if request.method == 'POST':
         form = TVServiceForm(request.POST)
         
         # Validate the form first
         if form.is_valid():
             tv_service_instance = form.save(commit=False)  # Don't save to DB yet
+
+            # Get the subscription amount from the form
+            amount = form.cleaned_data['amount']
+
+            # Check if the user's balance is sufficient to pay for the TV service
+            if user.balance < amount:
+                return JsonResponse({'status': 'error', 'message': "Insufficient balance to complete the subscription."}, status=400)
+
             try:
                 # Call the process_purchase method to check if balance is sufficient and deduct the amount
                 tv_service_instance.process_purchase()
 
-                # After successful processing, return a success response (simulating a transaction)
-                # Optionally, you can simulate a transaction log here
+                # After successful processing, save the subscription to the database
+                tv_service_instance.save()
+
+                # Deduct the amount from the user's balance
+                user.balance -= amount
+                user.save()  # Save the updated balance
+
+                # Log the transaction for the TV service subscription
                 Transaction.objects.create(
                     user=user,
-                    transaction_type='airtime_purchase',
+                    transaction_type='tv_subscription',
                     amount=amount,
-                    recipient=None,  # No recipient in airtime purchase
-                    description=f"Purchase of {buy_airtime.data_type} airtime for {buy_airtime.mobile_number}"
+                    recipient=None,  # No recipient for TV subscription
+                    description=f"Subscription to TV service {tv_service_instance.service_name} (ID: {tv_service_instance.id})"
                 )
 
-                # Return the response as JSON
-                return JsonResponse(Transaction, {'status': 'success'}, status=400)
+                # Return a success response
+                return JsonResponse({'status': 'success', 'message': 'Subscription successful!'})
+
             except ValidationError as e:
                 # Return an error response in case of insufficient balance or invalid amount
                 error_data = {
@@ -177,7 +231,8 @@ def TVSubscription(request):
             return JsonResponse({'status': 'error', 'message': 'Form is invalid'}, status=400)
     else:
         form = TVServiceForm()
-    
+
+    # Render the form in the template
     return render(request, 'tv-subscription.html', {'form': form})
 
 

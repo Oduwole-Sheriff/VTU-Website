@@ -1,5 +1,5 @@
 from django import forms
-from .models import CustomUser, BuyAirtime, BuyData, TVService
+from .models import CustomUser, BuyAirtime, BuyData, TVService, ElectricityBill
 from django.core.exceptions import ValidationError
 
 class CustomUserForm(forms.ModelForm):
@@ -138,3 +138,22 @@ class TVServiceForm(forms.ModelForm):
             raise ValidationError("Insufficient balance to complete the purchase.")
         
         return cleaned_data
+
+
+class ElectricityBillForm(forms.ModelForm):
+    class Meta:
+        model = ElectricityBill
+        fields = ['serviceID', 'meter_number', 'meter_type', 'phone_number', 'amount']
+        widgets = {
+            'serviceID': forms.TextInput(attrs={'id': 'serviceID', 'readonly': 'readonly'}),
+            'meter_number': forms.TextInput(attrs={'id':'meter_number','placeholder': 'Verify Your Meter Number'}),
+            'phone_number': forms.TextInput(attrs={'placeholder': 'Enter Mobile Number'}),
+            'amount': forms.NumberInput(attrs={'placeholder': 'Amount'}),
+            'meter_type': forms.Select(attrs={'id': 'meter-type'})
+        }
+
+    def clean_amount(self):
+        amount = self.cleaned_data.get('amount')
+        if amount <= 0:
+            raise forms.ValidationError("Amount must be greater than zero.")
+        return amount

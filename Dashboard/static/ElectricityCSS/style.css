@@ -36,6 +36,7 @@
     display: flex;
     transition: transform 1s ease-in-out;
     gap: 20px;
+    height: 240px;
   }
   
   .carousel-image {
@@ -191,6 +192,7 @@
     margin-bottom: 8px;
     font-weight: bold;
     color: #444;
+    font-size: 16px;
   }
   
   .form-group input,
@@ -208,6 +210,11 @@
   .form-group select:focus {
     border-color: #4CAF50;
     outline: none;
+  }
+
+  .error {
+    color: red;
+    font-size: 12px;
   }
   
   button[type="submit"] {
@@ -233,6 +240,9 @@
         width: 90%;
         max-width: 400px;
     }
+    .carousel-images {
+      height: 220px;
+    }
 
   }
   
@@ -245,5 +255,8 @@
     h1 {
       font-size: 24px;
       margin-bottom: 50px;
+    }
+    .carousel-images {
+      height: 200px;
     }
   }

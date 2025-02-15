@@ -33,7 +33,7 @@ class VTPassElectricity:
             print(response.text)
             return None
 
-    def Prepaid_meter_payment(self, payload):
+    def Meter_payment(self, payload):
         url = f"{self.base_url}/api/pay"
         print("POST URL: " + url)
         
@@ -115,10 +115,10 @@ if __name__ == "__main__":
     # Call the verify smartcard number method to make the payment request
     verify_meter_number = api.verify_meter_number(data)
 
-    # Call the Prepaid_meter_payment method to make the payment request
-    Prepaid_meter_payment = api.Prepaid_meter_payment(payload)
+    # Call the Meter_payment method to make the payment request
+    Meter_payment = api.Meter_payment(payload)
 
-     # Call the Prepaid_meter_payment method to make the payment request
+     # Call the Meter_payment method to make the payment request
     Postpaid_meter_payment = api.Postpaid_meter_payment(postpay)
 
 

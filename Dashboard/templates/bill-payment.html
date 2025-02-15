@@ -8,7 +8,7 @@
     <div class="carousel-container">
         <div class="carousel">
             <div class="carousel-images">
-                <img src="https://www.ikejaelectric.com/wp-content/uploads/2020/03/Ikeja-Electric.jpg" id="Ikeja-electricity" alt="Ikeja Electricity Payment" class="carousel-image">
+                <img src="https://www.ikejaelectric.com/wp-content/uploads/2020/03/Ikeja-Electric.jpg" id="Ikeja-electric" alt="Ikeja Electricity Payment" class="carousel-image">
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQloSv2EA95GWteNFQ92menPxXEDm10AWIbqA&s" id="Eko-electricity" alt="Eko Electricity Payment" class="carousel-image">
                 <img src="https://ait.live/wp-content/uploads/2024/06/AIT-IMAGES-4-1.png" id="Abuja" alt="Abuja Electricity Distribution Company- AEDC" class="carousel-image">
                 <img src="https://nairadata.com.ng/wp-content/uploads/2020/07/Kano-Electric.jpg" id="KEDCO" alt="KEDCO - Kano Electric" class="carousel-image">
@@ -45,36 +45,133 @@
             <p>Pay Your Electricity Bill With BigSheriffData</p>
             <h2 class="image-name"></h2>
         </article>
-        <form id="form">
+        <form id="form" method="POST">
+            {% csrf_token %} 
             <div class="form-group">
-                <label for="serviceID">Electricity:</label>
-                <input type="text" placeholder="Electricity Service" id="serviceID" name="serviceID" readonly>
+                <label for="{{ form.serviceID.id_for_label }}">Electricity:</label>
+                {{ form.serviceID }}
             </div>
+            
             <div class="form-group">
-                <label for="meter-number">Meter Number:</label>
-                <input type="text" placeholder="Verify Your Meter Number" id="meter-number" name="meter-number" required>
+                <label for="{{ form.meter_number.id_for_label }}">Meter Number:</label>
+                {{ form.meter_number }}
+                {% for error in form.meter_number.errors %}
+                    <div class="error">{{ error }}</div>
+                {% endfor %}
             </div>
+            
             <div class="form-group">
-                <label for="meter-type">Meter Type:</label>
-                <select name="data_type" id="gloDataType">
-                <option value="" disabled selected>Select Meter Type</option>
-                <option value="Prepaid">Prepaid</option>
-                <option value="Postpaid">Postpaid</option>
+                <label for="{{ form.meter_type.id_for_label }}">Meter Type:</label>
+                <select name="meter_type" id="meter-type" required>
+                    <option value="" selected disabled>Select Meter Type</option>
+                    <option value="Prepaid">Prepaid</option>
+                    <option value="Postpaid">Postpaid</option>
                 </select>
             </div>
+        
             <div class="form-group">
-                <label for="phone-number">Phone Number:</label>
-                <input type="text" placeholder="Enter Mobile Number" id="phone-number" name="phone-number" required>
+                <label for="{{ form.phone_number.id_for_label }}">Phone Number:</label>
+                {{ form.phone_number }}
             </div>
+        
             <div class="form-group">
-                <label for="amount">Amount:</label>
-                <input type="number" placeholder="Amount" id="amount" name="amount" required>
+                <label for="{{ form.amount.id_for_label }}">Amount:</label>
+                {{ form.amount }}
             </div>
+        
             <button type="submit">Pay Now</button>
         </form>
+        
     </div>
 
     <script src="{% static 'ElectricityCSS/script.js' %}"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        // Function to check the meter number length
+        function checkAndValidateForm() {
+            // Get the values from the input fields
+            var serviceID = $('#serviceID').val();  // Assuming 'id_serviceID' is the ID of the serviceID input field
+            var meterNumber = $('#meter_number').val();  // Assuming 'id_meter_number' is the ID of the meter number input field
+            var meterType = $('#meter-type').val();  // Assuming 'meter-type' is the ID of the meter type input field
+
+            // Check if the meter number has at least 10 characters, and other fields are filled
+            if (meterNumber.length >= 10 && serviceID && meterType) {
+                // Trigger the validation call to the backend
+                $.ajax({
+                    url: "/api/electricity-bill/",  // Validation endpoint
+                    type: 'POST',
+                    data: {
+                        serviceID: serviceID,
+                        meter_number: meterNumber,
+                        meter_type: meterType,
+                        csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val() // Include CSRF token
+                    },
+                    success: function(response) {
+                        if (response.valid) {
+                            // Validation passed
+                            $('#submit-button').prop('disabled', false);  // Enable the submit button
+                        } else {
+                            // Validation failed
+                            $('#submit-button').prop('disabled', true);  // Disable the submit button
+                            alert('Validation failed: ' + response.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Validation failed: ' + error);
+                        $('#submit-button').prop('disabled', true);  // Disable the submit button in case of an error
+                    }
+                });
+            } else {
+                // Disable submit button if conditions are not met
+                $('#submit-button').prop('disabled', true);
+            }
+        }
+
+        // Set up event listeners on the input fields
+        $('#id_serviceID, #id_meter_number, #meter-type').on('input', function() {
+            checkAndValidateForm();  // Check and validate whenever there is an input change
+        });
+
+        $('#form').submit(function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Disable the submit button to prevent multiple submissions
+            $('button[type="submit"]').prop('disabled', true);
+            
+            // Gather the form data
+            var formData = $(this).serialize();
+
+            // Use AJAX to submit the form data
+            $.ajax({
+                url: "/api/electricity-bill/",  // Replace with your actual view URL
+                type: 'POST',
+                data: formData,
+                success: function(response) {
+                    // Handle success response
+                    if(response.success) {
+                        alert('Payment successfully processed!');
+                    } else {
+                        alert('There was an error: ' + response.message);
+                    }
+                    
+                    // Re-enable the submit button
+                    $('button[type="submit"]').prop('disabled', false);
+                },
+                error: function(xhr, status, error) {
+                    // Handle error
+                    alert('Something went wrong: ' + error);
+
+                    // Re-enable the submit button
+                    $('button[type="submit"]').prop('disabled', false);
+                }
+            });
+        });
+    });
+</script>
+
 
 
 {% endblock content %}

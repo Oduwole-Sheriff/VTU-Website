@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 from .forms import CustomUserForm
-from .models import CustomUser, Transaction, WebsiteConfiguration, BuyAirtime, BuyData, TVService
+from .models import CustomUser, Transaction, WebsiteConfiguration, BuyAirtime, BuyData, TVService, ElectricityBill
 
 CustomUser = get_user_model()
 
@@ -193,5 +193,30 @@ class TVServiceAdmin(admin.ModelAdmin):
 
     # Optional: Limit the number of displayed records per page
     list_per_page = 20  # Set how many records you want to display per page
+
+@admin.register(ElectricityBill)
+class ElectricityBillAdmin(admin.ModelAdmin):
+    list_display = ('user', 'meter_number', 'serviceID', 'phone_number', 'amount', 'transaction_id', 'created_at', 'updated_at')
+    list_filter = ('meter_type', 'user')  # Add filters to help sort by meter type or user
+    search_fields = ('meter_number', 'serviceID', 'phone_number', 'user__username', 'transaction_id')  # Add search by meter number, service ID, phone number, or user’s username
+    ordering = ('-created_at',)  # Order by created_at descending by default
+
+    # Fields to show in the detailed view
+    fieldsets = (
+        (None, {
+            'fields': ('meter_number', 'serviceID', 'phone_number', 'meter_type', 'amount', 'user', 'data_response', 'transaction_id')
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+    readonly_fields = ('created_at', 'updated_at')  # Make created_at and updated_at fields read-only
+
+    def save_model(self, request, obj, form, change):
+        """ Override save_model to perform any additional processing before saving """
+        # You can add custom save logic here
+        super().save_model(request, obj, form, change)
+
 
 admin.site.register(CustomUser, CustomUserAdmin)

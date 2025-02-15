@@ -13,14 +13,14 @@ from rest_framework.permissions import IsAuthenticated
 
 from decimal import Decimal
 
-from api.serializer import RegisterSerializer, LoginSerializer, CustomUserSerializer, DepositSerializer, WithdrawSerializer, TransferSerializer, TransactionSerializer, AccountDetailsSerializer, BuyAirtimeSerializer, BuyDataSerializer, TVServiceSerializer
+from api.serializer import RegisterSerializer, LoginSerializer, CustomUserSerializer, DepositSerializer, WithdrawSerializer, TransferSerializer, TransactionSerializer, AccountDetailsSerializer, BuyAirtimeSerializer, BuyDataSerializer, TVServiceSerializer, ElectricityBillSerializer
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
 
 from django.contrib.auth import authenticate, login
-from Dashboard.models import CustomUser, Transaction, TVService
+from Dashboard.models import CustomUser, Transaction, TVService, ElectricityBill
 from django.db import IntegrityError
 from django.http import JsonResponse
 from rest_framework.exceptions import ValidationError
@@ -29,12 +29,14 @@ from django.db import transaction as db_transaction
 
 from RestAPI.AirtimeAPI import VTPassAPI
 from RestAPI.DataAPI import VTPassDataAPI
-from RestAPI.TVSubscriptionAPI import  VTPassTVSubscription
+from RestAPI.TVSubscriptionAPI import  VTPassTVSubscription   
+from RestAPI.ElectricityAPI import  VTPassElectricity 
 import uuid
 from datetime import datetime
 import logging
 import json
 import random
+from datetime import datetime as Mdate
 
 from django.contrib.auth import get_user_model
 User = get_user_model()  # Get the custom user model
@@ -366,7 +368,7 @@ class BuyAirtimeView(APIView):
 
                         Transaction.objects.create(
                             user=request.user,
-                            transaction_type='airtime_purchase',
+                            transaction_type='airtime-purchase',
                             amount=amount,
                             status='success',
                             product_name=product_name,
@@ -442,7 +444,7 @@ class BuyAirtimeView(APIView):
         # Create and save the failed transaction in the database
         Transaction.objects.create(
             user=self.request.user,
-            transaction_type='airtime_purchase',
+            transaction_type='airtime-purchase',
             amount=self.request.data.get('amount'),
             status='failed',
             product_name=product_name,
@@ -494,7 +496,7 @@ class BuyDataAPIView(APIView):
                     # Create a transaction for this data purchase (even before calling external API)
                     transaction = Transaction.objects.create(
                         user=request.user,
-                        transaction_type='data_purchase',
+                        transaction_type='data-purchase',
                         amount=buy_data_instance.amount,
                         status='pending',  # Mark as pending initially
                         description=f"Data purchase for {buy_data_instance.data_plan}",
@@ -705,7 +707,7 @@ class TVServiceAPIView(APIView):
             # Create the transaction record before making the API call
             transaction = Transaction.objects.create(
                 user=request.user,
-                transaction_type='TV_Subscription',
+                transaction_type='TV-Subscription',
                 amount=Decimal(str(amount)),
                 description=f"TV Subscription for bouquet {bouquet_code}",
                 status="Pending",  # Mark as "Pending" initially
@@ -867,6 +869,196 @@ class TVServiceAPIView(APIView):
         if not serializer.is_valid():
             return Response({"error": "Validation failed", "details": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
+
+class ElectricityBillCreateView(APIView):
+    permission_classes = [IsAuthenticated] 
+    """
+    API View for creating an Electricity Bill, deducting user balance, and creating a corresponding transaction.
+    """
+
+    def post(self, request, *args, **kwargs):
+        """
+        Handle POST request to create an electricity bill, validate balance, and process transaction.
+        """
+
+        meter_number = request.data.get('meter_number')
+        service_id = request.data.get('serviceID')
+        meter_type = request.data.get('meter_type')
+        phone = request.data.get('phone_number')
+        amount = request.data.get('amount')
+    
+        # Ensure that we have the full and correct values
+        if meter_number and service_id and meter_type:
+            # If data exists, strip whitespaces and process
+            data = {
+                "billersCode": meter_number.strip(),
+                "serviceID": service_id.strip().lower(),
+                'type': meter_type.strip().lower()
+            }
+
+            # Log final data
+            print("Service Data for Verification:", data)
+        
+
+        # Ensure that billers_code is not None before trying to strip
+        if meter_number:
+            meter_number = meter_number.strip()
+        else:
+            return Response({"error": "Meter Number is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Ensure service_id is not None before trying to strip
+        if service_id:
+            service_id = service_id.strip().lower()
+        else:
+            return Response({"error": "Service ID is required."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if meter_type:
+            meter_type = meter_type.strip().lower()
+        else:
+            return Response({"error": "Meter Type is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Now let's create the serializer data
+        data = {
+            "billersCode": meter_number.strip(),
+            "serviceID": service_id.strip().lower(),
+            'type': meter_type.strip().lower()
+        }
+       
+        # Initialize the serializer with the request data
+        serializer = ElectricityBillSerializer(data=request.data, context={'request': request})
+
+        if serializer.is_valid():
+            try:
+                with db_transaction.atomic():
+                    # Extract the amount from the validated data
+                    amount = serializer.validated_data.get('amount', 0)
+                    amount_decimal = Decimal(str(amount))  # Convert to Decimal
+
+                    # Check if the user has enough balance
+                    if request.user.balance < amount_decimal:
+                        raise ValidationError({"detail": "Insufficient balance to complete this purchase."})
+
+                    # Save the ElectricityBill instance (without deducting balance yet)
+                    Electricity_Bill = serializer.save(user=request.user)
+
+                    # Create a transaction for the electricity bill purchase (status 'pending' initially)
+                    transaction = Transaction.objects.create(
+                        user=request.user,
+                        transaction_type='Electricity-Bill',
+                        amount=Decimal(str(amount)),
+                        status='pending',  # Pending status initially
+                        description=f"Payment for electricity bill with Meter Number {Electricity_Bill.meter_number}",
+                        product_name=Electricity_Bill.serviceID,
+                        unique_element=Electricity_Bill.meter_number,
+                        transaction_id=None
+                    )
+
+                    # Deduct balance from the user's account
+                    user = Electricity_Bill.process_purchase()  # This handles balance deduction
+
+                    remaining_balance = user.balance
+                    print(f"Balance after deduction: {remaining_balance}")
+
+                    api = VTPassElectricity(
+                        base_url="https://sandbox.vtpass.com",
+                        auth_token="Token be76014119dd44b12180ab93a92d63a2",  # Replace with your actual token
+                        secret_key="SK_873dc5215f9063f6539ec2249c8268bb788b3150386"  # Replace with your actual secret key
+                    )
+
+                    # Convert Decimal to float or string for JSON serialization
+                    amount = float(amount_decimal)  # Or str(amount_decimal)
+                    date_time_format = Mdate.now().strftime("%Y%m%d%H%M%S")
+                    payload = {
+                        'request_id': str(date_time_format) + create_random_id(),
+                        "serviceID": service_id,
+                        "billersCode": meter_number,
+                        "variation_code": meter_type,
+                        'amount': amount,
+                        "phone": phone 
+                    }
+
+                    Meter_payment = api.Meter_payment(payload)
+
+                    # Save the API response in the transaction's `data_response` field
+                    transaction.data_response = Meter_payment  # Save the response here
+                    transaction.transaction_id = Meter_payment.get("requestId", 'N/A')
+
+                    # Regardless of transaction success, create the TVService instance
+                    electricity_bill = ElectricityBill.objects.create(
+                        user=request.user,
+                        serviceID=service_id,  # For example, assuming the service is DSTV (replace with actual logic)
+                        meter_number=meter_number,
+                        amount=Decimal(str(amount)),
+                        meter_type= meter_type,
+                        phone_number=phone,
+                        data_response=Meter_payment,  # Save the response
+                        transaction_id=None,
+                    )
+
+                    electricity_bill.transaction_id = Meter_payment.get("requestId", 'N/A')
+                    electricity_bill.save()  # Don't forget to save it
+
+
+                    if Meter_payment.get("status") == "success":
+                        # If the API response is successful, mark the transaction as completed
+                        transaction.status = 'completed'
+                        transaction.save()
+
+                        # Return success response with remaining balance and other details
+                        return Response({
+                            'message': 'Electricity bill payment successful!',
+                            'remaining_balance': str(remaining_balance),
+                            'transaction_id': transaction.transaction_id,
+                        }, status=status.HTTP_201_CREATED)
+
+                    else:
+                        # If the API fails, log the failure and revert the balance
+                        print(f"API failed, reverting balance. Original user balance: {remaining_balance}, Deducted amount: {amount_decimal}")
+
+                        # Revert the deducted balance
+                        user.balance += amount_decimal
+                        user.save()
+
+                        # Mark the transaction as failed
+                        transaction.status = 'failed'
+                        transaction.save()
+
+                        print(f"Balance after reversion: {user.balance}")
+
+                        # Return error response due to API failure
+                        return Response({
+                            'error': 'Transaction failed with the external API.',
+                            'details': Meter_payment
+                        }, status=status.HTTP_400_BAD_REQUEST)
+
+            except ValidationError as e:
+                # Handle validation error and ensure balance reversion happens if necessary
+                print(f"Error during transaction: {e}")
+                return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        # If the serializer is invalid, return the validation errors
+        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+        try:
+            # Call the VTPass API to verify the meter number
+            api = VTPassElectricity(
+                base_url="https://sandbox.vtpass.com",
+                auth_token="Token be76014119dd44b12180ab93a92d63a2",  # Replace with your actual token
+                secret_key="SK_873dc5215f9063f6539ec2249c8268bb788b3150386"  # Replace with your actual secret key
+            )
+            verify_result = api.verify_meter_number(data)
+
+            if verify_result and verify_result.get('status') == 'Open':
+                return Response({"valid": True, "message": "Validation successful."}, status=status.HTTP_200_OK)
+            else:
+                return Response({"valid": False, "message": "Meter number or service ID is invalid."}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({"valid": False, "message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+       
+
+        
+    
 
 
 

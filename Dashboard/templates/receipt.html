@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt</title>
+</head>
+<body>
+    <h1>Transaction Receipt</h1>
+    
+    <div id="receipt-details"></div>
+
+    <a href="/">Go back</a>
+
+    <script>
+        // Retrieve the receipt data from localStorage
+        const receiptData = JSON.parse(localStorage.getItem('receiptData'));
+
+        if (receiptData) {
+            // Display the transaction details dynamically
+            const receiptDetails = `
+                <p><strong>Transaction ID:</strong> ${receiptData.transactions.transactionId}</p>
+                <p><strong>Product Name:</strong> ${receiptData.transactions.product_name}</p>
+                <p><strong>Amount Paid:</strong> ${receiptData.transactions.amount}</p>
+                <p><strong>Total Amount:</strong> ${receiptData.transactions.total_amount}</p>
+                <p><strong>Transaction Status:</strong> ${receiptData.transactions.status}</p>
+                <p><strong>Payment Date:</strong> ${new Date(receiptData.transaction_date).toLocaleString()}</p>
+                <p><strong>Email:</strong> ${receiptData.transactions.email}</p>
+                <p><strong>Phone:</strong> ${receiptData.transactions.phone}</p>
+            `;
+            document.getElementById('receipt-details').innerHTML = receiptDetails;
+        } else {
+            // If no receipt data is found, show an error message
+            document.getElementById('receipt-details').innerHTML = "<p>No receipt data available.</p>";
+        }
+    </script>
+</body>
+</html>

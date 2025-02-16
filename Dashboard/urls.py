@@ -9,6 +9,7 @@ urlpatterns = [
     path('airtimeTopUp/', views.BuyAirtime, name='airtime-topUp'),
     path('billpayment/', views.ElectricityBillPayment, name='bill_payment'),
     path('cableSubscription/', views.TVSubscription, name='cable_subscription'),
+    path('receipt/', views.receipt, name='receipt'),
     path('manageSubscription/', views.ManageSubscription, name='manage_subscription'),
 
     path('dataCard/', views.BuyDataCard, name='buy_dataCard'),

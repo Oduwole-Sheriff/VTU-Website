@@ -217,7 +217,8 @@
     font-size: 12px;
   }
   
-  button[type="submit"] {
+  button[type="submit"],
+  #loading-btn {
     background-color: #4CAF50;
     color: white;
     padding: 15px;
@@ -259,4 +260,32 @@
     .carousel-images {
       height: 200px;
     }
+  }
+
+/* Customize the 'View Receipt' button */
+.swal-view-receipt-button {
+  background-color: #28a745; /* Green */
+  color: white;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+}
+
+  /* Optional: Customize the Cancel button */
+  .swal-cancel-button {
+    background-color: #dc3545; /* Red */
+    color: white;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+
+  /* Hover effects */
+  .swal-view-receipt-button:hover {
+    background-color: #218838; /* Darker green */
+  }
+
+  .swal-cancel-button:hover {
+    background-color: #c82333; /* Darker red */
   }

@@ -999,16 +999,18 @@ class ElectricityBillCreateView(APIView):
                     electricity_bill.save()  # Don't forget to save it
 
 
-                    if Meter_payment.get("status") == "success":
+                    if Meter_payment.get("content", {}).get("transactions", {}).get("status") == "delivered":
                         # If the API response is successful, mark the transaction as completed
                         transaction.status = 'completed'
                         transaction.save()
 
                         # Return success response with remaining balance and other details
                         return Response({
+                            'success': True,
                             'message': 'Electricity bill payment successful!',
                             'remaining_balance': str(remaining_balance),
                             'transaction_id': transaction.transaction_id,
+                            "content": Meter_payment.get('content')
                         }, status=status.HTTP_201_CREATED)
 
                     else:
@@ -1027,17 +1029,16 @@ class ElectricityBillCreateView(APIView):
 
                         # Return error response due to API failure
                         return Response({
+                            'success': False,
                             'error': 'Transaction failed with the external API.',
-                            'details': Meter_payment
-                        }, status=status.HTTP_400_BAD_REQUEST)
+                            'details':Meter_payment.get('content'),
+                            'message': Meter_payment.get("response_description")
+                        }, status=status.HTTP_200_OK)
 
             except ValidationError as e:
                 # Handle validation error and ensure balance reversion happens if necessary
                 print(f"Error during transaction: {e}")
                 return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-        # If the serializer is invalid, return the validation errors
-        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
         try:
             # Call the VTPass API to verify the meter number
@@ -1048,14 +1049,30 @@ class ElectricityBillCreateView(APIView):
             )
             verify_result = api.verify_meter_number(data)
 
-            if verify_result and verify_result.get('status') == 'Open':
-                return Response({"valid": True, "message": "Validation successful."}, status=status.HTTP_200_OK)
-            else:
-                return Response({"valid": False, "message": "Meter number or service ID is invalid."}, status=status.HTTP_200_OK)
+            # Check if the result is valid and if the status is 'Open'
+            if verify_result:
+                # Check if there is an error in the content
+                content = verify_result.get('content', {})
+                if content.get('error'):
+                    return Response({
+                        "valid": False,
+                        "message": content.get('error'),  # Show the error message from the content
+                        "content": content
+                    }, status=status.HTTP_200_OK)
+                else:
+                    # If there is no error, return a successful response
+                    return Response({
+                        "valid": True,
+                        "message": "Validation successful.",
+                        "content": content
+                    }, status=status.HTTP_200_OK)
 
         except Exception as e:
-            return Response({"valid": False, "message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-       
+            return Response({
+                "valid": False,
+                "message": str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
         
     

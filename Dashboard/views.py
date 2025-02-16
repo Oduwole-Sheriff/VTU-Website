@@ -235,6 +235,10 @@ def TVSubscription(request):
     # Render the form in the template
     return render(request, 'tv-subscription.html', {'form': form})
 
+@login_required
+def receipt(request):
+    return render(request, 'receipt.html')
+
 
 @login_required
 def BuyDataCard(request):

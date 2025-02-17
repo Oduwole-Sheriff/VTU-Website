@@ -92,7 +92,7 @@ class Transaction(models.Model):
         ('airtime_purchase', 'Airtime Purchase'),  # Airtime purchase type
         ('data_purchase', 'Data Purchase'),  # Data purchase type
         ('TV_Subscription', 'TV SUBSCRIPTION'),  # TV SERVICE SUBSCRIPTION
-        ('ElectricityBill', 'Electricity Bill'),  # ElectricityBill Payment
+        ('Electricity_Bill', 'Electricity Bill'),  # ElectricityBill Payment
     )
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -323,7 +323,7 @@ class ElectricityBill(models.Model):
     meter_type = models.CharField(max_length=50, choices=[('Prepaid', 'Prepaid'), ('Postpaid', 'Postpaid')])
     phone_number = models.CharField(max_length=20)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='ElectricityBill')
+    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='Electricity_Bill')
     data_response = models.JSONField(null=True, blank=True)
     transaction_id = models.CharField(max_length=255, blank=True, null=True, default=None)
     created_at = models.DateTimeField(auto_now_add=True, null=True)

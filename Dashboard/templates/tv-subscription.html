@@ -112,19 +112,28 @@
                         ? response.details.content.error
                         : 'No additional details available.';
 
-                    if (response.status === 'Open') {
+                    if (response.valid) {
                         // If status is 'Open', show success message along with content.error
                         Swal.fire({
-                            title: 'Success!',
-                            text: 'Smartcard verified.\n\nDetails: ' + message,
+                            title: 'Verification Successful!',
                             icon: 'success',
-                            confirmButtonText: 'OK'
+                            confirmButtonText: 'OK',
+                            html: `
+                                <strong>Customer's Name:</strong> ${response.content.Customer_Name} <br>
+                                <strong>Status:</strong> ${response.content.Status} <br>
+                                <strong>Customer's Number:</strong> ${response.content.Customer_Number} <br>
+                                <strong>Cable Type:</strong> ${response.content.Customer_Type} <br>
+                                <strong>Current Bouquet:</strong> ${response.content.Current_Bouquet}<br>
+                                <strong>Current Bouquet Code:</strong> ${response.content.Current_Bouquet_Code} <br>
+                                <strong>Renewal Amount:</strong> ${response.content.Renewal_Amount} <br>
+                                <strong>Due Date:</strong> ${response.content.Due_Date}
+                            `
                         });
                     } else {
                         // If not 'Open', show failure message along with content.error
-                        let errorMessage = response.error || 'Smartcard verification failed.';
+                        let errorMessage = response.message || 'Smartcard verification failed.';
                         Swal.fire({
-                            title: 'Error!',
+                            title: 'Verification Error!',
                             text: errorMessage + '\n\nDetails: ' + message,
                             icon: 'error',
                             confirmButtonText: 'OK'
@@ -219,13 +228,16 @@
                 data: formData,
                 success: function (response) {
                     // Handle success, display message or update UI
-                    if (response.status === 'successful') {
+                    if (response.success) {
                         // Use SweetAlert to show a success message
                         Swal.fire({
-                            title: 'Success!',
-                            text: 'Subscription successful!',
+                            title: 'TV Subscription Successful!',
                             icon: 'success',
-                            confirmButtonText: 'OK'
+                            html: `
+                                <strong>Transaction Details:</strong> ${response.details} <br>
+                                <strong>Amount:</strong> ${response.amount} <br>
+                                <strong>Transaction ID:</strong> ${response.transactionId}<br>
+                            `
                         }).then(() => {
                             $('#loading-btn').hide();  // Hide loading button after success/error
                             $('#submit-btn').show();   // Show original submit button again
@@ -234,10 +246,13 @@
                     } else {
                         // Use SweetAlert to show a failure message
                         Swal.fire({
-                            title: 'Error!',
-                            text: 'Subscription failed! Refund has been issued.',
+                            title: 'TV Subscription Failed!',
                             icon: 'error',
-                            confirmButtonText: 'OK'
+                            html: `
+                                <strong>Transaction Details:</strong> ${response.details} <br>
+                                <strong>Amount Refunded:</strong> ${response.amount} <br>
+                                <strong>Transaction ID:</strong> ${response.transaction_Id}<br>
+                            `
                         }).then(() => {
                             $('#loading-btn').hide();  // Hide loading button after success/error
                             $('#submit-btn').show();   // Show original submit button again
@@ -247,16 +262,25 @@
                     $('#tvForm')[0].reset();  // Optionally, clear the form fields after submission
                 },
                 error: function (xhr, status, error) {
-                    // Use SweetAlert to show an error message
+                    // Parse the backend response
+                    let errorMessage = 'There was an error processing your subscription. Please try again.';
+
+                    // Check if the backend response contains a specific error message
+                    if (xhr.responseJSON && xhr.responseJSON.error) {
+                        errorMessage = xhr.responseJSON.error;  // Set the error message from the backend
+                    }
+
+                    // Use SweetAlert to show the error message
                     Swal.fire({
                         title: 'Error!',
-                        text: 'There was an error processing your subscription. Please try again.',
+                        text: errorMessage,
                         icon: 'error',
                         confirmButtonText: 'OK'
                     }).then(() => {
                         $('#loading-btn').hide();  // Hide loading button after success/error
                         $('#submit-btn').show();   // Show original submit button again
                     });
+                    $('#tvForm')[0].reset(); 
                 }
             });
         });

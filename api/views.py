@@ -698,7 +698,7 @@ class TVServiceAPIView(APIView):
 
             # Check if user has sufficient balance
             if request.user.balance < Decimal(str(amount)):
-                return Response({"error": "Insufficient balance to proceed with the bouquet change."}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"error": "Insufficient balance to proceed with this transaction."}, status=status.HTTP_400_BAD_REQUEST)
 
             # Deduct the amount from user's balance
             request.user.balance -= Decimal(str(amount))
@@ -782,24 +782,46 @@ class TVServiceAPIView(APIView):
             tv_service.transaction_id = bouquet_change_result.get("requestId", 'N/A')
             tv_service.save()  # Don't forget to save it
 
-             # Update the transaction status based on the API result
-            if bouquet_change_result and bouquet_change_result.get('status') == 'success':
-                # Mark the transaction as completed
-                transaction.status = 'Completed'
-                transaction.transaction_id = bouquet_change_result.get("requestId", 'N/A')
-                transaction.save()
+             # Check if the transaction was successful based on the response
+            if bouquet_change_result and bouquet_change_result.get('code') == '000':
+                # Extract necessary details from the JSON response
+                transaction_data = bouquet_change_result.get('content', {}).get('transactions', {})
+                                                                                
+                # Check if the transaction status is 'delivered'
+                if transaction_data.get('status') == 'delivered':
+                    # Mark the transaction as completed
+                    transaction.status = 'Completed'
+                    transaction.transaction_id = transaction_data.get("transactionId", 'N/A')
+                    transaction.save()
 
-                return Response({"message": "Bouquet change successful!"}, status=status.HTTP_200_OK)
-            else:
-                # If the API failed, refund the deducted amount and mark the transaction as failed
-                request.user.balance += Decimal(str(amount))
-                request.user.save()
+                    # Return success response with the relevant details
+                    return Response({
+                        "success": True,
+                        "message": "Bouquet change successful!",
+                        "transactionId": transaction_data.get("transactionId"),
+                        "amount": transaction_data.get("amount"),
+                        "status": transaction_data.get("status"),
+                        "details": bouquet_change_result.get("response_description"),
+                    }, status=status.HTTP_200_OK)
+                else:
+                    # If the API response indicates failure, refund the deducted amount and mark the transaction as failed
+                    refund_amount = bouquet_change_result.get('amount', '0.00')
+                    request.user.balance += Decimal(str(refund_amount))
+                    request.user.save()
 
-                # Update transaction status to 'Failed'
-                transaction.status = 'Failed'
-                transaction.save()
+                    # Update transaction status to 'Failed'
+                    transaction.status = 'Failed'
+                    transaction.save()
 
-                return Response({"error": "Bouquet change failed. Refund issued."}, status=status.HTTP_200_OK)
+                    # Return failure response with the refund and error message
+                    return Response({
+                        "success": False,
+                        "error": "Bouquet change failed. Refund issued.",
+                        "transactionId": transaction_data.get("transactionId"),
+                        "amount": transaction_data.get("amount"),
+                        "status": transaction_data.get("status"),
+                        "details": bouquet_change_result.get("response_description"),
+                    }, status=status.HTTP_200_OK)
 
 
             # Handle other actions like 'renew' (this part is kept intact)
@@ -856,10 +878,24 @@ class TVServiceAPIView(APIView):
                 # Call the verify_smartCard_number method with the correct data
                 verify_result = api.verify_smartCard_number(service_data)
 
-                if verify_result and verify_result.get('status') == 'Open':
-                    return Response({"message": "Subscription successful!", "data": verify_result}, status=status.HTTP_200_OK)
-                else:
-                    return Response({"error": "Smartcard verification failed.", "details": verify_result}, status=status.HTTP_200_OK)
+                # Check if the result is valid and if the status is 'Open'
+                if verify_result:
+                    # Check if there is an error in the content
+                    content = verify_result.get('content', {})
+                    if content.get('error'):
+                        return Response({
+                            "valid": False,
+                            "message": content.get('error'),  # Show the error message from the content
+                            "content": content
+                        }, status=status.HTTP_200_OK)
+                    else:
+                        # If there is no error, return a successful response
+                        return Response({
+                            "valid": True,
+                            "message": "Validation successful.",
+                            "content": content
+                    }, status=status.HTTP_200_OK)
+
 
             except ValidationError as e:
                 # Handle errors during the purchase processing (e.g., insufficient funds)
@@ -1010,7 +1046,7 @@ class ElectricityBillCreateView(APIView):
                             'message': 'Electricity bill payment successful!',
                             'remaining_balance': str(remaining_balance),
                             'transaction_id': transaction.transaction_id,
-                            "content": Meter_payment.get('content')
+                            "content": Meter_payment
                         }, status=status.HTTP_201_CREATED)
 
                     else:
@@ -1018,6 +1054,7 @@ class ElectricityBillCreateView(APIView):
                         print(f"API failed, reverting balance. Original user balance: {remaining_balance}, Deducted amount: {amount_decimal}")
 
                         # Revert the deducted balance
+                        refund_amount = Meter_payment.get('amount', '0.00')
                         user.balance += amount_decimal
                         user.save()
 
@@ -1031,8 +1068,10 @@ class ElectricityBillCreateView(APIView):
                         return Response({
                             'success': False,
                             'error': 'Transaction failed with the external API.',
-                            'details':Meter_payment.get('content'),
-                            'message': Meter_payment.get("response_description")
+                            'details':Meter_payment,
+                            'message': Meter_payment.get("response_description"),
+                            'refund_amount': refund_amount,
+                            'transaction_id': Meter_payment.get("requestId")
                         }, status=status.HTTP_200_OK)
 
             except ValidationError as e:

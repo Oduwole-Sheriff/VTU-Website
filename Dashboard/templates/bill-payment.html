@@ -217,7 +217,7 @@
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 // Store the full response in localStorage (or sessionStorage)
-                                localStorage.setItem('receiptData', JSON.stringify(response.content));
+                                localStorage.setItem('receiptData', JSON.stringify(response)); // Store full response
                                 
                                 // Redirect to the receipt page
                                 window.location.href = '/receipt';
@@ -234,8 +234,12 @@
                         // Handle error response
                         Swal.fire({
                             icon: 'error',
-                            title: 'There was an error',
-                            text: response.message
+                            title: 'Payment Failed!',
+                            html: `
+                                <strong>Transaction Description:</strong> ${response.message} <br>
+                                <strong>Amount Refunded:</strong> ${response.refund_amount} <br>
+                                <strong>Transaction ID:</strong> ${response.transaction_id}<br>
+                            `
                         }).then(() => {
                             // Clear the form after failed submission
                             $('#form')[0].reset(); // Reset the form fields

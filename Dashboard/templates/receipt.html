@@ -4,35 +4,227 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Receipt</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            flex-direction: column;
+            color: #333;
+        }
+
+        /* Styling for the receipt */
+        #receipt-details {
+            background-color: #fff;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            max-width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 30px;
+            margin-top: 20px;
+            overflow-wrap: break-word;
+            animation: fadeInForm 0.5s ease-out;
+        }
+
+        /* Animation for the form fade-in */
+        @keyframes fadeInForm {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .formHeading {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .formHeading p {
+            font-size: 20px !important;
+            color: #555;
+            margin-bottom: 15px;
+        }
+        
+        .formHeading h2 {
+            color: #333;
+            font-size: 24px;
+            text-transform: uppercase;
+        }
+
+        #receipt-details p {
+            font-size: 1.0rem;
+            line-height: 1.4;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        #receipt-details p strong {
+            color: #333;
+            font-weight: bold;
+        }
+
+        /* Styling for the download button */
+        #download-btn {
+            display: inline-block;
+            width: 100%;
+            margin-top: 20px;
+            font-size: 1rem;
+            color: #fff;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            background-color: #28a745;
+            border: none;
+            cursor: pointer;
+        }
+
+        #download-btn:hover {
+            background-color: #218838;
+        }
+
+        /* Styling for the back button */
+        a {
+            display: inline-block;
+            width: 86.7%;
+            margin-top: 10px;
+            font-size: 1rem;
+            color: #007bff;
+            text-align: center;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            background-color: transparent;
+            border: 1px solid #007bff;
+        }
+
+        a:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* Responsive Styling */
+        @media (max-width: 768px) {
+            #receipt-details {
+                width: 90%;
+                max-width: 400px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            #receipt-details p {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px){
+            #receipt-details {
+                width: 100%;
+                max-width: 330px;
+                margin-top: 40px;
+            }
+
+            a {
+                width: 84%;
+            }
+        }
+    </style>
+    <!-- Add jsPDF library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-    <h1>Transaction Receipt</h1>
-    
-    <div id="receipt-details"></div>
+    <div>
+        <div id="receipt-details">
+            <!-- Heading inside the receipt details div -->
+            <article class="formHeading">
+                <p>Verified By @BigSheriffData Company Limited.</p>
+                <h2>Electricity Bill Transaction Receipt</h2>
+            </article>
 
-    <a href="/">Go back</a>
+            <div id="receipt-content"></div>
+            <!-- Download and back buttons -->
+            <button id="download-btn">Download as PDF</button>
+            <a href="/index">Go Home</a>
+        </div>
+    </div>
 
     <script>
         // Retrieve the receipt data from localStorage
         const receiptData = JSON.parse(localStorage.getItem('receiptData'));
 
         if (receiptData) {
-            // Display the transaction details dynamically
-            const receiptDetails = `
-                <p><strong>Transaction ID:</strong> ${receiptData.transactions.transactionId}</p>
-                <p><strong>Product Name:</strong> ${receiptData.transactions.product_name}</p>
-                <p><strong>Amount Paid:</strong> ${receiptData.transactions.amount}</p>
-                <p><strong>Total Amount:</strong> ${receiptData.transactions.total_amount}</p>
-                <p><strong>Transaction Status:</strong> ${receiptData.transactions.status}</p>
-                <p><strong>Payment Date:</strong> ${new Date(receiptData.transaction_date).toLocaleString()}</p>
-                <p><strong>Email:</strong> ${receiptData.transactions.email}</p>
-                <p><strong>Phone:</strong> ${receiptData.transactions.phone}</p>
-            `;
-            document.getElementById('receipt-details').innerHTML = receiptDetails;
+            // Access the transactions object correctly by drilling into the nested content structure
+            const transaction = receiptData.content.content.transactions;
+            
+            // Ensure correct date handling
+            const paymentDate = new Date(receiptData.content.transaction_date);
+            const formattedPaymentDate = paymentDate instanceof Date && !isNaN(paymentDate) ? paymentDate.toLocaleString() : "Invalid Date";
+
+            // Helper function to check if the field has a valid value (non-null, non-undefined, non-empty)
+            const displayField = (label, value) => {
+                return value && value !== "undefined" ? `<p><strong>${label}:</strong> ${value}</p>` : '';
+            };
+
+            // Display the transaction details dynamically, but only show valid fields
+            let receiptDetails = '';
+            receiptDetails += displayField('Product Name', transaction.product_name);
+            receiptDetails += displayField('Meter Number', transaction.unique_element);
+            receiptDetails += displayField('Amount Paid', transaction.amount);
+            receiptDetails += displayField('Transaction Status', transaction.status);
+            receiptDetails += displayField('Transaction Type', transaction.type);
+            receiptDetails += displayField('Payment Date', formattedPaymentDate);
+            receiptDetails += displayField('Details', receiptData.content.response_description);
+            receiptDetails += displayField('Token', receiptData.content.purchased_code);
+            receiptDetails += displayField('Token Amount', receiptData.content.tokenAmount);
+            receiptDetails += displayField('Units', receiptData.content.units);
+            receiptDetails += displayField('Customers Name', receiptData.content.customerName);
+            receiptDetails += displayField('Customers Name', receiptData.content.Name);
+            receiptDetails += displayField('Customers Address', receiptData.content.customerAddress);
+            receiptDetails += displayField('Customers Address', receiptData.content.Address);
+            receiptDetails += displayField('Main Token Units', receiptData.content.mainTokenUnits);
+            receiptDetails += displayField('Main Token Tax', receiptData.content.mainTokenTax);
+            receiptDetails += displayField('Main Token Amount', receiptData.content.mainsTokenAmount);
+            receiptDetails += displayField('Exchange Reference', receiptData.content.exchangeReference);
+            receiptDetails += displayField('Reference', receiptData.content.Reference);
+            receiptDetails += displayField('Tariff', receiptData.content.tariff);
+            receiptDetails += displayField('Transaction ID', transaction.transactionId);
+            receiptDetails += displayField('RequestId', receiptData.content.requestId);
+
+            // Insert the constructed receipt details into the HTML
+            document.getElementById('receipt-content').innerHTML = receiptDetails || "<p>No receipt data available.</p>";
         } else {
             // If no receipt data is found, show an error message
-            document.getElementById('receipt-details').innerHTML = "<p>No receipt data available.</p>";
+            document.getElementById('receipt-content').innerHTML = "<p>No receipt data available.</p>";
         }
+
+        // Function to download the receipt as a PDF
+        document.getElementById('download-btn').addEventListener('click', function() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Get receipt details as text content
+            const receiptContent = document.getElementById('receipt-content').innerText;
+
+            // Add the content to the PDF
+            doc.text('Electricity Bill Transaction Receipt', 20, 20);
+            doc.text(receiptContent, 20, 30);
+
+            // Download the PDF
+            doc.save('receipt.pdf');
+        });
     </script>
 </body>
 </html>

@@ -2,8 +2,8 @@ import requests
 import json
 from requests.auth import HTTPBasicAuth
 from datetime import datetime as Mdate
-import random, uuid
-
+import random
+import uuid
 
 # VTPassDataAPI class definition
 class VTPassElectricity:

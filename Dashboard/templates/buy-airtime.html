@@ -126,7 +126,7 @@
                         // Success alert with remaining balance
                         Swal.fire({
                             icon: 'success',
-                            title: 'Airtime Purchase Successful',
+                            title: 'Airtime Purchase Successful!',
                             text: 'Remaining balance: ' + response.remaining_balance,
                             confirmButtonText: 'OK'
                         }).then(() => {
@@ -137,7 +137,7 @@
                         // Error alert with message
                         Swal.fire({
                             icon: 'error',
-                            title: 'Error',
+                            title: 'Airtime Purchase Failed!',
                             text: response.message || 'An error occurred. Please try again.',
                             confirmButtonText: 'OK'
                         }).then(() => {

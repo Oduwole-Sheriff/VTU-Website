@@ -167,22 +167,39 @@
                     type: "POST",
                     data: formData + "&data_plan=" + $('#dataPlan').val(),  // Add necessary data
                     success: function(response) {
-                        // Success response handling
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success!',
-                            text: 'Data purchase successful! Your remaining balance is: ₦' + response.remaining_balance,
-                            confirmButtonText: 'OK'
-                        }).then(() => {
-                            // Optionally, redirect after success
-                            window.location.href = "{% url 'index' %}"; // Adjust this URL as needed
-                        });
 
-                        // Optionally reset the form
-                        $('#buyDataForm')[0].reset();
-                        $('#amountField').prop('disabled', true);
-                        $('#loadingSpinner').hide();
-                        $('#submitButton').show();
+                        if (response.message) {
+                            // Success response handling
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Data Purchase Successful!',
+                                text: 'Data purchase successful! Your remaining balance is: ₦' + response.remaining_balance,
+                                confirmButtonText: 'OK'
+                            }).then(() => {
+                                // Optionally, redirect after success
+                                window.location.href = "{% url 'index' %}"; // Adjust this URL as needed
+                            });
+
+                            // Optionally reset the form
+                            $('#buyDataForm')[0].reset();
+                            $('#amountField').prop('disabled', true);
+                            $('#loadingSpinner').hide();
+                            $('#submitButton').show();
+                        } else {
+                            // Handle error response
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Data Purchase Failed!',
+                                text: response.error,  // Display the error string
+                                confirmButtonText: 'OK'
+                            }).then(() => {
+                                // Clear the form after failed submission
+                                $('#buyDataForm')[0].reset();
+                                $('#amountField').prop('disabled', true);
+                                $('#loadingSpinner').hide();
+                                $('#submitButton').show(); // Reset the form fields
+                            });
+                        }
                     },
                     error: function(xhr, status, error) {
                         // Default error message

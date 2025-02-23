@@ -361,9 +361,9 @@ class BuyAirtimeView(APIView):
                         return self.handle_failed_transaction(transaction_id, response)
 
                     # If successful, save the transaction and return response
-                    elif transaction_status == 'success':
+                    elif transaction_status == 'delivered':
                         # Deduct balance and save the successful transaction
-                        request.user.balance -= float(amount)
+                        request.user.balance -= Decimal(str(amount))
                         request.user.save()
 
                         Transaction.objects.create(
@@ -455,7 +455,7 @@ class BuyAirtimeView(APIView):
 
         return Response({
             'status': 'failed',
-            'message': message,
+            'message': "Transaction failed with an external API.",
             'transaction_id': transaction_id,
             'response': api_response  # For debugging purposes
         }, status=status.HTTP_200_OK)
@@ -541,7 +541,7 @@ class BuyDataAPIView(APIView):
 
                     transaction.transaction_id = api_response.get("requestId", 'N/A')
 
-                    if api_response and api_response.get("status") == "success":
+                    if api_response.get("content", {}).get("transactions", {}).get("status") == "delivered":
                         # If API call is successful, mark transaction as completed
                         transaction.status = 'completed'
                         transaction.save()
@@ -573,9 +573,10 @@ class BuyDataAPIView(APIView):
 
                         # Return error response
                         return Response({
-                            'error': 'Transaction failed with the external API.',
+                            'error': 'Transaction failed with an external API.',
+                            'remaining_balance': str(remaining_balance),
                             'details': api_response
-                        }, status=status.HTTP_400_BAD_REQUEST)
+                        }, status=status.HTTP_200_OK)
 
             except ValidationError as e:
                 # Handle the exception and ensure balance reversion occurs

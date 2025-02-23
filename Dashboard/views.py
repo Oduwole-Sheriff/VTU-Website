@@ -5,6 +5,7 @@ from .forms import BuyAirtimeForm, BuyDataForm, TVServiceForm, ElectricityBillFo
 from django.http import JsonResponse
 from django.core.paginator import Paginator
 from django.db import transaction as db_transaction
+from django.db.models import Sum
 # from django.contrib import messages
 
 # Create your views here.
@@ -14,16 +15,26 @@ def Home(request):
 
 @login_required
 def Index(request):
-    """Render the wallet balance page."""
-    # Ensure the 'balance' is coming from CustomUser model, assuming one-to-one relation with User
+    """Render the wallet balance page with total user balance and total registered users."""
+
+    # Total user balance: Sum of all user balances
+    total_balance = CustomUser.objects.aggregate(total_balance=Sum('balance'))['total_balance'] or 0.00
+    
+    # Total registered users: Count of all users
+    total_users = CustomUser.objects.count()
+
+    # Get the balance of the logged-in user
     try:
-        # CustomUser has a OneToOne relation with User, so access CustomUser through user
-        balance = request.user.balance  # Or use `request.user.balance` if it's directly on the User model
+        balance = request.user.balance  # Assuming balance is on CustomUser and it's linked to the logged-in user
     except CustomUser.DoesNotExist:
         balance = 0  # Default to 0 if the CustomUser instance doesn't exist
-    
-    # Render the template with the wallet balance
-    return render(request, 'index.html', {'balance': balance})
+
+    # Render the template and pass the data to the template context
+    return render(request, 'index.html', {
+        'balance': balance,
+        'total_balance': total_balance,
+        'total_users': total_users,
+    })
 
 
 @login_required

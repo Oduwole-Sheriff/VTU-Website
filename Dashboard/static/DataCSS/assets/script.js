@@ -16,7 +16,7 @@ const dataPlans = {
         "N20000 110GB - 30 days"
     ],
     "Airtel": [
-        "Airtel Data Bundle - 50 Naira - 25MB - 1Day",
+        "Airtel Data Bundle - 50 Naira - 25MB  - 1Day",
         "Airtel Data Bundle - 100 Naira - 75MB - 1Day",
         "Airtel Data Bundle - 200 Naira - 200MB - 3Days",
         "Airtel Data Bundle - 300 Naira - 350MB - 7 Days",

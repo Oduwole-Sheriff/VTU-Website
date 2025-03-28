@@ -11,6 +11,8 @@ urlpatterns = [
     path('cableSubscription/', views.TVSubscription, name='cable_subscription'),
     path('receipt/', views.receipt, name='receipt'),
     path('manageSubscription/', views.ManageSubscription, name='manage_subscription'),
+    path('waec-registration/', views.Waec, name='waec'),
+    path('jamb-registration/', views.Jamb, name='jamb'),
 
     path('dataCard/', views.BuyDataCard, name='buy_dataCard'),
     path('dataRecharge-Pin-Order/', views.BuyDataPin, name='buy_dataPin'),

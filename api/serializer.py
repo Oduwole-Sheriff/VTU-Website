@@ -116,7 +116,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
     # Serializer for CustomUser model to include the balance and other necessary fields
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'balance']
+        fields = ['id', 'username', 'balance', 'bonus']
 
 
 class DepositSerializer(serializers.Serializer):

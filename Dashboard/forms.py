@@ -1,12 +1,12 @@
 from django import forms
-from .models import CustomUser, BuyAirtime, BuyData, TVService, ElectricityBill
+from .models import CustomUser, BuyAirtime, BuyData, TVService, ElectricityBill, WaecPinGenerator
 from django.core.exceptions import ValidationError
 
 class CustomUserForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         # Added 'bvn' to the list of fields
-        fields = ['username', 'password1', 'password2', 'balance', 'bank_account', 'nin', 'bvn', 'is_active', 'is_staff', 'is_superuser']
+        fields = ['username', 'password1', 'password2', 'balance', 'bonus', 'bank_account', 'nin', 'bvn', 'is_active', 'is_staff', 'is_superuser']
 
     password1 = forms.CharField(widget=forms.PasswordInput(), label="Password")
     password2 = forms.CharField(widget=forms.PasswordInput(), label="Confirm Password")
@@ -151,6 +151,45 @@ class ElectricityBillForm(forms.ModelForm):
             'amount': forms.NumberInput(attrs={'placeholder': 'Amount'}),
             'meter_type': forms.Select(attrs={'id': 'meter-type'})
         }
+
+    def clean_amount(self):
+        amount = self.cleaned_data.get('amount')
+        if amount <= 0:
+            raise forms.ValidationError("Amount must be greater than zero.")
+        return amount
+
+
+class WaecPinGeneratorForm(forms.ModelForm):
+    class Meta:
+        model = WaecPinGenerator
+        fields = ['ExamType', 'phone_number', 'quantity', 'amount']
+
+        widgets = {
+            'ExamType': forms.Select(
+                choices=[('', 'Please Select ExamType'), ('DE', 'WASSCE/GCE')],
+            ),
+            'phone_number': forms.TextInput(
+                attrs={'placeholder': 'Enter Phone Number', 'maxlength': '11', 'minlength': '11'}
+            ),
+            'quantity': forms.NumberInput(
+                attrs={'placeholder': 'Enter Quantity', 'min': '1', 'max': '10', 'value': '1'}
+            ),
+            'amount': forms.TextInput(
+                attrs={'placeholder': 'Enter Amount', 'id': 'amountField', 'maxlength': '11', 'minlength': '2', 'disabled': 'true'}
+            ),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(WaecPinGeneratorForm, self).__init__(*args, **kwargs)
+        # Set the initial value to '' to keep "Please Select ExamType" as the selected value by default
+        self.fields['ExamType'].initial = ''
+
+        # Make the first option ("Please Select ExamType") disabled
+        self.fields['ExamType'].widget.choices = [
+            ('', 'Please Select ExamType'),
+            ('DE', 'WASSCE/GCE')
+        ]
+        
 
     def clean_amount(self):
         amount = self.cleaned_data.get('amount')

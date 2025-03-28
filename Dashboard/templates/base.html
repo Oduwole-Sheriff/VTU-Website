@@ -331,6 +331,40 @@
                             </li>
                         </ul>
                     </div>
+                    {% if request.path == '/waec-registration/' or request.path == '/jamb-registration/' %}
+                    <a class="collapse-btn collapsed single-menu active" data-bs-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample2">
+                        {% else %}
+                    <a class="collapse-btn collapsed single-menu" data-bs-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample2">
+                        {% endif %}
+                        <div class="icon" style="width: 30px;">
+                            <img src="{% static 'assets/images/icons/education-img.webp' %}" alt="icons">
+                        </div>
+                        <p>Educational Payment</p>
+                    </a>
+                    <div class="collapse" id="collapseExample2">
+                        <ul class="submenu rts-default-sidebar-list">
+                            <li>
+                                {% if request.path == '/waec-registration/' %}
+                                <a href="{% url 'waec' %}" class="active">
+                                    {% else %}
+                                <a href="{% url 'waec' %}">
+                                    {% endif %}
+                                    <i class="fa-solid fa-book"></i>
+                                    <span>WAEC</span>
+                                </a>
+                            </li>
+                            <li>
+                                {% if request.path == '/jamb-registration/' %}
+                                <a href="{% url 'jamb' %}" class="active">
+                                    {% else %}
+                                <a href="{% url 'jamb' %}">
+                                    {% endif %}
+                                    <i class="fa-solid fa-computer"></i>
+                                    <span>JAMB</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                     {% if request.path == '/logout/' %}
                     <a href="#" class="single-menu active" id="logout-link">
                         {% else %}

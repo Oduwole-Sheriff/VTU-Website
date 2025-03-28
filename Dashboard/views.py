@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from .models import CustomUser, Transaction
-from .forms import BuyAirtimeForm, BuyDataForm, TVServiceForm, ElectricityBillForm
+from .forms import BuyAirtimeForm, BuyDataForm, TVServiceForm, ElectricityBillForm, WaecPinGeneratorForm
 from django.http import JsonResponse
 from django.core.paginator import Paginator
 from django.db import transaction as db_transaction
 from django.db.models import Sum
+from django.core.exceptions import ValidationError
 # from django.contrib import messages
 
 # Create your views here.
@@ -19,6 +20,9 @@ def Index(request):
 
     # Total user balance: Sum of all user balances
     total_balance = CustomUser.objects.aggregate(total_balance=Sum('balance'))['total_balance'] or 0.00
+
+    # Total user bonus: Sum of all user bonus
+    total_bonus = CustomUser.objects.aggregate(total_bonus=Sum('bonus'))['total_bonus'] or 0.00
     
     # Total registered users: Count of all users
     total_users = CustomUser.objects.count()
@@ -34,6 +38,7 @@ def Index(request):
         'balance': balance,
         'total_balance': total_balance,
         'total_users': total_users,
+        'total_bonus': total_bonus,
     })
 
 
@@ -245,6 +250,69 @@ def TVSubscription(request):
 
     # Render the form in the template
     return render(request, 'tv-subscription.html', {'form': form})
+
+@login_required
+def Waec(request):
+    user = request.user  # Get the logged-in user
+
+    if request.method == 'POST':
+        form = WaecPinGeneratorForm(request.POST)
+
+        # Validate the form first
+        if form.is_valid():
+            waec_pin_instance = form.save(commit=False)  # Don't save to DB yet
+
+            # Get the amount and quantity from the form
+            amount = form.cleaned_data['amount']
+            quantity = form.cleaned_data['quantity']
+
+            # Example logic to check if the user has enough balance (adjust according to your model's logic)
+            if user.balance < amount * quantity:
+                return JsonResponse({'status': 'error', 'message': "Insufficient balance to generate the pins."}, status=400)
+
+            try:
+                # Call any relevant method to process the pin generation logic
+                # For example, generate pins or process the purchase, if necessary
+                waec_pin_instance.process_purchase()
+
+                # After successful processing, save the pin instance to the database
+                waec_pin_instance.save()
+
+                # Deduct the total amount from the user's balance
+                user.balance -= amount * quantity
+                user.save()  # Save the updated balance
+
+                # Log the transaction for the WAEC result pin generation
+                Transaction.objects.create(
+                    user=user,
+                    transaction_type='waec_pin_generation',
+                    amount=amount * quantity,
+                    recipient=None,  # No recipient for pin generation
+                    description=f"Generated {quantity} WAEC pins (ID: {waec_pin_instance.id})"
+                )
+
+                # Return a success response
+                return JsonResponse({'status': 'success', 'message': f'{quantity} WAEC pins generated successfully!'})
+
+            except ValidationError as e:
+                # Return an error response in case of issues during processing
+                error_data = {
+                    'status': 'error',
+                    'message': str(e),
+                }
+                return JsonResponse(error_data, status=400)
+        else:
+            # Return an error response if the form is not valid
+            return JsonResponse({'status': 'error', 'message': 'Form is invalid'}, status=400)
+    else:
+        form = WaecPinGeneratorForm()
+
+    # Render the form in the template
+    return render(request, 'waec.html', {'form': form})
+
+@login_required
+def Jamb(request):
+    return render(request, 'jamb.html')
 
 @login_required
 def receipt(request):

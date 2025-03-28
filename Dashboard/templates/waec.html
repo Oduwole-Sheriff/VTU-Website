@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="{% static 'EducationCSS/assets/css/bootstrap/bootstrap.min.css' %}" />
+
+    <!-- theme colors -->
+    <link rel="stylesheet" href="{% static 'EducationCSS/assets/css/colors.css' %}" />
+
+    <!-- Theme Style -->
+    <link rel="stylesheet" href="{% static 'EducationCSS/assets/css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'EducationCSS/assets/css/animation.css' %}" />
+    <link rel="stylesheet" href="{% static 'EducationCSS/assets/css/responsive.css' %}" />
+
+    <main class="overflow-hddien">
+        <!-- container -->
+        
+            <!-- form -->
+            <form class="revotForm fade-custom" novalidate onsubmit="return false" method="POST">
+                {% csrf_token %}
+                <h1 class="mainHeading color-white-title-home">WAEC RESULT CHECKER PIN</h1>
+                <div class="row">
+                    <!-- ExamType Field -->
+                    <div class="col-md-12">
+                        <div class="textField">
+                            <label class="color-white-title-home" for="{{ form.ExamType.id_for_label }}">ExamType</label>
+                            <div class="fieldInner">
+                                {{ form.ExamType }}
+                            </div>
+                        </div>
+                    </div>
+            
+                    <!-- Phone Number Field -->
+                    <div class="col-md-12">
+                        <div class="textField">
+                            <label class="color-white-title-home" for="{{ form.phone_number.id_for_label }}">Phone Number</label>
+                            <div class="fieldInner">
+                                {{ form.phone_number }}
+                            </div>
+                        </div>
+                    </div>
+            
+                    <!-- Quantity Field -->
+                    <div class="col-md-12">
+                        <div class="textField">
+                            <label class="color-white-title-home" for="{{ form.quantity.id_for_label }}">Quantity</label>
+                            <div class="fieldInner">
+                                {{ form.quantity }}
+                            </div>
+                        </div>
+                    </div>
+            
+                    <!-- Amount Field -->
+                    <div class="col-md-12">
+                        <div class="textField">
+                            <label class="color-white-title-home" for="{{ form.amount.id_for_label }}">Amount</label>
+                            <div class="fieldInner">
+                                {{ form.amount }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <!-- Submit button -->
+                <button id="sub">Generate Pin</button>
+            </form>
+            
+        </div>
+    </main>
+
+    <!-- jQuery -->
+    <!-- <script src="{% static 'EducationCSS/js/jQuery/jquery-3.7.1.min.js' %}"></script> -->
+
+    <!-- bootstrap -->
+    <!-- <script src="{% static 'EducationCSS/js/bootstrap/bootstrap.min.js' %}"></script> -->
+
+    <!-- Theme JS -->
+    <!-- <script src="{% static 'EducationCSS/js/custom.js' %}"></script> -->
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const examTypeSelect = document.querySelector('select[name="ExamType"]');
+            const firstOption = examTypeSelect.options[0];
+    
+            // Set the first option as selected by default and disable it
+            firstOption.disabled = true;
+            firstOption.selected = true;
+        });
+    </script>
+
+
+{% endblock content %}

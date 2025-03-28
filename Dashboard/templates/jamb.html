@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="{% static 'EducationCSS/assets/css/bootstrap/bootstrap.min.css' %}" />
+
+    <!-- theme colors -->
+    <link rel="stylesheet" href="{% static 'EducationCSS/assets/css/colors.css' %}" />
+
+    <!-- Theme Style -->
+    <link rel="stylesheet" href="{% static 'EducationCSS/assets/css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'EducationCSS/assets/css/animation.css' %}" />
+    <link rel="stylesheet" href="{% static 'EducationCSS/assets/css/responsive.css' %}" />
+
+    <main class="overflow-hddien">
+        <!-- container -->
+        
+            <!-- form -->
+            <form class="revotForm fade-custom" novalidate onsubmit="return false" c>
+                <!-- heading -->
+                <h1 class="mainHeading color-white-title-home">JAMB REGISTRATION</h1>
+                <div class="row">
+                    <!-- Form Start -->
+                    <div class="col-md-12">
+                        <div class="textField">
+                            <label class="color-white-title-home">ExamType</label>
+                            <div class="fieldInner">
+                                <select name="ExamType">
+                                    <option value="" disabled selected>Please Select ExamType</option>
+                                    <option value="DE">Direct Entry (DE)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="textField">
+                            <label class="color-white-title-home">JAMB Profile ID</label>
+                            <div class="fieldInner">
+                                <input type="text" name="JAMB_ID" placeholder="Enter JAMB Profile ID" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="textField">
+                            <label class="color-white-title-home">Phone Number</label>
+                            <div class="fieldInner">
+                                <input type="text" name="phone_number" placeholder="Enter Phone Number" maxlength="11" minlength="11" required=""/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="textField">
+                            <label class="color-white-title-home">Amount</label>
+                            <div class="fieldInner">
+                                <input type="text" name="amount" placeholder="Enter Amount" id="amountField" maxlength="11" minlength="2" required="" disabled/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit button -->
+                <button id="sub">Register Now</button>
+            </form>
+        </div>
+    </main>
+
+
+
+{% endblock content %}

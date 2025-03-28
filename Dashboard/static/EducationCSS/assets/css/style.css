@@ -1,0 +1,260 @@
+@import url("https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap");
+/* body {
+    width: 100%;
+    height: auto;
+    font-family: "Jost";
+} */
+
+a {
+    text-decoration: none;
+}
+
+main {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 2;
+    padding: 40px 0;
+    margin: auto !important;
+    margin-top: 30px !important;
+}
+
+@media only screen and (max-width: 1199px) {
+    main {
+        width: 80%;
+    }
+}
+@media only screen and (max-width: 767px) {
+    main {
+        width: 100%;
+    }
+}
+
+.revotForm {
+    border-radius: 60px;
+    background-color: var(--secondary-color);
+    box-shadow: 0px 0px 35px 0px rgba(0, 0, 0, 0.35);
+    padding: 65px 50px;
+    min-width: 20%;
+    max-width: 45%;
+    margin: auto !important;
+    animation: fadeInForm 0.5s ease-out;
+}
+
+@keyframes fadeInForm {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.mainHeading {
+    font-size: 45px;
+    /* font-family: "Titillium Web"; */
+    color: var(--text-color-2);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 30px;
+}
+
+.textField {
+    width: 100%;
+    height: auto;
+    margin-bottom: 32px;
+}
+
+.textField .fieldInner {
+    border-radius: 30px;
+    background-color: var(--field-color);
+    width: 100%;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    padding: 0 25px;
+    gap: 20px;
+    border: solid 2px transparent;
+    transition: 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.fieldInner i {
+    font-size: 16px;
+    color: var(--text-color);
+}
+
+.fieldInner input,
+.fieldInner select {
+    flex: 1;
+    height: 100%;
+    border: 0;
+    background-color: transparent;
+}
+
+::placeholder,
+.fieldInner input,
+.fieldInner select,
+button {
+    font-size: 15px;
+    /* font-family: "Titillium Web"; */
+    font-weight: 500;
+    color: var(--text-color-2);
+}
+
+.fieldInner select {
+    cursor: pointer;
+}
+
+.fieldInner input:focus,
+.fieldInner select:focus {
+    outline: none;
+}
+
+.fieldInner:focus-within {
+    border-color: var(--text-color);
+}
+
+.textField label {
+    font-size: 16px;
+    color: var(--text-color-2);
+    font-weight: 700;
+    margin-left: 25px;
+    margin-bottom: 15px;
+}
+
+#sub {
+    background-color: var(--primary-color);
+    box-shadow: 0px 0px 35px 0px rgba(18, 102, 227, 0.35);
+    width: 100%;
+    height: 70px;
+    border-radius: 35px;
+    border: 0;
+    font-size: 20px;
+    /* font-family: "Titillium Web"; */
+    font-weight: 900;
+    color: var(--secondary-color);
+    margin-top: 15px;
+}
+
+/* result */
+
+.resultHeading {
+    font-size: 60px;
+    /* font-family: "Titillium Web"; */
+    color: var(--text-color-2);
+    font-weight: 900;
+    text-align: center;
+    line-height: 1;
+    margin-bottom: 50px;
+}
+
+.resultSingle {
+    border-radius: 10px;
+    background-color: var(--secondary-color);
+    box-shadow: 0px 14px 55.76px 12.24px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    min-height: 150px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.searchImg {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+}
+
+.resultPage {
+    background-image: none;
+    background-color: var(--secondary-color);
+}
+
+.resultPage::before {
+    display: none;
+}
+
+.searchContent {
+    padding: 40px 30px 25px 30px;
+}
+
+.searchContent h3 {
+    font-size: 24px;
+    color: rgb(43, 63, 101);
+    font-weight: 700;
+    margin-bottom: 15px;
+    line-height: 1;
+}
+
+.searchContent p {
+    font-size: 16px;
+    color: rgb(108, 158, 252);
+    font-weight: 600;
+    line-height: 1;
+    margin-bottom: 35px;
+}
+
+.attachment {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    padding-right: 15px;
+    border-right: solid 1px rgb(232, 232, 232);
+    color: rgb(43, 63, 101);
+}
+
+.attachment:nth-child(2) {
+    padding: 0 25px;
+}
+
+.attachment:nth-child(3) {
+    padding: 0 25px;
+    border-right: 0;
+}
+
+.attachment i {
+    font-size: 15px;
+    color: rgb(108, 158, 252);
+    margin-right: 10px;
+}
+
+.address {
+    font-size: 16px;
+    font-weight: normal;
+    color: rgb(105, 105, 105);
+}
+
+.address i {
+    font-size: 14px;
+    color: rgb(108, 158, 252);
+    margin-right: 10px;
+}
+
+.resultFooter {
+    border-top: solid 1px rgb(232, 232, 232);
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 0 30px;
+    font-size: 14px;
+    font-weight: normal;
+    color: rgb(105, 105, 105);
+}
+
+.resultFooter i {
+    font-size: 20px;
+    margin-right: 10px;
+    color: rgb(47, 162, 133);
+}
+
+[data-theme=dark] .revotForm {
+    background-color: transparent;
+    border: 1px solid #ac9797; 
+}
+
+
+

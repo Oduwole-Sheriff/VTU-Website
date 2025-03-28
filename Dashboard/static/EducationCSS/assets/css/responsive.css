@@ -1,0 +1,98 @@
+@media (min-width: 1600px) {
+    .container {
+        max-width: 1400px;
+    }
+    .resultPage .container {
+        max-width: 1200px;
+    }
+}
+
+@media (max-width: 1440px) {}
+
+@media (max-width: 1200px) {
+    .revotForm {
+        padding: 50px 35px;
+        max-width: 60%;
+    }
+    .searchImg {
+        height: 200px;
+    }
+    .searchContent,
+    .resultFooter {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    .searchContent h3 {
+        font-size: 20px;
+    }
+    .attachment {
+        padding-right: 10px;
+    }
+    .attachment:nth-child(2) {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .attachment:nth-child(2) {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .address {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 992px) {
+    .revotForm {
+        max-width: 85%;
+    }
+    .searchImg {
+        height: 150px;
+    }
+    .searchContent,
+    .resultFooter {
+        padding-left: 15px;
+        padding-right: 15px;
+        padding-top: 20px;
+        padding-bottom: 10px;
+    }
+    .searchContent h3 {
+        font-size: 18px;
+    }
+    .searchContent p {
+        margin-bottom: 12px;
+    }
+    .attachment {
+        margin-bottom: 10px;
+    }
+    .attachment i {
+        font-size: 12px;
+    }
+    .attachment:nth-child(3) {
+        padding: 0 0;
+    }
+    .address,
+    .resultFooter,
+    .attachment {
+        font-size: 12px;
+    }
+    .resultFooter i {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .revotForm {
+        max-width: 100%;
+    }
+    .mainHeading {
+        font-size: 30px;
+    }
+}
+
+@media (max-width: 576px) {}
+
+@media (max-width: 480px) {
+    .revotForm {
+        border-radius: 0;
+    }
+}

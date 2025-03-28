@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 from .forms import CustomUserForm
-from .models import CustomUser, Transaction, WebsiteConfiguration, BuyAirtime, BuyData, TVService, ElectricityBill
+from .models import CustomUser, Transaction, WebsiteConfiguration, BuyAirtime, BuyData, TVService, ElectricityBill, WaecPinGenerator
 
 CustomUser = get_user_model()
 
@@ -17,7 +17,7 @@ class CustomUserAdmin(UserAdmin):
     
     # Fields for add and change user forms
     fieldsets = (
-        (None, {'fields': ('username', 'password1', 'password2', 'balance', 'bank_account', 'nin', 'bvn')}),  # Add bvn to fieldsets
+        (None, {'fields': ('username', 'password1', 'password2', 'balance', 'bonus', 'bank_account', 'nin', 'bvn')}),  # Add bvn to fieldsets
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser')}),  # permissions
         ('Important dates', {'fields': ('last_login', 'date_joined')}),           # important date fields
     )
@@ -218,5 +218,40 @@ class ElectricityBillAdmin(admin.ModelAdmin):
         # You can add custom save logic here
         super().save_model(request, obj, form, change)
 
+
+class WaecPinGeneratorAdmin(admin.ModelAdmin):
+    # Fields to display in the list view
+    list_display = ('ExamType', 'phone_number', 'quantity', 'amount', 'created_at', 'updated_at', 'transaction_id')
+    
+    # Fields to search by in the admin panel
+    search_fields = ('ExamType', 'phone_number', 'quantity', 'transaction_id')
+    
+    # Fields that are editable directly in the list view
+    list_editable = ('amount', 'quantity')
+
+    # Fieldsets to customize form layout in the admin
+    fieldsets = (
+        (None, {
+            'fields': ('ExamType', 'phone_number', 'quantity', 'amount', 'data_response', 'transaction_id')
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)  # This will collapse the timestamps by default
+        }),
+    )
+    
+    # This will make the `created_at` and `updated_at` fields readonly in the admin form
+    readonly_fields = ('created_at', 'updated_at')
+    
+    # Optionally, you can make some fields like `transaction_id` or `data_response` non-editable
+    # (You can specify these fields in `readonly_fields` or customize based on your needs)
+    def has_change_permission(self, request, obj=None):
+        if obj: 
+            # You can control permissions more specifically if needed, e.g., allow changing only some fields
+            return True  # This example allows all fields to be edited.
+        return super().has_change_permission(request, obj)
+
+# Register the model with the customized admin
+admin.site.register(WaecPinGenerator, WaecPinGeneratorAdmin)
 
 admin.site.register(CustomUser, CustomUserAdmin)

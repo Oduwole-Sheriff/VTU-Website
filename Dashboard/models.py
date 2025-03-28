@@ -11,6 +11,7 @@ from django.utils import timezone
 
 class CustomUser(AbstractUser):
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    bonus = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     bank_account = models.JSONField(blank=True, null=True)  # Bank account details as JSONField
     nin = models.CharField(max_length=11, blank=True, null=True)
     bvn = models.CharField(max_length=11, blank=True, null=True, unique=True)  # BVN field added
@@ -341,6 +342,34 @@ class ElectricityBill(models.Model):
         if self.user.balance < self.amount:
             raise ValidationError("Insufficient balance to complete the purchase.")
 
+        # Start a transaction to ensure atomicity
+        self.user.balance -= self.amount  # Deduct the balance directly
+        self.user.save()  # Save the user balance deduction
+        self.user.refresh_from_db()  # Refresh the user instance to get the updated balance
+        return self.user  # Return the user instance after deduction
+    
+
+class WaecPinGenerator(models.Model):
+    ExamType = models.CharField(max_length=50, choices=[('WASSCE/GCE', 'WASSCE/GCE')])
+    phone_number = models.CharField(max_length=11)
+    quantity = models.CharField(max_length=10)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)  # Automatically sets on creation
+    updated_at = models.DateTimeField(auto_now=True)  # Automatically updates on save
+    data_response = models.JSONField(null=True, blank=True)
+    transaction_id = models.CharField(max_length=255, blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.ExamType} Pin Generated"
+    
+    def process_purchase(self):
+        if self.amount <= 0:
+            raise ValidationError("Amount must be positive.")
+        
+        # Ensure user has enough balance
+        if self.user.balance < self.amount:
+            raise ValidationError("Insufficient balance to complete the purchase.")
+        
         # Start a transaction to ensure atomicity
         self.user.balance -= self.amount  # Deduct the balance directly
         self.user.save()  # Save the user balance deduction

@@ -362,6 +362,18 @@ class BuyAirtimeView(APIView):
 
                     # If successful, save the transaction and return response
                     elif transaction_status == 'delivered':
+
+                        # Extract commission from the API response
+                        commission = response.get("content", {}).get("transactions", {}).get("commission", 0)
+
+                        # Ensure commission is a Decimal (convert if it's a float)
+                        commission = Decimal(commission)
+
+                        # Save the commission in the user's bonus field
+                        user = airtime_purchase.user  # Assuming the airtime_purchase has a 'user' field
+                        user.bonus += commission  # Add the commission to the current bonus
+                        user.save()  # Save the updated bonus field
+
                         # Deduct balance and save the successful transaction
                         request.user.balance -= Decimal(str(amount))
                         request.user.save()
@@ -542,6 +554,18 @@ class BuyDataAPIView(APIView):
                     transaction.transaction_id = api_response.get("requestId", 'N/A')
 
                     if api_response.get("content", {}).get("transactions", {}).get("status") == "delivered":
+
+                        # Extract commission from the API response
+                        commission = api_response.get("content", {}).get("transactions", {}).get("commission", 0)
+
+                        # Ensure commission is a Decimal (convert if it's a float)
+                        commission = Decimal(commission)
+
+                        # Save the commission in the user's bonus field
+                        user = buy_data_instance.user  # Assuming the buy_data_instance has a 'user' field
+                        user.bonus += commission  # Add the commission to the current bonus
+                        user.save()  # Save the updated bonus field
+
                         # If API call is successful, mark transaction as completed
                         transaction.status = 'completed'
                         transaction.save()
@@ -790,6 +814,18 @@ class TVServiceAPIView(APIView):
                                                                                 
                 # Check if the transaction status is 'delivered'
                 if transaction_data.get('status') == 'delivered':
+
+                    # Extract commission from the API response
+                    commission = bouquet_change_result.get("content", {}).get("transactions", {}).get("commission", 0)
+
+                    # Ensure commission is a Decimal (convert if it's a float)
+                    commission = Decimal(commission)
+
+                    # Save the commission in the user's bonus field
+                    user = bouquet_change_result.user  # Assuming the bouquet_change_result has a 'user' field
+                    user.bonus += commission  # Add the commission to the current bonus
+                    user.save()  # Save the updated bonus field
+
                     # Mark the transaction as completed
                     transaction.status = 'Completed'
                     transaction.transaction_id = transaction_data.get("transactionId", 'N/A')
@@ -1037,6 +1073,18 @@ class ElectricityBillCreateView(APIView):
 
 
                     if Meter_payment.get("content", {}).get("transactions", {}).get("status") == "delivered":
+                        
+                         # Extract commission from the API response
+                        commission = Meter_payment.get("content", {}).get("transactions", {}).get("commission", 0)
+
+                        # Ensure commission is a Decimal (convert if it's a float)
+                        commission = Decimal(commission)
+
+                        # Save the commission in the user's bonus field
+                        user = Meter_payment.user  # Assuming the Meter_payment has a 'user' field
+                        user.bonus += commission  # Add the commission to the current bonus
+                        user.save()  # Save the updated bonus field
+
                         # If the API response is successful, mark the transaction as completed
                         transaction.status = 'completed'
                         transaction.save()

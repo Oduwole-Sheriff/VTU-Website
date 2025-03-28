@@ -2,7 +2,9 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 from .forms import CustomUserForm
-from .models import CustomUser, Transaction, WebsiteConfiguration, BuyAirtime, BuyData, TVService, ElectricityBill, WaecPinGenerator
+from django.db import models
+from django import forms
+from .models import CustomUser, Transaction, WebsiteConfiguration, BuyAirtime, BuyData, TVService, ElectricityBill, WaecPinGenerator, JambRegistration
 
 CustomUser = get_user_model()
 
@@ -253,5 +255,19 @@ class WaecPinGeneratorAdmin(admin.ModelAdmin):
 
 # Register the model with the customized admin
 admin.site.register(WaecPinGenerator, WaecPinGeneratorAdmin)
+
+class JambRegistrationAdmin(admin.ModelAdmin):
+    list_display = ('jamb_profile_id', 'phone_number', 'exam_type', 'amount', 'created_at', 'updated_at')
+    search_fields = ('jamb_profile_id', 'phone_number', 'exam_type')
+    list_filter = ('exam_type', 'created_at')
+    ordering = ('-created_at',)
+
+    fields = ('exam_type', 'jamb_profile_id', 'phone_number', 'amount', 'data_response', 'transaction_id')
+
+    formfield_overrides = {
+        models.JSONField: {'widget': forms.Textarea(attrs={'rows': 4, 'cols': 40})},
+    }
+
+admin.site.register(JambRegistration, JambRegistrationAdmin)
 
 admin.site.register(CustomUser, CustomUserAdmin)

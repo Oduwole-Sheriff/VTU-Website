@@ -1,5 +1,5 @@
 from django import forms
-from .models import CustomUser, BuyAirtime, BuyData, TVService, ElectricityBill, WaecPinGenerator
+from .models import CustomUser, BuyAirtime, BuyData, TVService, ElectricityBill, WaecPinGenerator, JambRegistration
 from django.core.exceptions import ValidationError
 
 class CustomUserForm(forms.ModelForm):
@@ -195,4 +195,39 @@ class WaecPinGeneratorForm(forms.ModelForm):
         amount = self.cleaned_data.get('amount')
         if amount <= 0:
             raise forms.ValidationError("Amount must be greater than zero.")
+        return amount
+
+class JambRegistrationForm(forms.ModelForm):
+    class Meta:
+        model = JambRegistration
+        fields = ['exam_type', 'jamb_profile_id', 'phone_number', 'amount']
+        widgets = {
+            'jamb_profile_id': forms.TextInput(attrs={'placeholder': 'Enter JAMB Profile ID'}),
+            'phone_number': forms.TextInput(attrs={'placeholder': 'Enter Phone Number', 'maxlength': '11'}),
+            'amount': forms.TextInput(attrs={'placeholder': 'Enter Amount', 'id': 'amountField', 'disabled': 'disabled'})
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(JambRegistrationForm, self).__init__(*args, **kwargs)
+        
+        # Set the initial value to '' to keep "Please Select Exam Type" as the selected value by default
+        self.fields['exam_type'].initial = ''
+        
+        # Modify the choices to include the disabled "Please Select Exam Type" option
+        self.fields['exam_type'].widget.choices = [
+            ('', 'Please Select Exam Type'),  # Disabled by default
+            ('DE', 'Direct Entry (DE)'),
+            # Add more exam types here if necessary
+        ]
+
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data.get('phone_number')
+        if len(phone_number) != 11:
+            raise forms.ValidationError("Phone number must be 11 digits.")
+        return phone_number
+
+    def clean_amount(self):
+        amount = self.cleaned_data.get('amount')
+        if not amount:
+            raise forms.ValidationError("Amount is required.")
         return amount

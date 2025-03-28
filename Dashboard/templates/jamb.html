@@ -26,10 +26,7 @@
                         <div class="textField">
                             <label class="color-white-title-home">ExamType</label>
                             <div class="fieldInner">
-                                <select name="ExamType">
-                                    <option value="" disabled selected>Please Select ExamType</option>
-                                    <option value="DE">Direct Entry (DE)</option>
-                                </select>
+                                {{ form.exam_type }} 
                             </div>
                         </div>
                     </div>
@@ -37,7 +34,7 @@
                         <div class="textField">
                             <label class="color-white-title-home">JAMB Profile ID</label>
                             <div class="fieldInner">
-                                <input type="text" name="JAMB_ID" placeholder="Enter JAMB Profile ID" />
+                                {{ form.jamb_profile_id }}  
                             </div>
                         </div>
                     </div>
@@ -45,7 +42,7 @@
                         <div class="textField">
                             <label class="color-white-title-home">Phone Number</label>
                             <div class="fieldInner">
-                                <input type="text" name="phone_number" placeholder="Enter Phone Number" maxlength="11" minlength="11" required=""/>
+                                {{ form.phone_number }}
                             </div>
                         </div>
                     </div>
@@ -53,7 +50,7 @@
                         <div class="textField">
                             <label class="color-white-title-home">Amount</label>
                             <div class="fieldInner">
-                                <input type="text" name="amount" placeholder="Enter Amount" id="amountField" maxlength="11" minlength="2" required="" disabled/>
+                                {{ form.amount }}
                             </div>
                         </div>
                     </div>
@@ -65,6 +62,11 @@
         </div>
     </main>
 
+    <script>
+        // Disable the first option ("Please Select Exam Type")
+        document.querySelector("select[name='exam_type'] option[value='']").disabled = true;
+    </script>
+    
 
 
 {% endblock content %}

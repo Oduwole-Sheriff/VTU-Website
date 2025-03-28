@@ -94,6 +94,8 @@ class Transaction(models.Model):
         ('data_purchase', 'Data Purchase'),  # Data purchase type
         ('TV_Subscription', 'TV SUBSCRIPTION'),  # TV SERVICE SUBSCRIPTION
         ('Electricity_Bill', 'Electricity Bill'),  # ElectricityBill Payment
+        ('electricity_payment', 'Electricity Payment'),
+        ('jamb_registration', 'JAMB Registration'),
     )
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -361,6 +363,59 @@ class WaecPinGenerator(models.Model):
 
     def __str__(self):
         return f"{self.ExamType} Pin Generated"
+    
+    def process_purchase(self):
+        if self.amount <= 0:
+            raise ValidationError("Amount must be positive.")
+        
+        # Ensure user has enough balance
+        if self.user.balance < self.amount:
+            raise ValidationError("Insufficient balance to complete the purchase.")
+        
+        # Start a transaction to ensure atomicity
+        self.user.balance -= self.amount  # Deduct the balance directly
+        self.user.save()  # Save the user balance deduction
+        self.user.refresh_from_db()  # Refresh the user instance to get the updated balance
+        return self.user  # Return the user instance after deduction
+    
+class JambRegistration(models.Model):
+    EXAM_TYPE_CHOICES = [
+        ('DE', 'Direct Entry (DE)'),
+        # You can add other exam types here if needed
+    ]
+    
+    exam_type = models.CharField(
+        max_length=2, 
+        choices=EXAM_TYPE_CHOICES, 
+        default='DE'
+    )
+    jamb_profile_id = models.CharField(
+        max_length=50, 
+        verbose_name="JAMB Profile ID"
+    )
+    phone_number = models.CharField(
+        max_length=11, 
+        unique=True, 
+        verbose_name="Phone Number"
+    )
+    amount = models.DecimalField(
+        max_digits=10, 
+        decimal_places=2, 
+        verbose_name="Amount", 
+        null=True, 
+        blank=True
+    )
+    created_at = models.DateTimeField(auto_now_add=True)  # Automatically sets on creation
+    updated_at = models.DateTimeField(auto_now=True)  # Automatically updates on save
+    data_response = models.JSONField(null=True, blank=True)
+    transaction_id = models.CharField(max_length=255, blank=True, null=True)
+    
+    def __str__(self):
+        return f"JAMB Registration - {self.jamb_profile_id} ({self.phone_number})"
+    
+    class Meta:
+        verbose_name = 'JAMB Registration'
+        verbose_name_plural = 'JAMB Registrations'
     
     def process_purchase(self):
         if self.amount <= 0:

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from .models import CustomUser, Transaction
-from .forms import BuyAirtimeForm, BuyDataForm, TVServiceForm, ElectricityBillForm, WaecPinGeneratorForm
+from .forms import BuyAirtimeForm, BuyDataForm, TVServiceForm, ElectricityBillForm, WaecPinGeneratorForm, JambRegistrationForm
 from django.http import JsonResponse
 from django.core.paginator import Paginator
 from django.db import transaction as db_transaction
@@ -310,9 +310,46 @@ def Waec(request):
     # Render the form in the template
     return render(request, 'waec.html', {'form': form})
 
-@login_required
-def Jamb(request):
-    return render(request, 'jamb.html')
+def JambRegistrationPayment(request):
+    user = request.user  # Get the logged-in user
+
+    if request.method == 'POST':
+        form = JambRegistrationForm(request.POST)
+
+        if form.is_valid():
+            jamb_registration = form.save(commit=False)  # Don’t save yet to perform additional actions
+
+            # Get the amount (if any logic is associated with the amount)
+            amount = form.cleaned_data['amount']
+
+            # Check if the user's balance is sufficient for registration
+            if user.balance < amount:
+                return JsonResponse({'status': 'error', 'message': "Insufficient balance to complete the registration."})
+
+            # Save the JAMB registration record
+            jamb_registration.save()
+
+            # Deduct the amount from the user's balance
+            user.balance -= amount
+            user.save()  # Save the updated balance
+
+            # Log the transaction for the JAMB registration payment
+            Transaction.objects.create(
+                user=user,
+                transaction_type='jamb_registration',
+                amount=amount,
+                recipient=None,  # No recipient for JAMB registration
+                description=f"Payment for JAMB registration with Profile ID {jamb_registration.jamb_profile_id}"
+            )
+
+            # Return a success response
+            return JsonResponse({'status': 'success', 'message': 'JAMB registration successful!'})
+
+    else:
+        form = JambRegistrationForm()
+
+    # Render the form in the template, passing the user's balance
+    return render(request, 'jamb.html', {'form': form, 'user_balance': user.balance})
 
 @login_required
 def receipt(request):

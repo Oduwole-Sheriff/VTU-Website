@@ -94,7 +94,7 @@ class Transaction(models.Model):
         ('data_purchase', 'Data Purchase'),  # Data purchase type
         ('TV_Subscription', 'TV SUBSCRIPTION'),  # TV SERVICE SUBSCRIPTION
         ('Electricity_Bill', 'Electricity Bill'),  # ElectricityBill Payment
-        ('electricity_payment', 'Electricity Payment'),
+        ('waec_pin_generator', 'WAEC PIN'),
         ('jamb_registration', 'JAMB Registration'),
     )
 
@@ -352,14 +352,16 @@ class ElectricityBill(models.Model):
     
 
 class WaecPinGenerator(models.Model):
+    serviceID = models.CharField(max_length=255, blank=False, null=False)
     ExamType = models.CharField(max_length=50, choices=[('WASSCE/GCE', 'WASSCE/GCE')])
     phone_number = models.CharField(max_length=11)
-    quantity = models.CharField(max_length=10)
+    quantity = models.IntegerField()
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)  # Automatically sets on creation
     updated_at = models.DateTimeField(auto_now=True)  # Automatically updates on save
     data_response = models.JSONField(null=True, blank=True)
     transaction_id = models.CharField(max_length=255, blank=True, null=True)
+    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='waec_pin_generator', null=True, blank=True)
 
     def __str__(self):
         return f"{self.ExamType} Pin Generated"
@@ -409,6 +411,7 @@ class JambRegistration(models.Model):
     updated_at = models.DateTimeField(auto_now=True)  # Automatically updates on save
     data_response = models.JSONField(null=True, blank=True)
     transaction_id = models.CharField(max_length=255, blank=True, null=True)
+    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='jamb_registration', null=True, blank=True)
     
     def __str__(self):
         return f"JAMB Registration - {self.jamb_profile_id} ({self.phone_number})"

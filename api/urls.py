@@ -1,5 +1,5 @@
 from django.urls import path
-from api.views import RegisterAPI, LoginAPI, DepositView, WithdrawView, TransferView, TransactionListView, SubmitAccountDetailsView, BuyAirtimeView, BuyDataAPIView, TVServiceAPIView, ElectricityBillCreateView
+from api.views import RegisterAPI, LoginAPI, DepositView, WithdrawView, TransferView, TransactionListView, SubmitAccountDetailsView, BuyAirtimeView, BuyDataAPIView, TVServiceAPIView, ElectricityBillCreateView, WaecPinGeneratorCreateView
 
 urlpatterns = [
     path('registration/', RegisterAPI.as_view()),
@@ -13,5 +13,6 @@ urlpatterns = [
     path('buy-data/', BuyDataAPIView.as_view(), name='buy-data'),
     path('tvservice/', TVServiceAPIView.as_view(), name='tvservice'),
     path('electricity-bill/', ElectricityBillCreateView.as_view(), name='electricity-bill'),
+    path('waec-registration/', WaecPinGeneratorCreateView.as_view(), name='waec-registration'),
 ]   
     

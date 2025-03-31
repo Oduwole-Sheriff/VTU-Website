@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from Dashboard.models import CustomUser, Transaction, BuyAirtime, BuyData, TVService, ElectricityBill
+from Dashboard.models import CustomUser, Transaction, BuyAirtime, BuyData, TVService, ElectricityBill, WaecPinGenerator
 from authentication.models import Profile
 from django.contrib.auth.password_validation import validate_password
 from django.db import transaction as db_transaction
@@ -263,6 +263,40 @@ class ElectricityBillSerializer(serializers.ModelSerializer):
         Electricity_Bill = ElectricityBill.objects.create(**validated_data)
         return Electricity_Bill
 
+
+class WaecPinGeneratorSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
+
+    class Meta:
+        model = WaecPinGenerator
+        fields = [
+            'serviceID', 'ExamType', 'phone_number', 'quantity', 'amount', 'created_at', 
+            'updated_at', 'data_response', 'transaction_id', 'user'
+        ]
+        read_only_fields = ['id', 'created_at', 'updated_at']  # These fields should be read-only
+
+    # Optional: You can add custom validation if needed
+    def validate_amount(self, value):
+        if value <= 0:
+            raise serializers.ValidationError("Amount must be a positive value.")
+        return value
+
+    def validate_quantity(self, value):
+        try:
+            int_value = int(value)
+            if int_value <= 0:
+                raise serializers.ValidationError("Quantity must be a positive integer.")
+        except ValueError:
+            raise serializers.ValidationError("Quantity must be a valid integer.")
+        return value
+        
+    def create(self, validated_data): 
+        user = self.context['request'].user
+        validated_data['user'] = user
+
+        # Create and return the WaecPinGenerator instance
+        Waec_Pin_Generator = WaecPinGenerator.objects.create(**validated_data)
+        return Waec_Pin_Generator
 
 
 # class WalletSerializer(serializers.ModelSerializer):

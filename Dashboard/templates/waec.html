@@ -17,10 +17,20 @@
         <!-- container -->
         
             <!-- form -->
-            <form class="revotForm fade-custom" novalidate onsubmit="return false" method="POST">
+            <form class="revotForm fade-custom" id="waec-form" novalidate onsubmit="return false" method="POST">
                 {% csrf_token %}
                 <h1 class="mainHeading color-white-title-home">WAEC RESULT CHECKER PIN</h1>
                 <div class="row">
+                    <!-- Service ID -->
+                    <div class="col-md-12" style="display: none;">
+                        <div class="textField">
+                            <label class="color-white-title-home" for="{{ form.ExamType.id_for_label }}">Service ID</label>
+                            <div class="fieldInner">
+                                {{ form.serviceID }}
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- ExamType Field -->
                     <div class="col-md-12">
                         <div class="textField">
@@ -63,21 +73,15 @@
                 </div>
             
                 <!-- Submit button -->
-                <button id="sub">Generate Pin</button>
+                <button id="sub" type="submit">Generate Pin</button>
             </form>
             
         </div>
     </main>
 
     <!-- jQuery -->
-    <!-- <script src="{% static 'EducationCSS/js/jQuery/jquery-3.7.1.min.js' %}"></script> -->
-
-    <!-- bootstrap -->
-    <!-- <script src="{% static 'EducationCSS/js/bootstrap/bootstrap.min.js' %}"></script> -->
-
-    <!-- Theme JS -->
-    <!-- <script src="{% static 'EducationCSS/js/custom.js' %}"></script> -->
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const examTypeSelect = document.querySelector('select[name="ExamType"]');
@@ -86,8 +90,53 @@
             // Set the first option as selected by default and disable it
             firstOption.disabled = true;
             firstOption.selected = true;
+
+            // Set the value of the hidden serviceID field to 'WASSCE'
+            $('input[name="serviceID"]').val('waec-registration');
+        });
+
+        $(document).ready(function() {
+            $('#waec-form').on('submit', function (e) {
+                event.preventDefault();
+
+                var formData = new FormData(this);  // Create FormData from the form
+
+                // Ensure 'quantity' is an integer (since it's coming in as a string)
+                var quantity = formData.get('quantity');
+                if (quantity) {
+                    formData.set('quantity', parseInt(quantity, 10));  // Ensure quantity is sent as an integer
+                }
+
+                // Ensure 'amount' is a decimal number (this might be causing the issue if it is not in the correct format)
+                var amount = formData.get('amount');
+                if (amount) {
+                    formData.set('amount', parseFloat(amount).toFixed(2));  // Ensure amount is a valid decimal with two decimal places
+                }
+
+                // Log the FormData to the console (for debugging)
+                for (var [key, value] of formData.entries()) {
+                    console.log(key + ': ' + value);
+                }
+
+                $.ajax({
+                    url: '/api/waec-registration/',
+                    method: 'POST',
+                    data: formData,
+                    contentType: false,  // Do not set contentType (FormData will handle it)
+                    processData: false,
+                    success: function(response) {
+                        alert('Pin generated successfully!');
+                        console.log(response);
+                    },
+                    error: function(xhr, status, error) {
+                        alert('An error occurred: ' + error);
+                        console.log(xhr.responseText);
+                    }
+                });
+            });
         });
     </script>
+
 
 
 {% endblock content %}

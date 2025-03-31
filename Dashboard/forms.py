@@ -162,11 +162,12 @@ class ElectricityBillForm(forms.ModelForm):
 class WaecPinGeneratorForm(forms.ModelForm):
     class Meta:
         model = WaecPinGenerator
-        fields = ['ExamType', 'phone_number', 'quantity', 'amount']
+        fields = ['serviceID', 'ExamType', 'phone_number', 'quantity', 'amount']
 
         widgets = {
+            'serviceID': forms.HiddenInput(),
             'ExamType': forms.Select(
-                choices=[('', 'Please Select ExamType'), ('DE', 'WASSCE/GCE')],
+                choices=[('', 'Please Select ExamType'), ('WASSCE/GCE', 'WASSCE/GCE')],
             ),
             'phone_number': forms.TextInput(
                 attrs={'placeholder': 'Enter Phone Number', 'maxlength': '11', 'minlength': '11'}
@@ -175,7 +176,7 @@ class WaecPinGeneratorForm(forms.ModelForm):
                 attrs={'placeholder': 'Enter Quantity', 'min': '1', 'max': '10', 'value': '1'}
             ),
             'amount': forms.TextInput(
-                attrs={'placeholder': 'Enter Amount', 'id': 'amountField', 'maxlength': '11', 'minlength': '2', 'disabled': 'true'}
+                attrs={'placeholder': 'Enter Amount', 'id': 'amountField', 'maxlength': '11', 'minlength': '2'}
             ),
         }
 
@@ -187,7 +188,7 @@ class WaecPinGeneratorForm(forms.ModelForm):
         # Make the first option ("Please Select ExamType") disabled
         self.fields['ExamType'].widget.choices = [
             ('', 'Please Select ExamType'),
-            ('DE', 'WASSCE/GCE')
+            ('WASSCE/GCE', 'WASSCE/GCE')
         ]
         
 

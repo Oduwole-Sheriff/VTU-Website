@@ -13,7 +13,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from decimal import Decimal
 
-from api.serializer import RegisterSerializer, LoginSerializer, CustomUserSerializer, DepositSerializer, WithdrawSerializer, TransferSerializer, TransactionSerializer, AccountDetailsSerializer, BuyAirtimeSerializer, BuyDataSerializer, TVServiceSerializer, ElectricityBillSerializer
+from api.serializer import RegisterSerializer, LoginSerializer, CustomUserSerializer, DepositSerializer, WithdrawSerializer, TransferSerializer, TransactionSerializer, AccountDetailsSerializer, BuyAirtimeSerializer, BuyDataSerializer, TVServiceSerializer, ElectricityBillSerializer, WaecPinGeneratorSerializer
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework import status
@@ -1160,6 +1160,102 @@ class ElectricityBillCreateView(APIView):
                 "valid": False,
                 "message": str(e)
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+
+class WaecPinGeneratorCreateView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+
+        serviceID = request.data.get('serviceID')
+        exam_type = request.data.get('ExamType')
+        phone_number = request.data.get('phone_number')
+        quantity = request.data.get('quantity')
+        amount = request.data.get('amount')
+
+        # Ensure we have valid values for quantity and amount
+        if quantity is None or amount is None:
+            return Response({"error": "Quantity and amount are required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Validate that quantity is a positive integer
+        try:
+            quantity = int(quantity)
+            if quantity <= 0:
+                raise ValidationError("Quantity must be a positive integer.")
+        except ValueError:
+            return Response({"error": "Quantity must be a valid integer."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Validate that amount is a positive value
+        try:
+            amount = Decimal(str(amount))
+            if amount <= 0:
+                raise ValidationError("Amount must be a positive value.")
+        except ValueError:
+            return Response({"error": "Amount must be a valid number."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        data = {
+            "serviceID": serviceID.strip(),
+            "ExamType": exam_type,
+            "phone_number": phone_number.strip(),
+            "quantity": quantity,
+            "amount": amount,
+            "user": request.user.id
+        }
+
+        serializer = WaecPinGeneratorSerializer(data=data, context={'request': request})
+
+        if serializer.is_valid():
+            try:
+                with db_transaction.atomic():
+                    # Check if the user has enough balance (assuming the user has a balance field)
+                    user_balance = request.user.balance
+
+                    total_amount = amount * quantity  # Total amount for the requested quantity of pins
+                    if user_balance < total_amount:
+                        raise ValidationError({"detail": "Insufficient balance to complete this transaction."})
+
+                    # Create the WaecPinGenerator instance
+                    waec_pin_generator = serializer.save(user=request.user)
+
+                    # Process the transaction (create a transaction record)
+                    transaction = Transaction.objects.create(
+                        user=request.user,
+                        transaction_type='Waec-Pin-Generation',
+                        amount=total_amount,
+                        status='pending',  # Pending status initially
+                        description=f"Payment for {quantity} WAEC pins generation.",
+                        product_name="WAEC Pin Generation",
+                        unique_element=str(waec_pin_generator.id),
+                        transaction_id=None
+                    )
+
+                    # Deduct balance from the user's account (assuming process_purchase handles this)
+                    request.user = waec_pin_generator.process_purchase()
+                    request.user.save()
+
+                    # Save the transaction with updated status (assuming it gets processed successfully)
+                    transaction.status = 'completed'
+                    transaction.save()
+
+                    # Serialize the WaecPinGenerator instance
+                    waec_pin_generator_data = WaecPinGeneratorSerializer(waec_pin_generator).data
+
+                    # Return a success response with serialized data
+                    return Response({
+                        'success': True,
+                        'message': f'{quantity} WAEC pin(s) generated successfully.',
+                        'remaining_balance': str(request.user.balance),
+                        'transaction_id': transaction.transaction_id,
+                        'data': waec_pin_generator_data  # Return the serialized data of waec_pin_generator
+                    }, status=status.HTTP_201_CREATED)
+
+            except ValidationError as e:
+                # Handle validation error
+                return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            
+        else:
+            print("Serializer Errors:", serializer.errors)
+            return Response({"error": "Invalid data provided.", "details": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
         

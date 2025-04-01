@@ -51,7 +51,7 @@ class VTPassEducationAPI:
             print(response.text)
             return None
 
-    def Purchase_product(self, datacom2):
+    def Jamb_Vending_Pin(self, datacom2):
         url = f"{self.base_url}/api/pay"
         print("POST URL: " + url)
         
@@ -135,11 +135,11 @@ if __name__ == "__main__":
     }
 
     # Call the Waec_Registration_pin method to make the payment request
-    buy_response = api.Waec_Registration_pin(data)
+    waec_registration_pin = api.Waec_Registration_pin(data)
 
-    buy_responsess = api.Verify_jamb_profile(datacom)
+    verify_jamb_profile = api.Verify_jamb_profile(datacom)
 
-    buy_responsess2 = api.Purchase_product(datacom2)
+    jamb_vending_pin = api.Jamb_Vending_Pin(datacom2)
 
     # Fetch service variations using the fetch_service_variations method
     network_name = "waec-registration"

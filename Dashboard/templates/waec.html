@@ -83,52 +83,77 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             const examTypeSelect = document.querySelector('select[name="ExamType"]');
             const firstOption = examTypeSelect.options[0];
     
             // Set the first option as selected by default and disable it
             firstOption.disabled = true;
             firstOption.selected = true;
-
+    
             // Set the value of the hidden serviceID field to 'WASSCE'
             $('input[name="serviceID"]').val('waec-registration');
+    
+            // Listen for changes to the ExamType field and call the API
+            examTypeSelect.addEventListener('change', function () {
+                const selectedExamType = examTypeSelect.value;
+    
+                // Check if an exam type is selected (not the default first option)
+                if (selectedExamType !== "") {
+
+                    // Get CSRF token from the page (from the 'csrf_token' hidden input in the form)
+                    const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
+
+                    // Call your API
+                    $.ajax({
+                        url: '/api/waec-registration/',  // Adjust the URL as needed
+                        method: 'POST',
+                        data: {
+                            'ExamType': selectedExamType,
+                            'serviceID': 'waec-registration',  // Static value for now, can be dynamic
+                        },
+                        headers: {
+                        'X-CSRFToken': csrfToken  // Include CSRF token in the headers
+                        },
+                        success: function (response) {
+                            console.log("API Response:", response);
+                            // Handle the API response (e.g., display a message or update form fields)
+                            if (response.valid) {
+                                // Update the "Amount" field with the value from the API response
+                                const amountField = document.querySelector('input[name="amount"]');
+                                amountField.value = response.amount;  // Update the amount field with the fetched amount
+                                alert("Amount updated: " + response.amount);  // Display an alert with the updated amount
+                            }  else {
+                                alert("Error: " + response.message);
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Error occurred:", error);
+                            alert("Failed to fetch exam type details.");
+                        }
+                    });
+                }
+            });
         });
-
-        $(document).ready(function() {
+    
+        $(document).ready(function () {
+            // Form submission logic remains the same
             $('#waec-form').on('submit', function (e) {
-                event.preventDefault();
-
-                var formData = new FormData(this);  // Create FormData from the form
-
-                // Ensure 'quantity' is an integer (since it's coming in as a string)
-                var quantity = formData.get('quantity');
-                if (quantity) {
-                    formData.set('quantity', parseInt(quantity, 10));  // Ensure quantity is sent as an integer
-                }
-
-                // Ensure 'amount' is a decimal number (this might be causing the issue if it is not in the correct format)
-                var amount = formData.get('amount');
-                if (amount) {
-                    formData.set('amount', parseFloat(amount).toFixed(2));  // Ensure amount is a valid decimal with two decimal places
-                }
-
-                // Log the FormData to the console (for debugging)
-                for (var [key, value] of formData.entries()) {
-                    console.log(key + ': ' + value);
-                }
-
+                e.preventDefault();
+    
+                var formData = new FormData(this);
+    
                 $.ajax({
                     url: '/api/waec-registration/',
                     method: 'POST',
                     data: formData,
                     contentType: false,  // Do not set contentType (FormData will handle it)
                     processData: false,
-                    success: function(response) {
+                    success: function (response) {
                         alert('Pin generated successfully!');
                         console.log(response);
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         alert('An error occurred: ' + error);
                         console.log(xhr.responseText);
                     }
@@ -136,6 +161,7 @@
             });
         });
     </script>
+    
 
 
 

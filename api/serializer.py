@@ -265,38 +265,33 @@ class ElectricityBillSerializer(serializers.ModelSerializer):
 
 
 class WaecPinGeneratorSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
+    serviceID = serializers.CharField(max_length=255)
+    ExamType = serializers.ChoiceField(choices=[('WASSCE/GCE', 'WASSCE/GCE')])
+    phone_number = serializers.CharField(max_length=11)
+    quantity = serializers.IntegerField(min_value=1)
+    amount = serializers.DecimalField(max_digits=10, decimal_places=2)
+    user = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all(), required=False)
+    request_id = serializers.CharField(max_length=100, required=False, allow_blank=True)
+    transaction_id = serializers.CharField(max_length=255, required=False, allow_blank=True)
+    data_response = serializers.JSONField(required=False, allow_null=True)
+    date_created = serializers.DateTimeField(read_only=True)
+    date_updated = serializers.DateTimeField(read_only=True)
+
+    # Calculate the remaining balance after pin generation (read-only field)
+    remaining_balance = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
 
     class Meta:
         model = WaecPinGenerator
-        fields = [
-            'serviceID', 'ExamType', 'phone_number', 'quantity', 'amount', 'created_at', 
-            'updated_at', 'data_response', 'transaction_id', 'user'
-        ]
-        read_only_fields = ['id', 'created_at', 'updated_at']  # These fields should be read-only
+        fields = '__all__'
 
-    # Optional: You can add custom validation if needed
-    def validate_amount(self, value):
-        if value <= 0:
-            raise serializers.ValidationError("Amount must be a positive value.")
-        return value
-
-    def validate_quantity(self, value):
-        try:
-            int_value = int(value)
-            if int_value <= 0:
-                raise serializers.ValidationError("Quantity must be a positive integer.")
-        except ValueError:
-            raise serializers.ValidationError("Quantity must be a valid integer.")
-        return value
+    def create(self, validated_data):
+        """Override the create method to add the user to the validated data"""
+        user = self.context['request'].user  # Get the user from the request context
+        validated_data['user'] = user  # Add the user to the validated data
         
-    def create(self, validated_data): 
-        user = self.context['request'].user
-        validated_data['user'] = user
-
         # Create and return the WaecPinGenerator instance
-        Waec_Pin_Generator = WaecPinGenerator.objects.create(**validated_data)
-        return Waec_Pin_Generator
+        waec_pin_generator = WaecPinGenerator.objects.create(**validated_data)
+        return waec_pin_generator
 
 
 # class WalletSerializer(serializers.ModelSerializer):

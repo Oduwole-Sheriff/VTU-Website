@@ -176,7 +176,7 @@ class WaecPinGeneratorForm(forms.ModelForm):
                 attrs={'placeholder': 'Enter Quantity', 'min': '1', 'max': '10', 'value': '1'}
             ),
             'amount': forms.TextInput(
-                attrs={'placeholder': 'Enter Amount', 'id': 'amountField', 'maxlength': '11', 'minlength': '2'}
+                attrs={'placeholder': 'Enter Amount', 'id': 'amountField', 'maxlength': '11', 'minlength': '2', 'disabled': 'disabled'}
             ),
         }
 

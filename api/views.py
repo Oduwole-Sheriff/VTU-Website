@@ -1174,95 +1174,48 @@ class WaecPinGeneratorCreateView(APIView):
         quantity = request.data.get('quantity')
         amount = request.data.get('amount')
 
-        # Validate that exam_type is provided and valid
-        if not exam_type:
-            return Response({"error": "ExamType is required."}, status=status.HTTP_400_BAD_REQUEST)
+        print(f"Received data: {request.data}")
 
-        service_name = "waec-registration"
-
-        try:
-            # Call the VTPass API to verify the exam type
-            api = VTPassEducationAPI(
-                base_url="https://sandbox.vtpass.com",
-                auth_token="Token be76014119dd44b12180ab93a92d63a2",  # Replace with your actual token
-                secret_key="SK_873dc5215f9063f6539ec2249c8268bb788b3150386"  # Replace with your actual secret key
-            )
-            get_variation_code = api.fetch_service_variations(service_name)
-
-            # Check if the response is valid and parse it as JSON if needed
-            if isinstance(get_variation_code, str):  # If the response is a string, parse it as JSON
-                get_variation_code = json.loads(get_variation_code)  # Assuming `json` is imported
-
-            # Now we can safely access the 'content' field
-            if get_variation_code:
-                content = get_variation_code.get('content', {})
-                if content.get('error'):
-                    return Response({
-                        "valid": False,
-                        "message": content.get('error'),  # Show the error message from the content
-                        "content": content
-                    }, status=status.HTTP_200_OK)
-                else:
-                    variations = content.get('variations', [])
-                    if variations:
-                        # Assume the first variation is the one we want to use
-                        variation_amount = variations[0].get('variation_amount')
-                        if variation_amount:
-                            # Update the amount field with the variation_amount
-                            amount = Decimal(variation_amount)
-                            print(f"Updated Amount from API: {amount}")
-                        else:
-                            return Response({"error": "Variation amount not found in the response."}, status=status.HTTP_400_BAD_REQUEST)
-                    else:
-                        return Response({"error": "No variations found in the response."}, status=status.HTTP_400_BAD_REQUEST)
-
-                    # Return a successful response with the updated amount
-                    return Response({
-                        "valid": True,
-                        "message": "Validation successful.",
-                        "content": content,
-                        "amount": str(amount)  # Send the amount back to the frontend
-                    }, status=status.HTTP_200_OK)
-
-        except Exception as e:
-            return Response({
-                "valid": False,
-                "message": str(e)
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        # # Validate that exam_type is provided and valid
+        
 
 
         # Now perform internal validation for quantity and amount
-        if quantity is None or amount is None:
-            return Response({"error": "Quantity and amount are required."}, status=status.HTTP_400_BAD_REQUEST)
+        # if quantity is None or amount is None:
+        #     return Response({"error": "Quantity and amount are required."}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Validate that quantity is a positive integer
-        try:
-            quantity = int(quantity)
-            if quantity <= 0:
-                raise ValidationError("Quantity must be a positive integer.")
-        except ValueError:
-            return Response({"error": "Quantity must be a valid integer."}, status=status.HTTP_400_BAD_REQUEST)
+        # # Validate that quantity is a positive integer
+        # try:
+        #     quantity = int(quantity)
+        #     if quantity <= 0:
+        #         raise ValidationError("Quantity must be a positive integer.")
+        # except ValueError:
+        #     return Response({"error": "Quantity must be a valid integer."}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Validate that amount is a positive value
-        try:
-            amount = Decimal(str(amount))
-            if amount <= 0:
-                raise ValidationError("Amount must be a positive value.")
-        except ValueError:
-            return Response({"error": "Amount must be a valid number."}, status=status.HTTP_400_BAD_REQUEST)
+        # # Validate that amount is a positive value
+        # try:
+        #     amount = Decimal(str(amount))
+        #     if amount <= 0:
+        #         raise ValidationError("Amount must be a positive value.")
+        # except ValueError:
+        #     return Response({"error": "Amount must be a valid number."}, status=status.HTTP_400_BAD_REQUEST)
 
-        # If the validation for exam type, quantity, and amount passes, proceed with pin generation
-        data = {
-            "serviceID": serviceID.strip(),
-            "ExamType": exam_type,
-            "phone_number": phone_number.strip(),
-            "quantity": quantity,
-            "amount": amount,
-            "user": request.user.id
-        }
+        # # If the validation for exam type, quantity, and amount passes, proceed with pin generation
+        # data = {
+        #     "serviceID": serviceID.strip(),
+        #     "ExamType": exam_type,
+        #     "phone_number": phone_number.strip(),
+        #     "quantity": quantity,
+        #     "amount": amount,
+        #     "user": request.user.id
+        # }
 
+        service_name = request.data.get('serviceID')
+
+        data = request.data.dict()  # Convert QueryDict to regular dict
         serializer = WaecPinGeneratorSerializer(data=data, context={'request': request})
-        print("amount 2", amount)
+
+        # print("SERIALIZED DATA", serializer)
 
         if serializer.is_valid():
             try:
@@ -1270,7 +1223,7 @@ class WaecPinGeneratorCreateView(APIView):
                     # Check if the user has enough balance (assuming the user has a balance field)
                     user_balance = request.user.balance
 
-                    total_amount = amount * quantity  # Total amount for the requested quantity of pins
+                    total_amount = Decimal(amount) * int(quantity)  # Total amount for the requested quantity of pins
                     if user_balance < total_amount:
                         raise ValidationError({"detail": "Insufficient balance to complete this transaction."})
 
@@ -1293,6 +1246,30 @@ class WaecPinGeneratorCreateView(APIView):
                     request.user = waec_pin_generator.process_purchase()
                     request.user.save()
 
+                    remaining_balance = request.user.balance
+                    print(f"Balance after deduction: {remaining_balance}")
+
+                    date_time_format = Mdate.now().strftime("%Y%m%d%H%M%S")
+                    data = {
+                        'request_id': str(date_time_format) + create_random_id(),
+                        "serviceID": serviceID,
+                        "variation_code": "waec-registraion",
+                        "quantity": quantity,
+                        "phone": phone_number
+                    }
+
+                    # Call he Waec_Registration_pin API
+                    api = VTPassEducationAPI(
+                        base_url="https://sandbox.vtpass.com",
+                        auth_token="Token be76014119dd44b12180ab93a92d63a2",  # Replace with your actual token
+                        secret_key="SK_873dc5215f9063f6539ec2249c8268bb788b3150386"  # Replace with your actual secret key
+                    )
+                    Waec_Registration_pin = api.Jamb_Vending_Pin(data)
+
+                    # Save the API response in the transaction's `data_response` field
+                    transaction.data_response = Waec_Registration_pin  # Save the response here
+                    transaction.transaction_id = Waec_Registration_pin.get("requestId", 'N/A')
+
                     # Save the transaction with updated status (assuming it gets processed successfully)
                     transaction.status = 'completed'
                     transaction.save()
@@ -1313,11 +1290,71 @@ class WaecPinGeneratorCreateView(APIView):
                 # Handle validation error
                 return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
             
+        # if not serializer.is_valid():
+        #     print("Serializer errors:", serializer.errors)  # This will give more insight into what is failing.
+        #     return Response({"error": "Invalid data provided.", "details": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+        
+        # if not exam_type:
+        #     return Response({"error": "ExamType is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # service_name = "waec-registration"
+        elif exam_type != '' and not phone_number and not quantity and not amount:
+            try:
+                # Call the VTPass API to verify the exam type
+                api = VTPassEducationAPI(
+                    base_url="https://sandbox.vtpass.com",
+                    auth_token="Token be76014119dd44b12180ab93a92d63a2",  # Replace with your actual token
+                    secret_key="SK_873dc5215f9063f6539ec2249c8268bb788b3150386"  # Replace with your actual secret key
+                )
+                get_variation_code = api.fetch_service_variations(service_name)
+
+                # Check if the response is valid and parse it as JSON if needed
+                if isinstance(get_variation_code, str):  # If the response is a string, parse it as JSON
+                    get_variation_code = json.loads(get_variation_code)  # Assuming `json` is imported
+
+                # Now we can safely access the 'content' field
+                if get_variation_code:
+                    content = get_variation_code.get('content', {})
+                    if content.get('error'):
+                        return Response({
+                            "valid": False,
+                            "message": content.get('error'),  # Show the error message from the content
+                            "content": content
+                        }, status=status.HTTP_200_OK)
+                    else:
+                        variations = content.get('variations', [])
+                        if variations:
+                            # Assume the first variation is the one we want to use
+                            variation_amount = variations[0].get('variation_amount')
+                            if variation_amount:
+                                # Update the amount field with the variation_amount
+                                amount = Decimal(variation_amount)
+                                print(f"Updated Amount from API: {amount}")
+                            else:
+                                return Response({"error": "Variation amount not found in the response."}, status=status.HTTP_400_BAD_REQUEST)
+                        else:
+                            return Response({"error": "No variations found in the response."}, status=status.HTTP_400_BAD_REQUEST)
+
+                        # Return a successful response with the updated amount
+                        return Response({
+                            "valid": True,
+                            "message": "Validation successful.",
+                            "content": content,
+                            "amount": str(amount)  # Send the amount back to the frontend
+                        }, status=status.HTTP_200_OK)
+
+            except Exception as e:
+                return Response({
+                    "valid": False,
+                    "message": str(e)
+                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
         else:
             print("Serializer Errors:", serializer.errors)
             return Response({"error": "Invalid data provided.", "details": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
         
-    
+        
 
 
 

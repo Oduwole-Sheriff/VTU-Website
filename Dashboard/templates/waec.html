@@ -109,7 +109,6 @@
                         url: '/api/waec-registration/',  // Adjust the URL as needed
                         method: 'POST',
                         data: {
-                            'ExamType': selectedExamType,
                             'serviceID': 'waec-registration',  // Static value for now, can be dynamic
                         },
                         headers: {
@@ -134,14 +133,22 @@
                     });
                 }
             });
-        });
+        
     
-        $(document).ready(function () {
             // Form submission logic remains the same
             $('#waec-form').on('submit', function (e) {
                 e.preventDefault();
-    
+
+                // Ensure the amount field is updated in the form before submitting
+                var amountField = document.querySelector('input[name="amount"]');
+                var amount = amountField ? amountField.value : '';  // Get the current amount value
+
+                // Add the amount to the form data if it exists
                 var formData = new FormData(this);
+                formData.append('amount', amount);  // Manually add amount to form data
+
+    
+                // var formData = new FormData(this);
     
                 $.ajax({
                     url: '/api/waec-registration/',

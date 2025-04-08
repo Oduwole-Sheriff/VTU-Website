@@ -12,6 +12,9 @@
     <link rel="stylesheet" href="{% static 'EducationCSS/assets/css/style.css' %}" />
     <link rel="stylesheet" href="{% static 'EducationCSS/assets/css/animation.css' %}" />
     <link rel="stylesheet" href="{% static 'EducationCSS/assets/css/responsive.css' %}" />
+    
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.0/dist/sweetalert2.min.css">
 
     <main class="overflow-hddien">
         <!-- container -->
@@ -71,13 +74,23 @@
                         </div>
                     </div>
                 </div>
-            
+        
                 <!-- Submit button -->
                 <button id="sub" type="submit">Generate Pin</button>
             </form>
+
+            <!-- Loading Spinner HTML -->
+            <div id="loading-spinner" class="loading-spinner" style="display: none;">
+                <div class="spinner"></div>
+                <p>Please wait...</p>
+            </div>
             
         </div>
     </main>
+
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.0/dist/sweetalert2.min.js"></script>
+
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -101,6 +114,9 @@
                 // Check if an exam type is selected (not the default first option)
                 if (selectedExamType !== "") {
 
+                    // Show loading spinner
+                    document.getElementById('loading-spinner').style.display = 'flex';
+
                     // Get CSRF token from the page (from the 'csrf_token' hidden input in the form)
                     const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
 
@@ -116,18 +132,19 @@
                         },
                         success: function (response) {
                             console.log("API Response:", response);
+                            document.getElementById('loading-spinner').style.display = 'none';
                             // Handle the API response (e.g., display a message or update form fields)
                             if (response.valid) {
                                 // Update the "Amount" field with the value from the API response
                                 const amountField = document.querySelector('input[name="amount"]');
                                 amountField.value = response.amount;  // Update the amount field with the fetched amount
-                                alert("Amount updated: " + response.amount);  // Display an alert with the updated amount
                             }  else {
                                 alert("Error: " + response.message);
                             }
                         },
                         error: function (xhr, status, error) {
                             console.error("Error occurred:", error);
+                            document.getElementById('loading-spinner').style.display = 'none';
                             alert("Failed to fetch exam type details.");
                         }
                     });
@@ -137,35 +154,95 @@
     
             // Form submission logic remains the same
             $('#waec-form').on('submit', function (e) {
-                e.preventDefault();
+                e.preventDefault(); // Prevent the form from submitting immediately
 
-                // Ensure the amount field is updated in the form before submitting
-                var amountField = document.querySelector('input[name="amount"]');
-                var amount = amountField ? amountField.value : '';  // Get the current amount value
-
-                // Add the amount to the form data if it exists
-                var formData = new FormData(this);
-                formData.append('amount', amount);  // Manually add amount to form data
-
-    
-                // var formData = new FormData(this);
-    
-                $.ajax({
-                    url: '/api/waec-registration/',
-                    method: 'POST',
-                    data: formData,
-                    contentType: false,  // Do not set contentType (FormData will handle it)
-                    processData: false,
-                    success: function (response) {
-                        alert('Pin generated successfully!');
-                        console.log(response);
+                // Show SweetAlert2 confirmation with custom styling
+                Swal.fire({
+                    title: 'Are you ready to Purchase Pin?',
+                    text: 'Please confirm your purchase before proceeding.',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, Proceed!',
+                    cancelButtonText: 'Cancel',
+                    confirmButtonColor: '#28a745', // Green color for the 'Yes' button
+                    cancelButtonColor: '#dc3545', // Red color for the 'Cancel' button
+                    background: '#f7f7f7', // Light background color
+                    color: '#333', // Dark text color
+                    width: '450px', // Adjust the width
+                    padding: '2em', // Add padding for a more spacious look
+                    customClass: {
+                        title: 'swal-title', // Custom class for title
+                        text: 'swal-text', // Custom class for text
+                        confirmButton: 'swal-confirm-btn', // Custom class for confirm button
+                        cancelButton: 'swal-cancel-btn', // Custom class for cancel button
                     },
-                    error: function (xhr, status, error) {
-                        alert('An error occurred: ' + error);
-                        console.log(xhr.responseText);
+                    backdrop: true, // Enable backdrop
+                    timer: 5000, // Optional: Close the SweetAlert after 5 seconds (you can remove it if you don't want auto-close)
+                    timerProgressBar: true, // Display a progress bar
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Show loading spinner before submitting
+                        document.getElementById('loading-spinner').style.display = 'flex';
+
+                        // Ensure the amount field is updated in the form before submitting
+                        var amountField = document.querySelector('input[name="amount"]');
+                        var amount = amountField ? amountField.value : '';  // Get the current amount value
+
+                        // Add the amount to the form data if it exists
+                        var formData = new FormData(this);
+                        formData.append('amount', amount);  // Manually add amount to form data
+
+                        // Make the AJAX request
+                        $.ajax({
+                            url: '/api/waec-registration/',
+                            method: 'POST',
+                            data: formData,
+                            contentType: false,  // Do not set contentType (FormData will handle it)
+                            processData: false,
+                            success: function (response) {
+                                // Hide loading spinner after the API response
+                                document.getElementById('loading-spinner').style.display = 'none';
+
+                                // Show success SweetAlert
+                                Swal.fire('Success', 'Pin generated successfully!', 'success').then(() => {
+                                    // Store the full response in localStorage (or sessionStorage)
+                                    localStorage.setItem('receiptData', JSON.stringify(response)); // Store full response
+                                    // Redirect to Edu-Receipt page after successful submission
+                                    window.location.href = '/Edu-Receipt';  // Adjust the path if needed
+                                });
+                            },
+                            error: function (xhr, status, error) {
+                                // Hide loading spinner after the API response
+                                document.getElementById('loading-spinner').style.display = 'none';
+
+                                // Parse the error response
+                                var response = JSON.parse(xhr.responseText);
+
+                                // Extract the error message from the response
+                                var errorMessage = response.error || 'An error occurred.';
+                                var detailsMessage = '';
+
+                                // If the error message is in string format containing the 'ErrorDetail'
+                                if (errorMessage.includes('ErrorDetail')) {
+                                    // Use regex to extract the message after string=' and before ','
+                                    var match = errorMessage.match(/string='([^']+)'/);
+                                    if (match && match[1]) {
+                                        detailsMessage = match[1]; // Extracted message from the backend
+                                    }
+                                } else {
+                                    detailsMessage = errorMessage; // If no match is found, fallback to the original error message
+                                }
+
+                                // Show the extracted error message in SweetAlert
+                                Swal.fire('Error', detailsMessage, 'error');
+                                console.log(xhr.responseText);
+                            }
+                        });
+
                     }
                 });
             });
+
         });
     </script>
     

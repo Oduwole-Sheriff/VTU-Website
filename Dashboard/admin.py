@@ -227,9 +227,6 @@ class WaecPinGeneratorAdmin(admin.ModelAdmin):
     
     # Fields to search by in the admin panel
     search_fields = ('ExamType', 'phone_number', 'quantity', 'transaction_id')
-    
-    # Fields that are editable directly in the list view
-    list_editable = ('amount', 'quantity')
 
     # Fieldsets to customize form layout in the admin
     fieldsets = (

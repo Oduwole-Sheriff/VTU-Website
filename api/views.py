@@ -20,7 +20,7 @@ from rest_framework import status
 from rest_framework.response import Response
 
 from django.contrib.auth import authenticate, login
-from Dashboard.models import CustomUser, Transaction, TVService, ElectricityBill
+from Dashboard.models import CustomUser, Transaction, TVService, ElectricityBill, WaecPinGenerator
 from django.db import IntegrityError
 from django.http import JsonResponse
 from rest_framework.exceptions import ValidationError
@@ -257,9 +257,11 @@ class TransactionListView(APIView):
             transactions = transactions.filter(transaction_type=transaction_type)
 
         transactions = transactions.order_by('-timestamp')
+        print(transactions)
 
         # Serialize the data
         serializer = TransactionSerializer(transactions, many=True)
+        print(serializer)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
     
@@ -371,7 +373,7 @@ class BuyAirtimeView(APIView):
                         commission = Decimal(commission)
 
                         # Save the commission in the user's bonus field
-                        user = airtime_purchase.user  # Assuming the airtime_purchase has a 'user' field
+                        user = request.user  # Assuming the airtime_purchase has a 'user' field
                         user.bonus += commission  # Add the commission to the current bonus
                         user.save()  # Save the updated bonus field
 
@@ -383,7 +385,7 @@ class BuyAirtimeView(APIView):
                             user=request.user,
                             transaction_type='airtime-purchase',
                             amount=amount,
-                            status='success',
+                            status='completed',
                             product_name=product_name,
                             transaction_id=transaction_id,
                             unique_element=phone_number,
@@ -563,7 +565,7 @@ class BuyDataAPIView(APIView):
                         commission = Decimal(commission)
 
                         # Save the commission in the user's bonus field
-                        user = buy_data_instance.user  # Assuming the buy_data_instance has a 'user' field
+                        user = request.user  # Assuming the buy_data_instance has a 'user' field
                         user.bonus += commission  # Add the commission to the current bonus
                         user.save()  # Save the updated bonus field
 
@@ -752,7 +754,7 @@ class TVServiceAPIView(APIView):
 
             # Fetch service variations
             fetch_service_variations = api.fetch_service_variations(service_id)
-            # print("Fetch Service Variations Response Type:", type(fetch_service_variations))
+            print("Fetch Service Variations Response Type:", type(fetch_service_variations))
             # print("Fetch Service Variations Response:", fetch_service_variations)
 
             # If the response is a string, parse it as JSON
@@ -823,12 +825,12 @@ class TVServiceAPIView(APIView):
                     commission = Decimal(commission)
 
                     # Save the commission in the user's bonus field
-                    user = bouquet_change_result.user  # Assuming the bouquet_change_result has a 'user' field
+                    user = request.user  # Assuming the bouquet_change_result has a 'user' field
                     user.bonus += commission  # Add the commission to the current bonus
                     user.save()  # Save the updated bonus field
 
                     # Mark the transaction as completed
-                    transaction.status = 'Completed'
+                    transaction.status = 'completed'
                     transaction.transaction_id = transaction_data.get("transactionId", 'N/A')
                     transaction.save()
 
@@ -1053,8 +1055,6 @@ class ElectricityBillCreateView(APIView):
 
                     Meter_payment = api.Meter_payment(payload)
 
-                    # Save the API response in the transaction's `data_response` field
-                    transaction.data_response = Meter_payment  # Save the response here
                     transaction.transaction_id = Meter_payment.get("requestId", 'N/A')
 
                     # Regardless of transaction success, create the TVService instance
@@ -1072,8 +1072,13 @@ class ElectricityBillCreateView(APIView):
                     electricity_bill.transaction_id = Meter_payment.get("requestId", 'N/A')
                     electricity_bill.save()  # Don't forget to save it
 
-
+                    user=request.user
+                    
                     if Meter_payment.get("content", {}).get("transactions", {}).get("status") == "delivered":
+
+                        # If the API response is successful, mark the transaction as completed
+                        transaction.status = 'completed'
+                        transaction.save()
                         
                          # Extract commission from the API response
                         commission = Meter_payment.get("content", {}).get("transactions", {}).get("commission", 0)
@@ -1082,13 +1087,9 @@ class ElectricityBillCreateView(APIView):
                         commission = Decimal(commission)
 
                         # Save the commission in the user's bonus field
-                        user = Meter_payment.user  # Assuming the Meter_payment has a 'user' field
+                        user = user = request.user  # Assuming the Meter_payment has a 'user' field
                         user.bonus += commission  # Add the commission to the current bonus
                         user.save()  # Save the updated bonus field
-
-                        # If the API response is successful, mark the transaction as completed
-                        transaction.status = 'completed'
-                        transaction.save()
 
                         # Return success response with remaining balance and other details
                         return Response({
@@ -1176,50 +1177,33 @@ class WaecPinGeneratorCreateView(APIView):
 
         print(f"Received data: {request.data}")
 
-        # # Validate that exam_type is provided and valid
-        
-
-
-        # Now perform internal validation for quantity and amount
-        # if quantity is None or amount is None:
-        #     return Response({"error": "Quantity and amount are required."}, status=status.HTTP_400_BAD_REQUEST)
-
-        # # Validate that quantity is a positive integer
-        # try:
-        #     quantity = int(quantity)
-        #     if quantity <= 0:
-        #         raise ValidationError("Quantity must be a positive integer.")
-        # except ValueError:
-        #     return Response({"error": "Quantity must be a valid integer."}, status=status.HTTP_400_BAD_REQUEST)
-
-        # # Validate that amount is a positive value
-        # try:
-        #     amount = Decimal(str(amount))
-        #     if amount <= 0:
-        #         raise ValidationError("Amount must be a positive value.")
-        # except ValueError:
-        #     return Response({"error": "Amount must be a valid number."}, status=status.HTTP_400_BAD_REQUEST)
-
-        # # If the validation for exam type, quantity, and amount passes, proceed with pin generation
-        # data = {
-        #     "serviceID": serviceID.strip(),
-        #     "ExamType": exam_type,
-        #     "phone_number": phone_number.strip(),
-        #     "quantity": quantity,
-        #     "amount": amount,
-        #     "user": request.user.id
-        # }
-
         service_name = request.data.get('serviceID')
 
         data = request.data.dict()  # Convert QueryDict to regular dict
         serializer = WaecPinGeneratorSerializer(data=data, context={'request': request})
 
-        # print("SERIALIZED DATA", serializer)
-
         if serializer.is_valid():
             try:
                 with db_transaction.atomic():
+                    # Now perform internal validation for quantity and amount
+                    if quantity is None or amount is None:
+                        return Response({"error": "Quantity and amount are required."}, status=status.HTTP_400_BAD_REQUEST)
+
+                    # Validate that quantity is a positive integer
+                    try:
+                        quantity = int(quantity)
+                        if quantity <= 0:
+                            raise ValidationError("Quantity must be a positive integer.")
+                    except ValueError:
+                        return Response({"error": "Quantity must be a valid integer."}, status=status.HTTP_400_BAD_REQUEST)
+
+                    # Validate that amount is a positive value
+                    try:
+                        amount = Decimal(str(amount))
+                        if amount <= 0:
+                            raise ValidationError("Amount must be a positive value.")
+                    except ValueError:
+                        return Response({"error": "Amount must be a valid number."}, status=status.HTTP_400_BAD_REQUEST)
                     # Check if the user has enough balance (assuming the user has a balance field)
                     user_balance = request.user.balance
 
@@ -1237,8 +1221,8 @@ class WaecPinGeneratorCreateView(APIView):
                         amount=total_amount,
                         status='pending',  # Pending status initially
                         description=f"Payment for {quantity} WAEC pins generation.",
-                        product_name="WAEC Pin Generation",
-                        unique_element=str(waec_pin_generator.id),
+                        product_name=waec_pin_generator.ExamType,
+                        unique_element=waec_pin_generator.phone_number,
                         transaction_id=None
                     )
 
@@ -1264,27 +1248,79 @@ class WaecPinGeneratorCreateView(APIView):
                         auth_token="Token be76014119dd44b12180ab93a92d63a2",  # Replace with your actual token
                         secret_key="SK_873dc5215f9063f6539ec2249c8268bb788b3150386"  # Replace with your actual secret key
                     )
-                    Waec_Registration_pin = api.Jamb_Vending_Pin(data)
+                    Waec_Registration_pin = api.Waec_Registration_pin(data)
 
-                    # Save the API response in the transaction's `data_response` field
-                    transaction.data_response = Waec_Registration_pin  # Save the response here
                     transaction.transaction_id = Waec_Registration_pin.get("requestId", 'N/A')
 
-                    # Save the transaction with updated status (assuming it gets processed successfully)
-                    transaction.status = 'completed'
-                    transaction.save()
+                    # Regardless of transaction success, create the TVService instance
+                    Waec_Pin_Generator = WaecPinGenerator.objects.create(
+                        user=request.user,
+                        serviceID=serviceID,
+                        ExamType=exam_type,
+                        amount=Decimal(str(amount)),
+                        phone_number=phone_number,
+                        quantity=quantity,
+                        data_response=Waec_Registration_pin,  # Save the response
+                        transaction_id=None,
+                    )
+
+                    Waec_Pin_Generator.transaction_id = Waec_Registration_pin.get("requestId", 'N/A')
+                    Waec_Pin_Generator.save()  # Don't forget to save it
 
                     # Serialize the WaecPinGenerator instance
                     waec_pin_generator_data = WaecPinGeneratorSerializer(waec_pin_generator).data
 
-                    # Return a success response with serialized data
-                    return Response({
-                        'success': True,
-                        'message': f'{quantity} WAEC pin(s) generated successfully.',
-                        'remaining_balance': str(request.user.balance),
-                        'transaction_id': transaction.transaction_id,
-                        'data': waec_pin_generator_data  # Return the serialized data of waec_pin_generator
-                    }, status=status.HTTP_201_CREATED)
+                    # Get the user from the request (Django's authenticated user)
+                    user = request.user
+
+                    transaction_status = Waec_Registration_pin.get("content", {}).get("transactions", {}).get("status")
+                    print(f"API Response Status: {transaction_status}")
+
+                    if transaction_status == "delivered":
+                        commission = Waec_Registration_pin.get("content", {}).get("transactions", {}).get("commission", 0)
+                        commission = Decimal(commission)
+                        user.bonus += commission
+                        user.save()
+
+                        transaction.status = 'completed'
+                        transaction.save()
+                        print(f"Transaction status updated to: {transaction.status}")
+
+
+                        # Return success response with remaining balance and other details
+                        return Response({
+                            'success': True,
+                            'message': f'{quantity} WAEC pin(s) generated successfully.',
+                            'remaining_balance': str(remaining_balance),
+                            'transaction_id': transaction.transaction_id,
+                            'data': waec_pin_generator_data,
+                            "content": Waec_Registration_pin
+                        }, status=status.HTTP_201_CREATED)
+
+                    else:
+                        # If the API fails, log the failure and revert the balance
+                        print(f"API failed, reverting balance. Original user balance: {remaining_balance}, Deducted amount: {amount_decimal}")
+
+                        # Revert the deducted balance
+                        refund_amount = Waec_Registration_pin.get('amount', '0.00')
+                        user.balance += total_amount
+                        user.save()
+
+                        # Mark the transaction as failed
+                        transaction.status = 'failed'
+                        transaction.save()
+
+                        print(f"Balance after reversion: {user.balance}")
+
+                        # Return error response due to API failure
+                        return Response({
+                            'success': False,
+                            'error': 'Transaction failed with the external API.',
+                            'details':Waec_Registration_pin,
+                            'message': Waec_Registration_pin.get("response_description"),
+                            'refund_amount': refund_amount,
+                            'transaction_id': Waec_Registration_pin.get("requestId")
+                        }, status=status.HTTP_200_OK)
 
             except ValidationError as e:
                 # Handle validation error
@@ -1294,11 +1330,6 @@ class WaecPinGeneratorCreateView(APIView):
         #     print("Serializer errors:", serializer.errors)  # This will give more insight into what is failing.
         #     return Response({"error": "Invalid data provided.", "details": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-        
-        # if not exam_type:
-        #     return Response({"error": "ExamType is required."}, status=status.HTTP_400_BAD_REQUEST)
-
-        # service_name = "waec-registration"
         elif exam_type != '' and not phone_number and not quantity and not amount:
             try:
                 # Call the VTPass API to verify the exam type

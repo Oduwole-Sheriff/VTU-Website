@@ -352,6 +352,10 @@ def JambRegistrationPayment(request):
     return render(request, 'jamb.html', {'form': form, 'user_balance': user.balance})
 
 @login_required
+def EducationReceipt(request):
+    return render(request, 'Educaional-receipt.html')
+
+@login_required
 def receipt(request):
     return render(request, 'receipt.html')
 

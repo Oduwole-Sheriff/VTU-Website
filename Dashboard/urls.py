@@ -13,6 +13,7 @@ urlpatterns = [
     path('manageSubscription/', views.ManageSubscription, name='manage_subscription'),
     path('waec-registration/', views.Waec, name='waec'),
     path('jamb-registration/', views.JambRegistrationPayment, name='jamb'),
+    path('Edu-Receipt/', views.EducationReceipt, name='Edu-Receipt'),
 
     path('dataCard/', views.BuyDataCard, name='buy_dataCard'),
     path('dataRecharge-Pin-Order/', views.BuyDataPin, name='buy_dataPin'),

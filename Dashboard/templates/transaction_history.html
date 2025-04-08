@@ -30,7 +30,7 @@
                         <td>
                             {% if transaction.status == 'failed' %}
                                 <span class="text-danger">Failed</span>
-                            {% elif transaction.status == 'success' %}
+                            {% elif transaction.status == 'completed' %}
                                 <span class="text-success">Success</span>
                             {% else %}
                                 <span class="text-warning">Pending</span>

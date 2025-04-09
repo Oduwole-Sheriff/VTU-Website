@@ -381,6 +381,7 @@ class WaecPinGenerator(models.Model):
         return self.user  # Return the user instance after deduction
     
 class JambRegistration(models.Model):
+    serviceID = models.CharField(max_length=255, blank=False, null=False)
     EXAM_TYPE_CHOICES = [
         ('DE', 'Direct Entry (DE)'),
         # You can add other exam types here if needed
@@ -397,7 +398,6 @@ class JambRegistration(models.Model):
     )
     phone_number = models.CharField(
         max_length=11, 
-        unique=True, 
         verbose_name="Phone Number"
     )
     amount = models.DecimalField(

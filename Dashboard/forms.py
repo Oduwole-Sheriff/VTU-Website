@@ -201,9 +201,10 @@ class WaecPinGeneratorForm(forms.ModelForm):
 class JambRegistrationForm(forms.ModelForm):
     class Meta:
         model = JambRegistration
-        fields = ['exam_type', 'jamb_profile_id', 'phone_number', 'amount']
+        fields = ['serviceID', 'exam_type', 'jamb_profile_id', 'phone_number', 'amount']
         widgets = {
-            'jamb_profile_id': forms.TextInput(attrs={'placeholder': 'Enter JAMB Profile ID'}),
+            'serviceID': forms.HiddenInput(),
+            'jamb_profile_id': forms.TextInput(attrs={'placeholder': 'Enter JAMB Profile ID', 'id': 'id_jamb_profile_id'}),
             'phone_number': forms.TextInput(attrs={'placeholder': 'Enter Phone Number', 'maxlength': '11'}),
             'amount': forms.TextInput(attrs={'placeholder': 'Enter Amount', 'id': 'amountField', 'disabled': 'disabled'})
         }

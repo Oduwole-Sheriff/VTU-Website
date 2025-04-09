@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from Dashboard.models import CustomUser, Transaction, BuyAirtime, BuyData, TVService, ElectricityBill, WaecPinGenerator
+from Dashboard.models import CustomUser, Transaction, BuyAirtime, BuyData, TVService, ElectricityBill, WaecPinGenerator, JambRegistration
 from authentication.models import Profile
 from django.contrib.auth.password_validation import validate_password
 from django.db import transaction as db_transaction
@@ -293,6 +293,32 @@ class WaecPinGeneratorSerializer(serializers.ModelSerializer):
         waec_pin_generator = WaecPinGenerator.objects.create(**validated_data)
         return waec_pin_generator
 
+
+
+class JambRegistrationSerializer(serializers.ModelSerializer):
+    # This is used for representing the related CustomUser model
+    user = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all(), required=False)
+
+    class Meta:
+        model = JambRegistration
+        fields = [
+            'user',
+            'serviceID',
+            'exam_type',
+            'jamb_profile_id',
+            'phone_number',
+            'amount',
+            'data_response',
+        ] # This includes all fields from the model
+        read_only_fields = ['created_at', 'updated_at', 'transaction_id', 'user']  # Fields that should be read-only
+
+    def create(self, validated_data):
+        """Override the create method to add the user to the validated data"""
+        user = self.context['request'].user  # Get the user from the request context
+        validated_data['user'] = user  # Add the user to the validated data
+
+        jamb_registration = JambRegistration.objects.create(**validated_data)
+        return jamb_registration
 
 # class WalletSerializer(serializers.ModelSerializer):
 #     class Meta:

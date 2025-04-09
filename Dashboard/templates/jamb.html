@@ -17,10 +17,20 @@
         <!-- container -->
         
             <!-- form -->
-            <form class="revotForm fade-custom" novalidate onsubmit="return false" c>
+            <form class="revotForm fade-custom" id="jamb-form" novalidate onsubmit="return false" c>
+                {% csrf_token %}
                 <!-- heading -->
-                <h1 class="mainHeading color-white-title-home">JAMB REGISTRATION</h1>
+                <h1 class="mainHeading color-white-title-home">JAMB PIN VENDING (UTME & D.E)</h1>
                 <div class="row">
+                    <!-- Service ID -->
+                    <div class="col-md-12" style="display: none;">
+                        <div class="textField">
+                            <label class="color-white-title-home" for="{{ form.ExamType.id_for_label }}">Service ID</label>
+                            <div class="fieldInner">
+                                {{ form.serviceID }}
+                            </div>
+                        </div>
+                    </div>
                     <!-- Form Start -->
                     <div class="col-md-12">
                         <div class="textField">
@@ -59,12 +69,197 @@
                 <!-- Submit button -->
                 <button id="sub">Register Now</button>
             </form>
+
+            <!-- Loading Spinner HTML -->
+            <div id="loading-spinner" class="loading-spinner" style="display: none;">
+                <div class="spinner"></div>
+                <p>Please wait...</p>
+            </div>
+            
         </div>
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.6.9/dist/sweetalert2.all.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
-        // Disable the first option ("Please Select Exam Type")
-        document.querySelector("select[name='exam_type'] option[value='']").disabled = true;
+        $(document).ready(function() {
+            // Disable the first option ("Please Select Exam Type")
+            $("select[name='exam_type'] option[value='']").prop('disabled', true);
+
+            // Set the value of the hidden serviceID field to 'Jamb'
+            $('input[name="serviceID"]').val('jamb');
+
+            const examTypeSelect = document.querySelector('select[name="exam_type"]');
+
+            // Listen for changes to the ExamType field and call the API
+            examTypeSelect.addEventListener('change', function () {
+                const selectedExamType = examTypeSelect.value;
+    
+                // Check if an exam type is selected (not the default first option)
+                if (selectedExamType !== "") {
+
+                    // Show loading spinner
+                    document.getElementById('loading-spinner').style.display = 'flex';
+
+                    // Get CSRF token from the page (from the 'csrf_token' hidden input in the form)
+                    const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
+
+                    // Call your API
+                    $.ajax({
+                        url: '/api/jamb-registration/',  // Adjust the URL as needed
+                        method: 'POST',
+                        data: {
+                            'serviceID': 'jamb',  // Static value for now, can be dynamic
+                        },
+                        headers: {
+                        'X-CSRFToken': csrfToken  // Include CSRF token in the headers
+                        },
+                        success: function (response) {
+                            console.log("API Response:", response);
+                            document.getElementById('loading-spinner').style.display = 'none';
+                            // Handle the API response (e.g., display a message or update form fields)
+                            if (response.valid) {
+                                // Update the "Amount" field with the value from the API response
+                                const amountField = document.querySelector('input[name="amount"]');
+                                amountField.value = response.amount;  // Update the amount field with the fetched amount
+                            }  else {
+                                alert("Error: " + response.message);
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Error occurred:", error);
+                            document.getElementById('loading-spinner').style.display = 'none';
+                            alert("Failed to fetch exam type details.");
+                        }
+                    });
+                }
+            });
+
+            // Function to verify the smartcard number via API
+            function verifyProfileID(jambProfileId) {
+                // Show loading spinner
+                document.getElementById('loading-spinner').style.display = 'flex';
+                
+                return $.ajax({
+                    url: "/api/jamb-registration/",  // Replace with your backend API endpoint for verification
+                    type: 'POST',
+                    data: {
+                        'billersCode': jambProfileId,
+                        'serviceID': "jamb",
+                        'type': "utme-mock",
+                        'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+                    },
+                    success: function (response) {
+                        // Prepare a message to display in SweetAlert, based on the response
+                        document.getElementById('loading-spinner').style.display = 'none';
+                        let message = response.details && response.details.content && response.details.content.error
+                            ? response.details.content.error
+                            : 'No additional details available.';
+
+                        if (response.valid) {
+                            // If status is 'Open', show success message along with content.error
+                            Swal.fire({
+                                title: 'Verification Successful!',
+                                icon: 'success',
+                                confirmButtonText: 'OK',
+                                html: `
+                                    <strong>Customer's Name:</strong> ${response.content.Customer_Name} <br>
+                                    <strong>Customer's Type:</strong> ${response.content.Customer_Account_Type}
+                                `
+                            });
+                        } else {
+                            document.getElementById('loading-spinner').style.display = 'none';
+                            // If not 'Open', show failure message along with content.error
+                            let errorMessage = response.message || 'Smartcard verification failed.';
+                            Swal.fire({
+                                title: 'Verification Error!',
+                                text: errorMessage + '\n\nDetails: ' + message,
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                        return true;  // Return true after handling success
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(error);
+                        document.getElementById('loading-spinner').style.display = 'none';
+
+                        // Prepare a message to display in SweetAlert, based on the error response
+                        let errorMessage = 'Error during smartcard verification. Please try again.';
+                        let responseDetails = 'No additional details available.';
+
+                        // Check if the backend returns a detailed error and extract it
+                        if (xhr.responseJSON && xhr.responseJSON.details && xhr.responseJSON.details.content) {
+                            responseDetails = xhr.responseJSON.details.content.error || responseDetails;
+                        }
+
+                        // Use SweetAlert to show the error message and response details
+                        Swal.fire({
+                            title: 'Error!',
+                            text: errorMessage + '\n\nDetails: ' + responseDetails,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                        return false;  // Return false after handling error
+                    }
+                });
+            }
+
+            // Get the value of the JAMB Profile ID
+            var jambProfileId = parseInt($('select[name="jamb_profile_id"]').val(), 10);
+
+            // Listen for changes in the ProfileID number fields
+            $('#id_jamb_profile_id').on('input', function () {
+                var jambProfileId = $(this).val();
+
+                // Only verify if the ProfileID number is 10 characters
+                if (jambProfileId.length === 10) {
+                    verifyProfileID(jambProfileId)
+                }
+            }); 
+            
+            
+            // Handle form submission with AJAX
+            $("#jamb-form").on('submit', function (e) {
+                event.preventDefault(); // Prevent the default form submission
+
+                // Show loading spinner before submitting
+                document.getElementById('loading-spinner').style.display = 'flex';
+
+                // Ensure the amount field is updated in the form before submitting
+                var amountField = document.querySelector('input[name="amount"]');
+                var amount = amountField ? amountField.value : '';  // Get the current amount value
+
+                // Collect form data
+                var formData = new FormData(this);
+                formData.append('amount', amount);  // Manually add amount to form data
+
+                // Send the data to the backend using AJAX
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/jamb-registration/',  // Replace with your backend URL
+                    data: formData,
+                    contentType: false,  // Do not set contentType (FormData will handle it)
+                    processData: false,
+                    success: function(response) {
+                        // Hide loading spinner after the API response
+                        document.getElementById('loading-spinner').style.display = 'none';
+                        // Handle success (you can customize this)
+                        alert("Form submitted successfully!");
+                        console.log(response); // You can log the response or display success message
+                    },
+                    error: function(xhr, status, error) {
+                        // Hide loading spinner after the API response
+                        document.getElementById('loading-spinner').style.display = 'none';
+                        // Handle error (you can customize this)
+                        alert("An error occurred. Please try again.");
+                        console.log(xhr.responseText);
+                    }
+                });
+            });
+        });
     </script>
     
 

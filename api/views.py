@@ -13,7 +13,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from decimal import Decimal
 
-from api.serializer import RegisterSerializer, LoginSerializer, CustomUserSerializer, DepositSerializer, WithdrawSerializer, TransferSerializer, TransactionSerializer, AccountDetailsSerializer, BuyAirtimeSerializer, BuyDataSerializer, TVServiceSerializer, ElectricityBillSerializer, WaecPinGeneratorSerializer
+from api.serializer import RegisterSerializer, LoginSerializer, CustomUserSerializer, DepositSerializer, WithdrawSerializer, TransferSerializer, TransactionSerializer, AccountDetailsSerializer, BuyAirtimeSerializer, BuyDataSerializer, TVServiceSerializer, ElectricityBillSerializer, WaecPinGeneratorSerializer, JambRegistrationSerializer
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework import status
@@ -1387,6 +1387,193 @@ class WaecPinGeneratorCreateView(APIView):
         
         
 
+class JambRegistrationViewSet(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        serviceID = request.data.get('serviceID')
+        exam_type = request.data.get('exam_type')  # Corrected from 'ExamType' to match input field
+        jamb_profile_id = request.data.get('jamb_profile_id')
+        phone_number = request.data.get('phone_number')
+        amount = request.data.get('amount')
+
+        print(f"Received data: {request.data}")
+
+        data = request.data.dict()  # Convert QueryDict to regular dict
+        serializer = JambRegistrationSerializer(data=data, context={'request': request})
+
+        service_name = serviceID
+        jamb_profile_id = int(request.data.get('billersCode', 0))
+
+        verify_profile = {
+            'billersCode': jamb_profile_id,
+            "serviceID": serviceID,
+            "type": "utme-mock",
+        }
+
+        # if not serializer.is_valid():
+        #     print("Serializer Errors:", serializer.errors)
+        #     return Response({"error": "Invalid data.", "details": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+            
+        if serializer.is_valid():
+            try:
+                with db_transaction.atomic():
+                    # Validation checks
+                    if jamb_profile_id is None or amount is None:
+                        return Response({"error": "Jamb profile id and amount are required."}, status=status.HTTP_400_BAD_REQUEST)
+
+                    if phone_number is None:
+                        return Response({"error": "Phone number is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+                    # Validate that amount is a positive value
+                    try:
+                        amount = Decimal(str(amount))
+                        if amount <= 0:
+                            raise ValidationError("Amount must be a positive value.")
+                    except ValueError:
+                        return Response({"error": "Amount must be a valid number."}, status=status.HTTP_400_BAD_REQUEST)
+
+                    # Check if the user has enough balance
+                    user_balance = request.user.balance
+                    total_amount = Decimal(amount)
+                    if user_balance < total_amount:
+                        return Response({"error": "Insufficient balance to complete this transaction."}, status=status.HTTP_400_BAD_REQUEST)
+
+                    # Create the JambRegistration instance
+                    jamb_registration = serializer.save(user=request.user)
+
+                    # Process the transaction
+                    transaction = Transaction.objects.create(
+                        user=request.user,
+                        transaction_type='Jamb-Pin-Generation',
+                        amount=total_amount,
+                        status='pending',  # Pending status initially
+                        description=f"Payment for {jamb_profile_id} Jamb pins generation.",
+                        product_name=jamb_registration.exam_type,
+                        unique_element=jamb_registration.phone_number,
+                        transaction_id=None
+                    )
+
+                    # Deduct balance from the user's account
+                    request.user = jamb_registration.process_purchase()
+                    request.user.save()
+
+                    remaining_balance = request.user.balance
+                    print(f"Balance after deduction: {remaining_balance}")
+
+                    # Serialize the jamb_registration instance
+                    serialized_jamb_registration = JambRegistrationSerializer(jamb_registration)
+
+                    return Response({
+                        "valid": True,
+                        "message": "Validation successful.",
+                        "content": serialized_jamb_registration.data,
+                        "amount": str(amount)  # Send the amount back to the frontend
+                    }, status=status.HTTP_200_OK)
+
+            except ValidationError as e:
+                # Handle validation error
+                return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+            except IntegrityError as e:
+                print(f"Database integrity error: {str(e)}")
+                return Response({"error": "Database integrity issue."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+            except Exception as e:
+                print(f"Unexpected error: {str(e)}")
+                return Response({"error": "An unexpected error occurred."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        elif exam_type != '' and not phone_number and not amount and not jamb_profile_id:
+            try:
+                # Call the VTPass API to verify the exam type
+                api = VTPassEducationAPI(
+                    base_url="https://sandbox.vtpass.com",
+                    auth_token="Token be76014119dd44b12180ab93a92d63a2",  # Replace with your actual token
+                    secret_key="SK_873dc5215f9063f6539ec2249c8268bb788b3150386"  # Replace with your actual secret key
+                )
+                get_variation_code = api.fetch_service_variations(service_name)
+
+                # Check if the response is valid and parse it as JSON if needed
+                if isinstance(get_variation_code, str):  # If the response is a string, parse it as JSON
+                    get_variation_code = json.loads(get_variation_code)  # Assuming `json` is imported
+
+                # Now we can safely access the 'content' field
+                if get_variation_code:
+                    content = get_variation_code.get('content', {})
+                    if content.get('error'):
+                        return Response({
+                            "valid": False,
+                            "message": content.get('error'),  # Show the error message from the content
+                            "content": content
+                        }, status=status.HTTP_200_OK)
+                    else:
+                        variations = content.get('variations', [])
+                        if variations:
+                            # Assume the first variation is the one we want to use
+                            variation_amount = variations[0].get('variation_amount')
+                            if variation_amount:
+                                # Update the amount field with the variation_amount
+                                amount = Decimal(variation_amount)
+                                print(f"Updated Amount from API: {amount}")
+                            else:
+                                return Response({"error": "Variation amount not found in the response."}, status=status.HTTP_400_BAD_REQUEST)
+                        else:
+                            return Response({"error": "No variations found in the response."}, status=status.HTTP_400_BAD_REQUEST)
+
+                        # Return a successful response with the updated amount
+                        return Response({
+                            "valid": True,
+                            "message": "Validation successful.",
+                            "content": content,
+                            "amount": str(amount)  # Send the amount back to the frontend
+                        }, status=status.HTTP_200_OK)
+
+            except Exception as e:
+                return Response({
+                    "valid": False,
+                    "message": str(e)
+                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        try:
+            # Call the VTPass API to verify the exam type
+            api = VTPassEducationAPI(
+                base_url="https://sandbox.vtpass.com",
+                auth_token="Token be76014119dd44b12180ab93a92d63a2",  # Replace with your actual token
+                secret_key="SK_873dc5215f9063f6539ec2249c8268bb788b3150386"  # Replace with your actual secret key
+            )
+            verify_jamb_profile = api.Verify_jamb_profile(verify_profile)
+
+            # Check if the response is valid and parse it as JSON if needed
+            if isinstance(verify_jamb_profile, str):  # If the response is a string, parse it as JSON
+                verify_jamb_profile = json.loads(verify_jamb_profile)  # Assuming `json` is imported
+
+            # Now we can safely access the 'content' field
+            if verify_jamb_profile:
+                content = verify_jamb_profile.get('content', {})
+                if content.get('error'):
+                    return Response({
+                        "valid": False,
+                        "message": content.get('error'),  # Show the error message from the content
+                        "content": content
+                    }, status=status.HTTP_200_OK)
+                else:
+                    # Return a successful response with the updated amount
+                    return Response({
+                        "valid": True,
+                        "message": "Validation successful.",
+                        "content": content,
+                        "amount": str(amount)  # Send the amount back to the frontend
+                    }, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({
+                "valid": False,
+                "message": str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        else:
+            print("Serializer Errors:", serializer.errors)
+            return Response({"error": "Invalid data provided.", "details": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
 

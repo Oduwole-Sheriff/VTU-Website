@@ -310,6 +310,7 @@ def Waec(request):
     # Render the form in the template
     return render(request, 'waec.html', {'form': form})
 
+@login_required
 def JambRegistrationPayment(request):
     user = request.user  # Get the logged-in user
 

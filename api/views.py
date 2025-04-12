@@ -20,7 +20,7 @@ from rest_framework import status
 from rest_framework.response import Response
 
 from django.contrib.auth import authenticate, login
-from Dashboard.models import CustomUser, Transaction, TVService, ElectricityBill, WaecPinGenerator
+from Dashboard.models import CustomUser, Transaction, TVService, ElectricityBill, WaecPinGenerator, JambRegistration
 from django.db import IntegrityError
 from django.http import JsonResponse
 from rest_framework.exceptions import ValidationError
@@ -1396,6 +1396,7 @@ class JambRegistrationViewSet(APIView):
         jamb_profile_id = request.data.get('jamb_profile_id')
         phone_number = request.data.get('phone_number')
         amount = request.data.get('amount')
+        billers_code = request.data.get('billersCode')  
 
         print(f"Received data: {request.data}")
 
@@ -1406,7 +1407,7 @@ class JambRegistrationViewSet(APIView):
         jamb_profile_id = int(request.data.get('billersCode', 0))
 
         verify_profile = {
-            'billersCode': jamb_profile_id,
+            'billersCode': billers_code,
             "serviceID": serviceID,
             "type": "utme-mock",
         }
@@ -1416,6 +1417,16 @@ class JambRegistrationViewSet(APIView):
         #     return Response({"error": "Invalid data.", "details": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
             
         if serializer.is_valid():
+
+            jamb_profile_id_str = request.data.get('jamb_profile_id')
+
+            if jamb_profile_id_str is not None:
+                try:
+                    jamb_profile_id = int(jamb_profile_id_str)
+                except ValueError:
+                    return Response({'error': 'Invalid jamb_profile_id. It must be an integer.'}, status=400)
+            else:
+                return Response({'error': 'jamb_profile_id is required.'}, status=400)
             try:
                 with db_transaction.atomic():
                     # Validation checks
@@ -1458,18 +1469,100 @@ class JambRegistrationViewSet(APIView):
                     request.user = jamb_registration.process_purchase()
                     request.user.save()
 
+                    print(f"welcooooooooooooom : {jamb_profile_id}")
+
                     remaining_balance = request.user.balance
                     print(f"Balance after deduction: {remaining_balance}")
+                
+                    date_time_format = Mdate.now().strftime("%Y%m%d%H%M%S")
+                    data = {
+                        'request_id': str(date_time_format) + create_random_id(),
+                        "serviceID": serviceID,
+                        "variation_code": "utme-mock",
+                        "billersCode": jamb_profile_id,
+                        "phone": phone_number
+                    }
+                    print(data)
+
+                    # Call he Jamb_Vending_Pin API
+                    api = VTPassEducationAPI(
+                        base_url="https://sandbox.vtpass.com",
+                        auth_token="Token be76014119dd44b12180ab93a92d63a2",  # Replace with your actual token
+                        secret_key="SK_873dc5215f9063f6539ec2249c8268bb788b3150386"  # Replace with your actual secret key
+                    )
+                    Jamb_Vending_Pin = api.Jamb_Vending_Pin(data)
+
+                    transaction.transaction_id = Jamb_Vending_Pin.get("requestId", 'N/A')
+
+                    # Regardless of transaction success, create the TVService instance
+                    Jamb_Pin_Generator = JambRegistration.objects.create(
+                        user=request.user,
+                        serviceID=serviceID,
+                        exam_type=exam_type,
+                        jamb_profile_id=jamb_profile_id,
+                        amount=Decimal(str(amount)),
+                        phone_number=phone_number,
+                        data_response=Jamb_Vending_Pin,  # Save the response
+                        transaction_id=None,
+                    )
+
+                    Jamb_Pin_Generator.transaction_id = Jamb_Vending_Pin.get("requestId", 'N/A')
+                    Jamb_Pin_Generator.save()  # Don't forget to save it
 
                     # Serialize the jamb_registration instance
-                    serialized_jamb_registration = JambRegistrationSerializer(jamb_registration)
+                    serialized_jamb_registration = JambRegistrationSerializer(jamb_registration).data
 
-                    return Response({
-                        "valid": True,
-                        "message": "Validation successful.",
-                        "content": serialized_jamb_registration.data,
-                        "amount": str(amount)  # Send the amount back to the frontend
-                    }, status=status.HTTP_200_OK)
+                    # Get the user from the request (Django's authenticated user)
+                    user = request.user
+
+                    transaction_status = Jamb_Vending_Pin.get("content", {}).get("transactions", {}).get("status")
+                    print(f"API Response Status: {transaction_status}")
+
+                    if transaction_status == "delivered":
+                        commission = Jamb_Vending_Pin.get("content", {}).get("transactions", {}).get("commission", 0)
+                        commission = Decimal(commission)
+                        user.bonus += commission
+                        user.save()
+
+                        transaction.status = 'completed'
+                        transaction.save()
+                        print(f"Transaction status updated to: {transaction.status}")
+
+
+                        # Return success response with remaining balance and other details
+                        return Response({
+                            'success': True,
+                            'message': f'{jamb_profile_id} JAMB pin(s) generated successfully.',
+                            'remaining_balance': str(remaining_balance),
+                            'transaction_id': transaction.transaction_id,
+                            'data': serialized_jamb_registration,
+                            "content": Jamb_Vending_Pin
+                        }, status=status.HTTP_201_CREATED)
+
+                    else:
+                        # If the API fails, log the failure and revert the balance
+                        print(f"API failed, reverting balance. Original user balance: {remaining_balance}, Deducted amount: {total_amount}")
+
+                        # Revert the deducted balance
+                        refund_amount = Jamb_Vending_Pin.get('amount', '0.00')
+                        user.balance += total_amount
+                        user.save()
+
+                        # Mark the transaction as failed
+                        transaction.status = 'failed'
+                        transaction.save()
+
+                        print(f"Balance after reversion: {user.balance}")
+
+                        # Return error response due to API failure
+                        return Response({
+                            'success': False,
+                            'error': 'Transaction failed with the external API.',
+                            'details':Jamb_Vending_Pin,
+                            'message': Jamb_Vending_Pin.get("response_description"),
+                            'refund_amount': refund_amount,
+                            'transaction_id': Jamb_Vending_Pin.get("requestId")
+                        }, status=status.HTTP_400_BAD_REQUEST)
 
             except ValidationError as e:
                 # Handle validation error
@@ -1482,8 +1575,9 @@ class JambRegistrationViewSet(APIView):
             except Exception as e:
                 print(f"Unexpected error: {str(e)}")
                 return Response({"error": "An unexpected error occurred."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+     
         
-        elif exam_type != '' and not phone_number and not amount and not jamb_profile_id:
+        elif exam_type != '' and serviceID !='' and not phone_number and not amount and not jamb_profile_id:
             try:
                 # Call the VTPass API to verify the exam type
                 api = VTPassEducationAPI(
@@ -1533,7 +1627,7 @@ class JambRegistrationViewSet(APIView):
                     "valid": False,
                     "message": str(e)
                 }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+            
         try:
             # Call the VTPass API to verify the exam type
             api = VTPassEducationAPI(
@@ -1574,6 +1668,8 @@ class JambRegistrationViewSet(APIView):
         else:
             print("Serializer Errors:", serializer.errors)
             return Response({"error": "Invalid data provided.", "details": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        
+
 
 
 

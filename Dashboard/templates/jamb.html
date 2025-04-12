@@ -224,38 +224,88 @@
             // Handle form submission with AJAX
             $("#jamb-form").on('submit', function (e) {
                 event.preventDefault(); // Prevent the default form submission
-
-                // Show loading spinner before submitting
-                document.getElementById('loading-spinner').style.display = 'flex';
-
-                // Ensure the amount field is updated in the form before submitting
-                var amountField = document.querySelector('input[name="amount"]');
-                var amount = amountField ? amountField.value : '';  // Get the current amount value
-
-                // Collect form data
-                var formData = new FormData(this);
-                formData.append('amount', amount);  // Manually add amount to form data
-
-                // Send the data to the backend using AJAX
-                $.ajax({
-                    type: 'POST',
-                    url: '/api/jamb-registration/',  // Replace with your backend URL
-                    data: formData,
-                    contentType: false,  // Do not set contentType (FormData will handle it)
-                    processData: false,
-                    success: function(response) {
-                        // Hide loading spinner after the API response
-                        document.getElementById('loading-spinner').style.display = 'none';
-                        // Handle success (you can customize this)
-                        alert("Form submitted successfully!");
-                        console.log(response); // You can log the response or display success message
+                
+                // Show SweetAlert2 confirmation with custom styling
+                Swal.fire({
+                    title: 'Are you ready to Purchase Pin?',
+                    text: 'Please confirm your purchase before proceeding.',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, Proceed!',
+                    cancelButtonText: 'Cancel',
+                    confirmButtonColor: '#28a745', // Green color for the 'Yes' button
+                    cancelButtonColor: '#dc3545', // Red color for the 'Cancel' button
+                    background: '#f7f7f7', // Light background color
+                    color: '#333', // Dark text color
+                    width: '450px', // Adjust the width
+                    padding: '2em', // Add padding for a more spacious look
+                    customClass: {
+                        title: 'swal-title', // Custom class for title
+                        text: 'swal-text', // Custom class for text
+                        confirmButton: 'swal-confirm-btn', // Custom class for confirm button
+                        cancelButton: 'swal-cancel-btn', // Custom class for cancel button
                     },
-                    error: function(xhr, status, error) {
-                        // Hide loading spinner after the API response
-                        document.getElementById('loading-spinner').style.display = 'none';
-                        // Handle error (you can customize this)
-                        alert("An error occurred. Please try again.");
-                        console.log(xhr.responseText);
+                    backdrop: true, // Enable backdrop
+                    timer: 5000, // Optional: Close the SweetAlert after 5 seconds (you can remove it if you don't want auto-close)
+                    timerProgressBar: true, // Display a progress bar
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Show loading spinner before submitting
+                        document.getElementById('loading-spinner').style.display = 'flex';
+
+                        // Ensure the amount field is updated in the form before submitting
+                        var amountField = document.querySelector('input[name="amount"]');
+                        var amount = amountField ? amountField.value : '';  // Get the current amount value
+
+                        // Collect form data
+                        var formData = new FormData(this);
+                        formData.append('amount', amount);  // Manually add amount to form data
+
+                        // Send the data to the backend using AJAX
+                        $.ajax({
+                            type: 'POST',
+                            url: '/api/jamb-registration/',  // Replace with your backend URL
+                            data: formData,
+                            contentType: false,  // Do not set contentType (FormData will handle it)
+                            processData: false,
+                            success: function(response) {
+                                // Hide loading spinner after the API response
+                                document.getElementById('loading-spinner').style.display = 'none';
+                                // Show success SweetAlert
+                                Swal.fire('Success', 'Pin generated successfully!', 'success').then(() => {
+                                    // Store the full response in localStorage (or sessionStorage)
+                                    localStorage.setItem('receiptData', JSON.stringify(response)); // Store full response
+                                    // Redirect to Edu-Receipt page after successful submission
+                                    window.location.href = '/Edu-Receipt';  // Adjust the path if needed
+                                });
+                            },
+                            error: function(xhr, status, error) {
+                                // Hide loading spinner after the API response
+                                document.getElementById('loading-spinner').style.display = 'none';
+                                // Handle error (you can customize this)
+                                // Parse the error response
+                                var response = JSON.parse(xhr.responseText);
+
+                                // Extract the error message from the response
+                                var errorMessage = response.error || 'An error occurred.';
+                                var detailsMessage = '';
+
+                                // If the error message is in string format containing the 'ErrorDetail'
+                                if (errorMessage.includes('ErrorDetail')) {
+                                    // Use regex to extract the message after string=' and before ','
+                                    var match = errorMessage.match(/string='([^']+)'/);
+                                    if (match && match[1]) {
+                                        detailsMessage = match[1]; // Extracted message from the backend
+                                    }
+                                } else {
+                                    detailsMessage = errorMessage; // If no match is found, fallback to the original error message
+                                }
+
+                                // Show the extracted error message in SweetAlert
+                                Swal.fire('Error', detailsMessage, 'error');
+                                console.log(xhr.responseText);
+                            }
+                        });
                     }
                 });
             });

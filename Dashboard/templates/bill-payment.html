@@ -84,7 +84,11 @@
                 <span>Please Wait...<i class="fa fa-spinner fa-spin"></i></span>
             </button>
         </form>
-        
+    </div>
+    <!-- Loading Spinner HTML -->
+    <div id="loading-spinner" class="loading-spinner" style="display: none;">
+        <div class="spinner"></div>
+        <p>Please wait...</p>
     </div>
 
     <script src="{% static 'ElectricityCSS/script.js' %}"></script>
@@ -117,6 +121,7 @@
 
             // Check if the meter number has at least 10 characters, and other fields are filled
             if (meterNumber.length >= 10 && serviceID && meterType) {
+                document.getElementById('loading-spinner').style.display = 'flex';
                 // Trigger the validation call to the backend
                 $.ajax({
                     url: "/api/electricity-bill/",  // Validation endpoint
@@ -128,6 +133,7 @@
                         csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val() // Include CSRF token
                     },
                     success: function(response) {
+                        document.getElementById('loading-spinner').style.display = 'none';
                         if (response.valid) {
                             // Validation passed
                             $('#submit-button').prop('disabled', false);  // Enable the submit button
@@ -153,6 +159,7 @@
                         }
                     },
                     error: function(xhr, status, error) {
+                        document.getElementById('loading-spinner').style.display = 'none';
                         Swal.fire({
                             icon: 'error',
                             title: 'Validation failed',
@@ -175,6 +182,8 @@
         $('#form').submit(function(event) {
             event.preventDefault(); // Prevent the default form submission
 
+            document.getElementById('loading-spinner').style.display = 'flex';
+
             // Show the loading button and hide the submit button
             $('#submit-btn').hide();
             $('#loading-btn').show();
@@ -192,6 +201,7 @@
                 data: formData,
                 success: function(response) {
                     // Handle success response
+                    document.getElementById('loading-spinner').style.display = 'none';
                     if (response.success) {
                         // Construct the message for success
                         let message = `
@@ -204,28 +214,20 @@
                             icon: 'success',
                             title: 'Payment successful!',
                             html: message,
-                            showCancelButton: true,
-                            cancelButtonText: 'Ok',
                             confirmButtonText: 'View Receipt',
                             customClass: {
                                 // Customize the "View Receipt" button
                                 confirmButton: 'swal-view-receipt-button',
-                                cancelButton: 'swal-cancel-button'
                             },
                             // Optional: Add additional button customization
                             buttonsStyling: false // Disable default button styling
                         }).then((result) => {
-                            if (result.isConfirmed) {
-                                // Store the full response in localStorage (or sessionStorage)
-                                localStorage.setItem('receiptData', JSON.stringify(response)); // Store full response
-                                
-                                // Redirect to the receipt page
-                                window.location.href = '/receipt';
-                                $('#form')[0].reset();
-                            } else {
-                                // Optionally, clear the form after successful submission
-                                $('#form')[0].reset(); // Reset the form fields
-                            }
+                            // Store the full response in localStorage (or sessionStorage)
+                            localStorage.setItem('receiptData', JSON.stringify(response)); // Store full response
+                            
+                            // Redirect to the receipt page
+                            window.location.href = '/receipt';
+                            $('#form')[0].reset();
                             // Hide the loading button and show the submit button again
                             $('#loading-btn').hide();
                             $('#submit-btn').show();

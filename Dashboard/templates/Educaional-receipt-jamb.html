@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Receipt</title>
+    <style>
+        /* Basic Reset & Font */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* Receipt Container */
+        .receipt-container {
+            max-width: 500px; /* Max width for larger screens */
+            margin: 20px auto; /* Center the receipt */
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden; /* Ensures child elements respect border radius */
+        }
+
+        /* Header */
+        .receipt-header {
+            background-color: #4CAF50; /* A nice header color */
+            color: #ffffff;
+            padding: 15px 20px;
+            text-align: center;
+            border-bottom: 1px solid #3a7bc8;
+        }
+        .receipt-header h2 {
+            margin: 0;
+            font-size: 1.4em;
+            font-weight: 600;
+        }
+
+        /* Status Section */
+        .status-section {
+            padding: 15px 20px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        .status-success {
+            background-color: #ffffff;
+            color: #2a8a2a;
+            border-bottom: 1px solid #c0e0c0;
+        }
+        /* Add a .status-failed class if needed for other responses */
+        /* .status-failed { background-color: #f8e0e0; color: #c04040; border-bottom: 1px solid #e0c0c0; } */
+
+        /* Main Content Area */
+        .receipt-body {
+            padding: 20px;
+        }
+
+        /* Section Styling */
+        .receipt-section {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #eee; /* Separator between sections */
+        }
+        .receipt-section:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        .receipt-section h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            color: #555;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+
+        /* Detail Item Styling (Label + Value) */
+        .detail-item {
+            display: flex;
+            justify-content: space-between; /* Pushes label and value apart */
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+        .detail-item .label {
+            color: #666;
+            margin-right: 10px; /* Space between label and value */
+            flex-shrink: 0; /* Prevent label from shrinking too much */
+        }
+        .detail-item .value {
+            font-weight: 500;
+            text-align: right; /* Align value to the right */
+            word-break: break-word; /* Break long values like IDs */
+        }
+
+        /* Purchased Code / Token Styling */
+        .purchased-code {
+            background-color: #f9f9f9;
+            border: 1px solid #eee;
+            padding: 10px 15px;
+            margin-top: 10px;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .purchased-code .label {
+            display: block;
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        .purchased-code .value {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+            word-break: break-all; /* Ensure long tokens wrap */
+            font-family: 'Courier New', Courier, monospace; /* Monospace for tokens */
+        }
+
+
+        /* Cost Breakdown Styling */
+        .cost-summary {
+            margin-top: 15px;
+        }
+        .cost-summary .detail-item {
+            padding: 5px 0;
+        }
+        .total-amount {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #ccc;
+        }
+        .total-amount .label {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #333;
+        }
+        .total-amount .value {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #4a90e2;
+        }
+
+        /* Footer */
+        .receipt-footer {
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #ffffff;
+            background-color: #4CAF50;
+            border-top: 1px solid #eee;
+        }
+
+        /* Style for the download button */
+        #download-btn {
+            display: inline-block;
+            background-color: #4CAF50; /* Green background */
+            color: white; /* White text */
+            font-size: 16px;
+            padding: 15px 32px; /* Padding for the button */
+            border: none;
+            border-radius: 8px; /* Rounded corners */
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.3s ease;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        /* Hover effect for the button */
+        #download-btn:hover {
+            background-color: #45a049; /* Darker green when hovering */
+        }
+
+        /* Center the button horizontally and vertically */
+        .center-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+
+        /* Responsiveness */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px; /* Less padding on small screens */
+            }
+            .receipt-container {
+                width: 100%; /* Full width on small screens */
+                margin: 10px auto;
+                box-shadow: none; /* Optional: remove shadow on mobile */
+                border: none; /* Optional: remove border on mobile */
+                border-radius: 0;
+            }
+            .receipt-header h2 {
+                font-size: 1.2em;
+            }
+            .receipt-body {
+                padding: 15px;
+            }
+            .detail-item {
+                /* Optional: Stack label and value on very small screens if needed */
+                /* flex-direction: column;
+                align-items: flex-start; */
+                font-size: 0.9em; /* Slightly smaller font */
+            }
+            /* .detail-item .value { text-align: left; } */ /* If stacking */
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="receipt-container">
+        <div class="receipt-header">
+            <h2>Transaction Receipt</h2>
+        </div>
+    
+        <div class="status-section status-success">
+            TRANSACTION SUCCESSFUL
+        </div>
+    
+        <div class="receipt-body">
+    
+            <div class="receipt-section">
+                <h3>Transaction Details</h3>
+                <div class="detail-item">
+                    <span class="label">Transaction ID:</span>
+                    <span id="transaction-id" class="value">N/A</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Date & Time:</span>
+                    <span id="transaction-date" class="value">N/A</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Status:</span>
+                    <span id="transaction-status" class="value">N/A</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Request ID:</span>
+                    <span id="request-id" class="value">N/A</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Channel:</span>
+                    <span id="channel" class="value">N/A</span>
+                </div>
+            </div>
+            
+            <div class="receipt-section">
+                <h3>Product Information</h3>
+                <div class="detail-item">
+                    <span class="label">Product Name:</span>
+                    <span id="product-name" class="value">N/A</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Product Type:</span>
+                    <span id="product-type" class="value">N/A</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Identifier:</span>
+                    <span id="identifier" class="value">N/A</span>
+                </div>
+            </div>
+            
+            <div class="receipt-section">
+                <h3>Purchased Code</h3>
+                <div class="purchased-code">
+                    <span class="label">Your Jamb Vending PIN:</span>
+                    <span id="Jamb-pin" class="value">N/A</span>
+                </div>
+            </div>
+            
+            <div class="receipt-section">
+                <h3>Payment Summary</h3>
+                <div class="cost-summary">
+                    <div class="detail-item">
+                        <span class="label">Item Price (Jamb PIN):</span>
+                        <span id="item-price" class="value">N/A</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Quantity:</span>
+                        <span id="quantity" class="value">1</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Convenience Fee:</span>
+                        <span id="convenience-fee" class="value">N/A</span>
+                    </div>
+                    <div class="detail-item total-amount">
+                        <span class="label">Total Amount Paid:</span>
+                        <span id="total-amount" class="value">N/A</span>
+                    </div>
+                </div>
+            </div>            
+
+        </div> 
+        <div class="receipt-footer">
+            Thank you for your purchase! @BigSheriffData
+        </div>
+    
+    </div>
+
+    <div class="center-button">
+        <button id="download-btn">Download Receipt</button>
+    </div>
+
+    <!-- html2canvas library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Retrieve the stored API response from localStorage
+            const receiptData = JSON.parse(localStorage.getItem('receiptData'));
+            // console.log(receiptData)
+
+             // Ensure correct date handling
+            const paymentDate = new Date(receiptData.content.transaction_date);
+            
+            // Format the date as "April 4, 2025"
+            const formattedDate = paymentDate.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            // Format the time as "11:21 AM"
+            const formattedTime = paymentDate.toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
+            });
+
+            // Combine the formatted date and time
+            const formattedPaymentDate = `${formattedDate}, ${formattedTime}`;
+            
+            if (receiptData) {
+                // Update receipt with dynamic data
+                const transaction = receiptData.content.content.transactions;
+
+                $('#transaction-id').text(transaction.transactionId || 'N/A');
+                $('#transaction-date').text(formattedPaymentDate || 'N/A');
+                $('#transaction-status').text(transaction.status || 'N/A');
+                $('#request-id').text(receiptData.content.requestId || 'N/A');
+                $('#channel').text(transaction.channel || 'N/A');
+                $('#product-name').text(transaction.product_name || 'N/A');
+                $('#product-type').text(transaction.type || 'N/A');
+                $('#identifier').text(transaction.unique_element || 'N/A');
+                $('#Jamb-pin').text(receiptData.content.Pin || 'N/A');
+                $('#customer-email').text(transaction.email || 'N/A');
+                $('#customer-phone').text(transaction.phone || 'N/A');
+                $('#item-price').text(transaction.unit_price || 'N/A');
+                $('#quantity').text(transaction.quantity || '1');
+                $('#convenience-fee').text(transaction.convinience_fee !== undefined ? transaction.convinience_fee : 'N/A');
+                
+                // Format total amount as "NGN 14,450.00"
+                const totalAmount = transaction.unit_price || 0;
+                const formattedTotalAmount = new Intl.NumberFormat('en-NG', {
+                    style: 'currency',
+                    currency: 'NGN',
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }).format(totalAmount);
+
+                $('#total-amount').text(formattedTotalAmount);
+                }
+
+            // Download receipt as image
+            $('#download-btn').on('click', function () {
+                console.log("Download button clicked");
+
+                // Capture the content of the receipt-container using the callback
+                html2canvas($('.receipt-container')[0], {
+                    onrendered: function (canvas) {
+                        console.log("Canvas created");
+
+                        // Create an image from the canvas
+                        const imgData = canvas.toDataURL('image/png');
+
+                        // Create a link to trigger the download
+                        const link = document.createElement('a');
+                        link.href = imgData;
+                        link.download = 'receipt.png';  // You can name the image as you want
+                        console.log("Triggering download...");
+                        link.click();
+                    }
+                });
+            });
+
+        });
+    </script>
+    
+</body>
+</html>

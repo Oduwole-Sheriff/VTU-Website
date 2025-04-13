@@ -33,12 +33,26 @@ def Index(request):
     except CustomUser.DoesNotExist:
         balance = 0  # Default to 0 if the CustomUser instance doesn't exist
 
+    """Render the transaction history for the logged-in user."""
+    transactions = Transaction.objects.filter(user=request.user).order_by('-timestamp')  # Correcting field name to 'timestamp'
+
+    # Paginate the transactions (5 transactions per page, you can change this number)
+    paginator = Paginator(transactions, 5)
+    
+    # Get the current page number from the request
+    page_number = request.GET.get('page')
+    
+    # Get the transactions for the current page
+    page_obj = paginator.get_page(page_number)
+
     # Render the template and pass the data to the template context
     return render(request, 'index.html', {
         'balance': balance,
         'total_balance': total_balance,
         'total_users': total_users,
         'total_bonus': total_bonus,
+        'transactions': transactions,
+        'page_obj': page_obj
     })
 
 
@@ -355,6 +369,10 @@ def JambRegistrationPayment(request):
 @login_required
 def EducationReceipt(request):
     return render(request, 'Educaional-receipt.html')
+
+@login_required
+def EducationReceiptJamb(request):
+    return render(request, 'Educaional-receipt-jamb.html')
 
 @login_required
 def receipt(request):

@@ -3,6 +3,8 @@
 {% load humanize %}
 {% block content %}
 
+    <link rel="stylesheet" href="{% static 'assets/css/cards.css' %}">
+
     <div class="main-center-content-m-left main-center-content-m-left">
         <div class="banner-badge bg_image">
             <div class="inner">
@@ -21,11 +23,122 @@
 
             <h4 class="title color-white-title-home">Welcome, {{ request.user.username }}</h4>
 
-            <div class="tab-content mt--50" id="pills-tabContent">
-                <!-- single tab content area start -->
+            <div class="cards-grid">
+                <div class="card card-wallet banner-badge bg_image">
+                    <div class="card-header">
+                        <i class="fas fa-wallet card-icon"></i>
+                        <h3 class="card-title">Wallet Balance</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-label">Current Balance:</p>
+                        <p class="card-value">₦{{ balance|intcomma }}</p>
+                    </div>
+                </div>
+
+                <div class="card card-referral banner-badge bg_image">
+                    <div class="card-header">
+                        <i class="fas fa-gift card-icon"></i>
+                        <h3 class="card-title">Referral Bonus</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-label">Current Bonus:</p>
+                        <p class="card-value">₦10,000.00</p>
+                    </div>
+                </div>
+
+                <div class="card card-total-referral banner-badge bg_image">
+                    <div class="card-header">
+                        <i class="fas fa-user-plus card-icon"></i>
+                        <h3 class="card-title">My Total Referral</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-label">Total Referral:</p>
+                        <p class="card-value">0</p>
+                    </div>
+                </div>
+
+                <div class="card card-user-balance banner-badge bg_image">
+                    <div class="card-header">
+                        <i class="fas fa-scale-balanced card-icon"></i>
+                        <h3 class="card-title">Total User balance</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-label">Users Balance:</p>
+                        <p class="card-value">₦{{ total_balance|intcomma }}.00</p>
+                    </div>
+                </div>
+
+                <div class="card card-registered-users banner-badge bg_image">
+                    <div class="card-header">
+                        <i class="fas fa-users card-icon"></i>
+                        <h3 class="card-title">Total Registered Users</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-label">Total Users:</p>
+                        <p class="card-value">{{ total_users|intcomma }}</p>
+                    </div>
+                </div>
+
+                <div class="card card-commission banner-badge bg_image">
+                    <div class="card-header">
+                        <i class="fas fa-percent card-icon"></i>
+                        <h3 class="card-title">Total User Commission</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-label">Current Balance:</p>
+                        <p class="card-value">₦{{ total_bonus|intcomma }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <section class="mt-5 table-responsive">
+                <div class="transaction-link">
+                    <h4 class="color-white-title-home">Recent Transactions</h4>
+                    <a href="{% url 'transaction_history' %}">View all transactions</a>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <!-- <th>Details</th> -->
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Transaction Id</th>
+                        </tr>
+                    </thead>
+                    <tbody class="color-white-title-home">
+                        {% for transaction in page_obj %}
+                        <tr>
+                            <td>{{ transaction.timestamp|date:"Y-m-d H:i" }}</td>
+                            <td>{{ transaction.transaction_type }}</td>
+                            <!-- <td>{{ transaction.product_name }}</td> -->
+                            <td>{{ transaction.amount }}</td>   
+                            <td>
+                                {% if transaction.status == 'failed' %}
+                                    <span class="text-danger status failed">Failed</span>
+                                {% elif transaction.status == 'completed' %}
+                                    <span class="text-success status success"">Success</span>
+                                {% else %}
+                                    <span class="text-warning status pending">Pending</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ transaction.transaction_id }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7">No transactions found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- <div class="tab-content mt--50" id="pills-tabContent">
+            
                 <div class="row g-5">
                     <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12">
-                        <!-- single image generator area start -->
+                     
                         <div class="single-image-generator">
                             <a href="#" class="thumbnail">
                                 <img src="{% static 'assets/images/generator/transactions-img.png' %}" alt="images">
@@ -39,10 +152,10 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- single image generator area end -->
+                      
                     </div>
                     <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12">
-                        <!-- single image generator area start -->
+                        
                         <div class="single-image-generator">
                             <a href="#" class="thumbnail">
                                 <img src="{% static 'assets/images/generator/referer-img.png' %}" alt="images">
@@ -56,10 +169,10 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- single image generator area end -->
+                        
                     </div>
                     <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12">
-                        <!-- single image generator area start -->
+                        
                         <div class="single-image-generator">
                             <a href="#" class="thumbnail">
                                 <img src="{% static 'assets/images/generator/total-referal.avif' %}" alt="images">
@@ -73,24 +186,10 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- single image generator area end -->
+                       
                     </div>
                     <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12">
-                        <!-- single image generator area start -->
-                        <div class="single-image-generator">
-                            <a href="{% url 'transaction_history' %}" class="thumbnail">
-                                <img src="{% static 'assets/images/generator/transaction-history2.png' %}" alt="images">
-                            </a>
-                            <div class="inner-content">
-                                <div class="left-content-area">
-                                    <h5 class="title">My Transactions</h5>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- single image generator area end -->
-                    </div>
-                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12">
-                        <!-- single image generator area start -->
+                       
                         <div class="single-image-generator">
                             <a href="#" class="thumbnail">
                                 <img src="{% static 'assets/images/generator/total-user-balance.webp' %}" alt="images">
@@ -104,10 +203,10 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- single image generator area end -->
+                        
                     </div>
                     <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12">
-                        <!-- single image generator area start -->
+                       
                         <div class="single-image-generator">
                             <a href="#" class="thumbnail">
                                 <img src="{% static 'assets/images/generator/total-registered-user.png' %}" alt="images">
@@ -121,13 +220,13 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- single image generator area end -->
+                        
                     </div>
                     <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12">
-                        <!-- single image generator area start -->
+                        
                         <div class="single-image-generator">
                             <a href="#" class="thumbnail">
-                                <img src="{% static 'assets/images/generator/transactions-img.png' %}" alt="images">
+                                <img src="{% static 'assets/images/generator/total-user-commision.jpg' %}" alt="images">
                             </a>
                             <div class="inner-content">
                                 <div class="left-content-area">
@@ -138,11 +237,24 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- single image generator area end -->
+                       
+                    </div>
+                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12">
+                      
+                        <div class="single-image-generator">
+                            <a href="{% url 'transaction_history' %}" class="thumbnail">
+                                <img src="{% static 'assets/images/generator/transaction-history2.png' %}" alt="images">
+                            </a>
+                            <div class="inner-content">
+                                <div class="left-content-area">
+                                    <h5 class="title">My Transactions</h5>
+                                </div>
+                            </div>
+                        </div>
+                        
                     </div>
                 </div>
-                <!-- single tab content area end -->
-            </div>
+            </div> -->
         </div>
         <div class="copyright-area-bottom">
             <p> <a href="#">BigSheriff©</a> 2024. All Rights Reserved.</p>

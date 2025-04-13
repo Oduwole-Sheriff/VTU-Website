@@ -70,6 +70,11 @@
                 </div>
             </div>
         </form>
+        <!-- Loading Spinner HTML -->
+        <div id="loading-spinner" class="loading-spinner" style="display: none;">
+            <div class="spinner"></div>
+            <p>Please wait...</p>
+        </div>
     </div>
 </div>
 
@@ -94,6 +99,8 @@
 
         $('#buy-airtime-form').on('submit', function(event) {
             event.preventDefault();  // Prevent the default form submission
+
+            document.getElementById('loading-spinner').style.display = 'flex';
 
             // Show the loading button and hide the submit button
             $('#submit-btn').hide();
@@ -123,6 +130,7 @@
                 success: function(response) {
                     console.log(response)
                     if (response.status === 'success') {
+                        document.getElementById('loading-spinner').style.display = 'none';
                         // Success alert with remaining balance
                         Swal.fire({
                             icon: 'success',
@@ -134,6 +142,7 @@
                             window.location.href = "{% url 'index' %}";
                         });
                     } else {
+                        document.getElementById('loading-spinner').style.display = 'none';
                         // Error alert with message
                         Swal.fire({
                             icon: 'error',
@@ -150,6 +159,7 @@
                     $('#submit-btn').show();
                 },
                 error: function(xhr, status, error) {
+                    document.getElementById('loading-spinner').style.display = 'none';
                     // Default error message
                     var errorMessage = 'An error occurred. Please try again later.';
 

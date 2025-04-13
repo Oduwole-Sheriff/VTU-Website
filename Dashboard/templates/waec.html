@@ -97,6 +97,19 @@
         
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            // Show SweetAlert if user balance is below 50
+            {% if user_balance < 50 %}
+            Swal.fire({
+                icon: 'warning',
+                title: 'Balance Too Low',
+                text: 'Your balance is too low to make this transaction. Please top up your account.',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                // Redirect after the alert
+                window.location.href = "{% url 'index' %}";
+            });
+            {% endif %}
+            
             const examTypeSelect = document.querySelector('select[name="ExamType"]');
             const firstOption = examTypeSelect.options[0];
     
@@ -209,6 +222,7 @@
                                     localStorage.setItem('receiptData', JSON.stringify(response)); // Store full response
                                     // Redirect to Edu-Receipt page after successful submission
                                     window.location.href = '/Edu-Receipt';  // Adjust the path if needed
+                                    $('#waec-form')[0].reset();
                                 });
                             },
                             error: function (xhr, status, error) {
@@ -236,6 +250,7 @@
                                 // Show the extracted error message in SweetAlert
                                 Swal.fire('Error', detailsMessage, 'error');
                                 console.log(xhr.responseText);
+                                $('#waec-form')[0].reset();
                             }
                         });
 

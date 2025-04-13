@@ -222,12 +222,19 @@ document.getElementById('type').addEventListener('change', function() {
     const selectedType = this.value;
     const amountField = document.getElementById('amount');
     
-    // Define the amounts for each type option
+    // Map of variation_code to amount
     const amounts = {
-        "full": 2900,
-        "mobile_only": 1450,
-        "sports_full": 6300,
-        "sports_mobile_only": 3200
+        "full_3": 8400,
+        "mobile_only_3": 3800,
+        "sports_mobile_only_3": 12000,
+        "sports-only-1": 3200,
+        "sports-only-3": 9600,
+        "full-sports-mobile-only-3": 16200,
+        "mobile-only-6": 6700,
+        "full-only-6": 14700,
+        "full-sports-mobile-only-6": 32400,
+        "sports-mobile-only-6": 24000,
+        "sports-only-6": 18200
     };
 
     // Check if a valid type is selected and set the amount

@@ -14,6 +14,7 @@ urlpatterns = [
     path('waec-registration/', views.Waec, name='waec'),
     path('jamb-registration/', views.JambRegistrationPayment, name='jamb'),
     path('Edu-Receipt/', views.EducationReceipt, name='Edu-Receipt'),
+    path('Edu-Jamb-Receipt/', views.EducationReceiptJamb, name='Edu-Jamb-Receipt'),
 
     path('dataCard/', views.BuyDataCard, name='buy_dataCard'),
     path('dataRecharge-Pin-Order/', views.BuyDataPin, name='buy_dataPin'),

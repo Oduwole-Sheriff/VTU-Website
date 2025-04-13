@@ -218,7 +218,7 @@ class JambRegistrationForm(forms.ModelForm):
         # Modify the choices to include the disabled "Please Select Exam Type" option
         self.fields['exam_type'].widget.choices = [
             ('', 'Please Select Exam Type'),  # Disabled by default
-            ('DE', 'Direct Entry (DE)'),
+            ('Direct Entry (DE)', 'Direct Entry (DE)'),
             # Add more exam types here if necessary
         ]
 

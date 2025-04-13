@@ -78,7 +78,8 @@
         /* Styling for the download button */
         #download-btn {
             display: inline-block;
-            width: 100%;
+            /* max-width: 400px !important; */
+            width: 100% !important;
             margin-top: 20px;
             font-size: 1rem;
             color: #fff;
@@ -97,7 +98,8 @@
         /* Styling for the back button */
         a {
             display: inline-block;
-            width: 86.7%;
+            max-width: 410px;
+            width: 100%;
             margin-top: 10px;
             font-size: 1rem;
             color: #007bff;
@@ -138,7 +140,8 @@
             }
 
             a {
-                width: 84%;
+                max-width: 340px;
+                width: 100%;
             }
         }
     </style>
@@ -155,11 +158,18 @@
             </article>
 
             <div id="receipt-content"></div>
-            <!-- Download and back buttons -->
-            <button id="download-btn">Download as PDF</button>
-            <a href="/index">Go Home</a>
+
         </div>
+        <!-- Download and back buttons -->
+        <button id="download-btn">Download Receipt</button>
+        <a href="/index">Go Home</a>
     </div>
+    
+    <!-- html2canvas library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
         // Retrieve the receipt data from localStorage
@@ -210,21 +220,28 @@
             document.getElementById('receipt-content').innerHTML = "<p>No receipt data available.</p>";
         }
 
-        // Function to download the receipt as a PDF
-        document.getElementById('download-btn').addEventListener('click', function() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
+        // Download receipt as image
+        $('#download-btn').on('click', function () {
+            console.log("Download button clicked");
 
-            // Get receipt details as text content
-            const receiptContent = document.getElementById('receipt-content').innerText;
+            // Capture the content of the receipt-container using the callback
+            html2canvas($('#receipt-details')[0], {
+                onrendered: function (canvas) {
+                    console.log("Canvas created");
 
-            // Add the content to the PDF
-            doc.text('Electricity Bill Transaction Receipt', 20, 20);
-            doc.text(receiptContent, 20, 30);
+                    // Create an image from the canvas
+                    const imgData = canvas.toDataURL('image/png');
 
-            // Download the PDF
-            doc.save('receipt.pdf');
+                    // Create a link to trigger the download
+                    const link = document.createElement('a');
+                    link.href = imgData;
+                    link.download = 'receipt.png';  // You can name the image as you want
+                    console.log("Triggering download...");
+                    link.click();
+                }
+            });
         });
+
     </script>
 </body>
 </html>

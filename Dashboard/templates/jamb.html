@@ -85,6 +85,19 @@
 
     <script>
         $(document).ready(function() {
+            // Show SweetAlert if user balance is below 50
+            {% if user_balance < 50 %}
+            Swal.fire({
+                icon: 'warning',
+                title: 'Balance Too Low',
+                text: 'Your balance is too low to make this transaction. Please top up your account.',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                // Redirect after the alert
+                window.location.href = "{% url 'index' %}";
+            });
+            {% endif %}
+
             // Disable the first option ("Please Select Exam Type")
             $("select[name='exam_type'] option[value='']").prop('disabled', true);
 
@@ -112,6 +125,7 @@
                         method: 'POST',
                         data: {
                             'serviceID': 'jamb',  // Static value for now, can be dynamic
+                            'exam_type': 'Direct Entry (DE)',
                         },
                         headers: {
                         'X-CSRFToken': csrfToken  // Include CSRF token in the headers
@@ -137,7 +151,7 @@
                 }
             });
 
-            // Function to verify the smartcard number via API
+            // Function to verify the Jamb number via API
             function verifyProfileID(jambProfileId) {
                 // Show loading spinner
                 document.getElementById('loading-spinner').style.display = 'flex';
@@ -172,7 +186,7 @@
                         } else {
                             document.getElementById('loading-spinner').style.display = 'none';
                             // If not 'Open', show failure message along with content.error
-                            let errorMessage = response.message || 'Smartcard verification failed.';
+                            let errorMessage = response.message || 'Jamb verification failed.';
                             Swal.fire({
                                 title: 'Verification Error!',
                                 text: errorMessage + '\n\nDetails: ' + message,
@@ -187,7 +201,7 @@
                         document.getElementById('loading-spinner').style.display = 'none';
 
                         // Prepare a message to display in SweetAlert, based on the error response
-                        let errorMessage = 'Error during smartcard verification. Please try again.';
+                        let errorMessage = 'Error during your ProfileID verification. Please try again.';
                         let responseDetails = 'No additional details available.';
 
                         // Check if the backend returns a detailed error and extract it
@@ -276,7 +290,8 @@
                                     // Store the full response in localStorage (or sessionStorage)
                                     localStorage.setItem('receiptData', JSON.stringify(response)); // Store full response
                                     // Redirect to Edu-Receipt page after successful submission
-                                    window.location.href = '/Edu-Receipt';  // Adjust the path if needed
+                                    window.location.href = '/Edu-Jamb-Receipt';  // Adjust the path if needed
+                                    $('#jamb-form')[0].reset();
                                 });
                             },
                             error: function(xhr, status, error) {
@@ -304,6 +319,7 @@
                                 // Show the extracted error message in SweetAlert
                                 Swal.fire('Error', detailsMessage, 'error');
                                 console.log(xhr.responseText);
+                                $('#jamb-form')[0].reset();
                             }
                         });
                     }

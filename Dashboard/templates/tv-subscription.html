@@ -48,10 +48,17 @@
         <label for="type" id="type-label" style="display: none;">TYPE</label>
         <select id="type" name="type" style="display: none;" required>
             <option value="" disabled selected>Select a type</option>
-            <option value="full">Full - N2,900</option>
-            <option value="mobile_only">Mobile Only - N1,450</option>
-            <option value="sports_full">Sports Full - N6,300</option>
-            <option value="sports_mobile_only">Sports Mobile Only - N3,200</option>
+            <option value="full_3">Full - N8,400 - 3 Months</option>
+            <option value="mobile_only_3">Mobile Only - N3,800 - 3 Months</option>
+            <option value="sports_mobile_only_3">Sports Mobile Only - N12,000 - 3 Months</option>
+            <option value="sports-only-1">Sports Only - N3,200</option>
+            <option value="sports-only-3">Sports Only 3 months - N9,600</option>
+            <option value="full-sports-mobile-only-3">Full Sports Mobile Only - 3 months - N16,200</option>
+            <option value="mobile-only-6">Mobile Only - N6,700 - 6 Months</option>
+            <option value="full-only-6">Full - 6 months - 14,700</option>
+            <option value="full-sports-mobile-only-6">Full Sports Mobile Only - 6 months - N32,400</option>
+            <option value="sports-mobile-only-6">Sports Mobile Only - 6 months - N24,000</option>
+            <option value="sports-only-6">Sports Only - 6 months - N18,200</option>
         </select>
 
         <label for="phone-number">Phone Number:</label>
@@ -68,6 +75,12 @@
 
     </form>
 </div>
+
+    <!-- Loading Spinner HTML -->
+    <div id="loading-spinner" class="loading-spinner" style="display: none;">
+        <div class="spinner"></div>
+        <p>Please wait...</p>
+    </div>
 
 <div class="tv-images">
     <!-- Remote Control image -->
@@ -96,6 +109,8 @@
 
         // Function to verify the smartcard number via API
         function verifySmartcard(smartcardNumber, serviceID) {
+            document.getElementById('loading-spinner').style.display = 'flex';
+
             $('#submit-btn').hide();
             $('#loading-btn').show();
             return $.ajax({
@@ -107,6 +122,7 @@
                     'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
                 },
                 success: function (response) {
+                    document.getElementById('loading-spinner').style.display = 'none';
                     // Prepare a message to display in SweetAlert, based on the response
                     let message = response.details && response.details.content && response.details.content.error
                         ? response.details.content.error
@@ -144,6 +160,7 @@
                     return true;  // Return true after handling success
                 },
                 error: function (xhr, status, error) {
+                    document.getElementById('loading-spinner').style.display = 'none';
                     console.log(error);
 
                     // Prepare a message to display in SweetAlert, based on the error response
@@ -196,6 +213,8 @@
 
         // Handle form submission using AJAX
         $('#tvForm').on('submit', function (e) {
+            document.getElementById('loading-spinner').style.display = 'flex';
+
             e.preventDefault(); // Prevent the default form submission
 
             // Show the loading button and hide the submit button
@@ -227,6 +246,7 @@
                 type: 'POST',
                 data: formData,
                 success: function (response) {
+                    document.getElementById('loading-spinner').style.display = 'none';
                     // Handle success, display message or update UI
                     if (response.success) {
                         // Use SweetAlert to show a success message
@@ -249,9 +269,7 @@
                             title: 'TV Subscription Failed!',
                             icon: 'error',
                             html: `
-                                <strong>Transaction Details:</strong> ${response.details} <br>
-                                <strong>Amount Refunded:</strong> ${response.amount} <br>
-                                <strong>Transaction ID:</strong> ${response.transaction_Id}<br>
+                                <strong>Transaction Details:</strong> ${response.message} <br>
                             `
                         }).then(() => {
                             $('#loading-btn').hide();  // Hide loading button after success/error
@@ -262,6 +280,7 @@
                     $('#tvForm')[0].reset();  // Optionally, clear the form fields after submission
                 },
                 error: function (xhr, status, error) {
+                    document.getElementById('loading-spinner').style.display = 'none';
                     // Parse the backend response
                     let errorMessage = 'There was an error processing your subscription. Please try again.';
 

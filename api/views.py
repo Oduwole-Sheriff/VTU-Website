@@ -705,6 +705,9 @@ class TVServiceAPIView(APIView):
         # Directly access the data fields from request.data
         billers_code = request.data.get('billersCode', None)
         service_id = request.data.get('serviceID', None)
+        if service_id:
+            service_id = service_id.lower()
+
 
         # Log request data for debugging purposes
         print("Request Data:", request.data)
@@ -763,8 +766,8 @@ class TVServiceAPIView(APIView):
 
             # print("Parsed Service Variations:", fetch_service_variations)
 
-            # if not fetch_service_variations or fetch_service_variations.get('response_description') != '000':
-            #     return Response({"error": "Failed to fetch service variations."}, status=status.HTTP_400_BAD_REQUEST)
+            if not fetch_service_variations or fetch_service_variations.get('response_description') != '000':
+                return Response({"error": "Failed to fetch service variations."}, status=status.HTTP_400_BAD_REQUEST)
 
             # Find the variation_code based on the provided amount
             variation_code = None
@@ -864,27 +867,37 @@ class TVServiceAPIView(APIView):
                     }, status=status.HTTP_200_OK)
 
 
-            # Handle other actions like 'renew' (this part is kept intact)
-            # else:
-            #     # If action is 'renew', you can implement the renew logic here
-            #     return Response({"message": "Renewal or other action successful!"}, status=status.HTTP_200_OK)
+        # Handle other actions like 'renew' (this part is kept intact)
+        # elif action == 'renew' or type_field is not None:
+        #     # If action is 'renew', you can implement the renew logic here
+        #     return Response({"message": "Service Not Available at the moment"}, status=status.HTTP_200_OK)
 
         # Ensure that we have the full and correct values
+        # Get the raw values from request data
+        billers_code = request.data.get('billersCode', '').strip()
+        phone_number = request.data.get('phone_number', '').strip()
+        service_id = request.data.get('serviceID', '').strip().lower()
+
+        # Use phone number as fallback if billers code is not provided
+        if not billers_code:
+            billers_code = phone_number
+
+        # Ensure that we have the required values before proceeding
         if billers_code and service_id:
-            # If data exists, strip whitespaces and process
             service_data = {
-                "billersCode": billers_code.strip(),
-                "serviceID": service_id.strip().lower()
+                "billersCode": billers_code,
+                "serviceID": service_id
             }
 
             # Log final service data
             print("Service Data for Verification:", service_data)
 
+
         # Ensure that billers_code is not None before trying to strip
-        if billers_code:
-            billers_code = billers_code.strip()
-        else:
-            return Response({"error": "Billers code is required."}, status=status.HTTP_400_BAD_REQUEST)
+        # if billers_code:
+        #     billers_code = billers_code.strip()
+        # else:
+        #     return Response({"error": "Billers code is required."}, status=status.HTTP_400_BAD_REQUEST)
 
         # Ensure service_id is not None before trying to strip
         if service_id:
@@ -922,18 +935,27 @@ class TVServiceAPIView(APIView):
                 if verify_result:
                     # Check if there is an error in the content
                     content = verify_result.get('content', {})
+                     # If content is a string, wrap it in a dict with 'error' key
+                    if isinstance(content, str):
+                        return Response({
+                            "valid": False,
+                            "message": content,
+                            "content": {"error": content}
+                        }, status=status.HTTP_200_OK)
+
+                    # If content is a dict, continue as expected
                     if content.get('error'):
                         return Response({
                             "valid": False,
-                            "message": content.get('error'),  # Show the error message from the content
+                            "message": content.get('error'),
                             "content": content
                         }, status=status.HTTP_200_OK)
-                    else:
-                        # If there is no error, return a successful response
-                        return Response({
-                            "valid": True,
-                            "message": "Validation successful.",
-                            "content": content
+
+                    # Success case
+                    return Response({
+                        "valid": True,
+                        "message": "Validation successful.",
+                        "content": content
                     }, status=status.HTTP_200_OK)
 
 
@@ -1430,7 +1452,7 @@ class JambRegistrationViewSet(APIView):
             try:
                 with db_transaction.atomic():
                     # Validation checks
-                    if jamb_profile_id is None or amount is None:
+                    if jamb_profile_id is None:
                         return Response({"error": "Jamb profile id and amount are required."}, status=status.HTTP_400_BAD_REQUEST)
 
                     if phone_number is None:
@@ -1579,6 +1601,9 @@ class JambRegistrationViewSet(APIView):
         
         elif exam_type != '' and serviceID !='' and not phone_number and not amount and not jamb_profile_id:
             try:
+                if exam_type is None and serviceID is not None:
+                    return Response({"error": "Exam Type Field is required."}, status=status.HTTP_400_BAD_REQUEST)
+                
                 # Call the VTPass API to verify the exam type
                 api = VTPassEducationAPI(
                     base_url="https://sandbox.vtpass.com",
@@ -1627,48 +1652,52 @@ class JambRegistrationViewSet(APIView):
                     "valid": False,
                     "message": str(e)
                 }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        elif billers_code != '' and serviceID !='':   
+            try:
+                if billers_code is None and serviceID is not None:
+                    return Response({"error": "JAMB ProfileID and Phone Number Field are required."}, status=status.HTTP_400_BAD_REQUEST)
+                
+                # Call the VTPass API to verify the exam type
+                api = VTPassEducationAPI(
+                    base_url="https://sandbox.vtpass.com",
+                    auth_token="Token be76014119dd44b12180ab93a92d63a2",  # Replace with your actual token
+                    secret_key="SK_873dc5215f9063f6539ec2249c8268bb788b3150386"  # Replace with your actual secret key
+                )
+                verify_jamb_profile = api.Verify_jamb_profile(verify_profile)
+
+                # Check if the response is valid and parse it as JSON if needed
+                if isinstance(verify_jamb_profile, str):  # If the response is a string, parse it as JSON
+                    verify_jamb_profile = json.loads(verify_jamb_profile)  # Assuming `json` is imported
+
+                # Now we can safely access the 'content' field
+                if verify_jamb_profile:
+                    content = verify_jamb_profile.get('content', {})
+                    if content.get('error'):
+                        return Response({
+                            "valid": False,
+                            "message": content.get('error'),  # Show the error message from the content
+                            "content": content
+                        }, status=status.HTTP_200_OK)
+                    else:
+                        # Return a successful response with the updated amount
+                        return Response({
+                            "valid": True,
+                            "message": "Validation successful.",
+                            "content": content,
+                            "amount": str(amount)  # Send the amount back to the frontend
+                        }, status=status.HTTP_200_OK)
+
+            except Exception as e:
+                return Response({
+                    "valid": False,
+                    "message": str(e)
+                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             
-        try:
-            # Call the VTPass API to verify the exam type
-            api = VTPassEducationAPI(
-                base_url="https://sandbox.vtpass.com",
-                auth_token="Token be76014119dd44b12180ab93a92d63a2",  # Replace with your actual token
-                secret_key="SK_873dc5215f9063f6539ec2249c8268bb788b3150386"  # Replace with your actual secret key
-            )
-            verify_jamb_profile = api.Verify_jamb_profile(verify_profile)
-
-            # Check if the response is valid and parse it as JSON if needed
-            if isinstance(verify_jamb_profile, str):  # If the response is a string, parse it as JSON
-                verify_jamb_profile = json.loads(verify_jamb_profile)  # Assuming `json` is imported
-
-            # Now we can safely access the 'content' field
-            if verify_jamb_profile:
-                content = verify_jamb_profile.get('content', {})
-                if content.get('error'):
-                    return Response({
-                        "valid": False,
-                        "message": content.get('error'),  # Show the error message from the content
-                        "content": content
-                    }, status=status.HTTP_200_OK)
-                else:
-                    # Return a successful response with the updated amount
-                    return Response({
-                        "valid": True,
-                        "message": "Validation successful.",
-                        "content": content,
-                        "amount": str(amount)  # Send the amount back to the frontend
-                    }, status=status.HTTP_200_OK)
-
-        except Exception as e:
-            return Response({
-                "valid": False,
-                "message": str(e)
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
         else:
             print("Serializer Errors:", serializer.errors)
             return Response({"error": "Invalid data provided.", "details": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-        
+            
 
 
 

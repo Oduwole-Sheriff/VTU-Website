@@ -383,12 +383,12 @@ class WaecPinGenerator(models.Model):
 class JambRegistration(models.Model):
     serviceID = models.CharField(max_length=255, blank=False, null=False)
     EXAM_TYPE_CHOICES = [
-        ('DE', 'Direct Entry (DE)'),
+        ('Direct Entry (DE)', 'Direct Entry (DE)'),
         # You can add other exam types here if needed
     ]
     
     exam_type = models.CharField(
-        max_length=2, 
+        max_length=20, 
         choices=EXAM_TYPE_CHOICES, 
         default='DE'
     )

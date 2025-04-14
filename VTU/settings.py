@@ -13,6 +13,12 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 # import os
 from pathlib import Path
 
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env
+load_dotenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_jne&p=!6ytk(fay+&^6a)7ibh#^ltzcrpn293u1=zw5uv_w92'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -154,3 +160,14 @@ LOGIN_URL = 'login'
 
 MONNIFY_BASE_URL = 'https://sandbox.monnify.com'  # Or your actual Monnify base URL
 MONNIFY_AUTH_TOKEN = 'Basic TUtfVEVTVF9YWk1HSE1EREZGOldFRFlERENHWUVYOThaN0wzMVIxUlo0VjZMSzEySks5'  
+
+
+EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS") == "True"
+EMAIL_USE_SSL = os.getenv("EMAIL_USE_SSL") == "True"
+EMAIL_PORT = int(os.getenv("EMAIL_PORT"))
+# EMAIL_PORT = os.getenv('EMAIL_PORT')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+DEFAULT_FROM_EMAIL = 'oduwolesheriff1212@gmail.com'
+EMAIL_HOST_PASSWORD = 'lqof jnuq djht qgri'

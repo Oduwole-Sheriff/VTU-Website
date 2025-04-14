@@ -263,7 +263,7 @@ def TVSubscription(request):
         form = TVServiceForm()
 
     # Render the form in the template
-    return render(request, 'tv-subscription.html', {'form': form})
+    return render(request, 'tv-subscription.html', {'form': form, 'user_balance': user.balance})
 
 @login_required
 def Waec(request):
@@ -322,7 +322,7 @@ def Waec(request):
         form = WaecPinGeneratorForm()
 
     # Render the form in the template
-    return render(request, 'waec.html', {'form': form})
+    return render(request, 'waec.html', {'form': form, 'user_balance': user.balance})
 
 @login_required
 def JambRegistrationPayment(request):

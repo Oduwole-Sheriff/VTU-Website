@@ -27,6 +27,8 @@ from rest_framework.exceptions import ValidationError
 
 from django.db import transaction as db_transaction
 
+from Dashboard.utils import handle_first_deposit_reward
+
 from RestAPI.AirtimeAPI import VTPassAPI
 from RestAPI.DataAPI import VTPassDataAPI
 from RestAPI.TVSubscriptionAPI import  VTPassTVSubscription   
@@ -168,24 +170,39 @@ def _get_account_details(user):
 
 
     
-class DepositView(APIView):
+class DepositAPIView(APIView):
     permission_classes = [IsAuthenticated]
+
     def post(self, request):
         serializer = DepositSerializer(data=request.data)
+
         if serializer.is_valid():
             amount = serializer.validated_data['amount']
-            user = request.user  # Assuming the user is authenticated
+            user = request.user
 
-            # Check if the amount is positive
-            if amount <= 0:
-                return Response({"detail": "Amount must be positive."}, status=status.HTTP_400_BAD_REQUEST)
+            try:
+                user.deposit(amount)
+                handle_first_deposit_reward(user)
 
-            # Deposit funds to the user's balance
-            user.deposit(amount)
-            return Response(CustomUserSerializer(user).data, status=status.HTTP_200_OK)
+                return Response({
+                    "status": True,
+                    "message": f"₦{amount} deposited successfully.",
+                    "new_balance": str(user.balance),
+                    "bonus": str(user.bonus),
+                    "referral_bonus": str(user.referral_bonus),
+                }, status=status.HTTP_200_OK)
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            except Exception as e:
+                return Response({
+                    "status": False,
+                    "message": "Deposit failed",
+                    "error": str(e),
+                }, status=status.HTTP_400_BAD_REQUEST)
 
+        return Response({
+            "status": False,
+            "errors": serializer.errors
+        }, status=status.HTTP_400_BAD_REQUEST)
 
 class WithdrawView(APIView):
     permission_classes = [IsAuthenticated]

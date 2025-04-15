@@ -74,7 +74,11 @@
                     <img src="{% static 'images/password-eye/eye-close.png' %}" id="eyeicon2">
                     <small class="form-text text-muted" style="color: #c4c2c2 !important;">Enter the same password as above for verification</small>
                   </div>
-                
+
+                  {% if referral_code %}
+                      <input type="hidden" name="referral_code" value="{{ referral_code }}">
+                  {% endif %}
+                  
                   <div class="d-grid my-4">
                     <button class="btn btn-primary" type="submit" id="signupButton">Sign Up</button>
                     <button class="btn btn-primary" type="button" id="authButton" style="display: none;" disabled>Authenticating...</button>

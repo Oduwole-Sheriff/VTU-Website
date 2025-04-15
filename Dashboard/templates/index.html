@@ -10,8 +10,11 @@
             <div class="inner">
                 <h3 class="title">Welcome to <br> BigSheriffData</h3>
                 <p class="dsic">
-                    Refer people to BigSheriff.com and get 5% of their first payment Referal Link: https://www.BigSheriff.com/signup/?referal=BigSheriff copy
-                </p>
+                    Refer people to BigSheriff.com and get 5% of their first payment<br>
+                    <strong>Referral Link:</strong> 
+                    <code id="referralLink">{{ referral_link }}</code>
+                    <button onclick="copyReferralLink()" class="btn btn-sm btn-outline-primary">Copy</button>
+                </p>                
                 <a href="#" class="rts-btn btn-blur" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Fund Wallet</a>
                 <div class="inner-right-iamge">
                     <img src="{% static 'assets/images/banner/airtime-banner4.jpg' %}" alt="banner">
@@ -42,20 +45,20 @@
                     </div>
                     <div class="card-body">
                         <p class="card-label">Current Bonus:</p>
-                        <p class="card-value">₦10,000.00</p>
+                        <p class="card-value">₦{{ referral_bonus|floatformat:2 }}</p>
                     </div>
                 </div>
-
+                
                 <div class="card card-total-referral banner-badge bg_image">
                     <div class="card-header">
                         <i class="fas fa-user-plus card-icon"></i>
                         <h3 class="card-title">My Total Referral</h3>
                     </div>
                     <div class="card-body">
-                        <p class="card-label">Total Referral:</p>
-                        <p class="card-value">0</p>
+                        <p class="card-label">Total Referrals:</p>
+                        <p class="card-value">{{ total_referrals }}</p>
                     </div>
-                </div>
+                </div>                
 
                 <div class="card card-user-balance banner-badge bg_image">
                     <div class="card-header">
@@ -260,6 +263,23 @@
             <p> <a href="#">BigSheriffDevelopers©</a> 2025. All Rights Reserved.</p>
         </div>
     </div>
+    
+
+    <script>
+        function copyReferralLink() {
+            const referralText = document.getElementById("referralLink").innerText;
+    
+            navigator.clipboard.writeText(referralText)
+                .then(() => {
+                    alert("Referral link copied to clipboard!");
+                })
+                .catch(err => {
+                    alert("Failed to copy. Please try manually.");
+                    console.error(err);
+                });
+        }
+    </script>
+    
     
 
 

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import CustomUser, Transaction
 from .forms import BuyAirtimeForm, BuyDataForm, TVServiceForm, ElectricityBillForm, WaecPinGeneratorForm, JambRegistrationForm
@@ -7,12 +7,31 @@ from django.core.paginator import Paginator
 from django.db import transaction as db_transaction
 from django.db.models import Sum
 from django.core.exceptions import ValidationError
-# from django.contrib import messages
+from .forms import DepositForm
+from .utils import handle_first_deposit_reward
+from django.contrib import messages
 
 # Create your views here.
 
 def Home(request):
     return render(request, 'home.html')
+
+@login_required
+def deposit_view(request):
+    if request.method == 'POST':
+        form = DepositForm(request.POST)
+        if form.is_valid():
+            amount = form.cleaned_data['amount']
+            request.user.deposit(amount)
+            handle_first_deposit_reward(request.user)
+
+            messages.success(request, f"₦{amount} deposited successfully!")
+            return redirect('index')  # or wherever you want
+
+    else:
+        form = DepositForm()
+
+    return render(request, 'deposit.html', {'form': form})
 
 @login_required
 def Index(request):
@@ -21,7 +40,7 @@ def Index(request):
     # Total user balance: Sum of all user balances
     total_balance = CustomUser.objects.aggregate(total_balance=Sum('balance'))['total_balance'] or 0.00
 
-    # Total user bonus: Sum of all user bonus
+    # Total user bonus: Sum of all user bonuses
     total_bonus = CustomUser.objects.aggregate(total_bonus=Sum('bonus'))['total_bonus'] or 0.00
     
     # Total registered users: Count of all users
@@ -45,6 +64,15 @@ def Index(request):
     # Get the transactions for the current page
     page_obj = paginator.get_page(page_number)
 
+    # Referral Link for the logged-in user
+    referral_link = request.build_absolute_uri(f"/register/?referral={request.user.username}")
+
+    # Get the total referrals (number of users referred by the logged-in user)
+    total_referrals = CustomUser.objects.filter(referred_by=request.user).count()
+
+    # Get the referral bonus of the logged-in user
+    referral_bonus = request.user.referral_bonus or 0.00
+
     # Render the template and pass the data to the template context
     return render(request, 'index.html', {
         'balance': balance,
@@ -52,8 +80,12 @@ def Index(request):
         'total_users': total_users,
         'total_bonus': total_bonus,
         'transactions': transactions,
-        'page_obj': page_obj
+        'page_obj': page_obj,
+        'referral_link': referral_link,
+        'total_referrals': total_referrals,
+        'referral_bonus': referral_bonus,
     })
+
 
 
 @login_required

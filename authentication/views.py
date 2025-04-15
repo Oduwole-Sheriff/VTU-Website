@@ -5,33 +5,52 @@ from .forms import UserRegisterForm, UserUpdateForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .models import Profile
+from Dashboard.models import CustomUser
 
 # Create your views here.
 
 def register(request):
+    referral_code = request.GET.get('referral')  # get referral from URL
+
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
-            # Save the user and retrieve cleaned data for phone_number and address
-            user = form.save()  # This saves the user
+            user = form.save()
             phone_number = form.cleaned_data.get('phone_number')
             address = form.cleaned_data.get('address')
-            
-            # Create a Profile instance for the user
+
+            # If referral code was in POST (hidden input), assign referred_by
+            referral_username = request.POST.get('referral_code')
+            if referral_username:
+                try:
+                    referrer = CustomUser.objects.get(username=referral_username)
+                    user.referred_by = referrer
+                    user.save()
+
+                    # Give the referrer a bonus
+                    referrer.bonus += 5.00
+                    referrer.save()
+                except CustomUser.DoesNotExist:
+                    pass  # Ignore invalid referral
+
+            # Create user profile
             Profile.objects.create(
                 user=user,
                 phone_number=phone_number,
                 address=address
             )
 
-            username = form.cleaned_data.get('username')
-            messages.success(request, f'Your account has been created {username}! You can now log in.')
-            return redirect('login')  # Redirect to the login page after success
+            messages.success(request, f'Your account has been created {user.username}! You can now log in.')
+            return redirect('login')
 
     else:
         form = UserRegisterForm()
 
-    return render(request, 'register.html', {'form': form})
+    return render(request, 'register.html', {
+        'form': form,
+        'referral_code': referral_code  # Pass to the template
+    })
+
 
 @login_required
 def profile(request):

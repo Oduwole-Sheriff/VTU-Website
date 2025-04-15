@@ -6,7 +6,7 @@ from django.conf import settings
 from django.db.models import F
 from django.db import transaction
 from django.utils import timezone
-
+from decimal import Decimal
 
 
 class CustomUser(AbstractUser):
@@ -15,21 +15,31 @@ class CustomUser(AbstractUser):
     bank_account = models.JSONField(blank=True, null=True)  # Bank account details as JSONField
     nin = models.CharField(max_length=11, blank=True, null=True)
     bvn = models.CharField(max_length=11, blank=True, null=True, unique=True)  # BVN field added
+    referral_bonus = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    first_deposit_reward_given = models.BooleanField(default=False)
+
+    referred_by = models.ForeignKey(
+        'self',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='referrals'
+    )
 
     def __str__(self):
         return self.username
 
-
     def deposit(self, amount: float):
-        """ Method to deposit funds to the user balance """
+        """Method to deposit funds to the user balance."""
         if amount <= 0:
             raise ValueError("Deposit amount must be positive.")
         
         with db_transaction.atomic():
+            amount = Decimal(str(amount))  # Always convert to Decimal for safety
             self.balance += amount
-            self.save()  # Save the updated balance
+            self.save(update_fields=["balance"])
 
-            # Log the deposit transaction
+             # Log the deposit transaction
             Transaction.objects.create(
                 user=self,
                 transaction_type='deposit',

@@ -41,6 +41,15 @@ class NINForm(forms.Form):
         if len(nin) != 11:  # Assuming the NIN is 20 digits long
             raise forms.ValidationError('NIN should be 11 characters long.')
         return nin
+    
+class DepositForm(forms.Form):
+    amount = forms.DecimalField(
+        max_digits=10, 
+        decimal_places=2, 
+        min_value=0.01,
+        label="Deposit Amount (₦)",
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter amount'})
+    )
 
 class BuyAirtimeForm(forms.ModelForm):
     class Meta:

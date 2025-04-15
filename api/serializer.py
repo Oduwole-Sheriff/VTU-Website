@@ -4,6 +4,7 @@ from Dashboard.models import CustomUser, Transaction, BuyAirtime, BuyData, TVSer
 from authentication.models import Profile
 from django.contrib.auth.password_validation import validate_password
 from django.db import transaction as db_transaction
+from decimal import Decimal
 
 # Use get_user_model() to reference the custom user model
 User = get_user_model()
@@ -13,56 +14,63 @@ class RegisterSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(write_only=True, min_length=8)
     phone_number = serializers.CharField(max_length=15, required=False, allow_blank=True)
     address = serializers.CharField(required=False, allow_blank=True)
+    referral_code = serializers.CharField(required=False, write_only=True)
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'phone_number', 'address', 'password1', 'password2']  # password fields last
-    
+        fields = ['username', 'email', 'phone_number', 'address', 'password1', 'password2', 'referral_code', 'referral_bonus']
+
     def validate(self, data):
-        # Check if the passwords match
         if data['password1'] != data['password2']:
             raise serializers.ValidationError("Passwords must match.")
-        
-        # Validate if the username or email already exists
+
         if User.objects.filter(username=data['username']).exists():
             raise serializers.ValidationError('Username is already taken.')
-        
+
         if User.objects.filter(email=data['email']).exists():
             raise serializers.ValidationError('Email is already taken.')
 
-        # Validate password strength
         try:
             validate_password(data['password1'])
         except Exception as e:
             raise serializers.ValidationError(f"Password error: {str(e)}")
-        
+
         return data
 
     def create(self, validated_data):
-        # Extract phone number and address before user creation
         phone_number = validated_data.pop('phone_number', None)
         address = validated_data.pop('address', None)
+        referral_code = validated_data.pop('referral_code', None)
 
-        # Create user
         user = User.objects.create(
             username=validated_data['username'],
             email=validated_data['email']
         )
-        user.set_password(validated_data['password1'])  # Set password from password1
+        user.set_password(validated_data['password1'])
+
+        # Handle referral logic here
+        if referral_code:
+            try:
+                referrer = User.objects.get(username=referral_code)
+                user.referred_by = referrer  # Only works if this field exists on your CustomUser
+                user.save()
+
+            except User.DoesNotExist:
+                pass  # You can optionally raise a warning
+
         user.save()
 
-        # Check if the profile already exists for this user
+        # Create or update user profile
         profile, created = Profile.objects.get_or_create(
             user=user,
             defaults={'phone_number': phone_number, 'address': address}
         )
 
-        # If the profile already exists, update it with the new data
         if not created:
             profile.phone_number = phone_number or profile.phone_number
             profile.address = address or profile.address
             profile.save()
-        
+
         return user
 
 

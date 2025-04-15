@@ -19,7 +19,7 @@ class CustomUserAdmin(UserAdmin):
     
     # Fields for add and change user forms
     fieldsets = (
-        (None, {'fields': ('username', 'password1', 'password2', 'balance', 'bonus', 'bank_account', 'nin', 'bvn')}),  # Add bvn to fieldsets
+        (None, {'fields': ('username', 'password1', 'password2', 'balance', 'bonus', 'bank_account', 'nin', 'bvn', 'referred_by', 'referral_bonus', 'first_deposit_reward_given')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser')}),  # permissions
         ('Important dates', {'fields': ('last_login', 'date_joined')}),           # important date fields
     )

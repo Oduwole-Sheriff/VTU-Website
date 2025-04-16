@@ -161,6 +161,7 @@ LOGIN_URL = 'login'
 MONNIFY_BASE_URL = 'https://sandbox.monnify.com'  # Or your actual Monnify base URL
 MONNIFY_AUTH_TOKEN = 'Basic TUtfVEVTVF9YWk1HSE1EREZGOldFRFlERENHWUVYOThaN0wzMVIxUlo0VjZMSzEySks5'  
 
+MIN_REFERRAL_TRANSFER_AMOUNT = 50.00  # or Decimal('50.00') if you're working with Decimals
 
 EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
 EMAIL_HOST = os.getenv('EMAIL_HOST')

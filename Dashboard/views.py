@@ -1,13 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import CustomUser, Transaction
+from .models import CustomUser, Transaction, Notification
 from .forms import BuyAirtimeForm, BuyDataForm, TVServiceForm, ElectricityBillForm, WaecPinGeneratorForm, JambRegistrationForm
 from django.http import JsonResponse
 from django.core.paginator import Paginator
 from django.db import transaction as db_transaction
-from django.db.models import Sum
+from django.db.models import Sum, Q
 from django.core.exceptions import ValidationError
-from .forms import DepositForm
+from .forms import DepositForm, ReferralBonusTransferForm, NotificationForm
 from .utils import handle_first_deposit_reward
 from django.contrib import messages
 
@@ -33,47 +33,78 @@ def deposit_view(request):
 
     return render(request, 'deposit.html', {'form': form})
 
+
+def transfer_referral_bonus_view(request):
+    if not request.user.is_authenticated:
+        return redirect('login')  # adjust to your login URL
+
+    form = ReferralBonusTransferForm(request.POST or None, user=request.user)
+
+    if request.method == 'POST' and form.is_valid():
+        amount = form.cleaned_data['amount']
+        try:
+            request.user.transfer_referral_bonus_to_balance(amount)
+            messages.success(request, f"Successfully transferred ₦{amount} to your balance.")
+            return redirect('bonus-to-wallet')
+        except Exception as e:
+            messages.error(request, str(e))
+
+    return render(request, 'bonus-to-wallet.html', {'form': form, 'user': request.user})
+
+@login_required
+def create_notification(request):
+    if request.method == "POST":
+        form = NotificationForm(request.POST)
+        if form.is_valid():
+            notification = form.save(commit=False)
+
+            if form.cleaned_data['send_to_all']:
+                # Send to all users
+                from django.contrib.auth import get_user_model
+                User = get_user_model()
+                users = User.objects.all()
+                for user in users:
+                    Notification.objects.create(
+                        title=notification.title,
+                        message=notification.message,
+                        user=user
+                    )
+                messages.success(request, "Notification sent to all users.")
+            else:
+                notification.save()
+                messages.success(request, "Notification sent to the selected user.")
+            return redirect('create_notification')
+    else:
+        form = NotificationForm()
+    
+    return render(request, 'notifications.html', {'form': form})
+
 @login_required
 def Index(request):
     """Render the wallet balance page with total user balance and total registered users."""
 
-    # Total user balance: Sum of all user balances
+    # Total metrics
     total_balance = CustomUser.objects.aggregate(total_balance=Sum('balance'))['total_balance'] or 0.00
-
-    # Total user bonus: Sum of all user bonuses
     total_bonus = CustomUser.objects.aggregate(total_bonus=Sum('bonus'))['total_bonus'] or 0.00
-    
-    # Total registered users: Count of all users
     total_users = CustomUser.objects.count()
 
-    # Get the balance of the logged-in user
-    try:
-        balance = request.user.balance  # Assuming balance is on CustomUser and it's linked to the logged-in user
-    except CustomUser.DoesNotExist:
-        balance = 0  # Default to 0 if the CustomUser instance doesn't exist
-
-    """Render the transaction history for the logged-in user."""
-    transactions = Transaction.objects.filter(user=request.user).order_by('-timestamp')  # Correcting field name to 'timestamp'
-
-    # Paginate the transactions (5 transactions per page, you can change this number)
-    paginator = Paginator(transactions, 5)
-    
-    # Get the current page number from the request
-    page_number = request.GET.get('page')
-    
-    # Get the transactions for the current page
-    page_obj = paginator.get_page(page_number)
-
-    # Referral Link for the logged-in user
+    # User-specific info
+    balance = getattr(request.user, 'balance', 0.00)
+    referral_bonus = request.user.referral_bonus or 0.00
     referral_link = request.build_absolute_uri(f"/register/?referral={request.user.username}")
-
-    # Get the total referrals (number of users referred by the logged-in user)
     total_referrals = CustomUser.objects.filter(referred_by=request.user).count()
 
-    # Get the referral bonus of the logged-in user
-    referral_bonus = request.user.referral_bonus or 0.00
+    # Transactions
+    transactions = Transaction.objects.filter(user=request.user).order_by('-timestamp')
+    paginator = Paginator(transactions, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
-    # Render the template and pass the data to the template context
+    # Notifications (user-specific and default for all)
+    notifications = Notification.objects.filter(
+        Q(user=request.user) | Q(user__isnull=True)
+    ).order_by('-created_at')
+
     return render(request, 'index.html', {
         'balance': balance,
         'total_balance': total_balance,
@@ -84,6 +115,7 @@ def Index(request):
         'referral_link': referral_link,
         'total_referrals': total_referrals,
         'referral_bonus': referral_bonus,
+        'notifications': notifications,
     })
 
 

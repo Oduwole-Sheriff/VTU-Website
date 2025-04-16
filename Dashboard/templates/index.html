@@ -264,8 +264,21 @@
         </div>
     </div>
     
+    <!-- SweetAlert2 CDN (put in your base template or index.html head) -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
+        {% if notifications %}
+          {% for note in notifications %}
+            Swal.fire({
+              title: "{{ note.title|escapejs }}",
+              text: "{{ note.message|linebreaksbr|striptags|escapejs }}",
+              icon: 'info',
+              confirmButtonText: 'OK'
+            });
+          {% endfor %}
+        {% endif %}
+      
         function copyReferralLink() {
             const referralText = document.getElementById("referralLink").innerText;
     

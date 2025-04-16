@@ -1,6 +1,8 @@
 from django import forms
-from .models import CustomUser, BuyAirtime, BuyData, TVService, ElectricityBill, WaecPinGenerator, JambRegistration
+from .models import CustomUser, Notification, BuyAirtime, BuyData, TVService, ElectricityBill, WaecPinGenerator, JambRegistration
 from django.core.exceptions import ValidationError
+from django.conf import settings
+from decimal import Decimal, InvalidOperation
 
 class CustomUserForm(forms.ModelForm):
     class Meta:
@@ -50,6 +52,69 @@ class DepositForm(forms.Form):
         label="Deposit Amount (₦)",
         widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter amount'})
     )
+
+class ReferralBonusTransferForm(forms.Form):
+    amount = forms.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        min_value=0.01,
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Amount to transfer'})
+    )
+
+    def __init__(self, *args, user=None, **kwargs):
+        self.user = user
+        super().__init__(*args, **kwargs)
+
+    def clean_amount(self):
+        amount = self.cleaned_data.get('amount')
+
+        if self.user is None:
+            raise forms.ValidationError("User context is required.")
+
+        try:
+            min_amount = Decimal(str(getattr(settings, "MIN_REFERRAL_TRANSFER_AMOUNT", "50.00")))
+        except InvalidOperation:
+            raise forms.ValidationError("Invalid setting for minimum referral transfer amount.")
+
+        # Check if user's referral bonus is at least the minimum
+        if self.user.referral_bonus < min_amount:
+            raise forms.ValidationError(f"Referral bonus must be at least ₦{min_amount} before transferring.")
+
+        # Check if the entered amount is less than the minimum allowed
+        if amount < min_amount:
+            raise forms.ValidationError(f"You cannot transfer less than ₦{min_amount}.")
+
+        # Check if user has enough bonus for the requested transfer
+        if self.user.referral_bonus < amount:
+            raise forms.ValidationError("Insufficient referral bonus for this amount.")
+
+        return amount
+
+
+class NotificationForm(forms.ModelForm):
+    send_to_all = forms.BooleanField(required=False, initial=False, label="Send to all users")
+
+    class Meta:
+        model = Notification
+        fields = ['title', 'message', 'user', 'send_to_all']
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'message': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+            'user': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        send_to_all = cleaned_data.get("send_to_all")
+        user = cleaned_data.get("user")
+
+        if send_to_all:
+            cleaned_data['user'] = None  # Clear the user field if sending to all
+        elif not user:
+            raise forms.ValidationError("Please select a user or check 'Send to all users'.")
+
+        return cleaned_data
+
 
 class BuyAirtimeForm(forms.ModelForm):
     class Meta:

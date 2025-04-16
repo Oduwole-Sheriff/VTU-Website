@@ -4,6 +4,8 @@ from . import views
 urlpatterns = [
     path('', views.Home, name='home-page'),
     path('deposit/', views.deposit_view, name='deposit'),
+    path('Bonus-to-wallet/', views.transfer_referral_bonus_view, name='bonus-to-wallet'),
+    path('Create-Notification/', views.create_notification, name='create_notification'),
     path('index/', views.Index, name='index'),
     path('transactions/', views.transaction_history, name='transaction_history'), 
     path('data/', views.BuyData, name='buydata'),
@@ -20,7 +22,6 @@ urlpatterns = [
     path('dataCard/', views.BuyDataCard, name='buy_dataCard'),
     path('dataRecharge-Pin-Order/', views.BuyDataPin, name='buy_dataPin'),
     path('Airtime-Funding/', views.AirtimeToCash, name='airtime_to_Cash'),
-    path('Transfer-Bonus/', views.BonusToWallet, name='bonus-to-wallet'),
     path('Bulk-SMS/', views.BulkSMS, name='bulk-sms'),
     path('Result-Checker/', views.ResultChecker, name='result-checker'),
 ]

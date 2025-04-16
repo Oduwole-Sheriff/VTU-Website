@@ -4,7 +4,7 @@ from django.contrib.auth.admin import UserAdmin
 from .forms import CustomUserForm
 from django.db import models
 from django import forms
-from .models import CustomUser, Transaction, WebsiteConfiguration, BuyAirtime, BuyData, TVService, ElectricityBill, WaecPinGenerator, JambRegistration
+from .models import CustomUser, Notification, Transaction, WebsiteConfiguration, BuyAirtime, BuyData, TVService, ElectricityBill, WaecPinGenerator, JambRegistration
 
 CustomUser = get_user_model()
 
@@ -46,6 +46,12 @@ class CustomUserAdmin(UserAdmin):
     # Set the method name as the column header in the list display
     get_bank_account.short_description = 'Bank Account'
 
+
+@admin.register(Notification)
+class NotificationAdmin(admin.ModelAdmin):
+    list_display = ('title', 'user', 'is_read', 'created_at')
+    list_filter = ('is_read', 'created_at')
+    search_fields = ('title', 'message')
 
 @admin.register(WebsiteConfiguration)
 class WebsiteConfigurationAdmin(admin.ModelAdmin):

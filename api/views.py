@@ -400,7 +400,7 @@ class BuyAirtimeView(APIView):
 
                         Transaction.objects.create(
                             user=request.user,
-                            transaction_type='airtime-purchase',
+                            transaction_type='Airtime purchase',
                             amount=amount,
                             status='completed',
                             product_name=product_name,
@@ -476,7 +476,7 @@ class BuyAirtimeView(APIView):
         # Create and save the failed transaction in the database
         Transaction.objects.create(
             user=self.request.user,
-            transaction_type='airtime-purchase',
+            transaction_type='Airtime Purchase',
             amount=self.request.data.get('amount'),
             status='failed',
             product_name=product_name,
@@ -528,7 +528,7 @@ class BuyDataAPIView(APIView):
                     # Create a transaction for this data purchase (even before calling external API)
                     transaction = Transaction.objects.create(
                         user=request.user,
-                        transaction_type='data-purchase',
+                        transaction_type='Data Purchase',
                         amount=buy_data_instance.amount,
                         status='pending',  # Mark as pending initially
                         description=f"Data purchase for {buy_data_instance.data_plan}",
@@ -755,7 +755,7 @@ class TVServiceAPIView(APIView):
             # Create the transaction record before making the API call
             transaction = Transaction.objects.create(
                 user=request.user,
-                transaction_type='TV-Subscription',
+                transaction_type='TV Subscription',
                 amount=Decimal(str(amount)),
                 description=f"TV Subscription for bouquet {bouquet_code}",
                 status="Pending",  # Mark as "Pending" initially
@@ -1059,7 +1059,7 @@ class ElectricityBillCreateView(APIView):
                     # Create a transaction for the electricity bill purchase (status 'pending' initially)
                     transaction = Transaction.objects.create(
                         user=request.user,
-                        transaction_type='Electricity-Bill',
+                        transaction_type='Electricity Bill',
                         amount=Decimal(str(amount)),
                         status='pending',  # Pending status initially
                         description=f"Payment for electricity bill with Meter Number {Electricity_Bill.meter_number}",
@@ -1256,7 +1256,7 @@ class WaecPinGeneratorCreateView(APIView):
                     # Process the transaction (create a transaction record)
                     transaction = Transaction.objects.create(
                         user=request.user,
-                        transaction_type='Waec-Pin-Generation',
+                        transaction_type='Waec Pin Generation',
                         amount=total_amount,
                         status='pending',  # Pending status initially
                         description=f"Payment for {quantity} WAEC pins generation.",
@@ -1495,7 +1495,7 @@ class JambRegistrationViewSet(APIView):
                     # Process the transaction
                     transaction = Transaction.objects.create(
                         user=request.user,
-                        transaction_type='Jamb-Pin-Generation',
+                        transaction_type='Jamb Pin Generation',
                         amount=total_amount,
                         status='pending',  # Pending status initially
                         description=f"Payment for {jamb_profile_id} Jamb pins generation.",

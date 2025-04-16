@@ -94,14 +94,59 @@ class CustomUser(AbstractUser):
                 recipient=self  # Correct reference to sender's user
             )
 
+    def transfer_referral_bonus_to_balance(self, amount: float):
+        """Transfer funds from referral bonus to balance, if bonus meets minimum."""
+        if amount <= 0:
+            raise ValueError("Amount must be positive.")
+
+        # Use the value from settings
+        min_transfer_amount = Decimal(str(getattr(settings, "MIN_REFERRAL_TRANSFER_AMOUNT", "50.00")))
+
+        if self.referral_bonus < min_transfer_amount:
+            raise ValueError(f"Referral bonus must be at least ₦{min_transfer_amount} before you can transfer it.")
+
+        if self.referral_bonus < amount:
+            raise ValueError("Insufficient referral bonus for this amount.")
+
+        with db_transaction.atomic():
+            amount = Decimal(str(amount))
+            self.referral_bonus -= amount
+            self.balance += amount
+            self.save(update_fields=["referral_bonus", "balance"])
+
+            Transaction.objects.create(
+                user=self,
+                transaction_type='Bonus To Wallet',
+                amount=amount, 
+                status='completed'
+            )
+
+class Notification(models.Model):
+    title = models.CharField(max_length=255)
+    message = models.TextField()
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="notifications"
+    )
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"To: {'All Users' if self.user is None else self.user.email} | {self.title}"
 
 class Transaction(models.Model):
     TRANSACTION_TYPES = (
         ('deposit', 'Deposit'),
         ('withdrawal', 'Withdrawal'),
         ('transfer', 'Transfer'),
-        ('airtime_purchase', 'Airtime Purchase'),  # Airtime purchase type
-        ('data_purchase', 'Data Purchase'),  # Data purchase type
+        ('Airtime Purchase', 'Airtime Purchase'),  # Airtime purchase type
+        ('Data Purchase', 'Data Purchase'),  # Data purchase type
         ('TV_Subscription', 'TV SUBSCRIPTION'),  # TV SERVICE SUBSCRIPTION
         ('Electricity_Bill', 'Electricity Bill'),  # ElectricityBill Payment
         ('waec_pin_generator', 'WAEC PIN'),

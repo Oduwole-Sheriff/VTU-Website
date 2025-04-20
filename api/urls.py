@@ -1,10 +1,13 @@
 from django.urls import path
-from api.views import RegisterAPI, LoginAPI, DepositAPIView, WithdrawView, TransferView, TransactionListView, SubmitAccountDetailsView, BuyAirtimeView, BuyDataAPIView, TVServiceAPIView, ElectricityBillCreateView, WaecPinGeneratorCreateView, JambRegistrationViewSet
+from api.views import RegisterAPI, LoginAPI, DepositAPIView, BankTransferAPIView, MonnifyWebhookView, TransferBonusAPIView, WithdrawView, TransferView, TransactionListView, SubmitAccountDetailsView, BuyAirtimeView, BuyDataAPIView, TVServiceAPIView, ElectricityBillCreateView, WaecPinGeneratorCreateView, JambRegistrationViewSet
 
 urlpatterns = [
     path('registration/', RegisterAPI.as_view()),
     path('login/', LoginAPI.as_view()),
     path('deposit/', DepositAPIView.as_view(), name='deposit-api'),
+    path('monnify/webhook/', MonnifyWebhookView.as_view(), name='monnify-webhook'),
+    path('bank-transfer/', BankTransferAPIView.as_view(), name='bank_transfer_api'),
+    path("bonus-to-bank/", TransferBonusAPIView.as_view(), name="bonus-transfer"),
     path('withdraw/', WithdrawView.as_view(), name='withdraw'),
     path('transfer/', TransferView.as_view(), name='transfer'),
     path('transactions/', TransactionListView.as_view(), name='transaction_list'),

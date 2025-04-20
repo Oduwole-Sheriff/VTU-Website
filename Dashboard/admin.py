@@ -4,7 +4,7 @@ from django.contrib.auth.admin import UserAdmin
 from .forms import CustomUserForm
 from django.db import models
 from django import forms
-from .models import CustomUser, Notification, Transaction, WebsiteConfiguration, BuyAirtime, BuyData, TVService, ElectricityBill, WaecPinGenerator, JambRegistration
+from .models import CustomUser, MonnifyTransaction, BankTransfer, Notification, Transaction, WebsiteConfiguration, BuyAirtime, BuyData, TVService, ElectricityBill, WaecPinGenerator, JambRegistration
 
 CustomUser = get_user_model()
 
@@ -45,6 +45,23 @@ class CustomUserAdmin(UserAdmin):
     
     # Set the method name as the column header in the list display
     get_bank_account.short_description = 'Bank Account'
+
+@admin.register(MonnifyTransaction)
+class MonnifyTransactionAdmin(admin.ModelAdmin):
+    list_display = (
+        'user', 'amount', 'payment_reference', 'monnify_transaction_reference',
+        'bank_code', 'account_number', 'status', 'currency', 'date'
+    )
+    search_fields = ('user__username', 'payment_reference', 'monnify_transaction_reference', 'account_number')
+    list_filter = ('status', 'currency', 'date')
+    readonly_fields = ('date',)
+
+@admin.register(BankTransfer)
+class BankTransferAdmin(admin.ModelAdmin):
+    list_display = ('user', 'amount', 'bank_code', 'account_number', 'status', 'created_at')
+    search_fields = ('user__username', 'account_number')
+    list_filter = ('status', 'created_at')
+    readonly_fields = ('created_at',)
 
 
 @admin.register(Notification)

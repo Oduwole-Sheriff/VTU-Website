@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+
+<h2>Transfer Bonus to Bank Account</h2>
+<form id="bank-transfer-form">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Transfer</button>
+</form>
+<div id="response-message"></div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  // Function to generate a UUID (v4)
+  function generateUUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
+
+  $(document).ready(function() {
+    $('#bank-transfer-form').submit(function(event) {
+      event.preventDefault();
+      
+      // Generate the reference and append it to the form data
+      const reference = `payment-to-external-account-${generateUUID()}`;
+      
+      // Serialize form data and add the reference
+      let formData = $(this).serializeArray();
+      formData.push({ name: 'reference', value: reference });
+
+      // Make the AJAX request with the modified form data
+      $.ajax({
+        url: '/api/bank-transfer/',
+        type: 'POST',
+        data: $.param(formData),  // Use $.param() to serialize the data correctly
+        success: function(response) {
+          $('#response-message').text(response.message);
+        },
+        error: function(xhr, status, error) {
+          $('#response-message').text(xhr.responseJSON.error || 'Something went wrong');
+        }
+      });
+    });
+  });
+</script>
+
+{% endblock %}

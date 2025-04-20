@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from Dashboard.models import CustomUser, Transaction, BuyAirtime, BuyData, TVService, ElectricityBill, WaecPinGenerator, JambRegistration
+from Dashboard.models import CustomUser, BankTransfer, MonnifyTransaction, Transaction, BuyAirtime, BuyData, TVService, ElectricityBill, WaecPinGenerator, JambRegistration
 from authentication.models import Profile
 from django.contrib.auth.password_validation import validate_password
 from django.db import transaction as db_transaction
@@ -165,6 +165,45 @@ class TransferSerializer(serializers.Serializer):
             raise serializers.ValidationError("Recipient does not exist.")
         return value
 
+
+class MonnifyTransactionSerializer(serializers.ModelSerializer):
+    user = serializers.StringRelatedField(read_only=True)  # or use PrimaryKeyRelatedField if needed
+
+    class Meta:
+        model = MonnifyTransaction
+        fields = [
+            'id',
+            'user',
+            'amount',
+            'payment_reference',
+            'monnify_transaction_reference',
+            'bank_code',
+            'account_number',
+            'narration',
+            'status',
+            'currency',
+            'response_message',
+            'date'
+        ]
+        read_only_fields = ['status', 'monnify_transaction_reference', 'response_message', 'date']
+
+
+class BankTransferSerializer(serializers.ModelSerializer):
+    user = serializers.StringRelatedField(read_only=True)
+
+    class Meta:
+        model = BankTransfer
+        fields = [
+            'id',
+            'user',
+            'amount',
+            'bank_code',
+            'account_number',
+            'status',
+            'reference',
+            'created_at'
+        ]
+        read_only_fields = ['status', 'created_at']
 
 class TransactionSerializer(serializers.ModelSerializer):
     # Serialize additional fields

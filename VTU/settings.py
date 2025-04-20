@@ -32,7 +32,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -117,6 +117,22 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = 'Dashboard.CustomUser'
 
+# LOGGING = {
+#     'version': 1,
+#     'handlers': {
+#         'console': {
+#             'class': 'logging.StreamHandler',
+#         },
+#     },
+#     'loggers': {
+#         'django.db.backends': {
+#             'handlers': ['console'],
+#             'level:' 'DEBUG',
+#         },
+#     }
+# }
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -160,6 +176,17 @@ LOGIN_URL = 'login'
 
 MONNIFY_BASE_URL = 'https://sandbox.monnify.com'  # Or your actual Monnify base URL
 MONNIFY_AUTH_TOKEN = 'Basic TUtfVEVTVF9YWk1HSE1EREZGOldFRFlERENHWUVYOThaN0wzMVIxUlo0VjZMSzEySks5'  
+
+# MONNIFY_API_KEY = 'MK_TEST_XZMGHMDDFF'
+# MONNIFY_SECRET_KEY = 'WEDYDDCGYEX98Z7L31R1RZ4V6LK12JK9'
+# # MONNIFY_CONTRACT_CODE = '5347308431'
+# MONNIFY_BASE_URL = 'https://sandbox.monnify.com/api/v1'  # Change to live for production
+# PLATFORM_BANK_ACCOUNT = {
+#     "account_number": "2417372510",
+#     "bank_code": "057",  # Example: Zenith Bank
+#     "account_name": "Oduwole Sheriff Olamilekan"
+# }
+
 
 MIN_REFERRAL_TRANSFER_AMOUNT = 50.00  # or Decimal('50.00') if you're working with Decimals
 

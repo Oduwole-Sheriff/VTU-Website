@@ -53,6 +53,12 @@ class DepositForm(forms.Form):
         widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter amount'})
     )
 
+class BankTransferForm(forms.Form):
+    amount = forms.DecimalField(max_digits=10, decimal_places=2)
+    bank_code = forms.CharField(max_length=3)
+    account_number = forms.CharField(max_length=10)
+    reference = forms.CharField(max_length=100, widget=forms.HiddenInput())
+
 class ReferralBonusTransferForm(forms.Form):
     amount = forms.DecimalField(
         max_digits=10,

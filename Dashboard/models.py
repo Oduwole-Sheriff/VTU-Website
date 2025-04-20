@@ -8,7 +8,6 @@ from django.db import transaction
 from django.utils import timezone
 from decimal import Decimal
 
-
 class CustomUser(AbstractUser):
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     bonus = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
@@ -120,6 +119,34 @@ class CustomUser(AbstractUser):
                 amount=amount, 
                 status='completed'
             )
+
+class MonnifyTransaction(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    payment_reference = models.CharField(max_length=100, unique=True)  # your reference
+    monnify_transaction_reference = models.CharField(max_length=100, blank=True, null=True)  # returned by Monnify
+    bank_code = models.CharField(max_length=10)
+    account_number = models.CharField(max_length=20)
+    narration = models.CharField(max_length=255, default="User Bonus Withdrawal")
+    status = models.CharField(max_length=20, default='pending')  # updated from Monnify response
+    currency = models.CharField(max_length=5, default='NGN')
+    response_message = models.JSONField(null=True, blank=True)  # optional, for Monnify response
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Transaction for {self.user.username} - {self.amount} NGN"
+
+class BankTransfer(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    bank_code = models.CharField(max_length=10, default='025')
+    account_number = models.CharField(max_length=20, default='2417372510')
+    status = models.CharField(max_length=20, default='pending')
+    reference = models.CharField(max_length=100, unique=True)  
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.amount} NGN"
 
 class Notification(models.Model):
     title = models.CharField(max_length=255)

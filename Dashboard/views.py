@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import CustomUser, Transaction, Notification
-from .forms import BuyAirtimeForm, BuyDataForm, TVServiceForm, ElectricityBillForm, WaecPinGeneratorForm, JambRegistrationForm
+from .models import CustomUser, Transaction, Notification, MonnifyTransaction
+from .forms import BuyAirtimeForm, BankTransferForm, BuyDataForm, TVServiceForm, ElectricityBillForm, WaecPinGeneratorForm, JambRegistrationForm
 from django.http import JsonResponse
 from django.core.paginator import Paginator
 from django.db import transaction as db_transaction
@@ -10,11 +10,104 @@ from django.core.exceptions import ValidationError
 from .forms import DepositForm, ReferralBonusTransferForm, NotificationForm
 from .utils import handle_first_deposit_reward
 from django.contrib import messages
+import json
+from django.utils.timezone import now
+import hmac
+import hashlib
+from django.core.mail import send_mail
+from django.views.decorators.csrf import csrf_exempt
+from decimal import Decimal
+
 
 # Create your views here.
 
 def Home(request):
     return render(request, 'home.html')
+
+@csrf_exempt
+def verify_monnify_signature(request, secret_key):
+    signature = request.headers.get('monnify-signature')
+    body = request.body
+    expected_signature = hmac.new(
+        key=secret_key.encode('utf-8'),
+        msg=body,
+        digestmod=hashlib.sha256
+    ).hexdigest()
+    return hmac.compare_digest(signature, expected_signature)
+
+@csrf_exempt
+def monnify_webhook(request):
+    if request.method != "POST":
+        return JsonResponse({"message": "Invalid request method"}, status=405)
+
+    secret_key = 'WEDYDDCGYEX98Z7L31R1RZ4V6LK12JK9'
+
+    if not verify_monnify_signature(request, secret_key):
+        return JsonResponse({"message": "Invalid signature"}, status=400)
+
+    try:
+        payload = json.loads(request.body)
+        print("📨 Full Webhook Payload:")
+        print(json.dumps(payload, indent=4))
+
+        event_type = payload.get("eventType")
+        if event_type != "SUCCESSFUL_TRANSACTION":
+            print("ℹ️ Ignored event:", event_type)
+            return JsonResponse({"message": "Not a successful transaction"}, status=200)
+
+        event_data = payload.get("eventData", {})
+        payment_reference = event_data.get("paymentReference")
+        amount_paid = float(event_data.get("amountPaid", 0))
+        customer_email = event_data.get("customer", {}).get("email")
+        account_reference = event_data.get("product", {}).get("reference")
+
+        print(f"🔍 Reference: {payment_reference}")
+        print(f"👤 Email: {customer_email}, AccountRef: {account_reference}")
+        print(f"💵 Amount Paid: ₦{amount_paid:,.2f}")
+
+        # Look up user by email, fallback to account reference
+        try:
+            user = CustomUser.objects.get(email=customer_email)
+        except CustomUser.DoesNotExist:
+            try:
+                username_part = account_reference.split('_')[-1]
+                user = CustomUser.objects.get(username=username_part)
+            except CustomUser.DoesNotExist:
+                print("❌ User not found")
+                return JsonResponse({"message": "User not found"}, status=400)
+
+        # Prevent double crediting
+        if MonnifyTransaction.objects.filter(payment_reference=payment_reference).exists():
+            print("⚠️ Duplicate transaction, skipping credit.")
+            return JsonResponse({"message": "Duplicate webhook"}, status=200)
+
+        # Credit user's wallet
+        user.balance += Decimal(str(amount_paid))
+        user.save()
+        print(f"✅ Credited ₦{amount_paid:,.2f} to {user.username} (new balance: ₦{user.balance:,.2f})")
+
+        # Save transaction
+        MonnifyTransaction.objects.create(
+            user=user,
+            amount=amount_paid,
+            payment_reference=payment_reference,
+            date=now()
+        )
+
+        # Send confirmation email
+        send_mail(
+            subject="Wallet Credited",
+            message=f"Hello {user.username},\n\nYour wallet has been credited with ₦{amount_paid:,.2f}.",
+            from_email="no-reply@yourapp.com",
+            recipient_list=[user.email],
+            fail_silently=True,
+        )
+
+        return JsonResponse({"message": "Wallet credited successfully"}, status=200)
+
+    except Exception as e:
+        print("🔥 Error processing webhook:", e)
+        return JsonResponse({"message": "Error processing webhook"}, status=400)
 
 @login_required
 def deposit_view(request):
@@ -33,7 +126,12 @@ def deposit_view(request):
 
     return render(request, 'deposit.html', {'form': form})
 
+@login_required
+def Bank_Transfer(request):
+    form = BankTransferForm()
+    return render(request, 'bank_transfer.html', {'form': form})
 
+@login_required
 def transfer_referral_bonus_view(request):
     if not request.user.is_authenticated:
         return redirect('login')  # adjust to your login URL

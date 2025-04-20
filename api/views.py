@@ -13,14 +13,18 @@ from rest_framework.permissions import IsAuthenticated
 
 from decimal import Decimal
 
-from api.serializer import RegisterSerializer, LoginSerializer, CustomUserSerializer, DepositSerializer, WithdrawSerializer, TransferSerializer, TransactionSerializer, AccountDetailsSerializer, BuyAirtimeSerializer, BuyDataSerializer, TVServiceSerializer, ElectricityBillSerializer, WaecPinGeneratorSerializer, JambRegistrationSerializer
+import hmac
+import hashlib
+from django.core.mail import send_mail
+
+from api.serializer import RegisterSerializer, LoginSerializer, CustomUserSerializer, BankTransferSerializer, DepositSerializer, WithdrawSerializer, TransferSerializer, TransactionSerializer, AccountDetailsSerializer, BuyAirtimeSerializer, BuyDataSerializer, TVServiceSerializer, ElectricityBillSerializer, WaecPinGeneratorSerializer, JambRegistrationSerializer
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
 
 from django.contrib.auth import authenticate, login
-from Dashboard.models import CustomUser, Transaction, TVService, ElectricityBill, WaecPinGenerator, JambRegistration
+from Dashboard.models import CustomUser, BankTransfer, MonnifyTransaction, Transaction, TVService, ElectricityBill, WaecPinGenerator, JambRegistration
 from django.db import IntegrityError
 from django.http import JsonResponse
 from rest_framework.exceptions import ValidationError
@@ -34,12 +38,14 @@ from RestAPI.DataAPI import VTPassDataAPI
 from RestAPI.TVSubscriptionAPI import  VTPassTVSubscription   
 from RestAPI.ElectricityAPI import  VTPassElectricity
 from RestAPI.EducationalAPI import VTPassEducationAPI
+from RestAPI.MonnifyPayout import MonnifyBankTransferAPI
+
 import uuid
 from datetime import datetime
 import logging
 import json
 import random
-from datetime import datetime as Mdate
+from datetime import datetime as Mdate  
 
 from django.contrib.auth import get_user_model
 User = get_user_model()  # Get the custom user model
@@ -204,6 +210,17 @@ class DepositAPIView(APIView):
             "errors": serializer.errors
         }, status=status.HTTP_400_BAD_REQUEST)
 
+class TransferBonusAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        user = request.user
+        try:
+            result = user.transfer_bonus_to_platform()
+            return Response({"message": "Bonus transferred successfully", "details": result}, status=200)
+        except Exception as e:
+            return Response({"error": str(e)}, status=400)
+
 class WithdrawView(APIView):
     permission_classes = [IsAuthenticated]
     def post(self, request):
@@ -281,7 +298,156 @@ class TransactionListView(APIView):
         print(serializer)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
+class MonnifyWebhookView(APIView):
+    def post(self, request):
+        secret_key = "WEDYDDCGYEX98Z7L31R1RZ4V6LK12JK9"  # Replace with your actual Monnify secret key or pull from settings
+        signature_from_header = request.headers.get('MONNIFY_SIGNATURE')
+        raw_body = request.body  # Raw request body bytes
+
+        # Compute the HMAC SHA512 signature
+        computed_signature = hmac.new(
+            key=bytes(secret_key, 'utf-8'),
+            msg=raw_body,
+            digestmod=hashlib.sha512
+        ).hexdigest()
+
+        # Compare computed signature with the one from header
+        if not hmac.compare_digest(computed_signature, signature_from_header):
+            return Response({"error": "Invalid signature"}, status=status.HTTP_403_FORBIDDEN)
+
+        # Parse data
+        data = request.data
+        transaction_reference = data.get("transactionReference")
+        payment_reference = data.get("paymentReference")
+        payment_status = data.get("paymentStatus")
+        amount_paid = float(data.get("amountPaid", 0))
+
+        try:
+            transaction = MonnifyTransaction.objects.get(payment_reference=payment_reference)
+        except MonnifyTransaction.DoesNotExist:
+            return Response({"error": "Transaction not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        if transaction.status == "SUCCESS":
+            return Response({"message": "Transaction already completed."}, status=status.HTTP_200_OK)
+
+        with db_transaction.atomic():
+            transaction.status = payment_status
+            transaction.monnify_transaction_reference = transaction_reference
+            transaction.save()
+
+            # inside the with db_transaction.atomic() block
+            # Example: create a log entry
+            MonnifyTransaction.objects.create(
+                user=transaction.user,
+                message=f"Monnify transaction {payment_reference} updated to {payment_status}"
+            )
+
+            # OR send an email (simple mock)
+            send_mail(
+                subject="Your transaction has been updated",
+                message=f"Hi {transaction.user.username}, your transaction {payment_reference} is now {payment_status}.",
+                from_email="no-reply@yourapp.com",
+                recipient_list=[transaction.user.email],
+                fail_silently=True,
+            )
+
+            # Optionally, log or notify here
+            print(f"✅ Transaction {payment_reference} updated to {payment_status}")
+
+        return Response({"message": "Transaction status updated."}, status=status.HTTP_200_OK)  
+
+class BankTransferAPIView(APIView):
+    def post(self, request):
+        serializer = BankTransferSerializer(data=request.data)
+        if serializer.is_valid():
+            user = request.user
+            amount = serializer.validated_data['amount']
+            bank_code = serializer.validated_data['bank_code']
+            account_number = serializer.validated_data['account_number']
+            reference = serializer.validated_data['reference']
+
+            # Prevent duplicate transaction by checking if the reference already exists
+            if BankTransfer.objects.filter(reference=reference).exists():
+                return Response({
+                    "error": "This transaction has already been processed.",
+                    "reference": reference
+                }, status=status.HTTP_409_CONFLICT)
+
+            if user.balance < amount:
+                return Response({"error": "Insufficient balance"}, status=status.HTTP_400_BAD_REQUEST)
+
+            # Call Monnify API
+            monnify_api = MonnifyBankTransferAPI(
+                base_url="https://sandbox.monnify.com",
+                auth_token="MK_TEST_XZMGHMDDFF",
+                secret_key="WEDYDDCGYEX98Z7L31R1RZ4V6LK12JK9"
+            )
+
+            response = monnify_api.send_bonus_to_platform(
+                amount=float(amount),
+                bank_code=bank_code,
+                account_number=account_number,
+                reference=reference
+            )
+
+            print("Monnify API Response:", response)
+
+            response_body = response.get("responseBody", {}) if response else {}
+            monnify_status = response_body.get("status", "FAILED")
+            monnify_ref = response_body.get("reference")
+            monnify_msg = response.get("responseMessage", "No response message")
+            monnify_success = response.get("requestSuccessful", False)
+
+            # Start saving records
+            with db_transaction.atomic():
+                # Save bank transfer record
+                transfer = BankTransfer.objects.create(
+                    user=user,
+                    amount=amount,
+                    bank_code=bank_code,
+                    account_number=account_number,
+                    reference=reference,
+                    status="completed" if monnify_status in ["SUCCESS", "PENDING_AUTHORIZATION"] else "failed"
+                )
+                transfer.save()
+
+                # Save monnify transaction record
+                transaction = MonnifyTransaction.objects.create(
+                    user=user,
+                    amount=amount,
+                    payment_reference=reference,
+                    monnify_transaction_reference=monnify_ref,
+                    bank_code=bank_code,
+                    account_number=account_number,
+                    narration="User Bonus Withdrawal",
+                    status=monnify_status,
+                    currency="NGN",
+                    response_message=response
+                )
+
+                # Deduct balance only if Monnify accepted the transfer
+                if monnify_status in ["SUCCESS", "PENDING_AUTHORIZATION"] and monnify_success:
+                    user.balance -= amount
+                    user.save()
+                    transaction.save()
+
+            if monnify_status in ["SUCCESS", "PENDING_AUTHORIZATION"] and monnify_success:
+                return Response({
+                    "message": f"Transfer initiated successfully ({monnify_status})",
+                    "reference": reference,
+                    "monnify_status": monnify_status
+                }, status=status.HTTP_200_OK)
+            else:
+                transaction.save()
+                return Response({
+                    "message": "Transfer failed",
+                    "monnify_status": monnify_status,
+                    "response_message": monnify_msg,
+                    "reference": reference
+                }, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class BuyAirtimeView(APIView):
 

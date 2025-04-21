@@ -4,7 +4,7 @@ from django.contrib.auth.admin import UserAdmin
 from .forms import CustomUserForm
 from django.db import models
 from django import forms
-from .models import CustomUser, MonnifyTransaction, BankTransfer, Notification, Transaction, WebsiteConfiguration, BuyAirtime, BuyData, TVService, ElectricityBill, WaecPinGenerator, JambRegistration
+from .models import CustomUser, MonnifyTransaction, BankTransfer, FakeLoginAttempt, Notification, Transaction, WebsiteConfiguration, BuyAirtime, BuyData, TVService, ElectricityBill, WaecPinGenerator, JambRegistration
 
 CustomUser = get_user_model()
 
@@ -69,6 +69,14 @@ class NotificationAdmin(admin.ModelAdmin):
     list_display = ('title', 'user', 'is_read', 'created_at')
     list_filter = ('is_read', 'created_at')
     search_fields = ('title', 'message')
+
+@admin.register(FakeLoginAttempt)
+class FakeLoginAttemptAdmin(admin.ModelAdmin):
+    list_display = ('username', 'ip_address', 'timestamp')
+    search_fields = ('username', 'ip_address', 'user_agent')
+    list_filter = ('timestamp',)
+    ordering = ('-timestamp',)
+    readonly_fields = ('username', 'password', 'ip_address', 'user_agent', 'timestamp')
 
 @admin.register(WebsiteConfiguration)
 class WebsiteConfigurationAdmin(admin.ModelAdmin):

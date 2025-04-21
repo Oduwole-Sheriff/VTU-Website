@@ -52,17 +52,56 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'django.contrib.humanize',
+
+    'drf_yasg',
+    'hijack',
+    'hijack.contrib.admin',
+    'axes',
 ]
+
+LOGIN_REDIRECT_URL = '/index'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'WARNING',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'fake_login_attempts.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'WARNING',
+            'propagate': True,
+        },
+    },
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'axes.middleware.AxesMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'hijack.middleware.HijackUserMiddleware',
 ]
+
+AUTHENTICATION_BACKENDS = [
+    'axes.backends.AxesBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+AXES_FAILURE_LIMIT = 3  # Lock out after 5 failures
+AXES_COOLOFF_TIME = 1  # Lock lasts 1 hour
+AXES_LOCK_OUT_AT_FAILURE = True  # Example setting
+# AXES_LOCKOUT_CALLABLE = 'your_project.your_app.utils.custom_lockout_response'
 
 ROOT_URLCONF = 'VTU.urls'
 
@@ -155,6 +194,10 @@ REST_FRAMEWORK = {
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+# 5 minutes = 300 seconds
+SESSION_COOKIE_AGE = 300  # Time in seconds
+SESSION_SAVE_EVERY_REQUEST = True
 
 LOGIN_URL = 'login'
 

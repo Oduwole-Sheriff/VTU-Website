@@ -426,6 +426,27 @@
             document.getElementById('logout-form').submit(); // Submit the logout form
         });
 
+        let idleTime = 0;
+
+        // Increase the idle time counter every minute.
+        let idleInterval = setInterval(timerIncrement, 60000); // 1 minute
+
+        function timerIncrement() {
+            idleTime += 1;
+            if (idleTime >= 5) {  // 5 minutes
+                window.location.href = "{% url 'logout' %}";
+            }
+        }
+
+        // Reset the idle timer on any user activity
+        document.onmousemove = resetTimer;
+        document.onkeypress = resetTimer;
+        document.onclick = resetTimer;
+        document.onscroll = resetTimer;
+
+        function resetTimer() {
+            idleTime = 0;
+        }
 
         $(document).ready(function() {
 

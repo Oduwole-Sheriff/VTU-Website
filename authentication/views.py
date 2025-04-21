@@ -5,7 +5,13 @@ from .forms import UserRegisterForm, UserUpdateForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .models import Profile
-from Dashboard.models import CustomUser
+from Dashboard.models import CustomUser, FakeLoginAttempt
+
+from django.core.mail import send_mail
+import logging
+from django.http import HttpResponse
+from django.utils import timezone
+from datetime import timedelta
 
 # Create your views here.
 
@@ -51,6 +57,56 @@ def register(request):
         'referral_code': referral_code  # Pass to the template
     })
 
+logger = logging.getLogger(__name__)
+
+MAX_ATTEMPTS = 2
+LOCKOUT_TIME_MINUTES = 15  # Optional: you can make it reset after a while
+
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        return x_forwarded_for.split(',')[0]
+    return request.META.get('REMOTE_ADDR')
+
+def fake_login(request):
+    ip = get_client_ip(request)
+    recent_attempts = FakeLoginAttempt.objects.filter(
+        ip_address=ip,
+        timestamp__gte=timezone.now() - timedelta(minutes=LOCKOUT_TIME_MINUTES)
+    )
+
+    if recent_attempts.count() >= MAX_ATTEMPTS:
+        return render(request, 'fake_admin_login.html', {
+            'locked': True
+        })
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user_agent = request.META.get('HTTP_USER_AGENT', '')
+
+        # Save to DB
+        FakeLoginAttempt.objects.create(
+            username=username,
+            password=password,
+            ip_address=ip,
+            user_agent=user_agent
+        )
+
+        # Log to file
+        logger.warning(f"[FAKE ADMIN LOGIN] Username: {username} | Password: {password} | IP: {ip}")
+
+        # Send email
+        send_mail(
+            subject='🚨 Fake Admin Login Attempt',
+            message=f'Username: {username}\nPassword: {password}\nIP: {ip}\nUser Agent: {user_agent}',
+            from_email='oduwolesheriff1212@gmail.com',
+            recipient_list=['oduwolesheriff1212@gmail.com'],
+            fail_silently=True
+        )
+
+        return HttpResponse("Invalid username or password.")
+
+    return render(request, 'fake_admin_login.html')
 
 @login_required
 def profile(request):

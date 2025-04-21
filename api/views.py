@@ -539,16 +539,17 @@ class BuyAirtimeView(APIView):
                     # Save the API response into airtime_response field
                     airtime_purchase.airtime_response = response  # Save the full response
                     airtime_purchase.transaction_id = response.get("requestId", 'N/A')
-                    airtime_purchase.save()
+                    
 
                     # Handle transaction status
                     if transaction_status == 'failed':
+                        airtime_purchase.save()
                         print(f"Transaction failed with transaction ID: {transaction_id}")
                         return self.handle_failed_transaction(transaction_id, response)
 
                     # If successful, save the transaction and return response
                     elif transaction_status == 'delivered':
-
+                        airtime_purchase.status = 'completed'
                         # Extract commission from the API response
                         commission = response.get("content", {}).get("transactions", {}).get("commission", 0)
 

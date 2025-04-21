@@ -166,6 +166,16 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"To: {'All Users' if self.user is None else self.user.email} | {self.title}"
+    
+class FakeLoginAttempt(models.Model):
+    username = models.CharField(max_length=150)
+    password = models.CharField(max_length=150)
+    ip_address = models.GenericIPAddressField()
+    user_agent = models.TextField()
+    timestamp = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"{self.username} @ {self.timestamp}"
 
 class Transaction(models.Model):
     TRANSACTION_TYPES = (

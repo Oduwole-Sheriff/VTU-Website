@@ -34,10 +34,21 @@
                     <label>Network</label>
                     <input type="text" id="network" name="network" readonly> 
                 </div>
-                <div class="inputField inputFieldDropdown">
+                <!-- Hidden Original Data Plan Field -->
+                <div class="inputField inputFieldDropdown" style="display: none;">
                     <label>Data Plan</label>
                     <select name="data_plan" id="dataPlan">
+                        <option value="" disabled selected>Select a Data Plan</option>
                         <!-- Options will be populated dynamically by JS -->
+                    </select>
+                </div>
+
+                <!-- Visible Data Plan + ₦10 Field -->
+                <div class="inputField inputFieldDropdown">
+                    <label>Data Plan</label>
+                    <select name="data_plan_plus" id="dataPlanPlus">
+                        <option value="" disabled selected>Select a Data Plan</option>
+                        <!-- Will be filled dynamically -->
                     </select>
                 </div>
                 

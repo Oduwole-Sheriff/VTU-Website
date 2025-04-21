@@ -374,7 +374,7 @@ class BankTransferAPIView(APIView):
                     "reference": reference
                 }, status=status.HTTP_409_CONFLICT)
 
-            if user.balance < amount:
+            if user.bonus < amount:
                 return Response({"error": "Insufficient balance"}, status=status.HTTP_400_BAD_REQUEST)
 
             # Call Monnify API
@@ -428,7 +428,7 @@ class BankTransferAPIView(APIView):
 
                 # Deduct balance only if Monnify accepted the transfer
                 if monnify_status in ["SUCCESS", "PENDING_AUTHORIZATION"] and monnify_success:
-                    user.balance -= amount
+                    user.bonus -= amount
                     user.save()
                     transaction.save()
 
@@ -735,11 +735,13 @@ class BuyDataAPIView(APIView):
                     # Save the API response in the data_response field
                     buy_data_instance.data_response = api_response
                     buy_data_instance.transaction_id = api_response.get("requestId", 'N/A')
-                    buy_data_instance.save()
 
                     transaction.transaction_id = api_response.get("requestId", 'N/A')
 
                     if api_response.get("content", {}).get("transactions", {}).get("status") == "delivered":
+                        # Deduct balance and save the successful transaction
+                        request.user.balance -= Decimal(str(amount))
+                        request.user.save()
 
                         # Extract commission from the API response
                         commission = api_response.get("content", {}).get("transactions", {}).get("commission", 0)
@@ -747,10 +749,16 @@ class BuyDataAPIView(APIView):
                         # Ensure commission is a Decimal (convert if it's a float)
                         commission = Decimal(commission)
 
+                        # Add ₦10 extra bonus
+                        bonus_to_add = commission + Decimal('10')
+
                         # Save the commission in the user's bonus field
                         user = request.user  # Assuming the buy_data_instance has a 'user' field
-                        user.bonus += commission  # Add the commission to the current bonus
+                        user.bonus += bonus_to_add  # Add the commission to the current bonus
                         user.save()  # Save the updated bonus field
+
+                        buy_data_instance.status = 'completed'
+                        buy_data_instance.save()
 
                         # If API call is successful, mark transaction as completed
                         transaction.status = 'completed'

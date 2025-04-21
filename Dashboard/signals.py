@@ -5,6 +5,8 @@ from .models import CustomUser, Transaction
 from RestAPI.monnifyAPI import MonnifyAPI
 import requests
 import base64
+import uuid
+import datetime
 
 @receiver(post_save, sender=CustomUser)
 def create_transaction_log(sender, instance, created, **kwargs):
@@ -91,9 +93,12 @@ def create_account_details_for_new_user(sender, instance, created, **kwargs):
                 auth_token=f"Bearer {auth_token}"  # Set the Bearer token dynamically
             )
 
+            timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+            unique_id = uuid.uuid4().hex[:6]  # 6-char unique suffix
+
             # Step 4: Prepare the data for account details request
             data = {
-                "accountReference": f"user_{instance.id}_{instance.username}",  # Unique account reference
+                "accountReference": f"user_{instance.id}_{instance.username}_{timestamp}_{unique_id}",  # Unique account reference
                 "accountName": instance.username,  # Use the user's name
                 "currencyCode": "NGN",
                 "contractCode": "5347308431",

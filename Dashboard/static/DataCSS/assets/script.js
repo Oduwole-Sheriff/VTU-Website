@@ -130,12 +130,7 @@ document.querySelectorAll('.circle').forEach(circle => {
             // For other networks (MTN, Airtel), hide the Data Type field
             gloDataTypeContainer.style.display = 'none';
             nineMobileDataTypeContainer.style.display = 'none';
-            dataPlans[networkName].forEach(plan => {
-                const option = document.createElement('option');
-                option.value = plan;
-                option.textContent = plan;
-                dataPlanSelect.appendChild(option);
-            });
+            populateDualPlans(dataPlans[networkName]);
         }
 
         // Remove checkmarks, selected, and blinking states from all circles
@@ -161,12 +156,7 @@ function populateDataPlans(dataType, networkName) {
 
     // Add data plans based on the selected data type for Glo or 9mobile
     const selectedPlans = dataPlans[networkName][dataType];
-    selectedPlans.forEach(plan => {
-        const option = document.createElement('option');
-        option.value = plan;
-        option.textContent = plan;
-        dataPlanSelect.appendChild(option);
-    });
+    populateDualPlans(selectedPlans);
 }
 
 // Listen for changes to the Data Type dropdown
@@ -230,3 +220,83 @@ document.getElementById('dataPlan').addEventListener('change', function () {
 });
 
 
+
+
+
+// Extract amount from a plan string (handles different formats)
+function extractAmount(plan) {
+    const cleaned = plan.replace(/,/g, '');
+    let match = cleaned.match(/N(\d+)/) || cleaned.match(/(\d+)\s*Naira/);
+    return match ? parseInt(match[1]) : null;
+}
+
+// Replace amount in a plan string
+function replaceAmount(plan, newAmount) {
+    return plan.replace(/N(\d+)/, `N${newAmount}`).replace(/(\d+)\s*Naira/, `${newAmount} Naira`);
+}
+
+// Populate both dataPlan and dataPlanPlus with original and +₦10 versions
+function populateDualPlans(plans) {
+    const dataPlan = document.getElementById('dataPlan');
+    const dataPlanPlus = document.getElementById('dataPlanPlus');
+    dataPlan.innerHTML = '';
+    dataPlanPlus.innerHTML = '';
+
+    // Append default separately to avoid cloneNode issues
+    const defaultOption1 = document.createElement('option');
+    defaultOption1.textContent = 'Select Data Plan';
+    defaultOption1.disabled = true;
+    defaultOption1.selected = true;
+    defaultOption1.value = '';
+
+    const defaultOption2 = document.createElement('option');
+    defaultOption2.textContent = 'Select Data Plan';
+    defaultOption2.disabled = true;
+    defaultOption2.selected = true;
+    defaultOption2.value = '';
+
+    dataPlan.appendChild(defaultOption1);
+    dataPlanPlus.appendChild(defaultOption2);
+
+
+    plans.forEach(plan => {
+        const amount = extractAmount(plan);
+        if (!amount) return;
+
+        // Original
+        const option = document.createElement('option');
+        option.value = plan;
+        option.textContent = plan;
+        dataPlan.appendChild(option);
+
+        // +₦10 version
+        const newPlan = replaceAmount(plan, amount + 10);
+        const optionPlus = document.createElement('option');
+        optionPlus.value = newPlan;
+        optionPlus.textContent = newPlan;
+        dataPlanPlus.appendChild(optionPlus);
+    });
+
+    // Synchronize selections
+    dataPlan.addEventListener('change', function () {
+        const selected = this.selectedIndex;
+        dataPlanPlus.selectedIndex = selected;
+        updateAmountFromPlan(this.value);
+    });
+
+    dataPlanPlus.addEventListener('change', function () {
+        const selected = this.selectedIndex;
+        dataPlan.selectedIndex = selected;
+        updateAmountFromPlan(this.value);
+    });
+}
+
+// Update amount field when plan is selected
+function updateAmountFromPlan(planText) {
+    const amount = extractAmount(planText);
+    const amountField = document.getElementById('amountField');
+    if (amount) {
+        amountField.value = `N${amount}`;
+        amountField.disabled = true;
+    }
+}

@@ -91,7 +91,7 @@ class MonnifyBankTransferAPI:
             "reference": reference,  # Unique reference for the transaction
             "narration": "Testing Reserved Account Credit",  # Description of the payment
             "destinationBankCode": "232",  # Bank code, for example, GTBank is '057'
-            "destinationAccountNumber": "2245297259",  # Example account number
+            "destinationAccountNumber": "2245781956",  # Example account number
             "currency": "NGN",  # Currency
             "sourceAccountNumber": "4877178978",  # Your source account number (ensure it's valid)
             "contractCode": "5347308431",  # Example contract code
@@ -131,6 +131,6 @@ if __name__ == "__main__":
 
     response = api.send_to_reserved_account(
         amount=1000,
-        reservation_reference="73BA6JCHCVQ7AJQ00504",  # Example reservation reference
+        reservation_reference="73BA6JCHCVQ7AJQ00504122",  # Example reservation reference
         reference=f"payment-to-reserved-account-{uuid.uuid4()}"
     )

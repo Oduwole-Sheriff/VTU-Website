@@ -86,11 +86,32 @@ def monnify_webhook(request):
         user.save()
         print(f"✅ Credited ₦{amount_paid:,.2f} to {user.username} (new balance: ₦{user.balance:,.2f})")
 
+        # Handle first deposit reward (also deducts ₦50 and processes referral bonuses)
+        from .utils import handle_first_deposit_reward
+        handle_first_deposit_reward(user)
+
+        # For subsequent deposits, deduct ₦35 Monnify fee
+        if user.first_deposit_reward_given:
+            if user.balance >= Decimal('35.00'):
+                user.balance -= Decimal('35.00')
+                user.save()
+                print(f"💸 Deducted ₦35 Monnify fee for subsequent deposit. New balance: ₦{user.balance:,.2f}")
+            else:
+                print(f"⚠️ Not enough balance to deduct ₦35 fee after subsequent deposit.")
+
         # Save transaction
         MonnifyTransaction.objects.create(
             user=user,
             amount=amount_paid,
             payment_reference=payment_reference,
+            monnify_transaction_reference=event_data.get("transactionReference"),
+            bank_code=event_data.get("paymentSourceInformation", {}).get("bankCode", ""),
+            account_number=event_data.get("paymentSourceInformation", {}).get("accountNumber", ""),
+            narration=event_data.get("narration", "User Deposit"),
+            status='successful',
+            currency=event_data.get("currency", "NGN"),
+            response_message=payload,
+            transaction_type='first_deposit' if not user.first_deposit_reward_given else 'regular',
             date=now()
         )
 
@@ -108,6 +129,7 @@ def monnify_webhook(request):
     except Exception as e:
         print("🔥 Error processing webhook:", e)
         return JsonResponse({"message": "Error processing webhook"}, status=400)
+
 
 @login_required
 def deposit_view(request):

@@ -176,3 +176,132 @@ Traceback (most recent call last):
            ^^^^^^^^^^^^^^^^^
 AttributeError: 'dict' object has no attribute 'dict'
 "POST /api/jamb-registration/ HTTP/1.1" 500 21004
+Bad Request: /api/login/
+"POST /api/login/ HTTP/1.1" 400 45
+Bad Request: /api/login/
+"POST /api/login/ HTTP/1.1" 400 45
+Bad Request: /api/login/
+"POST /api/login/ HTTP/1.1" 400 45
+Bad Request: /api/login/
+"POST /api/login/ HTTP/1.1" 400 45
+Bad Request: /api/login/
+"POST /api/login/ HTTP/1.1" 400 45
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1955
+Bad Request: /api/login/
+"POST /api/login/ HTTP/1.1" 400 45
+Bad Request: /api/login/
+"POST /api/login/ HTTP/1.1" 400 45
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1955
+Bad Request: /api/login/
+"POST /api/login/ HTTP/1.1" 400 45
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1955
+Bad Request: /api/login/
+"POST /api/login/ HTTP/1.1" 400 45
+Bad Request: /api/login/
+"POST /api/login/ HTTP/1.1" 400 45
+Bad Request: /api/login/
+"POST /api/login/ HTTP/1.1" 400 108
+Bad Request: /api/login/
+"POST /api/login/ HTTP/1.1" 400 108
+Forbidden: /api/login/
+"POST /api/login/ HTTP/1.1" 403 112
+Forbidden: /api/login/
+"POST /api/login/ HTTP/1.1" 403 112
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1955
+Forbidden: /api/login/
+"POST /api/login/ HTTP/1.1" 403 112
+Forbidden: /api/login/
+"POST /api/login/ HTTP/1.1" 403 112
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11260
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1955
+Too Many Requests: /secrete/login/
+"POST /secrete/login/?next=/secrete/Dashboard/customuser/ HTTP/1.1" 429 64
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1955
+Forbidden: /api/login/
+"POST /api/login/ HTTP/1.1" 403 112
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1955
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11260
+Bad Request: /api/registration/
+"POST /api/registration/ HTTP/1.1" 400 104
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1955
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+Bad Request: /api/bank-transfer/
+"POST /api/bank-transfer/ HTTP/1.1" 400 32
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1955
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1922
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1931
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1955
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+Internal Server Error: /api/bank-transfer/
+Traceback (most recent call last):
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\api\views.py", line 396, in post
+    total_bonus = User.objects.aggregate(Sum('bonus'))['bonus__sum'] or 0
+                                         ^^^
+NameError: name 'Sum' is not defined. Did you mean: 'sum'?
+"POST /api/bank-transfer/ HTTP/1.1" 500 105302
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+Bad Request: /api/bank-transfer/
+"POST /api/bank-transfer/ HTTP/1.1" 400 62
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1955
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1922
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1931
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1955
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889

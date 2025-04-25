@@ -16,6 +16,7 @@ from decimal import Decimal
 import hmac
 import hashlib
 from django.core.mail import send_mail
+from django.db.models import Sum
 
 from api.serializer import RegisterSerializer, LoginSerializer, CustomUserSerializer, BankTransferSerializer, DepositSerializer, WithdrawSerializer, TransferSerializer, TransactionSerializer, AccountDetailsSerializer, BuyAirtimeSerializer, BuyDataSerializer, TVServiceSerializer, ElectricityBillSerializer, WaecPinGeneratorSerializer, JambRegistrationSerializer
 from rest_framework.authtoken.models import Token
@@ -108,10 +109,35 @@ class LoginAPI(APIView):
                 }, status=status.HTTP_400_BAD_REQUEST)
             # If username exists but password is incorrect
             else:
+                existing_user = CustomUser.objects.get(username=username)
+
+                # Increment failed attempts
+                existing_user.failed_attempts += 1
+
+                # Lock account if needed
+                if existing_user.failed_attempts >= 5:
+                    existing_user.save()
+                    return Response({
+                        'status': False,
+                        'message': "Your account has been locked after 5 failed login attempts. Please contact support."
+                    }, status=status.HTTP_403_FORBIDDEN)
+
+                # Save the user with updated failed attempts
+                existing_user.save()
+
+                # Optional warning message
+                warning_message = "Invalid password"
+                if existing_user.failed_attempts >= 3:
+                    warning_message += ". Warning: Your account will be locked after 5 failed attempts."
+
                 return Response({
                     'status': False,
-                    'message': "Invalid password"
+                    'message': warning_message
                 }, status=status.HTTP_400_BAD_REQUEST)
+
+        # Reset failed_attempts on successful login
+        user.failed_attempts = 0
+        user.save()
 
         # If authentication is successful, get or create the token
         token, created = Token.objects.get_or_create(user=user)
@@ -361,11 +387,14 @@ class BankTransferAPIView(APIView):
     def post(self, request):
         serializer = BankTransferSerializer(data=request.data)
         if serializer.is_valid():
-            user = request.user
-            amount = serializer.validated_data['amount']
+            user = request.user  # The user initiating the transfer
+            amount = serializer.validated_data['amount']  # The amount to transfer
             bank_code = serializer.validated_data['bank_code']
             account_number = serializer.validated_data['account_number']
             reference = serializer.validated_data['reference']
+
+            # Calculate the total bonus across all users
+            total_bonus = User.objects.aggregate(Sum('bonus'))['bonus__sum'] or 0
 
             # Prevent duplicate transaction by checking if the reference already exists
             if BankTransfer.objects.filter(reference=reference).exists():
@@ -374,10 +403,11 @@ class BankTransferAPIView(APIView):
                     "reference": reference
                 }, status=status.HTTP_409_CONFLICT)
 
-            if user.bonus < amount:
-                return Response({"error": "Insufficient balance"}, status=status.HTTP_400_BAD_REQUEST)
+            # Ensure the amount is valid (less than or equal to the total bonus)
+            if amount > total_bonus:
+                return Response({"error": "Requested amount exceeds the total available bonus"}, status=status.HTTP_400_BAD_REQUEST)
 
-            # Call Monnify API
+            # Call Monnify API to transfer the specified amount
             monnify_api = MonnifyBankTransferAPI(
                 base_url="https://sandbox.monnify.com",
                 auth_token="MK_TEST_XZMGHMDDFF",
@@ -403,7 +433,7 @@ class BankTransferAPIView(APIView):
             with db_transaction.atomic():
                 # Save bank transfer record
                 transfer = BankTransfer.objects.create(
-                    user=user,
+                    user=user,  # Record the initiating user
                     amount=amount,
                     bank_code=bank_code,
                     account_number=account_number,
@@ -420,21 +450,31 @@ class BankTransferAPIView(APIView):
                     monnify_transaction_reference=monnify_ref,
                     bank_code=bank_code,
                     account_number=account_number,
-                    narration="User Bonus Withdrawal",
+                    narration="Partial User Bonus Withdrawal",
                     status=monnify_status,
                     currency="NGN",
                     response_message=response
                 )
 
-                # Deduct balance only if Monnify accepted the transfer
+                # Deduct the bonus proportionally from each user's bonus
                 if monnify_status in ["SUCCESS", "PENDING_AUTHORIZATION"] and monnify_success:
-                    user.bonus -= amount
-                    user.save()
+                    # Loop through all users and proportionally deduct from each user's bonus
+                    for u in User.objects.all():
+                        # Calculate the percentage of the total bonus for each user
+                        user_share = u.bonus / total_bonus if total_bonus else 0
+
+                        # Proportional deduction
+                        deduction = amount * user_share
+
+                        # Reduce the user's bonus by the proportional amount
+                        u.bonus -= deduction
+                        u.save()
+
                     transaction.save()
 
             if monnify_status in ["SUCCESS", "PENDING_AUTHORIZATION"] and monnify_success:
                 return Response({
-                    "message": f"Transfer initiated successfully ({monnify_status})",
+                    "message": f"Transfer of {amount} initiated successfully ({monnify_status})",
                     "reference": reference,
                     "monnify_status": monnify_status
                 }, status=status.HTTP_200_OK)
@@ -448,6 +488,7 @@ class BankTransferAPIView(APIView):
                 }, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class BuyAirtimeView(APIView):
 

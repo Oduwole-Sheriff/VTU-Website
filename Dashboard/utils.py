@@ -8,7 +8,7 @@ def handle_first_deposit_reward(user: CustomUser):
     if user.balance >= Decimal('50.00'):
         # Deduct ₦50 from balance to bonus
         user.balance -= Decimal('50.00')
-        user.bonus += Decimal('50.00')
+        user.bonus += Decimal('15.00')
 
         if user.referred_by:
             # Give ₦10 to the referrer

@@ -98,7 +98,7 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-AXES_FAILURE_LIMIT = 3  # Lock out after 5 failures
+AXES_FAILURE_LIMIT = 5  # Lock out after 5 failures
 AXES_COOLOFF_TIME = 1  # Lock lasts 1 hour
 AXES_LOCK_OUT_AT_FAILURE = True  # Example setting
 # AXES_LOCKOUT_CALLABLE = 'your_project.your_app.utils.custom_lockout_response'

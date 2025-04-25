@@ -25,6 +25,8 @@ class CustomUser(AbstractUser):
         related_name='referrals'
     )
 
+    failed_attempts = models.PositiveIntegerField(default=0)  
+
     def __str__(self):
         return self.username
 
@@ -122,6 +124,15 @@ class CustomUser(AbstractUser):
 
 class MonnifyTransaction(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    TRANSACTION_TYPES = (
+        ('first_deposit', 'First Deposit'),
+        ('regular', 'Regular Deposit'),
+    )
+    transaction_type = models.CharField(
+        max_length=20,
+        choices=TRANSACTION_TYPES,
+        default='regular'
+    )
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     payment_reference = models.CharField(max_length=100, unique=True)  # your reference
     monnify_transaction_reference = models.CharField(max_length=100, blank=True, null=True)  # returned by Monnify

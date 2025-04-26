@@ -305,3 +305,11 @@ Bad Request: /api/bank-transfer/
 "GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
 "GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
 "GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11260
+Bad Request: /api/tvservice/
+"POST /api/tvservice/ HTTP/1.1" 400 66
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+Bad Request: /api/bank-transfer/
+"POST /api/bank-transfer/ HTTP/1.1" 400 197

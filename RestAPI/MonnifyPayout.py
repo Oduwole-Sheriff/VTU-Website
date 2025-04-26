@@ -2,6 +2,7 @@ import requests
 import json
 from requests.auth import HTTPBasicAuth
 import uuid
+from django.conf import settings
 
 class MonnifyBankTransferAPI:
     def __init__(self, base_url, auth_token, secret_key):
@@ -116,8 +117,8 @@ class MonnifyBankTransferAPI:
 # Entry point for script testing
 if __name__ == "__main__":
     base_url = "https://sandbox.monnify.com"
-    auth_token = "MK_TEST_XZMGHMDDFF"  # Your Monnify test API key
-    secret_key = "WEDYDDCGYEX98Z7L31R1RZ4V6LK12JK9"  # Your Monnify test secret key
+    auth_token = settings.MONNIFY_CLIENT_ID  # Your Monnify test API key
+    secret_key = settings.MONNIFY_CLIENT_SECRET  # Your Monnify test secret key
 
     api = MonnifyBankTransferAPI(base_url, auth_token, secret_key)
 

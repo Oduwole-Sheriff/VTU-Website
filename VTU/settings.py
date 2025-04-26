@@ -201,18 +201,25 @@ SESSION_SAVE_EVERY_REQUEST = True
 
 LOGIN_URL = 'login'
 
-MONNIFY_BASE_URL = 'https://sandbox.monnify.com'  # Or your actual Monnify base URL
-MONNIFY_AUTH_TOKEN = 'Basic TUtfVEVTVF9YWk1HSE1EREZGOldFRFlERENHWUVYOThaN0wzMVIxUlo0VjZMSzEySks5'  
+MONNIFY_BASE_URL = os.getenv('MONNIFY_BASE_URL', 'https://sandbox.monnify.com')  # Default to sandbox URL if not found
+MONNIFY_AUTH_TOKEN = os.getenv('MONNIFY_AUTH_TOKEN')  
 
-# MONNIFY_API_KEY = 'MK_TEST_XZMGHMDDFF'
-# MONNIFY_SECRET_KEY = 'WEDYDDCGYEX98Z7L31R1RZ4V6LK12JK9'
-# # MONNIFY_CONTRACT_CODE = '5347308431'
-# MONNIFY_BASE_URL = 'https://sandbox.monnify.com/api/v1'  # Change to live for production
-# PLATFORM_BANK_ACCOUNT = {
-#     "account_number": "2417372510",
-#     "bank_code": "057",  # Example: Zenith Bank
-#     "account_name": "Oduwole Sheriff Olamilekan"
-# }
+# Signals.py 
+MONNIFY_CLIENT_ID = os.getenv("MONNIFY_CLIENT_ID")
+MONNIFY_CLIENT_SECRET = os.getenv("MONNIFY_CLIENT_SECRET")
+MONNIFY_AUTH_URL = "https://sandbox.monnify.com/api/v1/auth/login"
+MONNIFY_BASE_URL = "https://sandbox.monnify.com"
+MONNIFY_CONTRACT_CODE = os.getenv("MONNIFY_CONTRACT_CODE", "5347308431")
+MONNIFY_RESERVED_ACCOUNTS_URL = "https://sandbox.monnify.com/api/v2/bank-transfer/reserved-accounts"
+
+# APIViews
+VTPASS_AUTH_TOKEN = os.getenv("VTPASS_AUTH_TOKEN")
+VTPASS_SECRET_KEY = os.getenv("VTPASS_SECRET_KEY")
+
+# RestAPI
+VTPASS_BASE_URL = os.getenv("VTPASS_BASE_URL", "https://sandbox.vtpass.com")
+VTPASS_EMAIL = os.getenv("VTPASS_EMAIL")
+VTPASS_PASSWORD = os.getenv("VTPASS_PASSWORD")
 
 
 MIN_REFERRAL_TRANSFER_AMOUNT = 50.00  # or Decimal('50.00') if you're working with Decimals

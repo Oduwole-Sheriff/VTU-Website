@@ -4,6 +4,7 @@ from requests.auth import HTTPBasicAuth
 from datetime import datetime as Mdate
 import random
 import uuid
+from django.conf import settings
 
 # VTPassDataAPI class definition
 class VTPassDataAPI:
@@ -22,7 +23,7 @@ class VTPassDataAPI:
         print("POST URL: " + url)
         
         # Sending POST request to the API
-        response = requests.post(url, json=data, auth=HTTPBasicAuth('oduwolesheriff001@gmail.com', 'Olamilekan1212'))
+        response = requests.post(url, json=data, auth=HTTPBasicAuth(settings.VTPASS_EMAIL, settings.VTPASS_PASSWORD))
         print("Actual status code:", response.status_code)
 
         try:
@@ -69,8 +70,8 @@ def create_random_id():
 if __name__ == "__main__":
     # URL and authentication details
     base_url = "https://sandbox.vtpass.com"
-    auth_token = "Token be76014119dd44b12180ab93a92d63a2"
-    secret_key = "SK_873dc5215f9063f6539ec2249c8268bb788b3150386"
+    auth_token = settings.VTPASS_AUTH_TOKEN
+    secret_key = settings.VTPASS_SECRET_KEY
 
     # Instantiate VTPassDataAPI object
     api = VTPassDataAPI(base_url, auth_token, secret_key)

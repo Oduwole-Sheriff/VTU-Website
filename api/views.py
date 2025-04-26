@@ -17,6 +17,7 @@ import hmac
 import hashlib
 from django.core.mail import send_mail
 from django.db.models import Sum
+from django.conf import settings
 
 from api.serializer import RegisterSerializer, LoginSerializer, CustomUserSerializer, BankTransferSerializer, DepositSerializer, WithdrawSerializer, TransferSerializer, TransactionSerializer, AccountDetailsSerializer, BuyAirtimeSerializer, BuyDataSerializer, TVServiceSerializer, ElectricityBillSerializer, WaecPinGeneratorSerializer, JambRegistrationSerializer
 from rest_framework.authtoken.models import Token
@@ -327,7 +328,7 @@ class TransactionListView(APIView):
 
 class MonnifyWebhookView(APIView):
     def post(self, request):
-        secret_key = "WEDYDDCGYEX98Z7L31R1RZ4V6LK12JK9"  # Replace with your actual Monnify secret key or pull from settings
+        secret_key = settings.MONNIFY_SECRET_KEY  # Replace with your actual Monnify secret key or pull from settings
         signature_from_header = request.headers.get('MONNIFY_SIGNATURE')
         raw_body = request.body  # Raw request body bytes
 
@@ -410,8 +411,8 @@ class BankTransferAPIView(APIView):
             # Call Monnify API to transfer the specified amount
             monnify_api = MonnifyBankTransferAPI(
                 base_url="https://sandbox.monnify.com",
-                auth_token="MK_TEST_XZMGHMDDFF",
-                secret_key="WEDYDDCGYEX98Z7L31R1RZ4V6LK12JK9"
+                auth_token=settings.MONNIFY_CLIENT_ID,
+                secret_key=settings.MONNIFY_CLIENT_SECRET
             )
 
             response = monnify_api.send_bonus_to_platform(
@@ -547,8 +548,8 @@ class BuyAirtimeView(APIView):
                 # Call the VTPassAPI to process the airtime purchase
                 api = VTPassAPI(
                     base_url="https://sandbox.vtpass.com",
-                    auth_token="Token be76014119dd44b12180ab93a92d63a2", 
-                    secret_key="SK_873dc5215f9063f6539ec2249c8268bb788b3150386"
+                    auth_token = settings.VTPASS_AUTH_TOKEN,
+                    secret_key = settings.VTPASS_SECRET_KEY
                 )
 
                 # Prepare data for VTPassAPI
@@ -850,8 +851,8 @@ class BuyDataAPIView(APIView):
     def call_external_api(self, buy_data_instance, network, data_plan):
         """ Helper method to call the external API for purchasing data and fetching service variations. """
         base_url = "https://sandbox.vtpass.com"
-        auth_token = "Token be76014119dd44b12180ab93a92d63a2"
-        secret_key = "SK_873dc5215f9063f6539ec2249c8268bb788b3150386"
+        auth_token = settings.VTPASS_AUTH_TOKEN,
+        secret_key = settings.VTPASS_SECRET_KEY
         api = VTPassDataAPI(base_url, auth_token, secret_key)
 
         # Generate unique request ID
@@ -984,8 +985,8 @@ class TVServiceAPIView(APIView):
             # Instantiate API class
             api = VTPassTVSubscription(
                 base_url="https://sandbox.vtpass.com", 
-                auth_token="Token be76014119dd44b12180ab93a92d63a2",  # Replace with your actual token
-                secret_key="SK_873dc5215f9063f6539ec2249c8268bb788b3150386"  # Replace with your actual secret key
+                auth_token = settings.VTPASS_AUTH_TOKEN,
+                secret_key = settings.VTPASS_SECRET_KEY  # Replace with your actual secret key
             )
 
             # Fetch service variations
@@ -1154,8 +1155,8 @@ class TVServiceAPIView(APIView):
                 # Instantiate VTPassTVSubscription API class
                 api = VTPassTVSubscription(
                     base_url="https://sandbox.vtpass.com", 
-                    auth_token="Token be76014119dd44b12180ab93a92d63a2",  # Replace with your actual token
-                    secret_key="SK_873dc5215f9063f6539ec2249c8268bb788b3150386"  # Replace with your actual secret key
+                    auth_token = settings.VTPASS_AUTH_TOKEN,
+                    secret_key = settings.VTPASS_SECRET_KEY  # Replace with your actual secret key
                 )
 
                 # Log the final service_data for verification
@@ -1292,8 +1293,8 @@ class ElectricityBillCreateView(APIView):
 
                     api = VTPassElectricity(
                         base_url="https://sandbox.vtpass.com",
-                        auth_token="Token be76014119dd44b12180ab93a92d63a2",  # Replace with your actual token
-                        secret_key="SK_873dc5215f9063f6539ec2249c8268bb788b3150386"  # Replace with your actual secret key
+                        auth_token = settings.VTPASS_AUTH_TOKEN,
+                        secret_key = settings.VTPASS_SECRET_KEY # Replace with your actual secret key
                     )
 
                     # Convert Decimal to float or string for JSON serialization
@@ -1389,8 +1390,8 @@ class ElectricityBillCreateView(APIView):
             # Call the VTPass API to verify the meter number
             api = VTPassElectricity(
                 base_url="https://sandbox.vtpass.com",
-                auth_token="Token be76014119dd44b12180ab93a92d63a2",  # Replace with your actual token
-                secret_key="SK_873dc5215f9063f6539ec2249c8268bb788b3150386"  # Replace with your actual secret key
+                auth_token = settings.VTPASS_AUTH_TOKEN,
+                secret_key = settings.VTPASS_SECRET_KEY  # Replace with your actual secret key
             )
             verify_result = api.verify_meter_number(data)
 
@@ -1500,8 +1501,8 @@ class WaecPinGeneratorCreateView(APIView):
                     # Call he Waec_Registration_pin API
                     api = VTPassEducationAPI(
                         base_url="https://sandbox.vtpass.com",
-                        auth_token="Token be76014119dd44b12180ab93a92d63a2",  # Replace with your actual token
-                        secret_key="SK_873dc5215f9063f6539ec2249c8268bb788b3150386"  # Replace with your actual secret key
+                        auth_token = settings.VTPASS_AUTH_TOKEN,
+                        secret_key = settings.VTPASS_SECRET_KEY  # Replace with your actual secret key
                     )
                     Waec_Registration_pin = api.Waec_Registration_pin(data)
 
@@ -1590,8 +1591,8 @@ class WaecPinGeneratorCreateView(APIView):
                 # Call the VTPass API to verify the exam type
                 api = VTPassEducationAPI(
                     base_url="https://sandbox.vtpass.com",
-                    auth_token="Token be76014119dd44b12180ab93a92d63a2",  # Replace with your actual token
-                    secret_key="SK_873dc5215f9063f6539ec2249c8268bb788b3150386"  # Replace with your actual secret key
+                    auth_token = settings.VTPASS_AUTH_TOKEN,
+                    secret_key = settings.VTPASS_SECRET_KEY  # Replace with your actual secret key
                 )
                 get_variation_code = api.fetch_service_variations(service_name)
 
@@ -1724,7 +1725,7 @@ class JambRegistrationViewSet(APIView):
                     request.user = jamb_registration.process_purchase()
                     request.user.save()
 
-                    print(f"welcooooooooooooom : {jamb_profile_id}")
+                    print(f"Jamb Profile Id : {jamb_profile_id}")
 
                     remaining_balance = request.user.balance
                     print(f"Balance after deduction: {remaining_balance}")
@@ -1742,8 +1743,8 @@ class JambRegistrationViewSet(APIView):
                     # Call he Jamb_Vending_Pin API
                     api = VTPassEducationAPI(
                         base_url="https://sandbox.vtpass.com",
-                        auth_token="Token be76014119dd44b12180ab93a92d63a2",  # Replace with your actual token
-                        secret_key="SK_873dc5215f9063f6539ec2249c8268bb788b3150386"  # Replace with your actual secret key
+                        auth_token = settings.VTPASS_AUTH_TOKEN,
+                        secret_key = settings.VTPASS_SECRET_KEY  # Replace with your actual secret key
                     )
                     Jamb_Vending_Pin = api.Jamb_Vending_Pin(data)
 
@@ -1840,8 +1841,8 @@ class JambRegistrationViewSet(APIView):
                 # Call the VTPass API to verify the exam type
                 api = VTPassEducationAPI(
                     base_url="https://sandbox.vtpass.com",
-                    auth_token="Token be76014119dd44b12180ab93a92d63a2",  # Replace with your actual token
-                    secret_key="SK_873dc5215f9063f6539ec2249c8268bb788b3150386"  # Replace with your actual secret key
+                    auth_token = settings.VTPASS_AUTH_TOKEN,
+                    secret_key = settings.VTPASS_SECRET_KEY # Replace with your actual secret key
                 )
                 get_variation_code = api.fetch_service_variations(service_name)
 
@@ -1894,8 +1895,8 @@ class JambRegistrationViewSet(APIView):
                 # Call the VTPass API to verify the exam type
                 api = VTPassEducationAPI(
                     base_url="https://sandbox.vtpass.com",
-                    auth_token="Token be76014119dd44b12180ab93a92d63a2",  # Replace with your actual token
-                    secret_key="SK_873dc5215f9063f6539ec2249c8268bb788b3150386"  # Replace with your actual secret key
+                    auth_token = settings.VTPASS_AUTH_TOKEN,
+                    secret_key = settings.VTPASS_SECRET_KEY  # Replace with your actual secret key
                 )
                 verify_jamb_profile = api.Verify_jamb_profile(verify_profile)
 

@@ -3,12 +3,12 @@
 # from Dashboard.models import CustomUser
 # import logging
 
-
+import os
 import base64
 import json
 
 # Your input string
-input_string = "MK_TEST_XZMGHMDDFF:WEDYDDCGYEX98Z7L31R1RZ4V6LK12JK9"
+input_string = os.getenv("MONNIFY_AUTH_TOKEN2", "")
 
 # Convert string to bytes
 input_bytes = input_string.encode('utf-8')

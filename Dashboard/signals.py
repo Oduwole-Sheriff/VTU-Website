@@ -3,6 +3,7 @@ from django.dispatch import receiver
 from django.db import transaction as db_transaction
 from .models import CustomUser, Transaction
 from RestAPI.monnifyAPI import MonnifyAPI
+from django.conf import settings
 import requests
 import base64
 import uuid
@@ -67,7 +68,7 @@ def create_account_details_for_new_user(sender, instance, created, **kwargs):
         encoded_credentials = base64.b64encode(credentials.encode('utf-8')).decode('utf-8')
 
         # Step 2: Make the POST request to get the access token with the Authorization header
-        auth_url = "https://sandbox.monnify.com/api/v1/auth/login"  # Authentication endpoint
+        auth_url = settings.MONNIFY_AUTH_URL  # Authentication endpoint
 
         headers = {
             'Authorization': f'Basic {encoded_credentials}',  # Basic authentication header
@@ -98,19 +99,19 @@ def create_account_details_for_new_user(sender, instance, created, **kwargs):
 
             # Step 4: Prepare the data for account details request
             data = {
-                "accountReference": f"user_{instance.id}_{instance.username}_{timestamp}_{unique_id}",  # Unique account reference
-                "accountName": instance.username,  # Use the user's name
+                "accountReference": f"user_{instance.id}_{instance.username}_{timestamp}_{unique_id}",
+                "accountName": instance.username,
                 "currencyCode": "NGN",
-                "contractCode": "5347308431",
-                "customerEmail": instance.email,  # Use the user's email
-                "customerName": instance.username,  # Use the user's name
-                "bvn": instance.bvn, # Use the user's BVN
-                "nin": instance.nin,  # Use the user's NIN
+                "contractCode": settings.MONNIFY_CONTRACT_CODE,
+                "customerEmail": instance.email,
+                "customerName": instance.username,
+                "bvn": instance.bvn,
+                "nin": instance.nin,
                 "getAllAvailableBanks": True
             }
 
             # Step 5: Make the API call to get account details
-            reserved_accounts_url = "https://sandbox.monnify.com/api/v2/bank-transfer/reserved-accounts"
+            reserved_accounts_url = settings.MONNIFY_RESERVED_ACCOUNTS_URL
             headers = {
                 'Authorization': f'Bearer {auth_token}',  # Bearer token added here
                 'Content-Type': 'application/json'  # Set Content-Type to application/json

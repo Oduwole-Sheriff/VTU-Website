@@ -2,94 +2,58 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
-  <div class="create-task">
-    <div class="create-section">
-        <div class="media">
-            <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
-            <div class="media-body">
-            <h2 class="account-heading">{{ user.username }}</h2>
-            <p class="text-secondary">{{ user.email }}</p>
-            </div>
-        </div>
-        <form id="updateForm" action="" method="POST" enctype="multipart/form-data" data-parsley-validate>
-            {% csrf_token %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Profile Info</legend>
-                {{ u_form.username.errors }}
-                <div class="form-group">
-                    <label for="{{ u_form.username.id_for_label }}">Username:</label>
-                    <input type="{{ u_form.username.field.widget.input_type }}" name="{{ u_form.username.html_name }}" id="{{ u_form.username.id_for_label }}" class="form-control" maxlength="7" value="{{ user.username }}" required data-parsley-trigger="change">
-                </div><br>
-                {{ u_form.email.errors }}
-                <div class="form-group">
-                    <label for="{{ u_form.email.id_for_label }}">Email:</label>
-                    <input type="{{ u_form.email.field.widget.input_type }}" name="{{ u_form.email.html_name }}" id="{{ u_form.email.id_for_label }}" class="form-control" maxlength="254" value="{{ user.email }}" required data-parsley-type="email" data-parsley-trigger="change">
-                </div><br>
-                {{ p_form.image.errors }}
-                <div class="form-group">
-                    <input type="file" name="{{ p_form.image.name }}" accept="image/*" id="{{ p_form.image.id_for_label }}" class="form-control-file mt-2" data-parsley-trigger="change">
-                </div>
-            </fieldset>
-            <div class="form-group">
-                <button class="btn btn-outline-info mt-4 updateButton" type="submit">Update</button>
-            </div>
-        </form>
-    </div>
-  </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/parsleyjs@2.9.2/dist/parsley.min.js"></script>
-<script>
-$(document).ready(function() {
-    function getAuthToken() {
-        return localStorage.getItem('token');
-    }
-
-    $('.updateButton').click(function() {
-        var newUsername = $('#id_username').val();
-        var newEmail = $('#id_email').val();
-        
-        var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
-        
-        var formData = {
-            'id': '{{ user.profile.id }}',
-            'username': newUsername,
-            'email': newEmail,
-        };
-
-        const token = getAuthToken();
-        
-        if (!token) {
-            console.log('Token not available');
-            return;
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7fafc; 
         }
-        
-        // Perform AJAX request
-        $.ajax({
-            url: '/api/profile/',
-            type: 'PUT',
-            data: formData,
-            headers: {
-                'X-CSRFToken': csrfToken,
-                'Authorization': `Token ${getAuthToken()}`
-            },
-            success: function(response) {
-                // Update UI elements
-                $('.account-heading').text(newUsername);
-                $('.text-secondary').text(newEmail);
+    </style>
 
-                // Update form fields with new values
-                $('#id_username').val(newUsername);
-                $('#id_email').val(newEmail);
-            },
-            error: function(xhr, status, error) {
-                console.error('AJAX Error: ', status, error);
-            }
-        });
-    });
-});
+    <main class="w-full md:w-3/4 lg:w-4/5 p-6 md:p-8 lg:p-10">
 
-</script>
+        <section id="profile" class="settings-section active">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6">Profile Information</h2>
+            <form class="space-y-6" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                    <input type="{{ u_form.username.field.widget.input_type }}" name="{{ u_form.username.html_name }}" id="{{ u_form.username.id_for_label }}" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 cursor-not-allowed sm:text-sm" value="{{ user.username }}" readonly>
+                     <p class="text-xs text-gray-500 mt-1">Username cannot be changed.</p>
+                </div>
+
+                 <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                    <div class="flex items-center space-x-2">
+                        <input type="{{ u_form.email.field.widget.input_type }}" name="{{ u_form.email.html_name }}" id="{{ u_form.email.id_for_label }}" class="flex-grow px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 sm:text-sm" maxlength="254" value="{{ user.email }}" required data-parsley-type="email" readonly>
+                        <button type="button" class="px-3 py-2 text-sm font-medium text-blue-600 hover:text-blue-800">Change</button>
+                    </div>
+                    <p class="text-xs text-green-600 mt-1">Verified</p>
+                </div>
+
+                <div>
+                    <label for="phone_number" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                    <input type="{{ p_form.phone_number.field.widget.input_type }}" 
+                    name="{{ p_form.phone_number.html_name }}" 
+                    id="{{ p_form.phone_number.id_for_label }}" 
+                    class="flex-grow px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 sm:text-sm" 
+                    maxlength="11" 
+                    required 
+                    value="{{ user.profile.phone_number }}"
+                    readonly>  
+                    <p class="text-xs text-green-600 mt-1">Verified</p>           
+                </div>
+
+                <div class="flex justify-end space-x-3 pt-4">
+                    <a href="{% url 'index' %}" class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700">Go Back Home</a>
+                </div>
+            </form>
+        </section>
+    </main>
+
+<script src="https://cdn.tailwindcss.com"></script>
 
 {% endblock content %}

@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Wallet Funding</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'assets/css/fund_wallet_form.css' %}">
+</head>
+<body>
+    <div class="form-container-card">
+        <div class="form-header">
+            <h2>Secure Wallet Transfer</h2>
+            <p>Please provide your details below</p>
+        </div>
+
+        <form action="#" method="post" class="funding-form">
+            {% csrf_token %}
+            <div class="input-group floating-label">
+                <input type="text" id="full-name" name="fullName" placeholder=" " required>
+                <label for="full-name">Full Name (as on ID)</label>
+            </div>
+
+            <div class="input-group floating-label">
+                <input type="date" id="dob" name="dateOfBirth" placeholder=" " required>
+                <label for="dob">Date of Birth</label>
+            </div>
+
+            <div class="input-group">
+                <label for="id_document_type" class="select-label">Select Identity Type:</label>
+                <select name="document_type" id="id_document_type" required>
+                    <option value="" disabled selected>-- Select Type --</option> <option value="nin">National Identification Number (NIN)</option>
+                    <option value="bvn">Bank Verification Number (BVN)</option>
+                </select>
+            </div>
+
+            <div id="nin_field" class="input-group floating-label conditional-field" style="display: none;">
+                <input type="text" name="nin" maxlength="11" id="id_nin" placeholder=" ">
+                <label for="id_nin">Enter your NIN</label>
+            </div>
+
+            <div id="bvn_field" class="input-group floating-label conditional-field" style="display: none;">
+                 <input type="text" name="bvn" maxlength="11" id="id_bvn" placeholder=" ">
+                 <label for="id_bvn">Enter your BVN</label>
+            </div>
+
+            <div class="input-group">
+                <button type="submit" class="submit-button">Fund Wallet Now</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const documentTypeSelect = document.getElementById('id_document_type');
+            const ninField = document.getElementById('nin_field');
+            const bvnField = document.getElementById('bvn_field');
+            const ninInput = document.getElementById('id_nin');
+            const bvnInput = document.getElementById('id_bvn');
+
+            // Function to show/hide fields based on selection
+            function toggleIdentityFields() {
+                const selectedType = documentTypeSelect.value;
+
+                if (selectedType === 'nin') {
+                    ninField.style.display = 'block';
+                    ninInput.required = true; // Make NIN required
+                    bvnField.style.display = 'none';
+                    bvnInput.required = false; // Make BVN not required
+                    bvnInput.value = ''; // Clear BVN if switching
+                } else if (selectedType === 'bvn') {
+                    ninField.style.display = 'none';
+                    ninInput.required = false; // Make NIN not required
+                    ninInput.value = ''; // Clear NIN if switching
+                    bvnField.style.display = 'block';
+                    bvnInput.required = true; // Make BVN required
+                } else {
+                    // Handle case where nothing or placeholder is selected
+                    ninField.style.display = 'none';
+                    ninInput.required = false;
+                    bvnField.style.display = 'none';
+                    bvnInput.required = false;
+                }
+            }
+
+            // Initial check in case the form is pre-filled or reloaded
+            toggleIdentityFields();
+
+            // Add event listener to the select dropdown
+            documentTypeSelect.addEventListener('change', toggleIdentityFields);
+        });
+    </script>
+</body>
+</html>

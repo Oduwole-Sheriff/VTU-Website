@@ -145,3 +145,106 @@
     font-size: 14px;
  }
  
+
+ /* GRID CARDS */
+
+ :root {
+    --bg-color: #f8f9fa; /* Light grey background */
+    --card-bg: #ffffff; /* White card background */
+    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 10px 15px rgba(0, 0, 0, 0.1); /* Multi-level shadow */
+    --card-hover-shadow: 0 8px 12px rgba(0, 0, 0, 0.1), 0 18px 25px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
+    --text-color: #343a40; /* Dark grey text */
+    --accent-color: #007bff; /* A blue accent */
+    --border-color: #e9ecef; /* Light border color */
+    --card-border-radius: 12px;
+    --grid-gap: 20px;
+}
+
+.premium-service-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive grid */
+    gap: var(--grid-gap);
+    width: 100%;
+    margin: 25px 0px 50px 0px !important;
+}
+
+.premium-service-card {
+    display: flex; /* Use flexbox for content alignment */
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none; /* Remove underline from link */
+    color: inherit; /* Inherit text color */
+    background: rgb(16, 32, 184);
+
+    /* background-color: var(--card-bg); */
+    /* border: 1px solid var(--border-color); */
+    border-radius: var(--card-border-radius);
+    padding: 25px; /* Padding inside the card */
+    box-shadow: var(--card-shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+}
+
+.premium-service-card:hover {
+    transform: translateY(-5px); /* Lift effect */
+    box-shadow: var(--card-hover-shadow);
+    border-color: var(--accent-color); /* Highlight border on hover */
+}
+
+.premium-service-card:active {
+    transform: translateY(-2px) scale(0.99); /* Subtle press */
+    box-shadow: var(--card-shadow); /* Revert shadow slightly */
+    transition: transform 0.1s ease;
+}
+
+.card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%; /* Ensure content takes full width */
+}
+
+.premium-service-icon {
+    width: 55px; /* Icon size */
+    height: 55px;
+    object-fit: contain;
+    margin-bottom: 15px; /* Space below icon */
+    transition: transform 0.3s ease;
+}
+
+.premium-service-card:hover .premium-service-icon {
+    transform: scale(1.05); /* Slightly enlarge icon on hover */
+}
+
+
+.premium-service-label {
+    font-size: 1.7rem !important;
+    color: #fff;
+    margin: 0;
+    font-weight: 600; /* Semibold */
+    text-align: center;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 576px) {
+    .premium-service-container {
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); /* Smaller cards on small screens */
+        gap: 15px;
+    }
+
+    .premium-service-card {
+        padding: 20px;
+    }
+
+    .premium-service-icon {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 10px;
+    }
+
+    .premium-service-label {
+        font-size: 1.5rem !important;
+    }
+}

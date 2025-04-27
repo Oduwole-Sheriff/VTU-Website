@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -70,14 +71,14 @@
                                             <img src="{% static 'assets/images/avatar/profile-pic.png' %}" alt="user">
                                         </div>
                                         <div class="user_naim-information">
-                                            <h3 class="title">ODUWOLE SHERIFF</h3>
-                                            <span class="desig">CEO, BigSheriffData</span>
+                                            <h3 class="title">{{ request.user.username }}</h3>
+                                            <span class="desig">Balance: ₦{{ request.user.balance|intcomma }}</span>
                                         </div>
                                     </div>
                                     <div class="user_body_content">
                                         <ul class="items">
                                             <li class="single_items">
-                                                <a class="hader_popup_link" href="profile.html">
+                                                <a class="hader_popup_link" href="{% url 'profile' %}">
                                                     <i class="fa-light fa-user"></i>
                                                     Profile
                                                 </a>
@@ -137,7 +138,7 @@
                                 </div>
                             </div>
     
-                            {% if request.session.form_submitted %}
+                            {% if has_filled_fund_form %}
                                 <!-- Display the Account Details or Error Message -->
                                 <div id="account-details-container">
                                     {% if account_details %}
@@ -197,48 +198,6 @@
                                             {{ account_message }}
                                         </div>
                                     {% endif %}
-                                </div>
-                            {% else %}
-                                <!-- Show the Form to Submit Account Details -->
-                                <div class="nin-form-container mt-3" id="account-form-container">
-                                    <form id="account-details-form" method="POST">
-                                        {% csrf_token %}
-                                        <!-- Full Name Field -->
-                                        <div class="form-group">
-                                            <label for="id_full_name">Full Name: (as registered on your id card)</label>
-                                            <input type="text" name="full_name" required id="id_full_name" class="bg bg-light">
-                                        </div>
-
-                                        <!-- Date of Birth Field -->
-                                        <div class="form-group">
-                                            <label for="id_dob">Date of Birth:</label>
-                                            <input type="date" name="dob" required id="id_dob" class="bg bg-light">
-                                        </div>
-
-                                        <!-- Document Type Selection (NIN or BVN) -->
-                                        <div class="form-group">
-                                            <label for="id_document_type">Select Identity Type:</label>
-                                            <select name="document_type" id="id_document_type" class="form-control" required>
-                                                <option value="nin">National Identification Number (NIN)</option>
-                                                <option value="bvn">Bank Verification Number (BVN)</option>
-                                            </select>
-                                        </div>
-
-                                        <!-- NIN Field -->
-                                        <div id="nin_field" class="form-group">
-                                            <label for="id_nin">Enter your NIN:</label>
-                                            <input type="text" name="nin" maxlength="11" id="id_nin" class="bg bg-light">
-                                        </div>
-
-                                        <!-- BVN Field -->
-                                        <div id="bvn_field" class="form-group" style="display:none;">
-                                            <label for="id_bvn">Enter your BVN:</label>
-                                            <input type="text" name="bvn" maxlength="11" id="id_bvn" class="bg bg-light">
-                                        </div>
-
-                                        <!-- Submit Button -->
-                                        <button type="submit" class="btn btn-primary btn-lg">Submit</button>
-                                    </form>
                                 </div>
                             {% endif %}
                         </div>

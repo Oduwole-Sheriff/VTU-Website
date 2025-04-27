@@ -17881,6 +17881,9 @@ body.modal-open {
   .modal-dialog {
     max-width: 100%;
   }
+  .modal-dialog .modal-content {
+    padding: 10px 10px 0 10px !important;
+  }
 }
 .modal-dialog .modal-content {
   padding: 50px 50px 0 50px;

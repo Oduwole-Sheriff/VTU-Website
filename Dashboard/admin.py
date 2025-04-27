@@ -13,13 +13,13 @@ class CustomUserAdmin(UserAdmin):
     add_form = CustomUserForm  # Use the same form for creating users
     
     # Specify the fields that should be visible in the admin interface
-    list_display = ['username', 'balance', 'email', 'nin', 'bvn', 'is_active', 'is_staff', 'get_bank_account', 'failed_attempts']
+    list_display = ['username', 'balance', 'email', 'nin', 'bvn', 'is_active', 'is_staff', 'get_bank_account', 'has_filled_fund_form']
     search_fields = ['username', 'email']
     ordering = ['username']
     
     # Fields for add and change user forms
     fieldsets = (
-        (None, {'fields': ('username', 'password1', 'password2', 'balance', 'bonus', 'bank_account', 'nin', 'bvn', 'referred_by', 'referral_bonus', 'first_deposit_reward_given','failed_attempts')}),
+        (None, {'fields': ('username', 'password1', 'password2', 'balance', 'bonus', 'bank_account', 'nin', 'bvn', 'referred_by', 'referral_bonus', 'first_deposit_reward_given','failed_attempts', 'has_filled_fund_form')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser')}),  # permissions
         ('Important dates', {'fields': ('last_login', 'date_joined')}),           # important date fields
     )

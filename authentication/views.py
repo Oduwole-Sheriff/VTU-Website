@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 # from django.contrib.auth.forms import UserCreationForm
-from .forms import UserRegisterForm, UserUpdateForm
+from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .models import Profile
@@ -112,17 +112,22 @@ def fake_login(request):
 def profile(request):
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST, instance=request.user)
-        if u_form.is_valid():
+        p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+
+        if u_form.is_valid() and p_form.is_valid():  # check both forms
             u_form.save()
-            messages.success(request, f'Your account has been updated!')
-            return redirect('profile')
+            p_form.save()
+            messages.success(request, 'Your account has been updated!')
+            return redirect('profile')  # prevents resubmission on refresh
     else:
         u_form = UserUpdateForm(instance=request.user)
+        p_form = ProfileUpdateForm(instance=request.user.profile)
 
     context = {
-        'u_form': u_form
+        'u_form': u_form,
+        'p_form': p_form
     }
-    return render(request, "profile.html", context)
+    return render(request, 'profile.html', context)
 
 def custom_logout(request):
     # Save the form_submitted state before logging out

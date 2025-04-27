@@ -15,7 +15,13 @@
                     <span id="referralLink">{{ referral_link }}</span>
                     <span onclick="copyReferralLink()" class="btn btn-sm btn-outline-primary">Copy</span>
                 </p>                
-                <a href="#" class="rts-btn btn-blur" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Fund Wallet</a>
+                {% if has_filled_fund_form %}
+                    <!-- Open modal directly -->
+                    <a href="#" class="rts-btn btn-blur" data-bs-toggle="modal" data-bs-target="#exampleModal">Fund Wallet</a>
+                {% else %}
+                    <!-- Redirect to form page -->
+                    <a href="{% url 'fund_wallet_form' %}" class="rts-btn btn-blur">Fund Wallet</a>
+                {% endif %}
                 <div class="inner-right-iamge">
                     <img src="{% static 'assets/images/banner/airtime-banner4.jpg' %}" alt="banner">
                 </div>
@@ -94,6 +100,52 @@
                 </div>
             </div>
 
+            <div class="premium-service-container pt-5">
+
+                <a href="{% url 'airtime-topUp' %}" class="premium-service-card">
+                    <div class="card-content">
+                         <img src="https://chismertelecom.com.ng/media/Image/airtime.png" alt="Airtime Top Up" class="premium-service-icon">
+                        <p class="premium-service-label">Airtime TopUp</p>
+                    </div>
+                </a>
+        
+                <a href="{% url 'buydata' %}" class="premium-service-card">
+                    <div class="card-content">
+                        <img src="https://png.pngtree.com/png-vector/20240912/ourmid/pngtree-blue-3d-wifi-icons-on-a-transparent-backgorund-png-image_13820662.png" alt="Buy Data" class="premium-service-icon">
+                        <p class="premium-service-label">Buy Data</p>
+                    </div>
+                </a>
+        
+                <a href="{% url 'cable_subscription' %}" class="premium-service-card">
+                    <div class="card-content">
+                        <img src="https://img.icons8.com/?size=512&id=47556&format=png" alt="Cable Subscription" class="premium-service-icon">
+                        <p class="premium-service-label">Cable Subscription</p>
+                    </div>
+                </a>
+        
+                <a href="{% url 'bill_payment' %}" class="premium-service-card">
+                     <div class="card-content">
+                        <img src="https://cdn-icons-png.flaticon.com/512/9746/9746847.png" alt="Electricity Bill" class="premium-service-icon">
+                        <p class="premium-service-label">Electricity Bill</p>
+                    </div>
+                </a>
+        
+                <a href="{% url 'waec' %}" class="premium-service-card">
+                     <div class="card-content">
+                        <img src="https://play-lh.googleusercontent.com/xFa1pORFN4rZQYOS4IrDQCSBAhcJuEFHmNhmY_hmCyAj6WORGwV1N3fdi8rT93tNjw" alt="WAEC Pin" class="premium-service-icon">
+                        <p class="premium-service-label">Waec Pin</p>
+                    </div>
+                </a>
+        
+                <a href="{% url 'jamb' %}" class="premium-service-card">
+                     <div class="card-content">
+                        <img src="https://img.utdstc.com/icon/dbb/ac3/dbbac34f5ad1be936cacf2ebfcb88fcb6c631c79e4412f9872986330149f7a0b:200" alt="JAMB Pin" class="premium-service-icon">
+                        <p class="premium-service-label">Jamb Pin</p>
+                    </div>
+                </a>
+        
+            </div>
+
             <section class="mt-5 table-responsive">
                 <div class="transaction-link">
                     <h4 class="color-white-title-home">Recent Transactions</h4>
@@ -137,127 +189,6 @@
                 </table>
             </section>
 
-            <!-- <div class="tab-content mt--50" id="pills-tabContent">
-            
-                <div class="row g-5">
-                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12">
-                     
-                        <div class="single-image-generator">
-                            <a href="#" class="thumbnail">
-                                <img src="{% static 'assets/images/generator/transactions-img.png' %}" alt="images">
-                            </a>
-                            <div class="inner-content">
-                                <div class="left-content-area">
-                                    <h5 class="title">Wallet Balance</h5>
-                                    <p class="disc">
-                                        Current Balance:  ₦{{ balance|intcomma }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                      
-                    </div>
-                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12">
-                        
-                        <div class="single-image-generator">
-                            <a href="#" class="thumbnail">
-                                <img src="{% static 'assets/images/generator/referer-img.png' %}" alt="images">
-                            </a>
-                            <div class="inner-content">
-                                <div class="left-content-area">
-                                    <h5 class="title">Referral Bonus</h5>
-                                    <p class="disc">
-                                        ₦10,000.00
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    </div>
-                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12">
-                        
-                        <div class="single-image-generator">
-                            <a href="#" class="thumbnail">
-                                <img src="{% static 'assets/images/generator/total-referal.avif' %}" alt="images">
-                            </a>
-                            <div class="inner-content">
-                                <div class="left-content-area">
-                                    <h5 class="title">My Total Referral</h5>
-                                    <p class="disc">
-                                        0
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                       
-                    </div>
-                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12">
-                       
-                        <div class="single-image-generator">
-                            <a href="#" class="thumbnail">
-                                <img src="{% static 'assets/images/generator/total-user-balance.webp' %}" alt="images">
-                            </a>
-                            <div class="inner-content">
-                                <div class="left-content-area">
-                                    <h5 class="title">Total User balance</h5>
-                                    <p class="disc">
-                                        ₦{{ total_balance|intcomma }}.00
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    </div>
-                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12">
-                       
-                        <div class="single-image-generator">
-                            <a href="#" class="thumbnail">
-                                <img src="{% static 'assets/images/generator/total-registered-user.png' %}" alt="images">
-                            </a>
-                            <div class="inner-content">
-                                <div class="left-content-area">
-                                    <h5 class="title">Total Registered Users</h5>
-                                    <p class="disc">
-                                        {{ total_users|intcomma }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    </div>
-                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12">
-                        
-                        <div class="single-image-generator">
-                            <a href="#" class="thumbnail">
-                                <img src="{% static 'assets/images/generator/total-user-commision.jpg' %}" alt="images">
-                            </a>
-                            <div class="inner-content">
-                                <div class="left-content-area">
-                                    <h5 class="title">Total User Commission</h5>
-                                    <p class="disc">
-                                        Current Balance:  ₦{{ total_bonus|intcomma }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                       
-                    </div>
-                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12">
-                      
-                        <div class="single-image-generator">
-                            <a href="{% url 'transaction_history' %}" class="thumbnail">
-                                <img src="{% static 'assets/images/generator/transaction-history2.png' %}" alt="images">
-                            </a>
-                            <div class="inner-content">
-                                <div class="left-content-area">
-                                    <h5 class="title">My Transactions</h5>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    </div>
-                </div>
-            </div> -->
         </div>
         <div class="copyright-area-bottom">
             <p> <a href="#">BigSheriffDevelopers©</a> 2025. All Rights Reserved.</p>
@@ -281,16 +212,22 @@
       
         function copyReferralLink() {
             const referralText = document.getElementById("referralLink").innerText;
-    
+            const copyButton = event.target;
+
             navigator.clipboard.writeText(referralText)
                 .then(() => {
-                    alert("Referral link copied to clipboard!");
+                    copyButton.innerText = "Copied";
+                    // Optionally revert after a short delay
+                    setTimeout(() => {
+                        copyButton.innerText = "Copy";
+                    }, 2000);
                 })
                 .catch(err => {
-                    alert("Failed to copy. Please try manually.");
                     console.error(err);
+                    copyButton.innerText = "Error";
                 });
         }
+
     </script>
     
     

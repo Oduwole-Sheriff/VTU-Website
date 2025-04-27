@@ -7,6 +7,7 @@ urlpatterns = [
     path('Bonus-to-wallet/', views.transfer_referral_bonus_view, name='bonus-to-wallet'),
     path('Bank_Transfer/', views.Bank_Transfer, name='Bank_Transfer'),
     path('Create-Notification/', views.create_notification, name='create_notification'),
+    path('fund-wallet/', views.fund_wallet_form, name='fund_wallet_form'),
     path('index/', views.Index, name='index'),
     path('transactions/', views.transaction_history, name='transaction_history'), 
     path('data/', views.BuyData, name='buydata'),

@@ -16,6 +16,7 @@ class CustomUser(AbstractUser):
     bvn = models.CharField(max_length=11, blank=True, null=True, unique=True)  # BVN field added
     referral_bonus = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     first_deposit_reward_given = models.BooleanField(default=False)
+    has_filled_fund_form = models.BooleanField(default=False)
 
     referred_by = models.ForeignKey(
         'self',

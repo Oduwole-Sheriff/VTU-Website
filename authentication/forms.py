@@ -1,8 +1,10 @@
 from django import forms
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from .models import Profile
 
+User = get_user_model()
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField(
@@ -48,27 +50,6 @@ class UserRegisterForm(UserCreationForm):
             raise forms.ValidationError("Passwords do not match")
         return password2
 
-
-# class UserRegisterForm(UserCreationForm):
-#     email = forms.EmailField()
- 
-#     password = forms.CharField(
-#         widget=forms.PasswordInput(attrs={'placeholder': 'Password'}),
-#         label='Password'
-#     )
-
-#     class Meta:
-#         model = User
-#         fields = ['username', 'email', 'password']  # Use a custom password field
-#         labels = {
-#             'username': 'Username',
-#             'email': 'Email Address',
-#         }
-#         widgets = {
-#             'username': forms.TextInput(attrs={'placeholder': 'Username'}),
-#             'email': forms.EmailInput(attrs={'placeholder': 'Email Address'}),
-#         }
-
         
 class UserUpdateForm(forms.ModelForm):
     email = forms.EmailField()
@@ -77,7 +58,16 @@ class UserUpdateForm(forms.ModelForm):
         model = User
         fields = ['username', 'email']
 
-# class ProfileUpdateForm(forms.ModelForm):
-#     class Meta:
-#         model = Profile
-#         fields = ['image']
+    def __init__(self, *args, **kwargs):
+        super(UserUpdateForm, self).__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs['readonly'] = True
+        self.fields['email'].widget.attrs['readonly'] = True
+
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['phone_number']
+
+    def __init__(self, *args, **kwargs):
+        super(ProfileUpdateForm, self).__init__(*args, **kwargs)
+        self.fields['phone_number'].widget.attrs['readonly'] = True

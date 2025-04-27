@@ -18,6 +18,8 @@ from django.core.mail import send_mail
 from django.views.decorators.csrf import csrf_exempt
 from decimal import Decimal
 
+from .forms import NINForm, CustomUserForm
+
 
 # Create your views here.
 
@@ -129,6 +131,35 @@ def monnify_webhook(request):
     except Exception as e:
         print("🔥 Error processing webhook:", e)
         return JsonResponse({"message": "Error processing webhook"}, status=400)
+
+@login_required
+def fund_wallet_form(request):
+    user = request.user
+
+    if request.method == 'POST':
+        doc_type = request.POST.get('document_type')
+
+        if doc_type == 'nin':
+            form = NINForm(request.POST)
+            if form.is_valid():
+                user.nin = form.cleaned_data['nin']
+                user.has_filled_fund_form = True
+                user.save()
+                return redirect('index')
+
+        elif doc_type == 'bvn':
+            form = CustomUserForm(request.POST, instance=user)
+            if form.is_valid():
+                user.bvn = form.cleaned_data['bvn']
+                user.has_filled_fund_form = True
+                user.save()
+                return redirect('index')
+
+    else:
+        form = NINForm()
+
+    return render(request, 'fund_wallet_form.html', {'form': form})
+
 
 
 @login_required

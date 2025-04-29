@@ -174,9 +174,9 @@
     align-items: center;
     text-decoration: none; /* Remove underline from link */
     color: inherit; /* Inherit text color */
-    background: rgb(16, 32, 184);
+    /* background: rgb(16, 32, 184); */
 
-    /* background-color: var(--card-bg); */
+    background-color: var(--card-bg);
     /* border: 1px solid var(--border-color); */
     border-radius: var(--card-border-radius);
     padding: 25px; /* Padding inside the card */
@@ -221,7 +221,7 @@
 
 .premium-service-label {
     font-size: 1.7rem !important;
-    color: #fff;
+    /* color: #fff; */
     margin: 0;
     font-weight: 600; /* Semibold */
     text-align: center;

@@ -1184,3 +1184,655 @@ django.template.exceptions.TemplateDoesNotExist: your_app/fund_wallet_form.html
 "GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
 "GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
 "GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+Internal Server Error: /api/login/
+Traceback (most recent call last):
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\sqlite3\base.py", line 354, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: database is locked
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\api\views.py", line 141, in post
+    user.save()
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\contrib\auth\base_user.py", line 62, in save
+    super().save(*args, **kwargs)
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\base.py", line 891, in save
+    self.save_base(
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\base.py", line 997, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\base.py", line 1129, in _save_table
+    updated = self._do_update(
+              ^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\base.py", line 1194, in _do_update
+    return filtered._update(values) > 0
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\query.py", line 1278, in _update
+    return query.get_compiler(self.db).execute_sql(CURSOR)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\sql\compiler.py", line 2003, in execute_sql
+    cursor = super().execute_sql(result_type)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1574, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\sqlite3\base.py", line 354, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: database is locked
+"POST /api/login/ HTTP/1.1" 500 220482
+Internal Server Error: /api/login/
+Traceback (most recent call last):
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\sqlite3\base.py", line 354, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: database is locked
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\api\views.py", line 141, in post
+    user.save()
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\contrib\auth\base_user.py", line 62, in save
+    super().save(*args, **kwargs)
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\base.py", line 891, in save
+    self.save_base(
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\base.py", line 997, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\base.py", line 1129, in _save_table
+    updated = self._do_update(
+              ^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\base.py", line 1194, in _do_update
+    return filtered._update(values) > 0
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\query.py", line 1278, in _update
+    return query.get_compiler(self.db).execute_sql(CURSOR)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\sql\compiler.py", line 2003, in execute_sql
+    cursor = super().execute_sql(result_type)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1574, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\sqlite3\base.py", line 354, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: database is locked
+"POST /api/login/ HTTP/1.1" 500 220482
+Bad Request: /api/login/
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11523
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/EducationCSS/assets/css/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1979
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1955
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1955
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1922
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1931
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1955
+Bad Request: /api/login/
+"POST /api/login/ HTTP/1.1" 400 45
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1955
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1922
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1931
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1955
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/DataCSS/img/BSD-LOGO.png HTTP/1.1" 404 1886
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/DataCSS/img/BSD-LOGO.png HTTP/1.1" 404 1886
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1955
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1955
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1955
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1922
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1931
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1955
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/EducationCSS/assets/css/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1979
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/EducationCSS/assets/css/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1979
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+Bad Request: /api/buy-data/
+"POST /api/buy-data/ HTTP/1.1" 400 150
+Bad Request: /api/buy-data/
+"POST /api/buy-data/ HTTP/1.1" 400 108
+Bad Request: /api/buy-data/
+"POST /api/buy-data/ HTTP/1.1" 400 139
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.: /data/
+Traceback (most recent call last):
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\sqlite3\base.py", line 354, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: database is locked
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\contrib\sessions\backends\db.py", line 127, in save
+    obj.save(
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\base.py", line 891, in save
+    self.save_base(
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\base.py", line 997, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\base.py", line 1129, in _save_table
+    updated = self._do_update(
+              ^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\base.py", line 1194, in _do_update
+    return filtered._update(values) > 0
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\query.py", line 1278, in _update
+    return query.get_compiler(self.db).execute_sql(CURSOR)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\sql\compiler.py", line 2003, in execute_sql
+    cursor = super().execute_sql(result_type)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1574, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\sqlite3\base.py", line 354, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: database is locked
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\contrib\sessions\middleware.py", line 59, in process_response
+    request.session.save()
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\contrib\sessions\backends\db.py", line 136, in save
+    raise UpdateError
+django.contrib.sessions.backends.base.UpdateError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\utils\deprecation.py", line 131, in __call__
+    response = self.process_response(request, response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\contrib\sessions\middleware.py", line 61, in process_response
+    raise SessionInterrupted(
+django.contrib.sessions.exceptions.SessionInterrupted: The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.
+"GET /data/ HTTP/1.1" 400 179974
+The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.: /favicon.ico
+Traceback (most recent call last):
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\sqlite3\base.py", line 354, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: database is locked
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\contrib\sessions\backends\db.py", line 127, in save
+    obj.save(
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\base.py", line 891, in save
+    self.save_base(
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\base.py", line 997, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\base.py", line 1129, in _save_table
+    updated = self._do_update(
+              ^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\base.py", line 1194, in _do_update
+    return filtered._update(values) > 0
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\query.py", line 1278, in _update
+    return query.get_compiler(self.db).execute_sql(CURSOR)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\sql\compiler.py", line 2003, in execute_sql
+    cursor = super().execute_sql(result_type)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1574, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\sqlite3\base.py", line 354, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: database is locked
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\contrib\sessions\middleware.py", line 59, in process_response
+    request.session.save()
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\contrib\sessions\backends\db.py", line 136, in save
+    raise UpdateError
+django.contrib.sessions.backends.base.UpdateError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\utils\deprecation.py", line 131, in __call__
+    response = self.process_response(request, response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\contrib\sessions\middleware.py", line 61, in process_response
+    raise SessionInterrupted(
+django.contrib.sessions.exceptions.SessionInterrupted: The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.
+"GET /favicon.ico HTTP/1.1" 400 179642
+The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.: /data/
+Traceback (most recent call last):
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\sqlite3\base.py", line 354, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: database is locked
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\contrib\sessions\backends\db.py", line 127, in save
+    obj.save(
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\base.py", line 891, in save
+    self.save_base(
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\base.py", line 997, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\base.py", line 1129, in _save_table
+    updated = self._do_update(
+              ^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\base.py", line 1194, in _do_update
+    return filtered._update(values) > 0
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\query.py", line 1278, in _update
+    return query.get_compiler(self.db).execute_sql(CURSOR)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\sql\compiler.py", line 2003, in execute_sql
+    cursor = super().execute_sql(result_type)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1574, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\sqlite3\base.py", line 354, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: database is locked
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\contrib\sessions\middleware.py", line 59, in process_response
+    request.session.save()
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\contrib\sessions\backends\db.py", line 136, in save
+    raise UpdateError
+django.contrib.sessions.backends.base.UpdateError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\utils\deprecation.py", line 131, in __call__
+    response = self.process_response(request, response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\contrib\sessions\middleware.py", line 61, in process_response
+    raise SessionInterrupted(
+django.contrib.sessions.exceptions.SessionInterrupted: The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.
+"GET /data/ HTTP/1.1" 400 179713
+The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.: /favicon.ico
+Traceback (most recent call last):
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\sqlite3\base.py", line 354, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: database is locked
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\contrib\sessions\backends\db.py", line 127, in save
+    obj.save(
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\base.py", line 891, in save
+    self.save_base(
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\base.py", line 997, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\base.py", line 1129, in _save_table
+    updated = self._do_update(
+              ^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\base.py", line 1194, in _do_update
+    return filtered._update(values) > 0
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\query.py", line 1278, in _update
+    return query.get_compiler(self.db).execute_sql(CURSOR)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\sql\compiler.py", line 2003, in execute_sql
+    cursor = super().execute_sql(result_type)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1574, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\db\backends\sqlite3\base.py", line 354, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: database is locked
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\contrib\sessions\middleware.py", line 59, in process_response
+    request.session.save()
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\contrib\sessions\backends\db.py", line 136, in save
+    raise UpdateError
+django.contrib.sessions.backends.base.UpdateError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\utils\deprecation.py", line 131, in __call__
+    response = self.process_response(request, response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\venv\Lib\site-packages\django\contrib\sessions\middleware.py", line 61, in process_response
+    raise SessionInterrupted(
+django.contrib.sessions.exceptions.SessionInterrupted: The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.
+"GET /favicon.ico HTTP/1.1" 400 179386

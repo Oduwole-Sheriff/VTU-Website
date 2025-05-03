@@ -162,8 +162,12 @@ form {
   display: inline;
 }
 
-img {
+/* img {
   vertical-align: inherit;
+} */
+
+.BigSheriffLogo img{
+  width: 200px !important;
 }
 
 p {

@@ -3,10 +3,10 @@ from . import views
 
 urlpatterns = [
     path('', views.Home, name='home-page'),
-    path('deposit/', views.deposit_view, name='deposit'),
     path('Bonus-to-wallet/', views.transfer_referral_bonus_view, name='bonus-to-wallet'),
     path('Bank_Transfer/', views.Bank_Transfer, name='Bank_Transfer'),
     path('Create-Notification/', views.create_notification, name='create_notification'),
+    path('Access-Denied/', views.access_denied, name='access-denied'),
     path('fund-wallet/', views.fund_wallet_form, name='fund_wallet_form'),
     path('index/', views.Index, name='index'),
     path('transactions/', views.transaction_history, name='transaction_history'), 

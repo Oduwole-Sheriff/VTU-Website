@@ -7,24 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>BIG_SHERIFF</title>
-    <link rel="apple-touch-icon" sizes="57x57" href="{% static 'Dashboard/asset/images/favicon/apple-icon-57x57.png' %}">
-    <link rel="apple-touch-icon" sizes="60x60" href="{% static 'Dashboard/asset/images/favicon/apple-icon-60x60.png' %}">
-    <link rel="apple-touch-icon" sizes="72x72" href="{% static 'Dashboard/asset/images/favicon/apple-icon-72x72.png' %}">
-    <link rel="apple-touch-icon" sizes="76x76" href="{% static 'Dashboard/asset/images/favicon/apple-icon-76x76.png' %}">
-    <link rel="apple-touch-icon" sizes="114x114" href="{% static 'Dashboard/asset/images/favicon/apple-icon-114x114.png' %}">
-    <link rel="apple-touch-icon" sizes="120x120" href="{% static 'Dashboard/asset/images/favicon/apple-icon-120x120.png' %}">
-    <link rel="apple-touch-icon" sizes="144x144" href="{% static 'Dashboard/asset/images/favicon/apple-icon-144x144.png' %}">
-    <link rel="apple-touch-icon" sizes="152x152" href="{% static 'Dashboard/asset/images/favicon/apple-icon-152x152.png' %}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'Dashboard/asset/images/favicon/apple-icon-180x180.png' %}">
-    <link rel="icon" type="image/png" sizes="192x192" href="{% static 'Dashboard/asset/images/favicon/android-icon-192x192.png' %}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'Dashboard/asset/images/favicon/favicon-32x32.png' %}">
-    <link rel="icon" type="image/png" sizes="96x96" href="{% static 'Dashboard/asset/images/favicon/favicon-96x96.png' %}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'Dashboard/asset/images/favicon/favicon-16x16.png' %}">
-    <link rel="manifest" href="{% static 'Dashboard/asset/images/favicon/manifest.json' %}">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
-    <meta name="theme-color" content="#ffffff">
+    <title>BIG-SHERIFF-DATA</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
     <link rel="stylesheet" href="{% static 'Dashboard/asset/bootstrap/bootstrap.min.css' %}">
@@ -50,27 +33,27 @@
     <!-- HEADER SECTION -->
     <header class="w-100 flaot-left header-con">
         <nav class="navbar navbar-expand-lg navbar-light py-0">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="/">
                 <figure class="mb-0">
-                    <img src="{% static 'Dashboard/asset/images/white-logo-icon.png' %}" alt="white-logo-icon">
+                    <img src="{% static 'Dashboard/asset/images/BSD-LOGO-WHITE4.png' %}" style="width: 110px;" alt="white-logo-icon">
                 </figure>
             </a>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav m-auto">
                     <li class="nav-item">
-                        <a class="nav-link p-0" href="#">Home</a>
+                        <a class="nav-link p-0" href="/">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link p-0" href="#">About</a>
+                        <a class="nav-link p-0" href="#about">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link p-0" href="#">Pricing</a>
+                        <a class="nav-link p-0" href="#pricing">Pricing</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link p-0" href="#">Testimonial</a>
+                        <a class="nav-link p-0" href="#testimonials">Testimonial</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link p-0" href="#">FAQ</a>
+                        <a class="nav-link p-0" href="#faq">FAQ</a>
                     </li>
                 </ul>
             </div>
@@ -87,7 +70,7 @@
                 <div class="banner-title" data-aos="fade-up">
                     <span class="d-block"><i class="fa-solid fa-circle-check"></i> 30-days money back guarantee</span>
                     <h1>Fully Managed VTU Website </h1>
-                    <p>With SheriffData, topping up your airtime, data subscription and bills payment will be a breeze.</p>
+                    <p>With BigSheriffData, Topping up your Airtime, Data subscription, Bills payment, Cable subscription, Academic results pin, will be a breeze.</p>
                     <div class="banner-btn">
                         <a href="{% url 'register' %}" class="started-btn">Get Started</a>
                         <a href="{% url 'login' %}" class="read-more-btn">SIGN IN</a>
@@ -104,7 +87,7 @@
     </section>
 
     <!-- PLAN SECTION -->
-    <section class="w-100 float-left plan-con padding-top padding-bottom">
+    <section class="w-100 float-left plan-con padding-top padding-bottom" id="pricing">
         <div class="container">
             <div class="generic-title2 text-center" data-aos="fade-up">
                 <h2>Affordable Data Plans and Prices</h2>
@@ -118,36 +101,36 @@
                     <h4 class="mb-2"> MTN DATA</h4>
                     <ul class="list-unstyled">
                         <li>500mb</li>
-                        <li>#120</li>
+                        <li>₦120</li>
+                        <li>7days</li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>1000mb</li>
+                        <li>₦220</li>
+                        <li>14days</li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>2000mb</li>
+                        <li>₦420</li>
                         <li>30days</li>
                     </ul>
                     <ul class="list-unstyled">
-                        <li>500mb</li>
-                        <li>#120</li>
+                        <li>3000mb</li>
+                        <li>₦640</li>
                         <li>30days</li>
                     </ul>
                     <ul class="list-unstyled">
-                        <li>500mb</li>
-                        <li>#120</li>
+                        <li>4000mb</li>
+                        <li>₦860</li>
                         <li>30days</li>
                     </ul>
                     <ul class="list-unstyled">
-                        <li>500mb</li>
-                        <li>#120</li>
-                        <li>30days</li>
-                    </ul>
-                    <ul class="list-unstyled">
-                        <li>500mb</li>
-                        <li>#120</li>
-                        <li>30days</li>
-                    </ul>
-                    <ul class="list-unstyled">
-                        <li>500mb</li>
-                        <li>#120</li>
+                        <li>5000mb</li>
+                        <li>₦1080</li>
                         <li>30days</li>
                     </ul>
                     <div class="order-btn">
-                        <a href="#">Buy Now</a>
+                        <a href="{% url 'buydata' %}">Buy Now</a>
                     </div>
                 </div>
                 <div class="plan-box-item">
@@ -157,46 +140,46 @@
                     <h4 class="mb-2"> GLO DATA</h4>
                     <ul class="list-unstyled">
                         <li>500mb</li>
-                        <li>#120</li>
+                        <li>₦110</li>
                         <li>30days</li>
                     </ul>
                     <ul class="list-unstyled">
-                        <li>500mb</li>
-                        <li>#120</li>
+                        <li>1000mb</li>
+                        <li>₦220</li>
                         <li>30days</li>
                     </ul>
                     <ul class="list-unstyled">
-                        <li>500mb</li>
-                        <li>#120</li>
+                        <li>2000mb</li>
+                        <li>₦440</li>
                         <li>30days</li>
                     </ul>
                     <ul class="list-unstyled">
-                        <li>500mb</li>
-                        <li>#120</li>
+                        <li>3000mb</li>
+                        <li>₦650</li>
                         <li>30days</li>
                     </ul>
                     <ul class="list-unstyled">
-                        <li>500mb</li>
-                        <li>#120</li>
+                        <li>4000mb</li>
+                        <li>₦870</li>
                         <li>30days</li>
                     </ul>
                     <ul class="list-unstyled">
-                        <li>500mb</li>
-                        <li>#120</li>
+                        <li>5000mb</li>
+                        <li>₦1090</li>
                         <li>30days</li>
                     </ul>
                     <ul class="list-unstyled">
-                        <li>500mb</li>
-                        <li>#120</li>
+                        <li>6000mb</li>
+                        <li>₦1310</li>
                         <li>30days</li>
                     </ul>
                     <ul class="list-unstyled">
-                        <li>500mb</li>
-                        <li>#120</li>
+                        <li>7000mb</li>
+                        <li>₦1530</li>
                         <li>30days</li>
                     </ul>
                     <div class="order-btn">
-                        <a href="#">Buy Now</a>
+                        <a href="{% url 'buydata' %}">Buy Now</a>
                     </div>
                 </div>
                 <div class="plan-box-item">
@@ -206,46 +189,46 @@
                     <h4 class="mb-2"> AIRTEL DATA</h4>
                     <ul class="list-unstyled">
                         <li>500mb</li>
-                        <li>#120</li>
+                        <li>₦130</li>
+                        <li>7days</li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>1000mb</li>
+                        <li>₦260</li>
+                        <li>7days</li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>2000mb</li>
+                        <li>₦520</li>
+                        <li>14days</li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>3000mb</li>
+                        <li>₦780</li>
                         <li>30days</li>
                     </ul>
                     <ul class="list-unstyled">
-                        <li>500mb</li>
-                        <li>#120</li>
+                        <li>4000mb</li>
+                        <li>₦1040</li>
                         <li>30days</li>
                     </ul>
                     <ul class="list-unstyled">
-                        <li>500mb</li>
-                        <li>#120</li>
+                        <li>5000mb</li>
+                        <li>₦1300</li>
                         <li>30days</li>
                     </ul>
                     <ul class="list-unstyled">
-                        <li>500mb</li>
-                        <li>#120</li>
+                        <li>6000mb</li>
+                        <li>₦1560</li>
                         <li>30days</li>
                     </ul>
                     <ul class="list-unstyled">
-                        <li>500mb</li>
-                        <li>#120</li>
-                        <li>30days</li>
-                    </ul>
-                    <ul class="list-unstyled">
-                        <li>500mb</li>
-                        <li>#120</li>
-                        <li>30days</li>
-                    </ul>
-                    <ul class="list-unstyled">
-                        <li>500mb</li>
-                        <li>#120</li>
-                        <li>30days</li>
-                    </ul>
-                    <ul class="list-unstyled">
-                        <li>500mb</li>
-                        <li>#120</li>
+                        <li>7000mb</li>
+                        <li>₦1790</li>
                         <li>30days</li>
                     </ul>
                     <div class="order-btn">
-                        <a href="#">Buy Now</a>
+                        <a href="{% url 'buydata' %}">Buy Now</a>
                     </div>
                 </div>
                 <div class="plan-box-item">
@@ -255,46 +238,46 @@
                     <h4 class="mb-2"> 9MOBILE DATA</h4>
                     <ul class="list-unstyled">
                         <li>500mb</li>
-                        <li>#120</li>
+                        <li>₦105</li>
+                        <li>7days</li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>1000mb</li>
+                        <li>₦210</li>
+                        <li>7days</li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>2000mb</li>
+                        <li>₦420</li>
+                        <li>14days</li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>3000mb</li>
+                        <li>₦630</li>
                         <li>30days</li>
                     </ul>
                     <ul class="list-unstyled">
-                        <li>500mb</li>
-                        <li>#120</li>
+                        <li>4000mb</li>
+                        <li>₦840</li>
                         <li>30days</li>
                     </ul>
                     <ul class="list-unstyled">
-                        <li>500mb</li>
-                        <li>#120</li>
+                        <li>5000mb</li>
+                        <li>₦1050</li>
                         <li>30days</li>
                     </ul>
                     <ul class="list-unstyled">
-                        <li>500mb</li>
-                        <li>#120</li>
+                        <li>6000mb</li>
+                        <li>₦1260</li>
                         <li>30days</li>
                     </ul>
                     <ul class="list-unstyled">
-                        <li>500mb</li>
-                        <li>#120</li>
-                        <li>30days</li>
-                    </ul>
-                    <ul class="list-unstyled">
-                        <li>500mb</li>
-                        <li>#120</li>
-                        <li>30days</li>
-                    </ul>
-                    <ul class="list-unstyled">
-                        <li>500mb</li>
-                        <li>#120</li>
-                        <li>30days</li>
-                    </ul>
-                    <ul class="list-unstyled">
-                        <li>500mb</li>
-                        <li>#120</li>
+                        <li>7000mb</li>
+                        <li>₦1490</li>
                         <li>30days</li>
                     </ul>
                     <div class="order-btn">
-                        <a href="#">Buy Now</a>
+                        <a href="{% url 'buydata' %}">Buy Now</a>
                     </div>
                 </div>
 
@@ -303,7 +286,7 @@
     </section>
 
     <!-- FEATURE SECTION -->
-    <section class="w-100 float-left main-feature-con padding-top padding-bottom">
+    <section class="w-100 float-left main-feature-con padding-top padding-bottom" id="about">
         <div class="container">
             <div class="generic-title2 text-center" data-aos="fade-up">
                 <h2>Our Services</h2>
@@ -318,7 +301,7 @@
                         </figure>
                         <div class="main-feature-box-content">
                             <h4>Buy Airtime/Data</h4>
-                            <p class="mb-0">Never miss important calls or a beat online, use Superjara, reliable recharge services for your airtime and data at a very cost-effective rate. We've got you covered.
+                            <p class="mb-0">Never miss important calls or a beat online, use BigSheriffData, reliable recharge services for your airtime and data at a very cost-effective rate. We've got you covered.
                             </p>
                             <!-- main-feature-box-content -->
                         </div>
@@ -359,7 +342,7 @@
                         </figure>
                         <div class="main-feature-box-content">
                             <h4>Internet Bill</h4>
-                            <p class="mb-0">Welcome to the future of managing internet bills payment. With Superjara, you can choose to pay with your debit/credit card, net banking, USSD codes and other payment methods. The choice is yours!</p>
+                            <p class="mb-0">Welcome to the future of managing internet bills payment. With BigSheriffData, you can choose to pay with your debit/credit card, net banking, USSD codes and other payment methods. The choice is yours!</p>
                             <!-- main-feature-box-content -->
                         </div>
                     </div>
@@ -428,7 +411,7 @@
     </section>
     <!-- support SECTION -->
     <!-- TESTIMONIALS SECTION -->
-    <section class="w-100 float-left testimonials-con padding-top padding-bottom">
+    <section class="w-100 float-left testimonials-con padding-top padding-bottom" id="testimonials">
         <div class="container">
             <div class="generic-title text-center" data-aos="fade-up">
                 <span class="d-block">Testimonials</span>
@@ -524,7 +507,7 @@
     </section>
     <!-- TESTIMONIALS SECTION -->
     <!-- FAQ SECTION -->
-    <section class="w-100 float-left faq-con padding-top padding-bottom">
+    <section class="w-100 float-left faq-con padding-top padding-bottom" id="faq">
         <div class="container">
             <div class="generic-title2 text-center" data-aos="fade-up">
                 <span class="d-block">Frequently Asked Questions</span>
@@ -643,7 +626,7 @@
         <div class="container">
             <div class="generic-title text-center" data-aos="fade-up">
                 <h3 class="d-inline-block text-muted mb-4">How We Stand Out?</h3>
-                <h4 class="text-muted mb-4">Join us today @ShegzyData and experience the difference. Stand out from the crowd by embracing the new way to recharge airtime, subscribe data and pay bills</h4>
+                <h4 class="text-muted mb-4">Join us today @ShegzyData and experience the difference. Stand out from the crowd by embracing the new way to recharge airtime, subscribe data, pay bills, cable subscription, academic result, etc.</h4>
                 <!-- generic-title -->
             </div>
             <div class="blog-box" data-aos="fade-up">
@@ -654,10 +637,10 @@
                     <div class="blog-box-content">
                         <h1 class="text-muted">01</h1>
                         <p> <h3>One-stop solution</h3>
-                            Unlike manual methods that require multiple USSD CODES, Superjara offers an automated solution to recharge airtime, subscribe data, pay bills and cashback. 
+                            Unlike manual methods that require multiple USSD CODES, BigSheriffData offers an automated solution to recharge airtime, subscribe data, pay bills, cable subscriptions, academic results and cashback. 
                         </p>
                         <div class="read-btn">
-                            <a href="./single-blog.html">Read More</a>
+                            <a href="#">Read More</a>
                         </div>
                     </div>
                     <!-- blog-box-item -->
@@ -679,7 +662,7 @@
                         </figure>
                         <div class="blog-box-content">
                             <h1 class="text-muted">03</h1>
-                            <p><h4>Latest Technology</h4>we leverage on the latest advancement in technology to bring you a remarkable experience. Get ready to do it better with Superjara. Enjoy!</p>
+                            <p><h4>Latest Technology</h4>we leverage on the latest advancement in technology to bring you a remarkable experience. Get ready to do it better with BigSheriffData. Enjoy!</p>
                         </div>
                         <!-- blog-box-item -->
                     </div>
@@ -784,40 +767,40 @@
                             <img src="{% static 'Dashboard/asset/images/white-logo-icon.png' %}" alt="footer-white-logo" loading="lazy">
                         </figure>
                     </a>
-                    <p>SheriffData is your one-stop solution platform for all your online daily needs. No longer do multiple USSD CODES for different services. We have made it recharge airtime, subscribe data, pay bills and cashback.
+                    <p>BigSheriffData is your one-stop solution platform for all your online daily needs. No longer do multiple USSD CODES for different services. We have made it recharge airtime, subscribe data, pay bills, cable subscriptions, academic result and cashback.
                     </p>
                     <!-- footer-logo -->
                 </div>
                 <div class="site-map">
                     <h4>Services</h4>
                     <ul class="list-unstyled mb-0">
-                        <li><a href="./hosting.html">Web Hosting</a></li>
-                        <li><a href="./reseller.html">Reseller Hosting</a></li>
-                        <li><a href="./hosting.html">Shared Hosting</a></li>
-                        <li><a href="./vps.html">Virtural Private Server</a></li>
-                        <li><a href="./hosting.html">WordPress Hosting</a></li>
-                        <li><a href="./dedicated.html">Dedicated Server</a></li>
+                        <li><a href="#">Web Hosting</a></li>
+                        <li><a href="#">Reseller Hosting</a></li>
+                        <li><a href="#">Shared Hosting</a></li>
+                        <li><a href="#">Virtural Private Server</a></li>
+                        <li><a href="#">WordPress Hosting</a></li>
+                        <li><a href="#">Dedicated Server</a></li>
                     </ul>
                     <!-- site-map -->
                 </div>
                 <div class="site-map">
                     <h4>Quick Links</h4>
                     <ul class="list-unstyled mb-0">
-                        <li><a href="./hosting.html">Hosting</a></li>
-                        <li><a href="./domain.html">Domain</a></li>
-                        <li><a href="./dedicated.html">Dedicated</a></li>
-                        <li><a href="./contact.html">Contact Us</a></li>
-                        <li><a href="./about.html">About Us</a></li>
+                        <li><a href="#">Hosting</a></li>
+                        <li><a href="#">Domain</a></li>
+                        <li><a href="#">Dedicated</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">About Us</a></li>
                     </ul>
                     <!-- site-map -->
                 </div>
                 <div class="site-map">
                     <h4>Resources</h4>
                     <ul class="list-unstyled mb-0">
-                        <li><a href="./domain.html">Support Center</a></li>
-                        <li><a href="./about.html">Documentation</a></li>
-                        <li><a href="./index.html">Community</a></li>
-                        <li><a href="./hosting.html">Hosting</a></li>
+                        <li><a href="#">Support Center</a></li>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">Community</a></li>
+                        <li><a href="#">Hosting</a></li>
                     </ul>
                     <!-- site-map -->
                 </div>
@@ -834,8 +817,7 @@
                     </div>
                     <div class="footer-info-item">
                         <ul class="list-unstyled mb-0">
-                            <li><i class="fa-regular fa-envelope"></i> <a href="mailto:info@resellpress.com">info@resellpress.com</a></li>
-                            <li><i class="fa-solid fa-phone"></i> <a href="tel:+0112346789">+01-1234-6789</a></li>
+                            <li><i class="fa-solid fa-phone"></i> <a href="tel:+2347015863688">+2347015863688</a></li>
                         </ul>
                         <!-- footer-info-item -->
                     </div>
@@ -845,11 +827,11 @@
             </div>
         </div>
         <div class="copyright-box">
-            <span class="d-inline-block">© Copyright 2023 SheriffData All rights reserved</span>
+            <span class="d-inline-block">© Copyright 2024 BigSheriffData All rights reserved</span>
             <div class="term-policy-con">
                 <ul class="list-unstyled mb-0">
-                    <li><a href="./terms-of-conditions.html">Terms & Conditions </a></li>
-                    <li><a href="./privacy-policy.html">Privacy Policy</a></li>
+                    <li><a href="#">Terms & Conditions </a></li>
+                    <li><a href="#">Privacy Policy</a></li>
                 </ul>
             </div>
             <!-- copyright-box -->

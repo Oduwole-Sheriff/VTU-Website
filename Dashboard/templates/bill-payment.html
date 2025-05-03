@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 
-<link rel="stylesheet" href="{% static 'ElectricityCSS/style.css' %}">
+    <link rel="stylesheet" href="{% static 'ElectricityCSS/style.css' %}">
 
     <h1 class="color-white-title-home">Stay Charged: Hassle-Free Electricity Bill Payments!</h1>
     <div class="carousel-container">
@@ -40,27 +40,29 @@
         </div>
     </div>
     <!-- Form Below the Carousel -->
-    <div class="form-container">
+    <div class="form-container modern">
         <article class="formHeading" style="text-align: center;">
             <p>Pay Your Electricity Bill With BigSheriffData</p>
             <h2 class="image-name"></h2>
         </article>
         <form id="form" method="POST">
             {% csrf_token %} 
-            <div class="form-group">
-                <label for="{{ form.serviceID.id_for_label }}">Electricity:</label>
+            <div class="form-group inputField floating-label-group readonly">
                 {{ form.serviceID }}
+                <label for="{{ form.serviceID.id_for_label }}">Electricity:</label>
+                <span class="focus-border"></span>
             </div>
             
-            <div class="form-group">
-                <label for="{{ form.meter_number.id_for_label }}">Meter Number:</label>
+            <div class="form-group inputField floating-label-group">
                 {{ form.meter_number }}
+                <label for="{{ form.meter_number.id_for_label }}">Meter Number:</label>
+                <span class="focus-border"></span>
                 {% for error in form.meter_number.errors %}
                     <div class="error">{{ error }}</div>
                 {% endfor %}
             </div>
             
-            <div class="form-group">
+            <div class="form-group inputField select-group">
                 <label for="{{ form.meter_type.id_for_label }}">Meter Type:</label>
                 <select name="meter_type" id="meter-type" required>
                     <option value="" selected disabled>Select Meter Type</option>
@@ -69,21 +71,26 @@
                 </select>
             </div>
         
-            <div class="form-group">
-                <label for="{{ form.phone_number.id_for_label }}">Phone Number:</label>
+            <div class="form-group inputField floating-label-group">
                 {{ form.phone_number }}
+                <label for="{{ form.phone_number.id_for_label }}">Phone Number:</label>
+                <span class="focus-border"></span>
             </div>
         
-            <div class="form-group">
-                <label for="{{ form.amount.id_for_label }}">Amount:</label>
+            <div class="form-group inputField floating-label-group readonly">
                 {{ form.amount }}
+                <label for="{{ form.amount.id_for_label }}">Amount:</label>
+                <span class="focus-border"></span>
             </div>
         
-            <button type="submit" id="submit-btn">Pay Now</button>
-            <button type="button" id="loading-btn" style="display: none;" disabled>
-                <span>Please Wait...<i class="fa fa-spinner fa-spin"></i></span>
+            <button type="submit" class="form-Btn modern w-100" id="submitButton">
+                <span class="btn-text">Pay Now</span>
+                <span class="btn-spinner" style="display: none;">
+                    <i class="fa fa-spinner fa-spin"></i> Processing...
+                </span>
             </button>
         </form>
+        <p class="form-footer-note">Secured Transaction</p>
     </div>
     <!-- Loading Spinner HTML -->
     <div id="loading-spinner" class="loading-spinner" style="display: none;">
@@ -184,9 +191,14 @@
 
             document.getElementById('loading-spinner').style.display = 'flex';
 
-            // Show the loading button and hide the submit button
-            $('#submit-btn').hide();
-            $('#loading-btn').show();
+            var $submitButton = $('#submitButton');
+            var $buttonText = $submitButton.find('.btn-text');
+            var $buttonSpinner = $submitButton.find('.btn-spinner');
+
+            // --- Show Loading State ---
+            $buttonText.hide();
+            $buttonSpinner.css('display', 'inline-flex');
+            $submitButton.prop('disabled', true).addClass('loading');
 
             // Disable the submit button to prevent multiple submissions
             $('button[type="submit"]').prop('disabled', true);
@@ -202,6 +214,9 @@
                 success: function(response) {
                     // Handle success response
                     document.getElementById('loading-spinner').style.display = 'none';
+                    $buttonSpinner.css('display', 'none');
+                    $submitButton.prop('disabled', false).addClass('loading');
+                    $buttonText.show();
                     if (response.success) {
                         // Construct the message for success
                         let message = `
@@ -228,9 +243,6 @@
                             // Redirect to the receipt page
                             window.location.href = '/receipt';
                             $('#form')[0].reset();
-                            // Hide the loading button and show the submit button again
-                            $('#loading-btn').hide();
-                            $('#submit-btn').show();
                         });
                     } else {
                         // Handle error response
@@ -247,11 +259,6 @@
                             $('#form')[0].reset(); // Reset the form fields
                         });
                     }
-                    // Hide the loading button and show the submit button again
-                    $('#loading-btn').hide();
-                    $('#submit-btn').show();
-                    // Re-enable the submit button
-                    $('button[type="submit"]').prop('disabled', false);
                 },
             });
         });

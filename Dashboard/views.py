@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import CustomUser, Transaction, Notification, MonnifyTransaction
 from .forms import BuyAirtimeForm, BankTransferForm, BuyDataForm, TVServiceForm, ElectricityBillForm, WaecPinGeneratorForm, JambRegistrationForm
 from django.http import JsonResponse
@@ -7,8 +7,7 @@ from django.core.paginator import Paginator
 from django.db import transaction as db_transaction
 from django.db.models import Sum, Q
 from django.core.exceptions import ValidationError
-from .forms import DepositForm, ReferralBonusTransferForm, NotificationForm
-from .utils import handle_first_deposit_reward
+from .forms import ReferralBonusTransferForm, NotificationForm
 from django.contrib import messages
 import json
 from django.utils.timezone import now
@@ -22,6 +21,12 @@ from .forms import NINForm, CustomUserForm
 
 
 # Create your views here.
+
+def is_admin(user):
+    return user.is_staff
+
+def access_denied(request):
+    return render(request, 'access_denied.html')
 
 def Home(request):
     return render(request, 'home.html')
@@ -161,25 +166,8 @@ def fund_wallet_form(request):
     return render(request, 'fund_wallet_form.html', {'form': form})
 
 
-
 @login_required
-def deposit_view(request):
-    if request.method == 'POST':
-        form = DepositForm(request.POST)
-        if form.is_valid():
-            amount = form.cleaned_data['amount']
-            request.user.deposit(amount)
-            handle_first_deposit_reward(request.user)
-
-            messages.success(request, f"₦{amount} deposited successfully!")
-            return redirect('index')  # or wherever you want
-
-    else:
-        form = DepositForm()
-
-    return render(request, 'deposit.html', {'form': form})
-
-@login_required
+@user_passes_test(is_admin, login_url='access-denied')
 def Bank_Transfer(request):
     form = BankTransferForm()
     return render(request, 'bank_transfer.html', {'form': form})
@@ -203,6 +191,7 @@ def transfer_referral_bonus_view(request):
     return render(request, 'bonus-to-wallet.html', {'form': form, 'user': request.user})
 
 @login_required
+@user_passes_test(is_admin, login_url='access-denied')
 def create_notification(request):
     if request.method == "POST":
         form = NotificationForm(request.POST)

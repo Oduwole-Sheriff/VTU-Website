@@ -44,19 +44,21 @@ class NINForm(forms.Form):
             raise forms.ValidationError('NIN should be 11 characters long.')
         return nin
     
-class DepositForm(forms.Form):
-    amount = forms.DecimalField(
-        max_digits=10, 
-        decimal_places=2, 
-        min_value=0.01,
-        label="Deposit Amount (₦)",
-        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter amount'})
-    )
-
 class BankTransferForm(forms.Form):
-    amount = forms.DecimalField(max_digits=10, decimal_places=2)
-    bank_code = forms.CharField(max_length=3)
-    account_number = forms.CharField(max_length=10)
+    amount = forms.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        min_value=0.01, # Add min_value validation here too
+        widget=forms.NumberInput(attrs={'class': 'form-control'})
+    )
+    bank_code = forms.CharField(
+        max_length=3,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    account_number = forms.CharField(
+        max_length=10, # Standard NGN account number length
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
     reference = forms.CharField(max_length=100, widget=forms.HiddenInput())
 
 class ReferralBonusTransferForm(forms.Form):
@@ -127,9 +129,9 @@ class BuyAirtimeForm(forms.ModelForm):
         model = BuyAirtime
         fields = ['network', 'data_type', 'mobile_number', 'amount', 'bypass_validator']
         widgets = {
-            'mobile_number': forms.TextInput(attrs={'maxlength': '11', 'minlength': '11'}),
-            'amount': forms.NumberInput(attrs={'min': '2', 'maxlength': '11'}),
-            'network': forms.TextInput(attrs={'readonly': 'readonly', 'id': 'network-name', 'name': 'network'}),  # Disable the Select field
+            'mobile_number': forms.TextInput(attrs={'maxlength': '11', 'minlength': '11', 'type': 'tel', 'placeholder': ''}),
+            'amount': forms.NumberInput(attrs={'min': '2', 'maxlength': '11', 'type': 'text', 'placeholder': ''}),
+            'network': forms.TextInput(attrs={'readonly': 'readonly', 'id': 'network-name', 'name': 'network', 'type': 'text', 'placeholder': ''}),  # Disable the Select field
             'data_type': forms.Select(attrs={'id': '', 'name': 'data_type'}),
             'bypass_validator': forms.CheckboxInput(attrs={'class': 'form-check-input'})
         }
@@ -225,10 +227,10 @@ class ElectricityBillForm(forms.ModelForm):
         model = ElectricityBill
         fields = ['serviceID', 'meter_number', 'meter_type', 'phone_number', 'amount']
         widgets = {
-            'serviceID': forms.TextInput(attrs={'id': 'serviceID', 'readonly': 'readonly'}),
-            'meter_number': forms.TextInput(attrs={'id':'meter_number','placeholder': 'Verify Your Meter Number'}),
-            'phone_number': forms.TextInput(attrs={'placeholder': 'Enter Mobile Number'}),
-            'amount': forms.NumberInput(attrs={'placeholder': 'Amount'}),
+            'serviceID': forms.TextInput(attrs={'id': 'serviceID', 'readonly': 'readonly', 'type': 'text', 'placeholder': ''}),
+            'meter_number': forms.TextInput(attrs={'id':'meter_number','placeholder': ' ', 'type': 'text',}),
+            'phone_number': forms.TextInput(attrs={'placeholder': ' ', 'type': 'text'}),
+            'amount': forms.NumberInput(attrs={'placeholder': ' ', 'type': 'tel'}),
             'meter_type': forms.Select(attrs={'id': 'meter-type'})
         }
 

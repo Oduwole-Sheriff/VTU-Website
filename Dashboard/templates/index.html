@@ -64,40 +64,43 @@
                         <p class="card-label">Total Referrals:</p>
                         <p class="card-value">{{ total_referrals }}</p>
                     </div>
-                </div>                
+                </div> 
+                
+                {% if user.is_superuser %}
 
-                <div class="card card-user-balance banner-badge bg_image">
-                    <div class="card-header">
-                        <i class="fas fa-scale-balanced card-icon"></i>
-                        <h3 class="card-title">Total User balance</h3>
+                    <div class="card card-user-balance banner-badge bg_image">
+                        <div class="card-header">
+                            <i class="fas fa-scale-balanced card-icon"></i>
+                            <h3 class="card-title">Total User balance</h3>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-label">Users Balance:</p>
+                            <p class="card-value">₦{{ total_balance|intcomma }}.00</p>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <p class="card-label">Users Balance:</p>
-                        <p class="card-value">₦{{ total_balance|intcomma }}.00</p>
-                    </div>
-                </div>
 
-                <div class="card card-registered-users banner-badge bg_image">
-                    <div class="card-header">
-                        <i class="fas fa-users card-icon"></i>
-                        <h3 class="card-title">Total Registered Users</h3>
+                    <div class="card card-registered-users banner-badge bg_image">
+                        <div class="card-header">
+                            <i class="fas fa-users card-icon"></i>
+                            <h3 class="card-title">Total Registered Users</h3>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-label">Total Users:</p>
+                            <p class="card-value">{{ total_users|intcomma }}</p>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <p class="card-label">Total Users:</p>
-                        <p class="card-value">{{ total_users|intcomma }}</p>
-                    </div>
-                </div>
 
-                <div class="card card-commission banner-badge bg_image">
-                    <div class="card-header">
-                        <i class="fas fa-percent card-icon"></i>
-                        <h3 class="card-title">Total User Commission</h3>
+                    <div class="card card-commission banner-badge bg_image">
+                        <div class="card-header">
+                            <i class="fas fa-percent card-icon"></i>
+                            <h3 class="card-title">Total User Commission</h3>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-label">Current Balance:</p>
+                            <p class="card-value">₦{{ total_bonus|intcomma }}</p>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <p class="card-label">Current Balance:</p>
-                        <p class="card-value">₦{{ total_bonus|intcomma }}</p>
-                    </div>
-                </div>
+                {% endif %}
             </div>
 
             <h4 class="color-white-title-home my-5">Quick Access</h4>
@@ -151,30 +154,33 @@
                        <p class="premium-service-label">Bonus To Wallet</p>
                    </div>
                </a>
-       
-               <a href="{% url 'Bank_Transfer' %}" class="premium-service-card">
-                    <div class="card-content">
-                       <img src="https://cdn3d.iconscout.com/3d/premium/preview/money-3d-icon-download-in-png-blend-fbx-gltf-file-formats--dollar-bundles-stack-bank-note-investment-pack-business-icons-6185113.png?f=webp&h=700" alt="Bank Transfer" class="premium-service-icon">
-                       <p class="premium-service-label">Bank Transfer</p>
-                   </div>
-               </a>
-       
-               <a href="{% url 'create_notification' %}" class="premium-service-card">
-                    <div class="card-content">
-                       <img src="https://img.freepik.com/free-vector/realistic-notification-bell-3d-icon-isolated-white-background-new-notification-concept-social-media-element_145391-1218.jpg" alt="Notify Users" class="premium-service-icon">
-                       <p class="premium-service-label">Notify Users</p>
-                   </div>
-               </a>
 
-               <a href="{% url 'fund_wallet_form' %}" class="premium-service-card">
-                    <div class="card-content">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-CBks1VTDc4Izl94SdT48vGPK0qZv-vE24Q&s" alt="fund-wallet-form" class="premium-service-icon">
-                        <p class="premium-service-label">fund wallet form</p>
-                    </div>
-                </a>
+               {% if user.is_superuser %}
+       
+                    <a href="{% url 'Bank_Transfer' %}" class="premium-service-card">
+                        <div class="card-content">
+                            <img src="https://cdn3d.iconscout.com/3d/premium/preview/money-3d-icon-download-in-png-blend-fbx-gltf-file-formats--dollar-bundles-stack-bank-note-investment-pack-business-icons-6185113.png?f=webp&h=700" alt="Bank Transfer" class="premium-service-icon">
+                            <p class="premium-service-label">Bank Transfer</p>
+                        </div>
+                    </a>
+            
+                    <a href="{% url 'create_notification' %}" class="premium-service-card">
+                        <div class="card-content">
+                            <img src="https://img.freepik.com/free-vector/realistic-notification-bell-3d-icon-isolated-white-background-new-notification-concept-social-media-element_145391-1218.jpg" alt="Notify Users" class="premium-service-icon">
+                            <p class="premium-service-label">Notify Users</p>
+                        </div>
+                    </a>
+
+                    <a href="{% url 'fund_wallet_form' %}" class="premium-service-card">
+                        <div class="card-content">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-CBks1VTDc4Izl94SdT48vGPK0qZv-vE24Q&s" alt="fund-wallet-form" class="premium-service-icon">
+                            <p class="premium-service-label">fund wallet form</p>
+                        </div>
+                    </a>
+                {% endif %}
    
                 <a href="{% url 'transaction_history' %}" class="premium-service-card">
-                        <div class="card-content">
+                    <div class="card-content">
                         <img src="https://cdn3d.iconscout.com/3d/premium/thumb/transaction-book-3d-icon-download-in-png-blend-fbx-gltf-file-formats--account-accounting-financial-bank-shopping-retail-pack-e-commerce-icons-5175186.png" alt="Transactions" class="premium-service-icon">
                         <p class="premium-service-label">Transactions</p>
                     </div>

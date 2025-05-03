@@ -19,7 +19,7 @@ from django.core.mail import send_mail
 from django.db.models import Sum
 from django.conf import settings
 
-from api.serializer import RegisterSerializer, LoginSerializer, CustomUserSerializer, BankTransferSerializer, DepositSerializer, WithdrawSerializer, TransferSerializer, TransactionSerializer, AccountDetailsSerializer, BuyAirtimeSerializer, BuyDataSerializer, TVServiceSerializer, ElectricityBillSerializer, WaecPinGeneratorSerializer, JambRegistrationSerializer
+from api.serializer import RegisterSerializer, LoginSerializer, CustomUserSerializer, BankTransferSerializer, WithdrawSerializer, TransferSerializer, TransactionSerializer, AccountDetailsSerializer, BuyAirtimeSerializer, BuyDataSerializer, TVServiceSerializer, ElectricityBillSerializer, WaecPinGeneratorSerializer, JambRegistrationSerializer
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework import status
@@ -201,41 +201,6 @@ def _get_account_details(user):
             account_details.append(account_info)
     return account_details
 
-
-    
-class DepositAPIView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request):
-        serializer = DepositSerializer(data=request.data)
-
-        if serializer.is_valid():
-            amount = serializer.validated_data['amount']
-            user = request.user
-
-            try:
-                user.deposit(amount)
-                handle_first_deposit_reward(user)
-
-                return Response({
-                    "status": True,
-                    "message": f"₦{amount} deposited successfully.",
-                    "new_balance": str(user.balance),
-                    "bonus": str(user.bonus),
-                    "referral_bonus": str(user.referral_bonus),
-                }, status=status.HTTP_200_OK)
-
-            except Exception as e:
-                return Response({
-                    "status": False,
-                    "message": "Deposit failed",
-                    "error": str(e),
-                }, status=status.HTTP_400_BAD_REQUEST)
-
-        return Response({
-            "status": False,
-            "errors": serializer.errors
-        }, status=status.HTTP_400_BAD_REQUEST)
 
 class TransferBonusAPIView(APIView):
     permission_classes = [IsAuthenticated]

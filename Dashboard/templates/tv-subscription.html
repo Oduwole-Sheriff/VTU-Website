@@ -23,57 +23,81 @@
         <!-- Hidden field for TV service -->
         <input type="hidden" id="tv_service" name="tv_service" value="">
 
-        <label for="smartcard-number" id="smartcard-label-DSTV" style="display: none;">DStv Smartcard Number:</label>
-        <input type="text" placeholder="Enter your DStv Smartcard Number" id="smartcard-number-DSTV" name="smartcard-number" style="display: none;" required>
-
-        <label for="iuc-number" id="smartcard-label-GOTV" style="display: none;">GOtv IUC NUMBER:</label>
-        <input type="text" placeholder="Enter your GOtv IUC NUMBER" id="smartcard-number-GOTV" name="iuc-number" style="display: none;" required>
-
-        <label for="startimes-smartcard" id="smartcard-label-STARTIMES" style="display: none;">Startimes Smartcard / eWallet Number:</label>
-        <input type="text" placeholder="Enter your Startimes Smartcard / eWallet Number" id="smartcard-number-STARTIMES" name="startimes-smartcard" style="display: none;" required>
+        <div class="inputField floating-label-group readonly">
+            <input type="text" placeholder=" " id="smartcard-number-DSTV" name="smartcard-number" style="display: none;" required>  
+            <label for="smartcard-number" id="smartcard-label-DSTV" style="display: none;">DStv Smartcard Number:</label>
+            <span class="focus-border"></span>  
+        </div>
         
-        <label for="action" id="action-label">What do you want to do?</label>
-        <select id="action" name="action" required>
-            <option value="" disabled selected>Select an option</option>
-            <option value="renew">Renew Current Bouquet</option>
-            <option value="change">Change Bouquet</option>
-        </select>
+        <div class="inputField floating-label-group readonly">
+            <input type="text" placeholder=" " id="smartcard-number-GOTV" name="iuc-number" style="display: none;" required>    
+            <label for="iuc-number" id="smartcard-label-GOTV" style="display: none;">GOtv IUC NUMBER:</label>
+            <span class="focus-border"></span>  
+        </div>
+       
+        <div class="inputField floating-label-group readonly">
+            <input type="text" placeholder=" " id="smartcard-number-STARTIMES" name="startimes-smartcard" style="display: none;" required> 
+            <label for="startimes-smartcard" id="smartcard-label-STARTIMES" style="display: none;">Startimes Smartcard / eWallet Number:</label>
+            <span class="focus-border"></span>     
+        </div>
+        
+        <div class="inputField select-group">
+            <label for="action" id="action-label">What do you want to do?</label>
+            <select id="action" name="action" required>
+                <option value="" disabled selected>Select an option</option>
+                <option value="renew">Renew Current Bouquet</option>
+                <option value="change">Change Bouquet</option>
+            </select>
+        </div>
 
-        <label for="bouquet" id="bouquet-label" style="display: none;">Bouquet:</label>
-        <select id="bouquet" name="bouquet" style="display: none;" required>
-            <option value="" disabled selected>Select a bouquet</option>
-            <!-- Options will be dynamically populated -->
-        </select>
+        <div class="inputField select-group">
+            <label for="bouquet" id="bouquet-label" style="display: none;">Bouquet:</label>
+            <select id="bouquet" name="bouquet" style="display: none;" required>
+                <option value="" disabled selected>Select a bouquet</option>
+                <!-- Options will be dynamically populated -->
+            </select>
+        </div>
 
-        <label for="type" id="type-label" style="display: none;">TYPE</label>
-        <select id="type" name="type" style="display: none;" required>
-            <option value="" disabled selected>Select a type</option>
-            <option value="full_3">Full - N8,400 - 3 Months</option>
-            <option value="mobile_only_3">Mobile Only - N3,800 - 3 Months</option>
-            <option value="sports_mobile_only_3">Sports Mobile Only - N12,000 - 3 Months</option>
-            <option value="sports-only-1">Sports Only - N3,200</option>
-            <option value="sports-only-3">Sports Only 3 months - N9,600</option>
-            <option value="full-sports-mobile-only-3">Full Sports Mobile Only - 3 months - N16,200</option>
-            <option value="mobile-only-6">Mobile Only - N6,700 - 6 Months</option>
-            <option value="full-only-6">Full - 6 months - 14,700</option>
-            <option value="full-sports-mobile-only-6">Full Sports Mobile Only - 6 months - N32,400</option>
-            <option value="sports-mobile-only-6">Sports Mobile Only - 6 months - N24,000</option>
-            <option value="sports-only-6">Sports Only - 6 months - N18,200</option>
-        </select>
+        <div class="inputField select-group">
+            <label for="type" id="type-label" style="display: none;">TYPE</label>
+            <select id="type" name="type" style="display: none;" required>
+                <option value="" disabled selected>Select a type</option>
+                <option value="full_3">Full - N8,400 - 3 Months</option>
+                <option value="mobile_only_3">Mobile Only - N3,800 - 3 Months</option>
+                <option value="sports_mobile_only_3">Sports Mobile Only - N12,000 - 3 Months</option>
+                <option value="sports-only-1">Sports Only - N3,200</option>
+                <option value="sports-only-3">Sports Only 3 months - N9,600</option>
+                <option value="full-sports-mobile-only-3">Full Sports Mobile Only - 3 months - N16,200</option>
+                <option value="mobile-only-6">Mobile Only - N6,700 - 6 Months</option>
+                <option value="full-only-6">Full - 6 months - 14,700</option>
+                <option value="full-sports-mobile-only-6">Full Sports Mobile Only - 6 months - N32,400</option>
+                <option value="sports-mobile-only-6">Sports Mobile Only - 6 months - N24,000</option>
+                <option value="sports-only-6">Sports Only - 6 months - N18,200</option>
+            </select>
+        </div>
 
-        <label for="phone-number">Phone Number:</label>
-        <input type="tel" placeholder="Enter Mobile Number" id="phone-number" name="phone-number" required>
+        <div class="inputField floating-label-group">
+            <input type="tel" placeholder=" " id="phone-number" name="phone-number" required>
+            <label for="phone-number">Phone Number:</label>
+            <span class="focus-border"></span> 
+        </div>
 
-        <label for="amount">Amount:</label>
-        <input type="number" placeholder="Amount" id="amount" name="amount" required>
+        <div class="inputField floating-label-group readonly">
+            <input type="text" placeholder=" " id="amount" name="amount" required>
+            <label for="amount">Amount:</label>
+            <span class="focus-border"></span> 
+        </div>
 
         <!-- Submit Button with Loading State -->
-        <button type="submit" class="form-Btn" id="submit-btn">Submit</button>
-        <button type="button" id="loading-btn" class="form-Btn" style="display: none;" disabled>
-            <span>Please Wait...<i class="fa fa-spinner fa-spin"></i></span>
+        <button type="submit" class="form-Btn modern w-100" id="submitButton">
+            <span class="btn-text">Submit</span>
+            <span class="btn-spinner" style="display: none;">
+                <i class="fa fa-spinner fa-spin"></i> Processing...
+            </span>
         </button>
 
     </form>
+    <p class="form-footer-note">Secured Transaction</p>
 </div>
 
     <!-- Loading Spinner HTML -->
@@ -218,8 +242,14 @@
             e.preventDefault(); // Prevent the default form submission
 
             // Show the loading button and hide the submit button
-            $('#submit-btn').hide();
-            $('#loading-btn').show();
+            var $submitButton = $('#submitButton');
+            var $buttonText = $submitButton.find('.btn-text');
+            var $buttonSpinner = $submitButton.find('.btn-spinner');
+
+            // --- Show Loading State ---
+            $buttonText.hide();
+            $buttonSpinner.css('display', 'inline-flex');
+            $submitButton.prop('disabled', true).addClass('loading');
 
             // Collect form data
             var formData = {
@@ -259,8 +289,10 @@
                                 <strong>Transaction ID:</strong> ${response.transactionId}<br>
                             `
                         }).then(() => {
-                            $('#loading-btn').hide();  // Hide loading button after success/error
-                            $('#submit-btn').show();   // Show original submit button again
+                            $buttonSpinner.css('display', 'none');
+                            $submitButton.prop('disabled', false).addClass('loading');
+                            $buttonText.show();   // Show original submit button again
+                            window.location.href = "{% url 'index' %}";
                         });
                         return true;
                     } else {
@@ -272,8 +304,9 @@
                                 <strong>Transaction Details:</strong> ${response.message} <br>
                             `
                         }).then(() => {
-                            $('#loading-btn').hide();  // Hide loading button after success/error
-                            $('#submit-btn').show();   // Show original submit button again
+                            $buttonSpinner.css('display', 'none');
+                            $submitButton.prop('disabled', false).addClass('loading');
+                            $buttonText.show();   // Show original submit button again
                         });
                         return false;
                     }
@@ -296,8 +329,9 @@
                         icon: 'error',
                         confirmButtonText: 'OK'
                     }).then(() => {
-                        $('#loading-btn').hide();  // Hide loading button after success/error
-                        $('#submit-btn').show();   // Show original submit button again
+                        $buttonSpinner.css('display', 'none');
+                        $submitButton.prop('disabled', false).addClass('loading');
+                        $buttonText.show();   // Show original submit button again
                     });
                     $('#tvForm')[0].reset(); 
                 }

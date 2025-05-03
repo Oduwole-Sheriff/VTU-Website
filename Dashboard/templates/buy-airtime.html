@@ -14,7 +14,7 @@
     </div>
 
     <!-- Hidden form that will be displayed when a square is clicked -->
-    <div class="form-container" id="form-container">
+    <div class="form-container modern" id="form-container">
         <form class="formStyle step" id="buy-airtime-form" novalidate onsubmit="return false">
             {% csrf_token %}
             <article class="formHeading">
@@ -24,31 +24,34 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <div class="inputField">
-                        <label>Network</label>
+                    <div class="inputField floating-label-group readonly">
                         {{ form.network }}
                         <input type="hidden" id="network" name="network">
+                        <label>Network</label>
+                        <span class="focus-border"></span>
                     </div>
                 </div>
 
                 <div class="col-md-12">
-                    <div class="inputField inputFieldDropdown">
+                    <div class="inputField select-group inputFieldDropdown">
                         <label>Airtime Type</label>
                         {{ form.data_type }}
                     </div>
                 </div>
 
                 <div class="col-md-12">
-                    <div class="inputField">
-                        <label>Mobile Number</label>
+                    <div class="inputField floating-label-group">
                         {{ form.mobile_number }}
+                        <label>Mobile Number</label>
+                        <span class="focus-border"></span>
                     </div>
                 </div>
 
                 <div class="col-md-12">
-                    <div class="inputField">
-                        <label>Amount</label>
+                    <div class="inputField floating-label-group readonly">
                         {{ form.amount }}
+                        <label>Amount</label>
+                        <span class="focus-border"></span>
                     </div>
                 </div>
 
@@ -60,22 +63,23 @@
                     </div>
                 </div>
 
-                <div class="col-md-12">
-                    <button type="submit" class="form-Btn" id="submit-btn">
-                        Buy Now
-                    </button>
-                    <button type="button" class="form-Btn" id="loading-btn" style="display: none;" disabled>
-                        <span>Please Wait...<i class="fa fa-spinner fa-spin"></i></span>
-                    </button>
-                </div>
+                <button type="submit" class="form-Btn modern w-100" id="submitButton">
+                    <span class="btn-text">Purchase Airtime</span>
+                    <span class="btn-spinner" style="display: none;">
+                        <i class="fa fa-spinner fa-spin"></i> Processing...
+                    </span>
+                </button>
             </div>
         </form>
-        <!-- Loading Spinner HTML -->
-        <div id="loading-spinner" class="loading-spinner" style="display: none;">
-            <div class="spinner"></div>
-            <p>Please wait...</p>
-        </div>
+        <p class="form-footer-note">Secured Transaction</p>
     </div>
+
+    <!-- Loading Spinner HTML -->
+    <div id="loading-spinner" class="loading-spinner" style="display: none;">
+        <div class="spinner"></div>
+        <p>Please wait...</p>
+    </div>
+
 </div>
 
 <script src="{% static 'AirtimeCSS/script.js' %}"></script>
@@ -102,9 +106,14 @@
 
             document.getElementById('loading-spinner').style.display = 'flex';
 
-            // Show the loading button and hide the submit button
-            $('#submit-btn').hide();
-            $('#loading-btn').show();
+            var $submitButton = $('#submitButton');
+            var $buttonText = $submitButton.find('.btn-text');
+            var $buttonSpinner = $submitButton.find('.btn-spinner');
+
+            // --- Show Loading State ---
+            $buttonText.hide();
+            $buttonSpinner.css('display', 'inline-flex');
+            $submitButton.prop('disabled', true).addClass('loading');
 
             // Serialize the form data
             var formData = $(this).serializeArray();
@@ -128,7 +137,7 @@
                     'X-CSRFToken': csrfToken  // Add CSRF token to the request headers
                 },
                 success: function(response) {
-                    console.log(response)
+                    // console.log(response)
                     if (response.status === 'success') {
                         document.getElementById('loading-spinner').style.display = 'none';
                         // Success alert with remaining balance
@@ -154,9 +163,10 @@
                             $('#buy-airtime-form')[0].reset();  // This clears all form fields
                         });
                     }
-                    // Hide the loading button and show the submit button again
-                    $('#loading-btn').hide();
-                    $('#submit-btn').show();
+                    document.getElementById('loading-spinner').style.display = 'none';
+                    $buttonSpinner.css('display', 'none');
+                    $submitButton.prop('disabled', false).addClass('loading');
+                    $buttonText.show();
                 },
                 error: function(xhr, status, error) {
                     document.getElementById('loading-spinner').style.display = 'none';
@@ -195,9 +205,10 @@
                         $('#buy-airtime-form')[0].reset();  // This clears all form fields
                     });
 
-                    // Hide the loading button and show the submit button again
-                    $('#loading-btn').hide();
-                    $('#submit-btn').show();
+                    document.getElementById('loading-spinner').style.display = 'none';
+                    $buttonSpinner.css('display', 'none');
+                    $submitButton.prop('disabled', false).addClass('loading');
+                    $buttonText.show();
                 }
             });
         });

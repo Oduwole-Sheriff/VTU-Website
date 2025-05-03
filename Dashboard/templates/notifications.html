@@ -2,12 +2,75 @@
 {% load static %}
 {% block content %}
 
-<h2>Create Notification</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit" class="btn btn-primary">Send</button>
-</form>
+<link rel="stylesheet" href="{% static 'TransferForm/style.css' %}">
 
+<div class="container">
+  <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-6">
+          <div class="transfer-form-container">
+              <div class="transfer-form-header">
+                  <h2 class="color-white-title-home">Create Notification</h2>
+              </div>
+
+              <form method="post" id="notification-form" class="mt-3">
+                  {% csrf_token %}
+
+                  {% if form.non_field_errors %}
+                      <div class="alert alert-danger" role="alert">
+                          {{ form.non_field_errors }}
+                      </div>
+                  {% endif %}
+
+                  <div class="mb-3">
+                      <label for="{{ form.title.id_for_label }}" class="form-label color-white-title-home">{{ form.title.label }}</label>
+                      {{ form.title }}
+                      {% for error in form.title.errors %}
+                          <div class="invalid-feedback d-block">
+                              {{ error }}
+                          </div>
+                      {% endfor %}
+                  </div>
+
+                  <div class="mb-3">
+                      <label for="{{ form.message.id_for_label }}" class="form-label color-white-title-home">{{ form.message.label }}</label>
+                      {{ form.message }}
+                      {% for error in form.message.errors %}
+                          <div class="invalid-feedback d-block">
+                              {{ error }}
+                          </div>
+                      {% endfor %}
+                  </div>
+
+                  <div class="form-check mb-3">
+                      {{ form.send_to_all }}
+                      <label class="form-check-label" for="{{ form.send_to_all.id_for_label }}">
+                          {{ form.send_to_all.label }}
+                      </label>
+                      {% for error in form.send_to_all.errors %}
+                          <div class="invalid-feedback d-block">
+                              {{ error }}
+                          </div>
+                      {% endfor %}
+                  </div>
+
+                  <div class="mb-3 user-field-container">
+                      <label for="{{ form.user.id_for_label }}" class="form-label">{{ form.user.label }}</label>
+                      {{ form.user }}
+                      {% for error in form.user.errors %}
+                          <div class="invalid-feedback d-block">
+                              {{ error }}
+                          </div>
+                      {% endfor %}
+                  </div>
+
+
+                  <div class="d-grid gap-2 mt-4">
+                       <button type="submit" class="btn-custom-send">Send Notification</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
 
 {% endblock content %}

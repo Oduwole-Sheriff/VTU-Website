@@ -3395,3 +3395,95 @@ Not Found: /favicon.ico
 "GET /favicon.ico HTTP/1.1" 404 11535
 Not Found: /favicon.ico
 "GET /favicon.ico HTTP/1.1" 404 11535
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11535
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11535
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11535
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11535
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11535
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11535
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11535
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11535
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11535
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11554
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11554
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1908
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1908
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1908
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1908
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11554
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1908
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11554
+Forbidden: /api/login/
+"POST /api/login/ HTTP/1.1" 403 128
+Forbidden: /api/login/
+"POST /api/login/ HTTP/1.1" 403 128
+Forbidden: /api/login/
+"POST /api/login/ HTTP/1.1" 403 128
+Forbidden: /api/login/
+"POST /api/login/ HTTP/1.1" 403 128
+Forbidden: /api/login/
+"POST /api/login/ HTTP/1.1" 403 128
+Forbidden: /api/login/
+"POST /api/login/ HTTP/1.1" 403 128
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1908
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1908
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11554
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1908
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11554
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1908
+Forbidden: /api/buy-airtime/
+"POST /api/buy-airtime/ HTTP/1.1" 403 128
+Forbidden (Origin checking failed - https://0fcd-102-89-23-174.ngrok-free.app does not match any trusted origins.): /logout/
+"POST /logout/ HTTP/1.1" 403 2574
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11554
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11554
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1908
+Forbidden (Origin checking failed - https://0e4a-102-89-23-174.ngrok-free.app does not match any trusted origins.): /logout/
+"POST /logout/ HTTP/1.1" 403 2574
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11554
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11554
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11554
+Forbidden: /api/electricity-bill/
+"POST /api/electricity-bill/ HTTP/1.1" 403 128
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1908
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1908
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11554
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11554
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11554
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11535
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11535
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 11646
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 11646
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11535
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11535

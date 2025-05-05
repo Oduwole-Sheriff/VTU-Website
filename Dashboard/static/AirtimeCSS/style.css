@@ -319,7 +319,7 @@ body {
 /* Responsive Adjustments */
 @media (max-width: 480px) {
     body { padding: 10px; }
-    .form-container.modern { padding: 30px 20px; border-radius: 12px; max-width: 100%; width: 390px;}
+    .form-container.modern { padding: 30px 20px; border-radius: 12px; max-width: 90%; width: 390px;}
     .floating-label-group input, .select-group select { font-size: 1.2rem; }
     /* .floating-label-group label { font-size: 1.4rem; }
     .floating-label-group input:focus + label, */

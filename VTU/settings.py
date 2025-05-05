@@ -44,7 +44,11 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*', 'https://bigsheriffdata.onrender.com/']
+ALLOWED_HOSTS = ['https://bigsheriffdata.onrender.com']
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://bigsheriffdata.onrender.com',
+]
 
 
 # Application definition

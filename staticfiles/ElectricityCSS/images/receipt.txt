@@ -1,0 +1,27 @@
+Product Name: Ikeja Electric Payment - PHCN
+
+Meter Number: 1111111111111
+
+Amount Paid: 500
+
+Transaction Status: delivered
+
+Transaction Type: Electricity Bill
+
+Payment Date: 2/16/2025, 9:16:14 PM
+
+Details: TRANSACTION SUCCESSFUL
+
+Token: Token : 26362054405982757802
+
+Token Amount: 1860.47
+
+Units: 79.9 kWh
+
+Exchange Reference: 40532461
+
+Tariff: R2 SINGLE PHASE RESIDENTIAL
+
+Transaction ID: 17397369745235128319432766
+
+RequestId: 202502162116143286524214523d4189a2-36e8-4a14-9cea-82c9dc04326f

@@ -1,0 +1,207 @@
+/* DOMAIN CSS */
+
+.domain-con {
+    padding: 20px 40px;
+    background: var(--secondary--color);
+}
+
+.domain-box {
+    gap: 40px;
+    display: grid;
+    grid-template-columns: 49.457% 48.3%;
+}
+
+.domains-price-con ul {
+    gap: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.domains-price-con {
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    display: flex;
+}
+
+.domains-price-con ul li span {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 18px;
+    margin-left: 15px;
+    display: inline-block;
+    color: var(--accent--color);
+}
+
+.domain-serach-con {
+    gap: 10px;
+    display: flex;
+}
+
+.domains-price-con ul li {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    padding: 17px 15.5px;
+    justify-content: center;
+    background: var(--secondary--color);
+    border: 1px solid rgb(0 123 255 / 20%);
+}
+
+.domain-serach-con input {
+    width: 69.4%;
+    font-size: 16px;
+    line-height: 16px;
+    padding: 18px 25px 19px 53px;
+    border-radius: 10px;
+    color: var(--text--color);
+    border: 1px solid rgb(0 123 255 / 20%);
+    background: var(--secondary--color) url(../images/domain-input-icon.png) no-repeat 2.5% 50.1%;
+}
+
+.domain-serach-con input:focus,
+.domain-search-btns button:focus {
+    outline: none;
+}
+
+.domain-serach-con input::placeholder {
+    font-size: 16px;
+    line-height: 16px;
+    color: var(--text--color);
+}
+
+.domain-search-btns {
+    gap: 10px;
+    display: flex;
+}
+
+.domain-search-btns button {
+    width: 130px;
+    height: 60px;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 16px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.search-btn {
+    border: none;
+    color: var(--secondary--color);
+    background: var(--accent--color);
+}
+
+.search-btn:hover {
+    background: var(--primary--color);
+}
+
+.transfer-btn {
+    background: var(--secondary--color);
+    color: var(--primary--color);
+    border: 1px solid var(--primary--color);
+}
+
+.transfer-btn:hover {
+    color: var(--secondary--color);
+    background: var(--primary--color);
+    border: 1px solid var(--primary--color);
+}
+
+.pricing-btn a {
+    font-size: 16px;
+    line-height: 16px;
+    padding: 21px 10px;
+    border-radius: 10px;
+    text-decoration: none;
+    display: inline-block;
+    border: 1px solid var(--accent--color);
+    background: var(--secondary--color);
+}
+
+.pricing-btn a:hover {
+    color: var(--secondary--color);
+    background: var(--accent--color);
+}
+
+/* DOMAIN CSS */
+
+@media only screen and (max-width: 1880px) {
+    .domain-box {
+        grid-template-columns: 39% 58.3%;
+    }
+}
+
+@media only screen and (max-width: 1600px) {
+    .domains-price-con ul li {
+        padding: 17px 5.5px;
+    }
+    .pricing-btn a {
+        font-size: 14px;
+        line-height: 14px;
+        padding: 21px 10px;
+    }
+}
+
+@media only screen and (max-width: 1440px) {
+    .domain-box {
+        gap: 20px;
+        grid-template-columns: 100%;
+    }
+    .domain-serach-con input {
+        width: 89.4%;
+    }
+    .domains-price-con {
+        justify-content: center;
+    }
+}
+
+@media only screen and (max-width: 1199px) {
+    .domain-search-btns button {
+        height: 52px;
+    }
+    .domain-serach-con input {
+        padding: 14px 25px 15px 53px;
+    }
+}
+
+@media only screen and (max-width: 991px) {
+    .domains-price-con {
+        display: none;
+    }
+    .domain-con {
+        padding: 20px 15px;
+    }
+    .domain-search-btns button {
+        height: 48px;
+    }
+    .domain-serach-con input {
+        padding: 12px 25px 13px 53px;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .domain-search-btns button {
+        height: 48px;
+        width: 100px;
+    }
+}
+
+@media only screen and (max-width: 575px) {
+    .domain-serach-con {
+        flex-direction: column;
+    }
+    .domain-search-btns {
+        justify-content: center;
+    }
+    .domain-search-btns button {
+        height: 42px;
+        width: 100px;
+        font-size: 14px;
+        line-height: 14px;
+    }
+    .domain-serach-con input {
+        width: 100%;
+        padding: 10px 25px 10px 42px;
+    }
+}

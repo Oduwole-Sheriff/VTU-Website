@@ -1,0 +1,250 @@
+/* --- Variable Definitions --- */
+:root {
+    --primary-color: #8e44ad; /* Purple */
+    --primary-light: #9b59b6;
+    --secondary-color: #3498db; /* Blue */
+    --gradient-start: #a569bd;
+    --gradient-end: #5e3370;
+    --background-color: #f4f6f9;
+    --card-background: #ffffff;
+    --text-dark: #34495e;
+    --text-light: #7f8c8d;
+    --text-white: #ffffff;
+    --input-border-color: #bdc3c7;
+    --input-focus-color: var(--primary-color);
+    --font-family: 'Montserrat', sans-serif;
+}
+
+/* --- Basic Reset & Body Styling --- */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--background-color);
+    /* Subtle gradient background for the page */
+    background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    color: var(--text-dark);
+}
+
+/* --- Form Card Styling --- */
+.form-container-card {
+    background-color: var(--card-background);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    max-width: 480px;
+    width: 100%;
+    overflow: hidden; /* Clip header gradient */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-container-card:hover {
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+.form-header {
+    background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+    color: var(--text-white);
+    padding: 30px 35px 25px;
+    text-align: center;
+}
+
+.form-header h2 {
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 1.6rem;
+}
+
+.form-header p {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.funding-form {
+    padding: 35px 40px;
+}
+
+/* --- Input Group Styling (General) --- */
+.input-group {
+    margin-bottom: 30px;
+    position: relative;
+}
+
+/* --- Floating Label Input Styling --- */
+.floating-label label {
+    position: absolute;
+    top: 15px;
+    left: 10px;
+    color: var(--text-light);
+    font-size: 1rem;
+    pointer-events: none;
+    transition: all 0.2s ease-out;
+    background-color: var(--card-background);
+    padding: 0 5px;
+}
+
+/* Style inputs within floating label groups */
+.floating-label input[type="text"],
+.floating-label input[type="date"] {
+    width: 100%;
+    padding: 14px 10px;
+    border: 1px solid var(--input-border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: var(--font-family);
+    color: var(--text-dark);
+    background-color: transparent;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Float label up when input is focused or has content */
+.floating-label input:focus + label,
+.floating-label input:not(:placeholder-shown) + label {
+    top: -10px;
+    left: 10px;
+    font-size: 0.75rem;
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+/* Focus style for inputs */
+.floating-label input:focus {
+    outline: none;
+    border-color: var(--input-focus-color);
+    box-shadow: 0 0 0 2px rgba(142, 68, 173, 0.1);
+}
+
+/* Special handling for date input label */
+/* (Placeholder logic differs, might need adjustments) */
+.floating-label input[type="date"] {
+    color: var(--text-light); /* Default color before selection */
+}
+.floating-label input[type="date"]:valid {
+    color: var(--text-dark); /* Color when a valid date is selected */
+}
+/* Apply floating state also when date is valid (has value) */
+.floating-label input[type="date"]:valid + label {
+     top: -10px;
+     left: 10px;
+     font-size: 0.75rem;
+     color: var(--primary-color);
+     font-weight: 500;
+}
+
+/* --- Select Dropdown Styling --- */
+/* Label specifically for the select dropdown */
+.select-label {
+    display: block;
+    margin-bottom: 8px; /* Space between label and select */
+    color: var(--primary-color); /* Match focus color for consistency */
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+/* Styling the select element itself */
+select {
+    width: 100%;
+    padding: 14px 10px;
+    border: 1px solid var(--input-border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: var(--font-family);
+    color: var(--text-dark);
+    background-color: var(--card-background); /* Ensure bg matches */
+    cursor: pointer;
+    /* Attempt to style dropdown arrow (limited cross-browser support) */
+    appearance: none; /* Remove default arrow */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    /* Add custom arrow using background image */
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%2334495e" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 20px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+select:focus {
+    outline: none;
+    border-color: var(--input-focus-color);
+    box-shadow: 0 0 0 2px rgba(142, 68, 173, 0.1);
+}
+
+/* Style for the placeholder option */
+select:invalid {
+    color: var(--text-light);
+}
+
+/* --- Conditional Fields Styling --- */
+.conditional-field {
+    /* Overriding margin if needed when hidden/shown */
+    transition: opacity 0.3s ease, max-height 0.3s ease; /* Optional: Animate show/hide */
+    overflow: hidden; /* Needed for max-height animation */
+}
+.conditional-field[style*="display: none"] {
+   margin-bottom: 0; /* Remove margin when hidden */
+   /* Optional animation setup */
+   /* opacity: 0; */
+   /* max-height: 0; */
+}
+.conditional-field[style*="display: block"] {
+   margin-bottom: 30px; /* Restore margin when shown */
+   /* Optional animation setup */
+   /* opacity: 1; */
+   /* max-height: 150px; /* Adjust as needed */ */
+}
+
+/* --- Submit Button Styling --- */
+.submit-button {
+    display: block;
+    width: 100%;
+    padding: 15px 20px;
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    color: var(--text-white);
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    font-family: var(--font-family);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    box-shadow: 0 5px 15px rgba(142, 68, 173, 0.3);
+}
+
+.submit-button:hover {
+    background: linear-gradient(to right, var(--primary-light), #4fa9e0);
+    box-shadow: 0 8px 20px rgba(142, 68, 173, 0.4);
+    transform: translateY(-2px);
+}
+
+.submit-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 3px 10px rgba(142, 68, 173, 0.3);
+}
+
+/* --- Responsiveness --- */
+@media (max-width: 500px) {
+    .funding-form {
+        padding: 25px 20px;
+    }
+    .form-header {
+        padding: 20px 25px 15px;
+    }
+    .form-header h2 {
+        font-size: 1.4rem;
+    }
+     /* Adjust padding for select on smaller screens if needed */
+    select {
+        padding: 14px 8px;
+        background-position: right 8px center;
+    }
+}

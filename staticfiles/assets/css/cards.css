@@ -1,0 +1,257 @@
+/* Cards Grid Layout */
+.cards-grid {
+    display: grid;
+    /* Responsive grid: minimum 250px width, max 1fr (equal distribution) */
+    grid-template-columns: repeat(auto-fit, minmax(370px, 1fr));
+    gap: 20px; /* Spacing between cards */
+}
+
+/* Individual Card Styling */
+.card {
+    background-color: #ffffff00; /* White card background */
+    background-image: url(http://127.0.0.1:8000/static/assets/images/bg/01.jpg);
+    box-sizing: border-box !important;
+    background-position-x: 40% !important;
+    background-position-y: 40% !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+    border-radius: 10px !important; /* Rounded corners */
+    padding: 30px !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08); /* Subtle shadow */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column; /* Stack header and body vertically */
+    min-height: 150px; /* Minimum height for consistency */
+    margin-top: 0 !important;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: translateY(-3px); /* Slight lift on hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12); /* Enhanced shadow on hover */
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 3px solid #eee; /* Separator */
+    border-left: 5px solid #eee; /* Separator */
+    border-top: 1.0px solid #eee; /* Separator */
+    border-right: 1.5px solid #eee; /* Separator */
+    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-right: 10px;
+    border-radius: 8px !important;
+}
+
+.card-icon {
+    font-size: 2.0rem;
+    margin-right: 15px;
+    color: #007bff; /* Default blue icon color */
+    width: 30px; /* Consistent icon width */
+    text-align: center;
+}
+
+.card-title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0; /* Remove default heading margin */
+}
+
+.card-body {
+    flex-grow: 1; /* Allow body to take remaining space */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content vertically if needed */
+}
+
+.card-label {
+    font-size: 1.2rem;
+    color: #ffffff;
+    margin-bottom: 5px;
+}
+
+.card-value {
+    font-size: 2.6rem; /* Larger font for the value */
+    font-weight: 700;
+    color: #fffefe;
+    line-height: 1.2;
+}
+
+/* Optional: Specific card icon colors (examples) */
+.card-wallet .card-icon { color: #28a745; } /* Green */
+.card-referral .card-icon { color: #ffc107; } /* Yellow */
+.card-total-referral .card-icon { color: #17a2b8; } /* Teal */
+.card-user-balance .card-icon { color: #6f42c1; } /* Purple */
+.card-registered-users .card-icon { color: #fd7e14; } /* Orange */
+.card-commission .card-icon { color: #dc3545; } /* Red */
+
+@media (max-width: 768px) {
+    .cards-grid {
+        grid-template-columns: 1fr; /* Stack cards vertically */
+    }
+}
+
+/* Table Styling */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #ffffff00;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden; /* Ensures border radius clips content */
+ }
+ .data-table th, .data-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+ }
+ .data-table th {
+    background-color: #ecf0f1; /* Light grey header */
+    color: #34495e; /* Dark text */
+    font-weight: bold;
+ }
+ .data-table tbody tr:last-child td {
+    border-bottom: none;
+ }
+ .data-table tbody tr:hover {
+    background-color: #f9f9f9;
+ }
+ .data-table tbody tr:hover td{
+    color: rgb(73, 118, 150) !important;
+ }
+ .status {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.9em;
+    /* font-weight: bold; */
+ }
+ .status.success { background-color: #d4edda; color: #155724;}
+ .status.failed { background-color: #f8d7da; color: #721c24;}
+ .status.pending { background-color: #fff3cd; color: #856404;}
+
+ /* transaction-link btn */
+ .transaction-link{
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+ }
+ .transaction-link a{
+    color: yellowgreen;
+    font-size: 14px;
+ }
+ 
+
+ /* GRID CARDS */
+
+ :root {
+    --bg-color: #f8f9fa; /* Light grey background */
+    --card-bg: #ffffff; /* White card background */
+    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 10px 15px rgba(0, 0, 0, 0.1); /* Multi-level shadow */
+    --card-hover-shadow: 0 8px 12px rgba(0, 0, 0, 0.1), 0 18px 25px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
+    --text-color: #343a40; /* Dark grey text */
+    --accent-color: #007bff; /* A blue accent */
+    --border-color: #e9ecef; /* Light border color */
+    --card-border-radius: 12px;
+    --grid-gap: 20px;
+}
+
+.premium-service-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive grid */
+    gap: var(--grid-gap);
+    width: 100%;
+    margin: 25px 0px 50px 0px !important;
+}
+
+.premium-service-card {
+    display: flex; /* Use flexbox for content alignment */
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none; /* Remove underline from link */
+    color: inherit; /* Inherit text color */
+    /* background: rgb(16, 32, 184); */
+
+    background-color: var(--card-bg);
+    /* border: 1px solid var(--border-color); */
+    border-radius: var(--card-border-radius);
+    padding: 25px; /* Padding inside the card */
+    box-shadow: var(--card-shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+}
+
+.premium-service-card:hover {
+    transform: translateY(-5px); /* Lift effect */
+    box-shadow: var(--card-hover-shadow);
+    border-color: var(--accent-color); /* Highlight border on hover */
+}
+
+.premium-service-card:active {
+    transform: translateY(-2px) scale(0.99); /* Subtle press */
+    box-shadow: var(--card-shadow); /* Revert shadow slightly */
+    transition: transform 0.1s ease;
+}
+
+.card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%; /* Ensure content takes full width */
+}
+
+.premium-service-icon {
+    width: 55px; /* Icon size */
+    height: 55px;
+    object-fit: contain;
+    margin-bottom: 15px; /* Space below icon */
+    transition: transform 0.3s ease;
+}
+
+.premium-service-card:hover .premium-service-icon {
+    transform: scale(1.05); /* Slightly enlarge icon on hover */
+}
+
+
+.premium-service-label {
+    font-size: 1.7rem !important;
+    /* color: #fff; */
+    margin: 0;
+    font-weight: 600; /* Semibold */
+    text-align: center;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 576px) {
+    .premium-service-container {
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); /* Smaller cards on small screens */
+        gap: 15px;
+    }
+
+    .premium-service-card {
+        padding: 20px;
+    }
+
+    .premium-service-icon {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 10px;
+    }
+
+    .premium-service-label {
+        font-size: 1.5rem !important;
+    }
+}
+
+[data-theme=dark] .premium-service-card{
+    background-color: rgb(21, 26, 36);
+}
+[data-theme=dark] .premium-service-label{
+    color: #fff !important;
+}

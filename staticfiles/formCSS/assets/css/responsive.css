@@ -1,0 +1,114 @@
+@media (min-width: 1600px) {
+    .container {
+        max-width: 1250px;
+    }
+}
+
+@media (max-width: 1440px) {}
+
+@media (max-width: 1200px) {
+    header {
+        --headerHeight: 80px;
+    }
+    header .number {
+        font-size: 18px;
+    }
+    .logo {
+        font-size: 40px;
+    }
+    .contacts {
+        gap: 20px;
+    }
+    .formContent p {
+        font-size: 20px;
+    }
+    .formContent h1 {
+        font-size: 50px;
+    }
+    #step {
+        padding: 30px;
+    }
+}
+
+@media (max-width: 992px) {
+    header {
+        --headerHeight: 60px;
+    }
+    .logo {
+        font-size: 30px;
+    }
+    .logo img {
+        width: 30px;
+    }
+    .socialMedia li a,
+    .language {
+        font-size: 18px;
+    }
+    .form-Btn {
+        height: 45px;
+        font-size: 16px;
+    }
+    .socialMedia {
+        gap: 12px;
+    }
+    .lap-sm-50 {
+        width: 50%;
+        padding-left: 0 !important;
+    }
+    .formContent p {
+        font-size: 15px;
+    }
+    .formContent h1 {
+        font-size: 35px;
+    }
+    .inputField {
+        padding: 0 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    header {
+        --headerHeight: 45px;
+    }
+    header .number {
+        display: none;
+    }
+    .tab-100 {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    .newletter {
+        background-size: cover;
+    }
+}
+
+@media (max-width: 576px) {}
+
+@media (max-width: 480px) {
+    .sm-100 {
+        width: 100%;
+    }
+    header {
+        flex-wrap: wrap;
+        --headerHeight: 20px;
+    }
+    .contacts {
+        margin-top: 20px;
+        justify-content: center;
+    }
+    .socialMedia {
+        display: none !important;
+    }
+    .formContent {
+        padding: 0 20px;
+    }
+    .formContent h1 {
+        font-size: 24px;
+    }
+    .lap-sm-50 {
+        padding-right: 0;
+    }
+    .pageName h1 {
+        font-size: 25px;
+    }
+}

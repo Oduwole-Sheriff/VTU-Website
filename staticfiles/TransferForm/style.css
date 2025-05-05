@@ -1,0 +1,120 @@
+.transfer-form-container {
+    background-color: transparent; /* White background */
+    border-radius: 12px; /* Rounded corners */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Softer, larger shadow */
+    padding: 30px; /* More padding */
+    margin-top: 60px;
+    margin-bottom: 30px;
+}
+
+.transfer-form-header h2 {
+    color: #333; /* Darker text */
+    margin-bottom: 5px; /* Space below title */
+    font-weight: 600; /* Slightly bolder */
+}
+
+.bonus-display {
+    background-color: #e9f7ef; /* Light green background */
+    color: #0f5132; /* Dark green text */
+    border: 1px solid #badbcc; /* Green border */
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 25px; /* More space below */
+    text-align: center;
+    font-size: 1.1rem; /* Slightly larger font */
+}
+
+.bonus-display strong {
+    color: #0a3622; /* Even darker green for the value */
+}
+
+/* Customizing form input appearance */
+.form-control{
+    border: none !important;
+    border-bottom: 1px solid #ccc !important; /* Lighter border */
+    border-radius: 8px; /* Rounded input corners */
+    padding: 12px 15px; /* More padding inside input */
+    font-size: 1rem;
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth transition */
+}
+
+#notification-form #id_message.form-control {
+    font-size: 1.5rem !important;
+}
+
+.form-control:focus {
+    border-color: #007bff; /* Bootstrap primary blue on focus */
+    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25); /* Standard Bootstrap focus glow */
+    outline: none; /* Remove default outline */
+}
+
+.form-label {
+    font-weight: 500; /* Slightly bolder label */
+    color: #555; /* Medium gray label color */
+    margin-bottom: 8px; /* Space below label */
+}
+
+.alert{
+    margin-top: 60px !important;
+    width: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+/* Customizing the button */
+.btn-custom-transfer, .btn-custom-send {
+    background: linear-gradient(45deg, #28a745, #218838); /* Green gradient */
+    border: none;
+    border-radius: 8px; /* Rounded button corners */
+    color: white;
+    padding: 12px 25px; /* More padding */
+    font-size: 1.1rem; /* Larger font */
+    font-weight: 600;
+    transition: background 0.3s ease-in-out, transform 0.1s ease-in-out; /* Smooth transition and subtle press effect */
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.2); /* Shadow matching gradient */
+}
+
+.btn-custom-transfer:hover {
+    background: linear-gradient(45deg, #218838, #1e7e34); /* Darker gradient on hover */
+    color: white; /* Ensure text stays white */
+}
+
+.btn-custom-transfer:active {
+    transform: scale(0.98); /* Slightly shrink on click */
+}
+
+/* Styling for validation errors */
+.invalid-feedback {
+    color: #dc3545; /* Standard Bootstrap red */
+    font-size: 0.9rem;
+    margin-top: 5px; /* Space above error message */
+}
+
+/* Ensure d-block is used for immediate error visibility */
+.invalid-feedback.d-block {
+    display: block !important;
+}
+
+@media (max-width: 768px) {
+    .container{
+        height: 100% !important;
+    }
+    .transfer-form-container{
+        padding: 15px; /* More padding */
+        margin-top: 30%;
+        margin-bottom: 30%;
+    }
+}
+
+[data-theme=dark] .transfer-form-container{
+    border: 1px solid #ffff;
+}
+
+[data-theme=dark] .form-control{
+    color: #fff !important;
+    background-color: #222222 !important;
+}
+[data-theme=dark] select#id_user {
+    color: #ffffff !important;
+    background-color: #222222 !important;
+}

@@ -1,0 +1,402 @@
+/* Optional: Import a font like Inter or Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f9f9f9;
+    /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
+    flex-direction: column;
+    line-height: 1.6;
+}
+
+.container {
+    display: flex;
+    flex-direction: column; /* Stacked by default */
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+}
+
+.circle-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 45px;
+    margin-bottom: 30px;
+    width: 60%;
+    flex-wrap: wrap; /* Allow wrapping of circles */
+}
+
+.circle {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 3px solid transparent; /* Default border */
+    background-size: cover;
+    background-position: center;
+}
+
+.circle:hover {
+    background-color: #e2e2e2;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.circle.selected {
+    background-color: #4CAF50;
+    color: white;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    border: 1px solid #ffffff6e; 
+}
+
+.checkmark {
+    position: absolute;
+    top: 17px;
+    right: 17px;
+    width: 20px;
+    height: 20px;
+    background-color: #fff;
+    color: #4CAF50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 14px;
+    font-weight: bold;
+    visibility: hidden;  /* Initially hidden */
+}
+
+.circle.selected .checkmark {
+    visibility: visible;  /* Show checkmark when selected */
+}
+
+/* Modern Form Container */
+.form-container.modern {
+    display: none;
+    background-color: #ffffff;
+    padding: 40px 35px; /* More padding */
+    border-radius: 16px; /* Softer radius */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12); /* Softer shadow */
+    overflow: hidden; /* Contain elements */
+    width: 100%;
+    max-width: 480px;
+    animation: fadeInForm 0.5s ease-out;
+}
+
+/* Animation for the form fade-in */
+@keyframes fadeInForm {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Heading */
+.formHeading {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.formHeading p {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.formHeading h2 {
+    font-size: 24px;
+    color: #333;
+}
+
+/* Input Field Base */
+.inputField {
+    margin-bottom: 25px;
+    position: relative;
+}
+
+/* --- Floating Label Group Styling --- */
+.floating-label-group {
+    position: relative;
+}
+
+.floating-label-group input[type="text"],
+.floating-label-group input[type="tel"] {
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid #bdc3c7; /* Light grey border */
+    padding: 12px 0 8px 0; /* Adjust padding for label space */
+    font-size: 1.7rem !important;
+    background-color: transparent;
+    position: relative;
+    transition: border-color 0.3s ease;
+}
+
+.floating-label-group label {
+    position: absolute;
+    top: 10px; /* Align with input text */
+    left: 0;
+    font-size: 1.4rem !important;
+    color: #7f8c8d; /* Label color */
+    pointer-events: none;
+    transition: all 0.2s ease-out;
+    z-index: 0; /* Label below input */
+}
+
+/* Floating label animation */
+.floating-label-group input:focus + label,
+.floating-label-group input:not(:placeholder-shown) + label {
+    top: -18px !important; /* Move label up */
+    font-size: 1.4rem !important; /* Make label smaller */
+    color: #3498db; /* Accent color on focus */
+}
+
+/* Focus Border Animation */
+.focus-border {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #3498db; /* Accent color */
+    transition: width 0.3s ease;
+    z-index: 2;
+}
+.floating-label-group input:focus ~ .focus-border {
+    width: 100%;
+}
+
+/* Readonly state for floating labels */
+.floating-label-group.readonly input {
+    color: #555;
+    border-bottom-style: dashed; /* Indicate readonly */
+}
+.floating-label-group.readonly label {
+    color: #555; /* Make label less prominent */
+    top: -12px; /* Keep label floated up for readonly fields with value */
+    font-size: 1.2rem !important;
+}
+
+
+/* --- Select Group Styling --- */
+.select-group {
+    position: relative;
+}
+.select-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: #555;
+    font-size: 1.5rem !important;
+}
+.select-group select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 100%;
+    padding: 10px 35px 10px 12px; /* Space for arrow */
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1.7rem !important;
+    background-color: #fff;
+    cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    color: #333;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23888888%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 10px 10px;
+}
+.select-group select:focus {
+    outline: none;
+    border-color: #3498db; /* Accent color */
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+}
+
+/* Button Styling */
+.form-Btn.modern {
+    width: 100%;
+    padding: 14px 20px;
+    /* Nice gradient button */
+    background: linear-gradient(90deg, #3498db 0%, #2980b9 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; /* Space between text and spinner */
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+    margin-top: 10px; /* Add some space above button */
+}
+
+.form-Btn.modern:hover {
+    transform: translateY(-2px); /* Lift effect */
+    box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+}
+
+.form-Btn.modern:active {
+     transform: translateY(0); /* Press effect */
+     box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+}
+
+.form-Btn.modern:disabled {
+    background: linear-gradient(90deg, #a9cce3 0%, #85b1d1 100%); /* Disabled gradient */
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+/* Loading state for the button */
+.form-Btn.loading .btn-text { display: none; }
+.form-Btn.loading .btn-spinner { display: inline-flex; align-items: center; }
+.form-Btn .btn-spinner i { margin-right: 8px; }
+
+
+/* Footer Note */
+.form-footer-note {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 0.85rem;
+    color: #95a5a6; /* Lighter grey */
+}
+
+/* Utility Classes */
+.w-100 { width: 100%; }
+
+/* Responsive Adjustments */
+@media (max-width: 480px) {
+    body { padding: 10px; }
+    .form-container.modern { padding: 30px 20px; border-radius: 12px; max-width: 90%; width: 390px;}
+    .floating-label-group input, .select-group select { font-size: 1.2rem; }
+    /* .floating-label-group label { font-size: 1.4rem; }
+    .floating-label-group input:focus + label, */
+    .floating-label-group input:not(:placeholder-shown) + label {
+        font-size: 1.7rem;
+        /* top: -10px; */
+    }
+    .form-Btn.modern { padding: 12px 15px; font-size: 1rem; }
+    .error-message { bottom: -18px; font-size: 0.75rem; }
+}
+
+/* Spinner Style */
+.loading-spinner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7); /* Dark background with some transparency */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Ensure the spinner stays on top of all other content */
+    color: white;
+}
+
+.spinner {
+    border: 4px solid transparent;
+    border-top: 4px solid white;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-spinner p {
+    margin-top: 20px;
+    font-size: 16px;
+    text-align: center;
+    color: rgb(255, 255, 255);
+}
+
+[data-theme=dark] .form-container{
+    background-color: transparent !important;
+    border: 1px solid #fff;
+}
+
+[data-theme=dark] .formHeading h2{
+    color: #fff !important;
+}
+
+[data-theme=dark] .formHeading p{
+    color: #fff !important;
+}
+
+[data-theme=dark] .inputField label{
+    color: #fff !important;
+}
+
+[data-theme=dark] .inputField input{
+    color: #fff;
+    background-color: rgb(51, 51, 51);
+}
+
+[data-theme=dark] .inputField select{
+    background-color: rgb(51, 51, 51);
+    color: #fff;
+}
+
+
+@media (max-width: 768px) {
+    .circle-container {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .form-container {
+        width: 90%;
+    }
+}
+
+@media (min-width: 980px) {
+    .container {
+        flex-direction: row; /* Display circles and form side by side */
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .circle-container {
+        width: 100%;
+    }
+
+    .form-container {
+        margin-left: 10px; /* Space between form and squares */
+        margin-top: 70px;
+        width: 700px;
+        max-width: 100%;
+    }
+}

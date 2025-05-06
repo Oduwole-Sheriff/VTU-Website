@@ -225,7 +225,7 @@ MONNIFY_CLIENT_ID = os.getenv("MONNIFY_CLIENT_ID")
 MONNIFY_CLIENT_SECRET = os.getenv("MONNIFY_CLIENT_SECRET")
 MONNIFY_AUTH_URL = "https://sandbox.monnify.com/api/v1/auth/login"
 MONNIFY_BASE_URL = "https://sandbox.monnify.com"
-MONNIFY_CONTRACT_CODE = os.getenv("MONNIFY_CONTRACT_CODE", "5347308431")
+MONNIFY_CONTRACT_CODE = os.getenv("MONNIFY_CONTRACT_CODE", "6196842812")
 MONNIFY_RESERVED_ACCOUNTS_URL = "https://sandbox.monnify.com/api/v2/bank-transfer/reserved-accounts"
 
 # APIViews

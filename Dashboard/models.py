@@ -233,7 +233,7 @@ class WebsiteConfiguration(models.Model):
     auth_token = models.CharField(max_length=500)
 
     def __str__(self):
-        return f"Monnify API Configuration"
+        return "Monnify API Configuration"
 
     @classmethod
     def get_configuration(cls):

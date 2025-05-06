@@ -33,7 +33,7 @@ from rest_framework.exceptions import ValidationError
 
 from django.db import transaction as db_transaction
 
-from Dashboard.utils import handle_first_deposit_reward
+# from Dashboard.utils import handle_first_deposit_reward
 
 from RestAPI.AirtimeAPI import VTPassAPI
 from RestAPI.DataAPI import VTPassDataAPI
@@ -44,7 +44,7 @@ from RestAPI.MonnifyPayout import MonnifyBankTransferAPI
 
 import uuid
 from datetime import datetime
-import logging
+# import logging
 import json
 import random
 from datetime import datetime as Mdate  

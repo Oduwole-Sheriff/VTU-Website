@@ -3487,3 +3487,31 @@ Not Found: /favicon.ico
 "GET /favicon.ico HTTP/1.1" 404 11535
 Not Found: /favicon.ico
 "GET /favicon.ico HTTP/1.1" 404 11535
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11535
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11535
+Bad Request: /api/bank-transfer/
+"POST /api/bank-transfer/ HTTP/1.1" 400 207
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 11646
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 11646
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+Bad Request: /api/bank-transfer/
+"POST /api/bank-transfer/ HTTP/1.1" 400 228
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 11646
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 11646
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 11646
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1955
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 11646
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 11646

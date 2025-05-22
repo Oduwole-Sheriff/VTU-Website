@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path('', views.Home, name='home-page'),
+    path('api/webhooks/monnify/', views.monnify_webhook, name='monnify-webhook'),
     path('Bonus-to-wallet/', views.transfer_referral_bonus_view, name='bonus-to-wallet'),
     path('Bank_Transfer/', views.Bank_Transfer, name='Bank_Transfer'),
     path('Create-Notification/', views.create_notification, name='create_notification'),

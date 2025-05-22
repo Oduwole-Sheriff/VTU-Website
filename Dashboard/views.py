@@ -40,7 +40,7 @@ def verify_monnify_signature(request, secret_key):
     expected_signature = hmac.new(
         key=secret_key.encode('utf-8'),
         msg=body,
-        digestmod=hashlib.sha256
+        digestmod=hashlib.sha512
     ).hexdigest()
     return hmac.compare_digest(signature, expected_signature)
 

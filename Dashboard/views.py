@@ -16,6 +16,8 @@ import hashlib
 from django.core.mail import send_mail
 from django.views.decorators.csrf import csrf_exempt
 from decimal import Decimal
+from .utils import handle_first_deposit_reward
+from django.conf import settings
 
 from .forms import NINForm, CustomUserForm
 
@@ -33,7 +35,7 @@ def Home(request):
 
 @csrf_exempt
 def verify_monnify_signature(request, secret_key):
-    signature = request.headers.get('monnify-signature')
+    signature = request.headers.get('Monnify-Signature') or request.headers.get('monnify-signature')
     body = request.body
     expected_signature = hmac.new(
         key=secret_key.encode('utf-8'),
@@ -42,14 +44,16 @@ def verify_monnify_signature(request, secret_key):
     ).hexdigest()
     return hmac.compare_digest(signature, expected_signature)
 
+
 @csrf_exempt
 def monnify_webhook(request):
     if request.method != "POST":
         return JsonResponse({"message": "Invalid request method"}, status=405)
 
-    secret_key = 'NM3B82KQT2F31F3RE0J0RKLQ8AECJ6VZ'
+    secret_key = settings.MONNIFY_SECRET_KEY
 
     if not verify_monnify_signature(request, secret_key):
+        print("❌ Invalid signature")
         return JsonResponse({"message": "Invalid signature"}, status=400)
 
     try:
@@ -63,6 +67,7 @@ def monnify_webhook(request):
             return JsonResponse({"message": "Not a successful transaction"}, status=200)
 
         event_data = payload.get("eventData", {})
+
         payment_reference = event_data.get("paymentReference")
         amount_paid = float(event_data.get("amountPaid", 0))
         customer_email = event_data.get("customer", {}).get("email")
@@ -72,7 +77,12 @@ def monnify_webhook(request):
         print(f"👤 Email: {customer_email}, AccountRef: {account_reference}")
         print(f"💵 Amount Paid: ₦{amount_paid:,.2f}")
 
-        # Look up user by email, fallback to account reference
+        # Get payment source info (as list)
+        payment_sources = event_data.get("paymentSourceInformation", [])
+        bank_code = payment_sources[0].get("bankCode", "") if payment_sources else ""
+        account_number = payment_sources[0].get("accountNumber", "") if payment_sources else ""
+
+        # Look up user
         try:
             user = CustomUser.objects.get(email=customer_email)
         except CustomUser.DoesNotExist:
@@ -83,28 +93,27 @@ def monnify_webhook(request):
                 print("❌ User not found")
                 return JsonResponse({"message": "User not found"}, status=400)
 
-        # Prevent double crediting
+        # Prevent duplicate credit
         if MonnifyTransaction.objects.filter(payment_reference=payment_reference).exists():
-            print("⚠️ Duplicate transaction, skipping credit.")
+            print("⚠️ Duplicate transaction")
             return JsonResponse({"message": "Duplicate webhook"}, status=200)
 
-        # Credit user's wallet
+        # Credit user wallet
         user.balance += Decimal(str(amount_paid))
         user.save()
-        print(f"✅ Credited ₦{amount_paid:,.2f} to {user.username} (new balance: ₦{user.balance:,.2f})")
+        print(f"✅ Credited ₦{amount_paid:,.2f} to {user.username} (New Balance: ₦{user.balance:,.2f})")
 
-        # Handle first deposit reward (also deducts ₦50 and processes referral bonuses)
-        from .utils import handle_first_deposit_reward
+        # First deposit reward
         handle_first_deposit_reward(user)
 
-        # For subsequent deposits, deduct ₦35 Monnify fee
+        # Deduct ₦35 Monnify fee (if not first deposit)
         if user.first_deposit_reward_given:
             if user.balance >= Decimal('35.00'):
                 user.balance -= Decimal('35.00')
                 user.save()
-                print(f"💸 Deducted ₦35 Monnify fee for subsequent deposit. New balance: ₦{user.balance:,.2f}")
+                print(f"💸 Deducted ₦35 Monnify fee. New balance: ₦{user.balance:,.2f}")
             else:
-                print(f"⚠️ Not enough balance to deduct ₦35 fee after subsequent deposit.")
+                print("⚠️ Insufficient balance to deduct ₦35 fee")
 
         # Save transaction
         MonnifyTransaction.objects.create(
@@ -112,8 +121,8 @@ def monnify_webhook(request):
             amount=amount_paid,
             payment_reference=payment_reference,
             monnify_transaction_reference=event_data.get("transactionReference"),
-            bank_code=event_data.get("paymentSourceInformation", {}).get("bankCode", ""),
-            account_number=event_data.get("paymentSourceInformation", {}).get("accountNumber", ""),
+            bank_code=bank_code,
+            account_number=account_number,
             narration=event_data.get("narration", "User Deposit"),
             status='successful',
             currency=event_data.get("currency", "NGN"),
@@ -122,7 +131,7 @@ def monnify_webhook(request):
             date=now()
         )
 
-        # Send confirmation email
+        # Send email
         send_mail(
             subject="Wallet Credited",
             message=f"Hello {user.username},\n\nYour wallet has been credited with ₦{amount_paid:,.2f}.",

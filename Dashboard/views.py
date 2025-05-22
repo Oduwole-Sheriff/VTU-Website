@@ -47,7 +47,7 @@ def monnify_webhook(request):
     if request.method != "POST":
         return JsonResponse({"message": "Invalid request method"}, status=405)
 
-    secret_key = 'WEDYDDCGYEX98Z7L31R1RZ4V6LK12JK9'
+    secret_key = 'NM3B82KQT2F31F3RE0J0RKLQ8AECJ6VZ'
 
     if not verify_monnify_signature(request, secret_key):
         return JsonResponse({"message": "Invalid signature"}, status=400)

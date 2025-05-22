@@ -116,7 +116,7 @@ class MonnifyBankTransferAPI:
 
 # Entry point for script testing
 if __name__ == "__main__":
-    base_url = "https://sandbox.monnify.com"
+    base_url = "https://api.monnify.com"
     auth_token = settings.MONNIFY_CLIENT_ID  # Your Monnify test API key
     secret_key = settings.MONNIFY_CLIENT_SECRET  # Your Monnify test secret key
 

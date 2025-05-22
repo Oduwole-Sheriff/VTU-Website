@@ -3515,3 +3515,75 @@ Not Found: /.well-known/appspecific/com.chrome.devtools.json
 "GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
 Not Found: /.well-known/appspecific/com.chrome.devtools.json
 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 11646
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11535
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11535
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11535
+Not Found: /login/index.html
+"GET /login/index.html HTTP/1.1" 404 11550
+Not Found: /login/index.html
+"GET /login/index.html HTTP/1.1" 404 11550
+Not Found: /login/index.html
+"GET /login/index.html HTTP/1.1" 404 11550
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 11646
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1922
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1931
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1955
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 11646
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1955
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 11646
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1955
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 11646
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1955
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 11646
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1955
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1931
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1922
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 11646
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1955
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 11646
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 11646
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 11646
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 11646
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 11646
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 11646
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 11646
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 11646
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 11646
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 11646
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1889
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 11646
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1955
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1922
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1931
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11535
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 11535

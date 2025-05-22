@@ -217,16 +217,16 @@ SESSION_SAVE_EVERY_REQUEST = True
 
 LOGIN_URL = 'login'
 
-MONNIFY_BASE_URL = os.getenv('MONNIFY_BASE_URL', 'https://sandbox.monnify.com')  # Default to sandbox URL if not found
+MONNIFY_BASE_URL = os.getenv('MONNIFY_BASE_URL', 'https://api.monnify.com')  # Default to sandbox URL if not found
 MONNIFY_AUTH_TOKEN = os.getenv('MONNIFY_AUTH_TOKEN')  
 
 # Signals.py 
 MONNIFY_CLIENT_ID = os.getenv("MONNIFY_CLIENT_ID")
 MONNIFY_CLIENT_SECRET = os.getenv("MONNIFY_CLIENT_SECRET")
-MONNIFY_AUTH_URL = "https://sandbox.monnify.com/api/v1/auth/login"
-MONNIFY_BASE_URL = "https://sandbox.monnify.com"
-MONNIFY_CONTRACT_CODE = os.getenv("MONNIFY_CONTRACT_CODE", "6196842812")
-MONNIFY_RESERVED_ACCOUNTS_URL = "https://sandbox.monnify.com/api/v2/bank-transfer/reserved-accounts"
+MONNIFY_AUTH_URL = "https://api.monnify.com/api/v1/auth/login"
+MONNIFY_BASE_URL = "https://api.monnify.com"
+MONNIFY_CONTRACT_CODE = os.getenv("MONNIFY_CONTRACT_CODE")
+MONNIFY_RESERVED_ACCOUNTS_URL = "https://api.monnify.com/api/v2/bank-transfer/reserved-accounts"
 
 # APIViews
 VTPASS_AUTH_TOKEN = os.getenv("VTPASS_AUTH_TOKEN")
@@ -247,5 +247,5 @@ EMAIL_USE_SSL = os.getenv("EMAIL_USE_SSL") == "True"
 EMAIL_PORT = int(os.getenv("EMAIL_PORT"))
 # EMAIL_PORT = os.getenv('EMAIL_PORT')
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
-DEFAULT_FROM_EMAIL = 'oduwolesheriff1212@gmail.com'
-EMAIL_HOST_PASSWORD = 'lqof jnuq djht qgri'
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')

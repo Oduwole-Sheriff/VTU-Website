@@ -90,7 +90,7 @@ def create_account_details_for_new_user(sender, instance, created, **kwargs):
 
             # Step 3: Initialize the MonnifyAPI with the obtained Bearer token
             api = MonnifyAPI(
-                base_url="https://sandbox.monnify.com",
+                base_url="https://api.monnify.com",
                 auth_token=f"Bearer {auth_token}"  # Set the Bearer token dynamically
             )
 

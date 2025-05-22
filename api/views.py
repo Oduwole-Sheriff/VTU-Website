@@ -375,7 +375,7 @@ class BankTransferAPIView(APIView):
 
             # Call Monnify API to transfer the specified amount
             monnify_api = MonnifyBankTransferAPI(
-                base_url="https://sandbox.monnify.com",
+                base_url="https://api.monnify.com",
                 auth_token=settings.MONNIFY_CLIENT_ID,
                 secret_key=settings.MONNIFY_CLIENT_SECRET
             )

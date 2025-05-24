@@ -94,8 +94,8 @@ class MonnifyBankTransferAPI:
             "destinationBankCode": "232",  # Bank code, for example, GTBank is '057'
             "destinationAccountNumber": "2245781956",  # Example account number
             "currency": "NGN",  # Currency
-            "sourceAccountNumber": "4877178978",  # Your source account number (ensure it's valid)
-            "contractCode": "5347308431",  # Example contract code
+            "sourceAccountNumber": "8065931760",  # Your source account number (ensure it's valid)
+            "contractCode": "739413165129",  # Example contract code
             "paymentMethods": ["ACCOUNT_TRANSFER"],  # Payment method (this could be other methods as well)
             "reservationReference": reservation_reference  # Reserved account reference
         }

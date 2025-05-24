@@ -3,37 +3,57 @@ from .models import CustomUser, Notification, BuyAirtime, BuyData, TVService, El
 from django.core.exceptions import ValidationError
 from django.conf import settings
 from decimal import Decimal, InvalidOperation
+import json
 
 class CustomUserForm(forms.ModelForm):
-    class Meta:
-        model = CustomUser
-        # Added 'bvn' to the list of fields
-        fields = ['username', 'password1', 'password2', 'balance', 'bonus', 'bank_account', 'nin', 'bvn', 'is_active', 'is_staff', 'is_superuser']
-
     password1 = forms.CharField(widget=forms.PasswordInput(), label="Password")
     password2 = forms.CharField(widget=forms.PasswordInput(), label="Confirm Password")
-    bvn = forms.CharField(
-        max_length=11,  # BVN is typically 11 digits long
-        widget=forms.TextInput(attrs={'placeholder': 'Enter your BVN'}),
-        label="BVN"
+
+    # Treat bank_account as plain text in admin
+    bank_account = forms.CharField(
+        widget=forms.Textarea(attrs={'rows': 4}),
+        required=False,
+        label="Bank Account (JSON)"
     )
+
+    class Meta:
+        model = CustomUser
+        fields = [
+            'username', 'password1', 'password2',
+            'balance', 'bonus', 'bank_account',
+            'nin', 'bvn', 'is_active', 'is_staff', 'is_superuser'
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        instance = kwargs.get('instance')
+        if instance and isinstance(instance.bank_account, dict):
+            self.initial['bank_account'] = json.dumps(instance.bank_account, indent=2)
 
     def clean(self):
         cleaned_data = super().clean()
         password1 = cleaned_data.get("password1")
         password2 = cleaned_data.get("password2")
+        bvn = cleaned_data.get("bvn")
 
-        # Check if passwords match
         if password1 and password2 and password1 != password2:
             raise forms.ValidationError("Passwords do not match.")
 
-        # Validate BVN format
-        bvn = cleaned_data.get('bvn')
         if bvn and len(bvn) != 11:
             raise forms.ValidationError("BVN must be 11 digits long.")
 
         return cleaned_data
 
+    def clean_bank_account(self):
+        data = self.cleaned_data.get("bank_account")
+        if data:
+            try:
+                return json.loads(data)
+            except json.JSONDecodeError:
+                raise forms.ValidationError("Bank account must be valid JSON.")
+        return {}
+
+        
 class NINForm(forms.Form):
     nin = forms.CharField(max_length=11, label='Enter your NIN')
 

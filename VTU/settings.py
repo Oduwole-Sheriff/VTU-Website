@@ -44,10 +44,11 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*', 'https://bigsheriffdata.onrender.com/']
+ALLOWED_HOSTS = ['*', 'https://bigsheriffdata.onrender.com/', 'https://a3f5-102-89-32-30.ngrok-free.app']
 
 CSRF_TRUSTED_ORIGINS = [
     'https://bigsheriffdata.onrender.com',
+    'https://a3f5-102-89-32-30.ngrok-free.app'
 ]
 
 
@@ -68,6 +69,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'django.contrib.humanize',
+    "webhook",
 
     'drf_yasg',
     'hijack',

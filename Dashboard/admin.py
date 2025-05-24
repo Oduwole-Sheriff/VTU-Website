@@ -5,45 +5,42 @@ from .forms import CustomUserForm
 from django.db import models
 from django import forms
 from .models import CustomUser, MonnifyTransaction, BankTransfer, FakeLoginAttempt, Notification, Transaction, WebsiteConfiguration, BuyAirtime, BuyData, TVService, ElectricityBill, WaecPinGenerator, JambRegistration
-
-CustomUser = get_user_model()
+import json
 
 class CustomUserAdmin(UserAdmin):
     form = CustomUserForm
-    add_form = CustomUserForm  # Use the same form for creating users
-    
-    # Specify the fields that should be visible in the admin interface
+    add_form = CustomUserForm
+
     list_display = ['username', 'balance', 'email', 'nin', 'bvn', 'is_active', 'is_staff', 'get_bank_account', 'has_filled_fund_form']
     search_fields = ['username', 'email']
     ordering = ['username']
-    
-    # Fields for add and change user forms
+
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        # if obj and isinstance(obj.bank_account, dict):
+        #     obj.bank_account = json.dumps(obj.bank_account, indent=2)
+        return form
+
     fieldsets = (
         (None, {'fields': ('username', 'password1', 'password2', 'balance', 'bonus', 'bank_account', 'nin', 'bvn', 'referred_by', 'referral_bonus', 'first_deposit_reward_given','failed_attempts', 'has_filled_fund_form')}),
-        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser')}),  # permissions
-        ('Important dates', {'fields': ('last_login', 'date_joined')}),           # important date fields
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser')}),
+        ('Important dates', {'fields': ('last_login', 'date_joined')}),
     )
-    
-    # Fields for the 'Add User' form
+
     add_fieldsets = (
-        (None, {'fields': ('username', 'password1', 'password2', 'balance', 'bank_account', 'nin', 'bvn')}),  # Add bvn to the 'Add User' form
+        (None, {'fields': ('username', 'password1', 'password2', 'balance', 'bank_account', 'nin', 'bvn')}),
     )
-    
-    # Exclude any fields you do not want to display in the admin form (like 'usable_password' if it exists)
+
     exclude = ['usable_password']
 
-    # Add a custom method to display the bank account information in the list view
     def get_bank_account(self, obj):
-        """ Display bank account information in the list view """
         if obj.bank_account and 'accounts' in obj.bank_account:
             accounts = obj.bank_account['accounts']
             if accounts:
-                # Return a formatted string for the first account in the list
-                account_info = accounts[0]  # You can adjust this if you want to show all accounts
+                account_info = accounts[0]
                 return f"{account_info.get('bankName', 'No Bank Name')} - {account_info.get('accountName', 'No Account Name')} - {account_info.get('accountNumber', 'No Account Number')}"
         return 'No Bank Account'
-    
-    # Set the method name as the column header in the list display
+
     get_bank_account.short_description = 'Bank Account'
 
 @admin.register(MonnifyTransaction)

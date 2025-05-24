@@ -45,6 +45,7 @@ urlpatterns = [
     path('', include('Dashboard.urls')),
     path('', include('authentication.urls')),
     path('api/', include('api.urls')),
+    path('', include("webhook.urls")),
     
     path('hijack/', include('hijack.urls')),
 

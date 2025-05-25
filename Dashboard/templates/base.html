@@ -130,7 +130,7 @@
                                     <div class="title-conter-area">
                                         <h2 class="title">Automated Bank Transfer</h2>
                                         {% if account_details %}
-                                        <span class="pre-title-bg">Make Transfer to any Bank of your choice to Fund Wallet</span>
+                                        <span class="pre-title-bg">Make Transfer To The Available Bank Below To Fund Your Wallet</span>
                                         {% else %}
                                         <span class="pre-title-bg">Fill this form to generate your account details</span>
                                         {% endif %}
@@ -145,11 +145,11 @@
                                         <div class="tab-area-pricing-two mt--30">
                                             <ul class="nav nav-tabs pricing-button-one two" id="myTab" role="tablist">
                                                 <li class="nav-item" role="presentation">
-                                                    <button class="active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Sterling Bank</button>
+                                                    <button class="active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Moniepoint Microfinance Bank</button>
                                                 </li>
-                                                <li class="nav-item" role="presentation">
+                                                <!-- <li class="nav-item" role="presentation">
                                                     <button class="" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Wema Bank</button>
-                                                </li>
+                                                </li> -->
                                             </ul>
                                             <div class="tab-content mt--20" id="myTabContent">
                                                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
@@ -157,7 +157,7 @@
                                                         <div class="col-12">
                                                             <div class="single-pricing-single-two active">
                                                                 <div class="body">
-                                                                    <img class="zenith-logo" src="{% static 'assets/images/logo/Sterling-bank.png' %}" alt="zenith-logo">
+                                                                    <img class="Moniepoint-Logo" src="{% static 'assets/images/logo/Moniepoint-logo.png' %}" alt="zenith-logo">
                                                                     <div class="check-wrapper">
                                                                         <ul>
                                                                             <li>Bank Name: {{ account_details.0.bank_name }}</li>
@@ -172,7 +172,7 @@
                                                 </div>
                                             
                                                 <!-- Account 2 - Wema Bank -->
-                                                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                                <!-- <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                                                     <div class="row g-5 mt--10">
                                                         <div class="col-12">
                                                             <div class="single-pricing-single-two palmpay active">
@@ -189,7 +189,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                             </div>
                                         </div>
                                     {% else %}

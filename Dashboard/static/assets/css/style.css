@@ -16564,7 +16564,7 @@ body.sal-disabled [data-sal|=flip] {
   }
 }
 .single-pricing-single-two.active {
-  background: url("https://t3.ftcdn.net/jpg/03/02/36/78/360_F_302367886_mqTFZnfDQWTjcY61uMeE0LHFOjxS2qwf.jpg");
+  background: url("https://t4.ftcdn.net/jpg/09/94/12/95/360_F_994129559_AkNpNMqTXediU1OWD8aG26w8w85nx9oM.jpg");
   object-fit: cover !important;
   border-radius: 20px;
   background-repeat: no-repeat;
@@ -16593,12 +16593,12 @@ body.sal-disabled [data-sal|=flip] {
   border-radius: 20px;
 }
 
-.single-pricing-single-two .body .zenith-logo {
-  width: 180px;
+.single-pricing-single-two .body .Moniepoint-Logo {
+  width: 280px;
 }
 @media only screen and (max-width: 767px) {
-  .single-pricing-single-two .body .zenith-logo {
-    width: 90px;
+  .single-pricing-single-two .body .Moniepoint-Logo {
+    width: 160px;
   }
   .single-pricing-single-two .body .palmpay-logo {
     width: 70px !important;

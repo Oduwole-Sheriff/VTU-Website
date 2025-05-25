@@ -3,6 +3,7 @@ import json
 from requests.auth import HTTPBasicAuth
 import uuid
 from django.conf import settings
+import os
 
 class MonnifyBankTransferAPI:
     def __init__(self, base_url, auth_token, secret_key):
@@ -68,14 +69,10 @@ class MonnifyBankTransferAPI:
         except json.JSONDecodeError:
             print("Error decoding disbursement response:", response.text)
             return None
-
-    def send_to_reserved_account(self, amount, reservation_reference, reference=None):
-        """Send funds to a reserved account"""
-        if not reference:
-            reference = str(uuid.uuid4())  # Generate unique reference
-
-        url = f"{self.base_url}/api/v2/disbursements/single"  # Adjusted to simulate transaction
-        print("Starting disbursement...")
+        
+    def create_sub_account(self, payload2):
+        url = f"{self.base_url}/api/v1/sub-accounts"
+        print("Creating SubAccount Loading...")
 
         token = self.get_access_token()
         if not token:
@@ -87,38 +84,61 @@ class MonnifyBankTransferAPI:
             "Content-Type": "application/json"
         }
 
-        payload = {
-            "amount": amount,
-            "reference": reference,  # Unique reference for the transaction
-            "narration": "Testing Reserved Account Credit",  # Description of the payment
-            "destinationBankCode": "232",  # Bank code, for example, GTBank is '057'
-            "destinationAccountNumber": "2245781956",  # Example account number
-            "currency": "NGN",  # Currency
-            "sourceAccountNumber": "4877178978",  # Your source account number (ensure it's valid)
-            "contractCode": "5347308431",  # Example contract code
-            "paymentMethods": ["ACCOUNT_TRANSFER"],  # Payment method (this could be other methods as well)
-            "reservationReference": reservation_reference  # Reserved account reference
-        }
+        # Log the payload before sending the request
+        print("Payload:", json.dumps(payload2, indent=4))
 
-        print("Payload:", json.dumps(payload, indent=4))
-
-        response = requests.post(url, headers=headers, json=payload)
+        # Make the POST request to create sub-account
+        response = requests.post(url, headers=headers, json=payload2)
         print("Status code:", response.status_code)
 
         try:
             json_data = response.json()
-            print("Disbursement response:", json.dumps(json_data, indent=4))
+            print("SubAccount response:", json.dumps(json_data, indent=4))
             return json_data
         except json.JSONDecodeError:
-            print("Error decoding disbursement response:", response.text)
+            print("Error decoding SubAccount response:", response.text)
+            print("Raw Response Text:", response.text)  # For more details
             return None
+
+    def get_sub_accounts(self):
+        """Fetch all sub-accounts created under the Monnify integration"""
+        url = f"{self.base_url}/api/v1/sub-accounts"
+        
+        print("Fetching sub-accounts...")
+
+        # Fetch a new token if the previous one is expired
+        token = self.get_access_token()
+        if not token:
+            print("Failed to obtain token. Exiting.")
+            return None
+
+        headers = {
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json"
+        }
+
+        response = requests.get(url, headers=headers)
+        
+        if response.status_code == 200:
+            try:
+                json_data = response.json()
+                print("Sub Accounts response:", json.dumps(json_data, indent=4))
+                return json_data
+            except json.JSONDecodeError:
+                print("Error decoding response:", response.text)
+                return None
+        else:
+            print(f"Failed to fetch sub-accounts. Status Code: {response.status_code}")
+            print("Response:", response.text)
+            return None
+
 
 
 # Entry point for script testing
 if __name__ == "__main__":
     base_url = "https://api.monnify.com"
-    auth_token = settings.MONNIFY_CLIENT_ID  # Your Monnify test API key
-    secret_key = settings.MONNIFY_CLIENT_SECRET  # Your Monnify test secret key
+    auth_token = "MK_PROD_FZBUQ7AH61"  # Your Monnify test API key
+    secret_key = "NM3B82KQT2F31F3RE0J0RKLQ8AECJ6VZ"  # Your Monnify test secret key
 
     api = MonnifyBankTransferAPI(base_url, auth_token, secret_key)
 
@@ -130,8 +150,18 @@ if __name__ == "__main__":
         reference=f"bonus-withdrawal-test-001-{uuid.uuid4()}"
     )
 
-    response = api.send_to_reserved_account(
-        amount=1000,
-        reservation_reference="73BA6JCHCVQ7AJQ00504122",  # Example reservation reference
-        reference=f"payment-to-reserved-account-{uuid.uuid4()}"
-    )
+    payload2 = [
+        {
+            "currencyCode": "NGN",  # Currency code (NGN)
+            "bankCode": "057",      # Bank code (verify if this is correct for the selected bank)
+            "accountNumber": "2417372510",  # Your account number
+            "email": "bigsheriffdevelopers089@gmail.com",  # Email tied to the sub account
+            "defaultSplitPercentage": 20.87  # Split percentage
+        }
+    ]
+
+    # Call the function to create sub-account
+    create_sub_account = api.create_sub_account(payload2)
+
+    # Get sub-accounts and print the response
+    api.get_sub_accounts()

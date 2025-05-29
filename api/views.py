@@ -459,18 +459,23 @@ class WebhookView(APIView):
             #     user.balance -= monnify_fee
             #     user.save()
 
-            # Monnify fee = 10% of amount paid
-            monnify_fee = amount_paid * Decimal('0.10')
+            # Monnify fee = 03% of amount paid
+            monnify_fee = amount_paid * Decimal('0.03')
 
             # Handle Monnify fee
             if was_first_deposit:
                 # First deposit: handle fee via custom logic in reward function
                 handle_first_deposit_reward(user, amount_paid)
             else:
-                # Not first deposit: deduct 10% from balance if user has enough
+                # Not first deposit: deduct 03% from balance if user has enough
                 if user.balance >= monnify_fee:
                     user.balance -= monnify_fee
                     user.save()
+
+                # Add half of the 3% charge to bonus
+                half_bonus = monnify_fee / 2
+                user.bonus += half_bonus
+                user.save()
 
             # Log transaction
             MonnifyTransaction.objects.create(
@@ -581,15 +586,21 @@ class PaystackWebhookView(APIView):
 
             # Process bonus or apply charges
             if was_first_deposit:
-                handle_first_deposit_reward(user, amount_naira)
+                handle_first_deposit_reward(user, amount_paid=amount_naira)
             else:
-                # Deduct 3% charge
+                # Calculate 3% charge
                 charge = amount_naira * Decimal('0.03')
+
                 if user.balance >= charge:
                     user.balance -= charge
                     user.save()
                 else:
                     print(f"User {user.username} has insufficient balance for 3% charge.")
+
+                # Add half of the 3% charge to bonus
+                half_bonus = charge / 2
+                user.bonus += half_bonus
+                user.save()
 
             # Save the transaction
             PaystackTransaction.objects.create(
@@ -602,6 +613,23 @@ class PaystackWebhookView(APIView):
                 status=status,
                 paid_at=paid_at,
                 response_message=data
+            )
+
+            # Send email
+            try:
+                send_mail(
+                    subject="Wallet Credited Successfully",
+                    message=f"Hello {user.username},\n\nYour wallet has been credited with {amount_naira:,.2f}.\nNew balance: {user.balance:,.2f}.\n\nThank you!",
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[user.email],
+                    fail_silently=False,
+                )
+            except Exception as mail_err:
+                print(f"🔥 Error sending confirmation email: {mail_err}")
+
+            return Response(
+                {"status": "success", "message": "Wallet credited successfully"},
+                status=status.HTTP_200_OK
             )
 
         return response
@@ -628,7 +656,7 @@ class InitializeTransactionView(APIView):
         payload = {
             "email": email,
             "amount": amount_kobo,
-            "callback_url": "https://your-frontend.com/payment-complete/",  # change to your actual callback URL
+            "callback_url": "http://bigsheriffdata.onrender.com/payment-complete/",
             "metadata": {
                 "user_id": request.user.id,
                 "purpose": "wallet_funding"

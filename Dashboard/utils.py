@@ -7,7 +7,7 @@ def handle_first_deposit_reward(user: CustomUser, amount_paid: Decimal):
 
     if user.balance >= Decimal('50.00'):
         user.balance -= Decimal('50.00')
-        ten_percent = amount_paid * Decimal('0.10')
+        ten_percent = amount_paid * Decimal('0.03')
 
         if ten_percent <= Decimal('50.00'):
             bonus_share = Decimal('50.00') - ten_percent

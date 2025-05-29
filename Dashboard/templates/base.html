@@ -186,11 +186,6 @@
                                                                     <div class="check-wrapper">
                                                                         <input type="number" id="amount" placeholder="Enter Amount To Deposit (₦)">
                                                                         <button id="pay-btn">Pay Now</button>
-
-                                                                        <div id="spinner" style="display: none; text-align:center;">
-                                                                            <div class="loader"></div>
-                                                                            <p>Verifying your transaction...</p>
-                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -430,6 +425,7 @@
                         text: 'We could not start the payment process. Please try again.'
                     });
                 }
+                document.getElementById('amount').value = '';
             })
             .catch(error => {
                 Swal.fire({
@@ -437,14 +433,10 @@
                     title: 'Server Error',
                     text: `Something went wrong: ${error.message}`
                 });
+                document.getElementById('amount').value = '';
             });
         });
 
-        // Spinner element (optional)
-        const spinner = document.getElementById('spinner');
-        if (spinner) {
-            spinner.style.display = 'none'; // Hide by default
-        }
     </script>
 
 

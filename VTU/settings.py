@@ -44,11 +44,10 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['bigsheriffdata.onrender.com', '6abb-102-89-23-177.ngrok-free.app']
+ALLOWED_HOSTS = ['bigsheriffdata.onrender.com']
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://bigsheriffdata.onrender.com',
-    'https://6abb-102-89-23-177.ngrok-free.app'
+    'https://bigsheriffdata.onrender.com'
 ]
 
 

@@ -4,7 +4,7 @@ from django.contrib.auth.admin import UserAdmin
 from .forms import CustomUserForm
 from django.db import models
 from django import forms
-from .models import CustomUser, MonnifyTransaction, BankTransfer, FakeLoginAttempt, Notification, Transaction, WebsiteConfiguration, BuyAirtime, BuyData, TVService, ElectricityBill, WaecPinGenerator, JambRegistration
+from .models import CustomUser, MonnifyTransaction, BankTransfer, PaystackTransaction, FakeLoginAttempt, Notification, Transaction, WebsiteConfiguration, BuyAirtime, BuyData, TVService, ElectricityBill, WaecPinGenerator, JambRegistration
 import json
 
 class CustomUserAdmin(UserAdmin):
@@ -62,6 +62,41 @@ class BankTransferAdmin(admin.ModelAdmin):
     search_fields = ('user__username', 'account_number')
     list_filter = ('status', 'created_at')
     readonly_fields = ('created_at',)
+
+@admin.register(PaystackTransaction)
+class PaystackTransactionAdmin(admin.ModelAdmin):
+    list_display = (
+        'user', 
+        'reference', 
+        'amount', 
+        'payment_method',
+        'transaction_type', 
+        'status', 
+        'currency', 
+        'paid_at', 
+        'created_at'
+    )
+    list_filter = ('status', 'transaction_type', 'payment_method', 'currency', 'paid_at', 'created_at')
+    search_fields = ('reference', 'user__username', 'user__email')
+    ordering = ('-created_at',)
+    readonly_fields = ('reference', 'amount', 'status', 'paid_at', 'response_message', 'created_at')
+
+    fieldsets = (
+        (None, {
+            'fields': (
+                'user', 
+                'transaction_type', 
+                'reference', 
+                'amount', 
+                'currency',
+                'payment_method', 
+                'status', 
+                'paid_at', 
+                'created_at',
+                'response_message',
+            )
+        }),
+    )
 
 
 @admin.register(Notification)

@@ -44,11 +44,11 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*', 'https://bigsheriffdata.onrender.com/', 'https://a3f5-102-89-32-30.ngrok-free.app']
+ALLOWED_HOSTS = ['bigsheriffdata.onrender.com', '6abb-102-89-23-177.ngrok-free.app']
 
 CSRF_TRUSTED_ORIGINS = [
     'https://bigsheriffdata.onrender.com',
-    'https://a3f5-102-89-32-30.ngrok-free.app'
+    'https://6abb-102-89-23-177.ngrok-free.app'
 ]
 
 
@@ -233,6 +233,9 @@ MONNIFY_RESERVED_ACCOUNTS_URL = "https://api.monnify.com/api/v2/bank-transfer/re
 # APIViews
 VTPASS_AUTH_TOKEN = os.getenv("VTPASS_AUTH_TOKEN")
 VTPASS_SECRET_KEY = os.getenv("VTPASS_SECRET_KEY")
+
+PAYSTACK_PUBLIC_KEY = os.getenv("PAYSTACK_PUBLIC_KEY")
+PAYSTACK_SECRET_KEY = os.getenv("PAYSTACK_SECRET_KEY")
 
 # RestAPI
 VTPASS_BASE_URL = os.getenv("VTPASS_BASE_URL", "https://sandbox.vtpass.com")

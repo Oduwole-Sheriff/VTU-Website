@@ -13,20 +13,29 @@ from rest_framework.permissions import IsAuthenticated
 
 from decimal import Decimal
 
+import requests
+
+from django.http import HttpResponse, HttpResponseForbidden
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.dateparse import parse_datetime
+from decimal import InvalidOperation
+
+
 import hmac
 import hashlib
 from django.core.mail import send_mail
 from django.db.models import Sum
 from django.conf import settings
 
-from api.serializer import RegisterSerializer, LoginSerializer, CustomUserSerializer, BankTransferSerializer, WithdrawSerializer, TransferSerializer, TransactionSerializer, AccountDetailsSerializer, BuyAirtimeSerializer, BuyDataSerializer, TVServiceSerializer, ElectricityBillSerializer, WaecPinGeneratorSerializer, JambRegistrationSerializer
+from api.serializer import RegisterSerializer, LoginSerializer, CustomUserSerializer, BankTransferSerializer, PaystackTransactionSerializer, WithdrawSerializer, TransferSerializer, TransactionSerializer, AccountDetailsSerializer, BuyAirtimeSerializer, BuyDataSerializer, TVServiceSerializer, ElectricityBillSerializer, WaecPinGeneratorSerializer, JambRegistrationSerializer
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
 
 from django.contrib.auth import authenticate, login
-from Dashboard.models import CustomUser, BankTransfer, MonnifyTransaction, Transaction, TVService, ElectricityBill, WaecPinGenerator, JambRegistration
+from Dashboard.models import CustomUser, BankTransfer, MonnifyTransaction, PaystackTransaction, Transaction, TVService, ElectricityBill, WaecPinGenerator, JambRegistration
 from django.db import IntegrityError
 from django.http import JsonResponse
 from rest_framework.exceptions import ValidationError
@@ -37,6 +46,8 @@ from Dashboard.utils import handle_first_deposit_reward
 from django.utils.timezone import now
 import traceback
 from rest_framework.decorators import api_view
+
+from rest_framework.generics import ListAPIView
 
 from RestAPI.AirtimeAPI import VTPassAPI
 from RestAPI.DataAPI import VTPassDataAPI
@@ -439,14 +450,27 @@ class WebhookView(APIView):
 
             # Deduct Monnify fee only if this is NOT the first deposit
 
-            should_deduct_fee = getattr(user, 'first_deposit_reward_given', False)
-            monnify_fee = Decimal(getattr(settings, "MONNIFY_TRANSACTION_FEE", "35.00"))
+            # should_deduct_fee = getattr(user, 'first_deposit_reward_given', False)
+            # monnify_fee = Decimal(getattr(settings, "MONNIFY_TRANSACTION_FEE", "35.00"))
 
 
-            # 🛠️ Skip Monnify fee for first deposit
-            if not was_first_deposit and should_deduct_fee and user.balance >= monnify_fee:
-                user.balance -= monnify_fee
-                user.save()
+            # # 🛠️ Skip Monnify fee for first deposit
+            # if not was_first_deposit and should_deduct_fee and user.balance >= monnify_fee:
+            #     user.balance -= monnify_fee
+            #     user.save()
+
+            # Monnify fee = 10% of amount paid
+            monnify_fee = amount_paid * Decimal('0.10')
+
+            # Handle Monnify fee
+            if was_first_deposit:
+                # First deposit: handle fee via custom logic in reward function
+                handle_first_deposit_reward(user, amount_paid)
+            else:
+                # Not first deposit: deduct 10% from balance if user has enough
+                if user.balance >= monnify_fee:
+                    user.balance -= monnify_fee
+                    user.save()
 
             # Log transaction
             MonnifyTransaction.objects.create(
@@ -487,6 +511,157 @@ class WebhookView(APIView):
             print(f"🔥 Internal error: {str(e)}")
             print(traceback.format_exc())
             return Response({"status": "error", "message": "Internal processing error"}, status=status.HTTP_200_OK)
+
+@method_decorator(csrf_exempt, name='dispatch')
+def verify_paystack_transaction(reference):
+    headers = {
+        "Authorization": f"Bearer {settings.PAYSTACK_SECRET_KEY}",
+    }
+    url = f"https://api.paystack.co/transaction/verify/{reference}"
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        return response.json()
+    return None
+
+@method_decorator(csrf_exempt, name='dispatch')
+class PaystackWebhookView(APIView):
+    def post(self, request):
+        response = HttpResponse(status=200)
+        payload = request.body
+        secret = settings.PAYSTACK_SECRET_KEY.encode('utf-8')
+        signature = request.headers.get('x-paystack-signature')
+        computed_hash = hmac.new(secret, payload, hashlib.sha512).hexdigest()
+
+        # Validate signature
+        if not hmac.compare_digest(computed_hash, signature):
+            return HttpResponseForbidden('Invalid signature')
+
+        # Parse JSON
+        event = json.loads(payload)
+
+        if event.get('event') == 'charge.success':
+            data = event.get('data', {})
+            reference = data.get('reference')
+
+            verified_data = verify_paystack_transaction(reference)
+            if not verified_data or verified_data['data'].get('status') != 'success':
+                return HttpResponse(status=400)  # Don't process fake or failed transactions
+            
+            amount_kobo = data.get('amount')
+            amount_naira = Decimal(amount_kobo) / 100
+            email = data.get('customer', {}).get('email')
+            paid_at_str = data.get('paid_at')
+            paid_at = parse_datetime(paid_at_str) if paid_at_str else None
+            payment_method = data.get('authorization', {}).get('channel')
+            currency = data.get('currency', 'NGN')
+            status = data.get('status', 'pending')
+
+            # Check if already recorded
+            if PaystackTransaction.objects.filter(reference=reference).exists():
+                return response  # Already handled
+
+            try:
+                user = User.objects.get(email=email)
+            except User.DoesNotExist:
+                send_mail(
+                    subject="❗ Paystack Webhook Failed - User Not Found",
+                    message=f"A payment with reference {reference} was received but no user with email {email} was found.",
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=["yourteam@bigsheriffdata.com"],
+                )
+                return HttpResponse(status=404)
+
+            # Determine transaction type
+            was_first_deposit = not user.first_deposit_reward_given
+
+            # Update balance first
+            if hasattr(user, 'balance'):
+                user.balance += amount_naira
+                user.save()
+
+            # Process bonus or apply charges
+            if was_first_deposit:
+                handle_first_deposit_reward(user, amount_naira)
+            else:
+                # Deduct 3% charge
+                charge = amount_naira * Decimal('0.03')
+                if user.balance >= charge:
+                    user.balance -= charge
+                    user.save()
+                else:
+                    print(f"User {user.username} has insufficient balance for 3% charge.")
+
+            # Save the transaction
+            PaystackTransaction.objects.create(
+                user=user,
+                transaction_type='first_deposit' if was_first_deposit else 'regular_deposit',
+                reference=reference,
+                amount=amount_naira,
+                payment_method=payment_method,
+                currency=currency,
+                status=status,
+                paid_at=paid_at,
+                response_message=data
+            )
+
+        return response
+
+@method_decorator(csrf_exempt, name='dispatch')
+class InitializeTransactionView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        amount = request.data.get('amount')
+        if not amount:
+            return Response({'error': 'Amount is required'}, status=400)
+
+        try:
+            amount_kobo = int(Decimal(amount) * 100)
+        except Exception as e:
+            return Response({'error': 'Invalid amount format', 'details': str(e)}, status=400)
+
+        email = request.user.email
+        headers = {
+            "Authorization": f"Bearer {settings.PAYSTACK_SECRET_KEY}",
+            "Content-Type": "application/json"
+        }
+        payload = {
+            "email": email,
+            "amount": amount_kobo,
+            "callback_url": "https://your-frontend.com/payment-complete/",  # change to your actual callback URL
+            "metadata": {
+                "user_id": request.user.id,
+                "purpose": "wallet_funding"
+            }
+        }
+
+        try:
+            res = requests.post("https://api.paystack.co/transaction/initialize", json=payload, headers=headers)
+            if res.status_code == 200:
+                return Response(res.json(), status=200)
+            else:
+                return Response({"error": "Paystack initialization failed", "details": res.text}, status=res.status_code)
+        except Exception as e:
+            return Response({"error": "An unexpected error occurred", "details": str(e)}, status=500)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class PaystackConfigView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response({
+            'publicKey': settings.PAYSTACK_PUBLIC_KEY,
+            'userEmail': request.user.email
+        })
+
+@method_decorator(csrf_exempt, name='dispatch')
+class PaystackTransactionListView(ListAPIView):
+    serializer_class = PaystackTransactionSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        # Only return transactions that belong to the authenticated user
+        return PaystackTransaction.objects.filter(user=self.request.user).order_by('-created_at')
 
 
 class BankTransferAPIView(APIView):

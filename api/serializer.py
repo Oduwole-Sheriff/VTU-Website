@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from Dashboard.models import CustomUser, BankTransfer, MonnifyTransaction, Transaction, BuyAirtime, BuyData, TVService, ElectricityBill, WaecPinGenerator, JambRegistration
+from Dashboard.models import CustomUser, BankTransfer, MonnifyTransaction, PaystackTransaction, Transaction, BuyAirtime, BuyData, TVService, ElectricityBill, WaecPinGenerator, JambRegistration
 from authentication.models import Profile
 from django.contrib.auth.password_validation import validate_password
 from django.db import transaction as db_transaction
@@ -194,6 +194,26 @@ class BankTransferSerializer(serializers.ModelSerializer):
             'created_at'
         ]
         read_only_fields = ['status', 'created_at']
+
+class PaystackTransactionSerializer(serializers.ModelSerializer):
+    user_email = serializers.EmailField(source='user.email', read_only=True)
+
+    class Meta:
+        model = PaystackTransaction
+        fields = [
+            'id',
+            'user_email',
+            'transaction_type',
+            'reference',
+            'amount',
+            'payment_method',
+            'status',
+            'currency',
+            'paid_at',
+            'created_at',
+            'response_message'
+        ]
+        read_only_fields = fields  # Make it read-only if you're not accepting POST requests
 
 class TransactionSerializer(serializers.ModelSerializer):
     # Serialize additional fields

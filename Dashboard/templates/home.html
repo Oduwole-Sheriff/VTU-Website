@@ -6,6 +6,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Browser tab color on mobile -->
+    <meta name="theme-color" content="#6d65fc">
+
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>BIG-SHERIFF-DATA</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -753,7 +757,7 @@
             </div>
             <div class="footer-box">
                 <div class="footer-logo">
-                    <a href="./index.html">
+                    <a href="{% url 'index' %}">
                         <figure class="mb-0">
                             <img src="{% static 'Dashboard/asset/images/BSD-LOGO-WHITE4.png' %}" alt="footer-white-logo" loading="lazy">
                         </figure>

@@ -1194,3 +1194,819 @@ Not Found: /.well-known/appspecific/com.chrome.devtools.json
 "GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
 Not Found: /favicon.ico
 "GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /index.html
+"GET /index.html HTTP/1.1" 404 8899
+Not Found: /(% url 'index' %)
+"GET /(%%20url%20'index'%20%) HTTP/1.1" 404 8960
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /(% url 'index' %)
+"GET /(%%20url%20'index'%20%) HTTP/1.1" 404 8960
+Not Found: /(% url 'index' %)
+"GET /(%%20url%20'index'%20%) HTTP/1.1" 404 8960
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /(% url 'home-page' %)
+"GET /(%%20url%20'home-page'%20%) HTTP/1.1" 404 8972
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Internal Server Error: /api/paystack/config/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\api\views.py", line 578, in get
+    'publicKey': settings.PAYSTACK_PUBLIC_KEY,
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\conf\__init__.py", line 104, in __getattr__
+    val = getattr(_wrapped, name)
+          ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Settings' object has no attribute 'PAYSTACK_PUBLIC_KEY'
+"GET /api/paystack/config/ HTTP/1.1" 500 108283
+Internal Server Error: /api/paystack/config/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\api\views.py", line 578, in get
+    'publicKey': settings.PAYSTACK_PUBLIC_KEY,
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\conf\__init__.py", line 104, in __getattr__
+    val = getattr(_wrapped, name)
+          ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Settings' object has no attribute 'PAYSTACK_PUBLIC_KEY'. Did you mean: 'PAYSTACK_SECRET_KEY'?
+"GET /api/paystack/config/ HTTP/1.1" 500 108470
+Internal Server Error: /api/paystack/config/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\api\views.py", line 578, in get
+    'publicKey': settings.PAYSTACK_PUBLIC_KEY,
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\conf\__init__.py", line 104, in __getattr__
+    val = getattr(_wrapped, name)
+          ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Settings' object has no attribute 'PAYSTACK_PUBLIC_KEY'. Did you mean: 'PAYSTACK_SECRET_KEY'?
+"GET /api/paystack/config/ HTTP/1.1" 500 108470
+Internal Server Error: /api/paystack/config/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\api\views.py", line 578, in get
+    'publicKey': settings.PAYSTACK_PUBLIC_KEY,
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\conf\__init__.py", line 104, in __getattr__
+    val = getattr(_wrapped, name)
+          ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Settings' object has no attribute 'PAYSTACK_PUBLIC_KEY'. Did you mean: 'PAYSTACK_SECRET_KEY'?
+"GET /api/paystack/config/ HTTP/1.1" 500 108470
+Internal Server Error: /api/paystack/config/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\api\views.py", line 578, in get
+    'publicKey': settings.PAYSTACK_PUBLIC_KEY,
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\conf\__init__.py", line 104, in __getattr__
+    val = getattr(_wrapped, name)
+          ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Settings' object has no attribute 'PAYSTACK_PUBLIC_KEY'. Did you mean: 'PAYSTACK_SECRET_KEY'?
+"GET /api/paystack/config/ HTTP/1.1" 500 108470
+Internal Server Error: /api/paystack/config/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\api\views.py", line 596, in get
+    'publicKey': settings.PAYSTACK_PUBLIC_KEY,
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\conf\__init__.py", line 104, in __getattr__
+    val = getattr(_wrapped, name)
+          ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Settings' object has no attribute 'PAYSTACK_PUBLIC_KEY'. Did you mean: 'PAYSTACK_SECRET_KEY'?
+"GET /api/paystack/config/ HTTP/1.1" 500 108477
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Internal Server Error: /api/paystack/config/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\api\views.py", line 596, in get
+    'publicKey': settings.PAYSTACK_PUBLIC_KEY,
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\conf\__init__.py", line 104, in __getattr__
+    val = getattr(_wrapped, name)
+          ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Settings' object has no attribute 'PAYSTACK_PUBLIC_KEY'. Did you mean: 'PAYSTACK_SECRET_KEY'?
+"GET /api/paystack/config/ HTTP/1.1" 500 108742
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1900
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Internal Server Error: /api/paystack/config/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\api\views.py", line 596, in get
+    'publicKey': settings.PAYSTACK_PUBLIC_KEY,
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\conf\__init__.py", line 104, in __getattr__
+    val = getattr(_wrapped, name)
+          ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Settings' object has no attribute 'PAYSTACK_PUBLIC_KEY'. Did you mean: 'PAYSTACK_SECRET_KEY'?
+"GET /api/paystack/config/ HTTP/1.1" 500 108742
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1900
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Bad Request: /api/login/
+"POST /api/login/ HTTP/1.1" 400 45
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1900
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1900
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8921
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8921
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8921
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Forbidden (Origin checking failed - https://6abb-102-89-23-177.ngrok-free.app does not match any trusted origins.): /logout/
+"POST /logout/ HTTP/1.1" 403 2589
+Forbidden: /api/login/
+"POST /api/login/ HTTP/1.1" 403 128
+Forbidden: /api/login/
+"POST /api/login/ HTTP/1.1" 403 128
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8921
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1900
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /paystack/initialize/
+"POST /paystack/initialize/ HTTP/1.1" 404 8930
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /index/paystack/initialize/
+"POST /index/paystack/initialize/ HTTP/1.1" 404 8948
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Forbidden: /api/paystack/initialize/
+"POST /api/paystack/initialize/ HTTP/1.1" 403 45
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Forbidden: /api/paystack/initialize/
+"POST /api/paystack/initialize/ HTTP/1.1" 403 45
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1900
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Internal Server Error: /api/paystack/initialize/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\utils\decorators.py", line 46, in _wrapper
+    return bound_method(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 511, in dispatch
+    self.response = self.finalize_response(request, response, *args, **kwargs)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 423, in finalize_response
+    assert isinstance(response, HttpResponseBase), (
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Expected a `Response`, `HttpResponse` or `StreamingHttpResponse` to be returned from the view, but received a `<class 'NoneType'>`
+"POST /api/paystack/initialize/ HTTP/1.1" 500 101947
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Unauthorized: /api/paystack/initialize/
+"POST /api/paystack/initialize/ HTTP/1.1" 401 141
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1900
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8921
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1853
+Forbidden: /api/paystack/initialize/
+"POST /api/paystack/initialize/ HTTP/1.1" 403 128
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1895
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1886
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1919
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1919
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1886
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1895
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1919
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1853
+Forbidden: /api/paystack/initialize/
+"POST /api/paystack/initialize/ HTTP/1.1" 403 128
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1853
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8921
+Forbidden: /api/paystack/initialize/
+"POST /api/paystack/initialize/ HTTP/1.1" 403 128
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1919
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1886
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1895
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1919
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1853
+Forbidden: /api/paystack/initialize/
+"POST /api/paystack/initialize/ HTTP/1.1" 403 128
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1853
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1919
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8921
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1853
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1853
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1853
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1853
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1853
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1853
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1919
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1886
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1895

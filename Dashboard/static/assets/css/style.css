@@ -16527,6 +16527,21 @@ body.sal-disabled [data-sal|=flip] {
   }
 }
 
+.loader {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #3498db;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 .single-pricing-single-two {
   padding: 50px 80px;
   box-shadow: 1px 2px 10px 4px rgba(223, 223, 223, 0.2);
@@ -16581,6 +16596,39 @@ body.sal-disabled [data-sal|=flip] {
   position: relative; /* Enable positioning for pseudo-elements if needed */
 }
 
+.single-pricing-single-two input#amount, button#pay-btn {
+  position: relative;
+  z-index: 9999 !important;
+}
+
+.single-pricing-single-two input#amount{
+  color: #000000;
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 5px 20px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.single-pricing-single-two input#amount::placeholder {
+  color: #888;
+  opacity: 1;
+}
+
+.single-pricing-single-two button#pay-btn{
+  background: rgb(19, 189, 19);
+  border-radius: 20px;
+  color: #fff;
+  font-weight: 700 !important;
+  padding: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.single-pricing-single-two button#pay-btn:hover{
+  background: rgb(34, 151, 34);
+}
+
 .single-pricing-single-two.active::before {
   content: '';
   position: absolute;
@@ -16600,12 +16648,6 @@ body.sal-disabled [data-sal|=flip] {
   .single-pricing-single-two .body .Moniepoint-Logo {
     width: 160px;
   }
-  .single-pricing-single-two .body .palmpay-logo {
-    width: 70px !important;
-  }
-}
-.single-pricing-single-two .body .palmpay-logo {
-  width: 180px;
 }
 .single-pricing-single-two .body .check-wrapper {
   text-align: center;

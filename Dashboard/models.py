@@ -159,6 +159,30 @@ class BankTransfer(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.amount} NGN"
+    
+class PaystackTransaction(models.Model):
+    TRANSACTION_TYPES = (
+        ('first_deposit', 'First Deposit'),
+        ('regular', 'Regular Deposit'),
+    )
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    transaction_type = models.CharField(
+        max_length=20,
+        choices=TRANSACTION_TYPES,
+        default='regular'
+    )
+    reference = models.CharField(max_length=100, unique=True)  # Paystack's unique reference
+    amount = models.DecimalField(max_digits=10, decimal_places=2)  # Naira value
+    payment_method = models.CharField(max_length=50, blank=True, null=True)  # e.g., 'card', 'bank_transfer'
+    currency = models.CharField(max_length=5, default='NGN')
+    status = models.CharField(max_length=20)  # e.g., 'success', 'failed'
+    paid_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    response_message = models.JSONField(null=True, blank=True)  # Optional full response from Paystack
+
+    def __str__(self):
+        return f"Paystack Txn for {self.user.username} - {self.amount} {self.currency}"
 
 class Notification(models.Model):
     title = models.CharField(max_length=255)

@@ -7,6 +7,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+
+    
+    <!-- Browser tab color on mobile -->
+    <meta name="theme-color" content="#0b048a">
+
     <!-- <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/images/fav.png' %}"> -->
     <title>BIG-SHERIFF-DATA</title>
     <!-- bootstrap Css -->
@@ -130,7 +136,7 @@
                                     <div class="title-conter-area">
                                         <h2 class="title">Automated Bank Transfer</h2>
                                         {% if account_details %}
-                                        <span class="pre-title-bg">Make Transfer To The Available Bank Below To Fund Your Wallet</span>
+                                        <span class="pre-title-bg">Make Transfer To The Any Bank Of Your Choice Below To Fund Your Wallet</span>
                                         {% else %}
                                         <span class="pre-title-bg">Fill this form to generate your account details</span>
                                         {% endif %}
@@ -145,11 +151,11 @@
                                         <div class="tab-area-pricing-two mt--30">
                                             <ul class="nav nav-tabs pricing-button-one two" id="myTab" role="tablist">
                                                 <li class="nav-item" role="presentation">
-                                                    <button class="active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Moniepoint Microfinance Bank</button>
+                                                    <button class="active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Moniepoint Bank</button>
                                                 </li>
-                                                <!-- <li class="nav-item" role="presentation">
-                                                    <button class="" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Wema Bank</button>
-                                                </li> -->
+                                                <li class="nav-item" role="presentation">
+                                                    <button class="" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Pay With PayStack</button>
+                                                </li>
                                             </ul>
                                             <div class="tab-content mt--20" id="myTabContent">
                                                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
@@ -172,24 +178,25 @@
                                                 </div>
                                             
                                                 <!-- Account 2 - Wema Bank -->
-                                                <!-- <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                                                     <div class="row g-5 mt--10">
                                                         <div class="col-12">
                                                             <div class="single-pricing-single-two palmpay active">
                                                                 <div class="body">
-                                                                    <img class="palmpay-logo" src="{% static 'assets/images/logo/wema-bank.jpg' %}" alt="palmpay-logo">
                                                                     <div class="check-wrapper">
-                                                                        <ul>
-                                                                            <li>Bank Name: {{ account_details.1.bank_name }}</li>
-                                                                            <li>Account Name: {{ account_details.1.account_name }}</li>
-                                                                            <li>Account Number: {{ account_details.1.account_number }}</li>
-                                                                        </ul>
+                                                                        <input type="number" id="amount" placeholder="Enter Amount To Deposit (₦)">
+                                                                        <button id="pay-btn">Pay Now</button>
+
+                                                                        <div id="spinner" style="display: none; text-align:center;">
+                                                                            <div class="loader"></div>
+                                                                            <p>Verifying your transaction...</p>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div> -->
+                                                </div>
                                             </div>
                                         </div>
                                     {% else %}
@@ -365,6 +372,81 @@
     <script src="{% static 'assets/js/main.js' %}" defer></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.all.min.js"></script>
+
+    <script src="https://js.paystack.co/v2/inline.js"></script>
+
+    <script>
+        let publicKey = '';
+        let userEmail = '';
+        const token = localStorage.getItem('access_token');
+
+        // Fetch Paystack config
+        fetch('/api/paystack/config/', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            publicKey = data.publicKey;
+            userEmail = data.userEmail;
+        });
+
+        document.getElementById('pay-btn').addEventListener('click', () => {
+            const amountInput = document.getElementById('amount');
+            const amount = parseFloat(amountInput.value);
+
+            if (!amount || amount <= 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Invalid Amount',
+                    text: 'Enter a valid amount greater than ₦0.'
+                });
+                return;
+            }
+
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+            // Step 1: Initialize transaction from backend
+            fetch('/api/paystack/initialize/', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({ amount })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status && data.data.access_code) {
+                    // Step 2: Launch Paystack popup with access code
+                    const popup = new PaystackPop();
+                    popup.resumeTransaction(data.data.access_code);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Initialization Failed',
+                        text: 'We could not start the payment process. Please try again.'
+                    });
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Server Error',
+                    text: `Something went wrong: ${error.message}`
+                });
+            });
+        });
+
+        // Spinner element (optional)
+        const spinner = document.getElementById('spinner');
+        if (spinner) {
+            spinner.style.display = 'none'; // Hide by default
+        }
+    </script>
+
 
     <script>
         // Check if user has already set a theme preference

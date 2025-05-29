@@ -634,6 +634,14 @@ class PaystackWebhookView(APIView):
 
         return response
 
+class PublicIPView(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            ip = requests.get("https://api64.ipify.org").text
+            return JsonResponse({"public_ip": ip})
+        except requests.RequestException:
+            return JsonResponse({"error": "Failed to retrieve public IP"}, status=500)
+
 @method_decorator(csrf_exempt, name='dispatch')
 class InitializeTransactionView(APIView):
     permission_classes = [IsAuthenticated]

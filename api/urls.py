@@ -1,5 +1,5 @@
 from django.urls import path
-from api.views import RegisterAPI, LoginAPI, BankTransferAPIView, PaystackWebhookView, InitializeTransactionView, PaystackConfigView, PaystackTransactionListView, WebhookView, TransferBonusAPIView, WithdrawView, TransferView, TransactionListView, SubmitAccountDetailsView, BuyAirtimeView, BuyDataAPIView, TVServiceAPIView, ElectricityBillCreateView, WaecPinGeneratorCreateView, JambRegistrationViewSet
+from api.views import RegisterAPI, LoginAPI, BankTransferAPIView, PaystackWebhookView, PublicIPView, InitializeTransactionView, PaystackConfigView, PaystackTransactionListView, WebhookView, TransferBonusAPIView, WithdrawView, TransferView, TransactionListView, SubmitAccountDetailsView, BuyAirtimeView, BuyDataAPIView, TVServiceAPIView, ElectricityBillCreateView, WaecPinGeneratorCreateView, JambRegistrationViewSet
 
 urlpatterns = [
     path('registration/', RegisterAPI.as_view()),
@@ -7,6 +7,7 @@ urlpatterns = [
     path('monnify/webhook/', WebhookView.as_view(), name='monnify-webhook'),
     path('bank-transfer/', BankTransferAPIView.as_view(), name='bank_transfer_api'),
     path('paystack/config/', PaystackConfigView.as_view(), name='paystack-config'),
+    path("debug/ip/", PublicIPView.as_view(), name="public-ip"),
     path('paystack/initialize/', InitializeTransactionView.as_view(), name='paystack-initialize'),
     path('paystack/transactions/', PaystackTransactionListView.as_view(), name='paystack-transactions'),
     path('paystack/webhook/', PaystackWebhookView.as_view(), name='paystack-webhook'),

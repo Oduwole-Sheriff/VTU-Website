@@ -12,8 +12,8 @@ const bouquetOptions = {
     'DSTV': [
         "DStv Padi N1,850",
         "DStv Yanga N2,565",
-        "DStv Confam N4,615",
-        "DStv Compact N7,900",
+        "Dstv Confam N4,615",
+        "DStv Compact N7900",
         "DStv Premium N18,400",
         "DStv Asia N6,200",
         "DStv Compact Plus N12,400",
@@ -42,7 +42,41 @@ const bouquetOptions = {
         "DStv Asian Add-on N6,200",
         "DStv French Touch Add-on N2,300",
         "ExtraView Access N2,500",
-        "DStv French 11 N3,260"
+        "DStv French 11 N3,260",
+        "DStv Asian Bouquet E36 N12,400",
+        "DStv Yanga + Showmax N6,550",
+        "DStv Great Wall Standalone Bouquet + Showmax N6,625",
+        "DStv Compact Plus + Showmax N26,450",
+        "Dstv Confam + Showmax N10,750",
+        "DStv Compact + Showmax N17,150",
+        "DStv Padi + Showmax N7,100",
+        "DStv Premium W/Afr +  ASIAE36 + Showmax N57,500",
+        "DStv Asia + Showmax N15,900",
+        "DStv Premium + French + Showmax N57,500",
+        "DStv Premium + Showmax N37,000",
+        "DStv Premium Streaming Subscription - N37,000",
+        "DStv Prestige - N850,000",
+        "DStv Yanga OTT Streaming Subscription - N5,100",
+        "DStv Compact Plus Streaming Subscription - N25,000",
+        "DStv Compact Streaming Subscription - N15,700",
+        "DStv Comfam Streaming Subscription - N9,300",
+        "DStv Indian N12,400",
+        "DStv Premium East Africa and Indian N16,530",
+        "DStv FTA Plus N1,600",
+        "DStv PREMIUM HD N39,000",
+        "DStv Access N2000",
+        "DStv Family",
+        "DStv India Add-on N12,400",
+        "DSTV MOBILE N790",
+        "DStv Movie Bundle Add-on N2500",
+        "DStv PVR Access Service N4000",
+        "DStv Premium W/Afr + Showmax N37,000",
+        "Showmax Standalone - N3,500",
+        "DStv Prestige Membership - N850,000",
+        "DStv Compact Plus + French + Xtraview - N39,000",
+        "DStv Compact Plus + French - N34,000",
+        "DStv Box Office",
+        "DStv Box Office (New Premier)"
     ],
     'GOTV': [
         "GOtv Lite N410",
@@ -50,7 +84,8 @@ const bouquetOptions = {
         "GOtv Jolli N2,460",
         "GOtv Jinja N1,640",
         "GOtv Lite (3 Months) N1,080",
-        "GOtv Lite (1 Year) N3,180"
+        "GOtv Lite (1 Year) N3,180",
+        "GOtv Supa Plus - monthly N15,700"
     ],
     'STARTIMES': [
         "Nova - 900 Naira - 1 Month",
@@ -68,7 +103,16 @@ const bouquetOptions = {
         "Smart - 200 Naira - 1 Day",
         "Classic - 320 Naira - 1 Day",
         "Super - 400 Naira - 1 Day",
-        "ewallet Amount"
+        "ewallet Amount",
+        "Chinese (Dish) - 19,000 Naira - 1 month",
+        "Nova (Antenna) - 1,900 Naira - 1 Month",
+        "Classic (Dish) - 2300 Naira - 1 Week",
+        "Classic (Dish) - 6800 Naira - 1 Month",
+        "Nova (Dish) - 650 Naira - 1 Week",
+        "Super (Antenna) - 3,000 Naira - 1 Week",
+        "Super (Antenna) - 8,800 Naira - 1 Month",
+        "Global (Dish) - 19000 Naira - 1 Month",
+        "Global (Dish) - 6500 Naira - 1Week"
     ],
     'SHOWMAX': [] // Showmax doesn't have bouquet options
 };
@@ -191,36 +235,60 @@ document.getElementById('action').addEventListener('change', function() {
 // Add event listener to the bouquet field
 document.getElementById('bouquet').addEventListener('change', function() {
     const selectedBouquet = this.value;
+    const amountField = document.getElementById('amountField');
 
-    // Check if a bouquet is selected
-    if (selectedBouquet) {
-        // Extract the amount from the bouquet (amount is the last part of the string after the last space)
-        const amountMatch = selectedBouquet.match(/(\d[\d,]*)$/);
-        if (amountMatch) {
-            // Set the extracted amount into the 'amount' input field
-            document.getElementById('amount').value = amountMatch[0].replace(/,/g, ''); // Remove commas if present
-            // Disable the amount field after it is set
-            document.getElementById('amount').disabled = true;
-        }
+    let amount = null;
+
+    // Match "N2,565" or "- N850,000"
+    let matchN = selectedBouquet.match(/N\s?([\d,]+)/i);
+    let matchNaira = selectedBouquet.match(/([\d,]+)\s*Naira/i);
+    let matchEnd = selectedBouquet.match(/(\d[\d,]*)$/);
+
+    if (matchN) {
+        amount = matchN[1];
+    } else if (matchNaira) {
+        amount = matchNaira[1];
+    } else if (matchEnd) {
+        amount = matchEnd[1];
     }
 
-    // Check if a bouquet is selected
-    if (selectedBouquet) {
-        // Extract the amount from the bouquet (amount is the last part of the string after the last space)
-        const amountMatch = selectedBouquet.match(/(\d{1,3}(?:,\d{3})*)(?=\s*Naira)/);
-        if (amountMatch) {
-            // Set the extracted amount into the 'amount' input field
-            document.getElementById('amount').value = amountMatch[0].replace(/,/g, ''); // Remove commas if present
-            // Disable the amount field after it is set
-            document.getElementById('amount').disabled = true;
-        }
+    if (amount) {
+        // Remove all commas and non-digit characters
+        const cleanAmount = amount.replace(/[^0-9.]/g, '');
+        
+        // Set both value and attribute
+        amountField.value = cleanAmount;
+        amountField.setAttribute('value', cleanAmount);
+        amountField.readOnly = true;
+
+        // Optional: trigger label float
+        amountField.dispatchEvent(new Event('input'));
+    } else {
+        amountField.value = '';
+        amountField.setAttribute('value', '');
+        amountField.readOnly = false;
     }
+
+    console.log("Amount field after update:", amountField.value);
+
+
+    // Check if a bouquet is selected
+    // if (selectedBouquet) {
+    //     // Extract the amount from the bouquet (amount is the last part of the string after the last space)
+    //     const amountMatch = selectedBouquet.match(/(\d{1,3}(?:,\d{3})*)(?=\s*Naira)/);
+    //     if (amountMatch) {
+    //         // Set the extracted amount into the 'amount' input field
+    //         document.getElementById('amount').value = amountMatch[0].replace(/,/g, ''); // Remove commas if present
+    //         // Disable the amount field after it is set
+    //         document.getElementById('amount').disabled = true;
+    //     }
+    // }
 });
 
 // Add event listener to the type field to auto-populate the amount field
 document.getElementById('type').addEventListener('change', function() {
     const selectedType = this.value;
-    const amountField = document.getElementById('amount');
+    const amountField = document.getElementById('amountField');
     
     // Map of variation_code to amount
     const amounts = {

@@ -3313,3 +3313,2218 @@ Not Found: /.well-known/appspecific/com.chrome.devtools.json
 "GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
 Not Found: /.well-known/appspecific/com.chrome.devtools.json
 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Internal Server Error: /api/tvservice/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\api\views.py", line 1487, in post
+    content = verify_result.get('content', {})
+              ^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get'
+"POST /api/tvservice/ HTTP/1.1" 500 109907
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Internal Server Error: /api/buy-data/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\api\views.py", line 1096, in post
+    buy_data_instance.transaction_id = api_response.get("requestId", 'N/A')
+                                       ^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get'
+"POST /api/buy-data/ HTTP/1.1" 500 116807
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Bad Request: /api/buy-data/
+"POST /api/buy-data/ HTTP/1.1" 400 109
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Bad Request: /api/buy-data/
+"POST /api/buy-data/ HTTP/1.1" 400 141
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Bad Request: /api/buy-data/
+"POST /api/buy-data/ HTTP/1.1" 400 196
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Bad Request: /api/buy-data/
+"POST /api/buy-data/ HTTP/1.1" 400 141
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Bad Request: /api/buy-data/
+"POST /api/buy-data/ HTTP/1.1" 400 135
+Forbidden: /api/buy-data/
+"POST /api/buy-data/ HTTP/1.1" 403 58
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1900
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Bad Request: /api/buy-data/
+"POST /api/buy-data/ HTTP/1.1" 400 196
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Bad Request: /api/buy-data/
+"POST /api/buy-data/ HTTP/1.1" 400 134
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Bad Request: /api/buy-data/
+"POST /api/buy-data/ HTTP/1.1" 400 131
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1900
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Bad Request: /api/buy-data/
+"POST /api/buy-data/ HTTP/1.1" 400 131
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Bad Request: /api/buy-data/
+"POST /api/buy-data/ HTTP/1.1" 400 109
+Bad Request: /api/buy-data/
+"POST /api/buy-data/ HTTP/1.1" 400 134
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1900
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Bad Request: /api/buy-data/
+"POST /api/buy-data/ HTTP/1.1" 400 134
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Bad Request: /api/buy-data/
+"POST /api/buy-data/ HTTP/1.1" 400 146
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1900
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Internal Server Error: /api/buy-data/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 789, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 490, in _make_request
+    raise new_e
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 466, in _make_request
+    self._validate_conn(conn)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 1095, in _validate_conn
+    conn.connect()
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connection.py", line 730, in connect
+    sock_and_verified = _ssl_wrap_socket_and_match_hostname(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connection.py", line 909, in _ssl_wrap_socket_and_match_hostname
+    ssl_sock = ssl_wrap_socket(
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\util\ssl_.py", line 469, in ssl_wrap_socket
+    ssl_sock = _ssl_wrap_socket_impl(sock, context, tls_in_tls, server_hostname)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\util\ssl_.py", line 513, in _ssl_wrap_socket_impl
+    return ssl_context.wrap_socket(sock, server_hostname=server_hostname)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\ssl.py", line 455, in wrap_socket
+    return self.sslsocket_class._create(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\ssl.py", line 1042, in _create
+    self.do_handshake()
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\ssl.py", line 1320, in do_handshake
+    self._sslobj.do_handshake()
+ConnectionAbortedError: [WinError 10053] An established connection was aborted by the software in your host machine
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\adapters.py", line 667, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 843, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\util\retry.py", line 474, in increment
+    raise reraise(type(error), error, _stacktrace)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\util\util.py", line 38, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 789, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 490, in _make_request
+    raise new_e
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 466, in _make_request
+    self._validate_conn(conn)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 1095, in _validate_conn
+    conn.connect()
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connection.py", line 730, in connect
+    sock_and_verified = _ssl_wrap_socket_and_match_hostname(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connection.py", line 909, in _ssl_wrap_socket_and_match_hostname
+    ssl_sock = ssl_wrap_socket(
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\util\ssl_.py", line 469, in ssl_wrap_socket
+    ssl_sock = _ssl_wrap_socket_impl(sock, context, tls_in_tls, server_hostname)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\util\ssl_.py", line 513, in _ssl_wrap_socket_impl
+    return ssl_context.wrap_socket(sock, server_hostname=server_hostname)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\ssl.py", line 455, in wrap_socket
+    return self.sslsocket_class._create(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\ssl.py", line 1042, in _create
+    self.do_handshake()
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\ssl.py", line 1320, in do_handshake
+    self._sslobj.do_handshake()
+urllib3.exceptions.ProtocolError: ('Connection aborted.', ConnectionAbortedError(10053, 'An established connection was aborted by the software in your host machine', None, 10053, None))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\api\views.py", line 1093, in post
+    api_response, service_variations = self.call_external_api(buy_data_instance, network, data_plan)
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\api\views.py", line 1198, in call_external_api
+    service_variations_response = api.fetch_service_variations(network_name)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\RestAPI\DataAPI.py", line 53, in fetch_service_variations
+    response = requests.get(url, headers=headers, data=payload)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\adapters.py", line 682, in send
+    raise ConnectionError(err, request=request)
+requests.exceptions.ConnectionError: ('Connection aborted.', ConnectionAbortedError(10053, 'An established connection was aborted by the software in your host machine', None, 10053, None))
+"POST /api/buy-data/ HTTP/1.1" 500 308672
+Forbidden: /api/buy-data/
+"POST /api/buy-data/ HTTP/1.1" 403 58
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1900
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Internal Server Error: /api/buy-data/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connection.py", line 199, in _new_conn
+    sock = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\util\connection.py", line 60, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 964, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 789, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 490, in _make_request
+    raise new_e
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 466, in _make_request
+    self._validate_conn(conn)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 1095, in _validate_conn
+    conn.connect()
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connection.py", line 693, in connect
+    self.sock = sock = self._new_conn()
+                       ^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connection.py", line 206, in _new_conn
+    raise NameResolutionError(self.host, self, e) from e
+urllib3.exceptions.NameResolutionError: <urllib3.connection.HTTPSConnection object at 0x0000020DE6D950D0>: Failed to resolve 'sandbox.vtpass.com' ([Errno 11001] getaddrinfo failed)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\adapters.py", line 667, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 843, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\util\retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='sandbox.vtpass.com', port=443): Max retries exceeded with url: /api/service-variations?serviceID= (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x0000020DE6D950D0>: Failed to resolve 'sandbox.vtpass.com' ([Errno 11001] getaddrinfo failed)"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\api\views.py", line 1093, in post
+    api_response, service_variations = self.call_external_api(buy_data_instance, network, data_plan)
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\api\views.py", line 1198, in call_external_api
+    service_variations_response = api.fetch_service_variations(network_name)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\RestAPI\DataAPI.py", line 53, in fetch_service_variations
+    response = requests.get(url, headers=headers, data=payload)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\adapters.py", line 700, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='sandbox.vtpass.com', port=443): Max retries exceeded with url: /api/service-variations?serviceID= (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x0000020DE6D950D0>: Failed to resolve 'sandbox.vtpass.com' ([Errno 11001] getaddrinfo failed)"))
+"POST /api/buy-data/ HTTP/1.1" 500 228535
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1900
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1900
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Bad Request: /api/buy-data/
+"POST /api/buy-data/ HTTP/1.1" 400 148
+Bad Request: /api/buy-data/
+"POST /api/buy-data/ HTTP/1.1" 400 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Internal Server Error: /api/tvservice/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\api\views.py", line 1282, in post
+    if request.user.balance < Decimal(str(amount)):
+                              ^^^^^^^^^^^^^^^^^^^^
+decimal.InvalidOperation: [<class 'decimal.ConversionSyntax'>]
+"POST /api/tvservice/ HTTP/1.1" 500 108729
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Bad Request: /api/tvservice/
+"POST /api/tvservice/ HTTP/1.1" 400 66
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+"GET /static/EducationCSS/assets/css/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1924
+Bad Request: /api/waec-registration/
+"POST /api/waec-registration/ HTTP/1.1" 400 112
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1900
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+"GET /static/EducationCSS/assets/css/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1924
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Internal Server Error: /api/tvservice/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connection.py", line 199, in _new_conn
+    sock = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\util\connection.py", line 85, in create_connection
+    raise err
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\util\connection.py", line 73, in create_connection
+    sock.connect(sa)
+TimeoutError: [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 789, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 490, in _make_request
+    raise new_e
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 466, in _make_request
+    self._validate_conn(conn)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 1095, in _validate_conn
+    conn.connect()
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connection.py", line 693, in connect
+    self.sock = sock = self._new_conn()
+                       ^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connection.py", line 208, in _new_conn
+    raise ConnectTimeoutError(
+urllib3.exceptions.ConnectTimeoutError: (<urllib3.connection.HTTPSConnection object at 0x0000026F5D8AFF20>, 'Connection to sandbox.vtpass.com timed out. (connect timeout=None)')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\adapters.py", line 667, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 843, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\util\retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='sandbox.vtpass.com', port=443): Max retries exceeded with url: /api/merchant-verify (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000026F5D8AFF20>, 'Connection to sandbox.vtpass.com timed out. (connect timeout=None)'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\api\views.py", line 1483, in post
+    verify_result = api.verify_smartCard_number(service_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\RestAPI\TVSubscriptionAPI.py", line 24, in verify_smartCard_number
+    response = requests.post(url, json=data, auth=HTTPBasicAuth(settings.VTPASS_EMAIL, settings.VTPASS_PASSWORD))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\api.py", line 115, in post
+    return request("post", url, data=data, json=json, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\adapters.py", line 688, in send
+    raise ConnectTimeout(e, request=request)
+requests.exceptions.ConnectTimeout: HTTPSConnectionPool(host='sandbox.vtpass.com', port=443): Max retries exceeded with url: /api/merchant-verify (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000026F5D8AFF20>, 'Connection to sandbox.vtpass.com timed out. (connect timeout=None)'))
+"POST /api/tvservice/ HTTP/1.1" 500 217598
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1900
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1900
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Bad Request: /api/tvservice/
+"POST /api/tvservice/ HTTP/1.1" 400 66
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1900
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1900
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Internal Server Error: /api/tvservice/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connection.py", line 199, in _new_conn
+    sock = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\util\connection.py", line 60, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 964, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 789, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 490, in _make_request
+    raise new_e
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 466, in _make_request
+    self._validate_conn(conn)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 1095, in _validate_conn
+    conn.connect()
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connection.py", line 693, in connect
+    self.sock = sock = self._new_conn()
+                       ^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connection.py", line 206, in _new_conn
+    raise NameResolutionError(self.host, self, e) from e
+urllib3.exceptions.NameResolutionError: <urllib3.connection.HTTPSConnection object at 0x000001F2A94971A0>: Failed to resolve 'sandbox.vtpass.com' ([Errno 11001] getaddrinfo failed)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\adapters.py", line 667, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 843, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\util\retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='sandbox.vtpass.com', port=443): Max retries exceeded with url: /api/merchant-verify (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000001F2A94971A0>: Failed to resolve 'sandbox.vtpass.com' ([Errno 11001] getaddrinfo failed)"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\api\views.py", line 1483, in post
+    verify_result = api.verify_smartCard_number(service_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\RestAPI\TVSubscriptionAPI.py", line 24, in verify_smartCard_number
+    response = requests.post(url, json=data, auth=HTTPBasicAuth(settings.VTPASS_EMAIL, settings.VTPASS_PASSWORD))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\api.py", line 115, in post
+    return request("post", url, data=data, json=json, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\adapters.py", line 700, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='sandbox.vtpass.com', port=443): Max retries exceeded with url: /api/merchant-verify (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000001F2A94971A0>: Failed to resolve 'sandbox.vtpass.com' ([Errno 11001] getaddrinfo failed)"))
+"POST /api/tvservice/ HTTP/1.1" 500 214918
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1900
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1900
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1900
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1900
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Internal Server Error: /api/tvservice/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\api\views.py", line 1282, in post
+    if request.user.balance < Decimal(str(amount)):
+                              ^^^^^^^^^^^^^^^^^^^^
+decimal.InvalidOperation: [<class 'decimal.ConversionSyntax'>]
+"POST /api/tvservice/ HTTP/1.1" 500 108789
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1900
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1900
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Internal Server Error: /api/tvservice/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\api\views.py", line 1282, in post
+    if request.user.balance < Decimal(str(amount)):
+                              ^^^^^^^^^^^^^^^^^^^^
+decimal.InvalidOperation: [<class 'decimal.ConversionSyntax'>]
+"POST /api/tvservice/ HTTP/1.1" 500 108787
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Internal Server Error: /api/tvservice/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\api\views.py", line 1282, in post
+    if request.user.balance < Decimal(str(amount)):
+                              ^^^^^^^^^^^^^^^^^^^^
+decimal.InvalidOperation: [<class 'decimal.ConversionSyntax'>]
+"POST /api/tvservice/ HTTP/1.1" 500 108869
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Internal Server Error: /api/tvservice/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\api\views.py", line 1282, in post
+    if request.user.balance < Decimal(str(amount)):
+                              ^^^^^^^^^^^^^^^^^^^^
+decimal.InvalidOperation: [<class 'decimal.ConversionSyntax'>]
+"POST /api/tvservice/ HTTP/1.1" 500 108765
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Internal Server Error: /api/tvservice/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connection.py", line 199, in _new_conn
+    sock = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\util\connection.py", line 85, in create_connection
+    raise err
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\util\connection.py", line 73, in create_connection
+    sock.connect(sa)
+TimeoutError: [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 789, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 490, in _make_request
+    raise new_e
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 466, in _make_request
+    self._validate_conn(conn)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 1095, in _validate_conn
+    conn.connect()
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connection.py", line 693, in connect
+    self.sock = sock = self._new_conn()
+                       ^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connection.py", line 208, in _new_conn
+    raise ConnectTimeoutError(
+urllib3.exceptions.ConnectTimeoutError: (<urllib3.connection.HTTPSConnection object at 0x000001D46BF137A0>, 'Connection to sandbox.vtpass.com timed out. (connect timeout=None)')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\adapters.py", line 667, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 843, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\util\retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='sandbox.vtpass.com', port=443): Max retries exceeded with url: /api/merchant-verify (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x000001D46BF137A0>, 'Connection to sandbox.vtpass.com timed out. (connect timeout=None)'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\api\views.py", line 1483, in post
+    verify_result = api.verify_smartCard_number(service_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\RestAPI\TVSubscriptionAPI.py", line 24, in verify_smartCard_number
+    response = requests.post(url, json=data, auth=HTTPBasicAuth(settings.VTPASS_EMAIL, settings.VTPASS_PASSWORD))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\api.py", line 115, in post
+    return request("post", url, data=data, json=json, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\adapters.py", line 688, in send
+    raise ConnectTimeout(e, request=request)
+requests.exceptions.ConnectTimeout: HTTPSConnectionPool(host='sandbox.vtpass.com', port=443): Max retries exceeded with url: /api/merchant-verify (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x000001D46BF137A0>, 'Connection to sandbox.vtpass.com timed out. (connect timeout=None)'))
+"POST /api/tvservice/ HTTP/1.1" 500 217598
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1900
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1900
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+"GET /static/EducationCSS/assets/css/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1924
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1900
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1900
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1900
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1900
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Internal Server Error: /api/tvservice/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connection.py", line 199, in _new_conn
+    sock = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\util\connection.py", line 60, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 964, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11002] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 789, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 490, in _make_request
+    raise new_e
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 466, in _make_request
+    self._validate_conn(conn)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 1095, in _validate_conn
+    conn.connect()
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connection.py", line 693, in connect
+    self.sock = sock = self._new_conn()
+                       ^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connection.py", line 206, in _new_conn
+    raise NameResolutionError(self.host, self, e) from e
+urllib3.exceptions.NameResolutionError: <urllib3.connection.HTTPSConnection object at 0x000002053F88F140>: Failed to resolve 'sandbox.vtpass.com' ([Errno 11002] getaddrinfo failed)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\adapters.py", line 667, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 843, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\util\retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='sandbox.vtpass.com', port=443): Max retries exceeded with url: /api/merchant-verify (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002053F88F140>: Failed to resolve 'sandbox.vtpass.com' ([Errno 11002] getaddrinfo failed)"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\api\views.py", line 1483, in post
+    verify_result = api.verify_smartCard_number(service_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\RestAPI\TVSubscriptionAPI.py", line 24, in verify_smartCard_number
+    response = requests.post(url, json=data, auth=HTTPBasicAuth(settings.VTPASS_EMAIL, settings.VTPASS_PASSWORD))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\api.py", line 115, in post
+    return request("post", url, data=data, json=json, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\adapters.py", line 700, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='sandbox.vtpass.com', port=443): Max retries exceeded with url: /api/merchant-verify (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002053F88F140>: Failed to resolve 'sandbox.vtpass.com' ([Errno 11002] getaddrinfo failed)"))
+"POST /api/tvservice/ HTTP/1.1" 500 215183
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Internal Server Error: /api/tvservice/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connection.py", line 199, in _new_conn
+    sock = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\util\connection.py", line 60, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 964, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 789, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 490, in _make_request
+    raise new_e
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 466, in _make_request
+    self._validate_conn(conn)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 1095, in _validate_conn
+    conn.connect()
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connection.py", line 693, in connect
+    self.sock = sock = self._new_conn()
+                       ^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connection.py", line 206, in _new_conn
+    raise NameResolutionError(self.host, self, e) from e
+urllib3.exceptions.NameResolutionError: <urllib3.connection.HTTPSConnection object at 0x000002053F5692E0>: Failed to resolve 'sandbox.vtpass.com' ([Errno 11001] getaddrinfo failed)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\adapters.py", line 667, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 843, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\util\retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='sandbox.vtpass.com', port=443): Max retries exceeded with url: /api/merchant-verify (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002053F5692E0>: Failed to resolve 'sandbox.vtpass.com' ([Errno 11001] getaddrinfo failed)"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\api\views.py", line 1483, in post
+    verify_result = api.verify_smartCard_number(service_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\RestAPI\TVSubscriptionAPI.py", line 24, in verify_smartCard_number
+    response = requests.post(url, json=data, auth=HTTPBasicAuth(settings.VTPASS_EMAIL, settings.VTPASS_PASSWORD))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\api.py", line 115, in post
+    return request("post", url, data=data, json=json, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\adapters.py", line 700, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='sandbox.vtpass.com', port=443): Max retries exceeded with url: /api/merchant-verify (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002053F5692E0>: Failed to resolve 'sandbox.vtpass.com' ([Errno 11001] getaddrinfo failed)"))
+"POST /api/tvservice/ HTTP/1.1" 500 215183
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1900
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1900
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Internal Server Error: /api/tvservice/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connection.py", line 199, in _new_conn
+    sock = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\util\connection.py", line 60, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 964, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 789, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 490, in _make_request
+    raise new_e
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 466, in _make_request
+    self._validate_conn(conn)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 1095, in _validate_conn
+    conn.connect()
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connection.py", line 693, in connect
+    self.sock = sock = self._new_conn()
+                       ^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connection.py", line 206, in _new_conn
+    raise NameResolutionError(self.host, self, e) from e
+urllib3.exceptions.NameResolutionError: <urllib3.connection.HTTPSConnection object at 0x00000226EAF0E870>: Failed to resolve 'sandbox.vtpass.com' ([Errno 11001] getaddrinfo failed)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\adapters.py", line 667, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 843, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\util\retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='sandbox.vtpass.com', port=443): Max retries exceeded with url: /api/merchant-verify (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x00000226EAF0E870>: Failed to resolve 'sandbox.vtpass.com' ([Errno 11001] getaddrinfo failed)"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\api\views.py", line 1483, in post
+    verify_result = api.verify_smartCard_number(service_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\RestAPI\TVSubscriptionAPI.py", line 24, in verify_smartCard_number
+    response = requests.post(url, json=data, auth=HTTPBasicAuth(settings.VTPASS_EMAIL, settings.VTPASS_PASSWORD))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\api.py", line 115, in post
+    return request("post", url, data=data, json=json, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\adapters.py", line 700, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='sandbox.vtpass.com', port=443): Max retries exceeded with url: /api/merchant-verify (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x00000226EAF0E870>: Failed to resolve 'sandbox.vtpass.com' ([Errno 11001] getaddrinfo failed)"))
+"POST /api/tvservice/ HTTP/1.1" 500 215183
+Internal Server Error: /api/tvservice/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\api\views.py", line 1282, in post
+    if request.user.balance < Decimal(str(amount)):
+                              ^^^^^^^^^^^^^^^^^^^^
+decimal.InvalidOperation: [<class 'decimal.ConversionSyntax'>]
+"POST /api/tvservice/ HTTP/1.1" 500 108897
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Internal Server Error: /api/tvservice/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\api\views.py", line 1282, in post
+    if request.user.balance < Decimal(str(amount)):
+                              ^^^^^^^^^^^^^^^^^^^^
+decimal.InvalidOperation: [<class 'decimal.ConversionSyntax'>]
+"POST /api/tvservice/ HTTP/1.1" 500 108761
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Internal Server Error: /api/tvservice/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\api\views.py", line 1282, in post
+    if request.user.balance < Decimal(str(amount)):
+                              ^^^^^^^^^^^^^^^^^^^^
+decimal.InvalidOperation: [<class 'decimal.ConversionSyntax'>]
+"POST /api/tvservice/ HTTP/1.1" 500 108761
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Internal Server Error: /api/tvservice/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\api\views.py", line 1282, in post
+    if request.user.balance < Decimal(str(amount)):
+                              ^^^^^^^^^^^^^^^^^^^^
+decimal.InvalidOperation: [<class 'decimal.ConversionSyntax'>]
+"POST /api/tvservice/ HTTP/1.1" 500 108785
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Internal Server Error: /api/tvservice/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\api\views.py", line 1282, in post
+    if request.user.balance < Decimal(str(amount)):
+                              ^^^^^^^^^^^^^^^^^^^^
+decimal.InvalidOperation: [<class 'decimal.ConversionSyntax'>]
+"POST /api/tvservice/ HTTP/1.1" 500 108787
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Internal Server Error: /api/tvservice/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\OneDrive\Desktop\5 star projects\VTU WEBSITE\api\views.py", line 1282, in post
+    if request.user.balance < Decimal(str(amount)):
+                              ^^^^^^^^^^^^^^^^^^^^
+decimal.InvalidOperation: [<class 'decimal.ConversionSyntax'>]
+"POST /api/tvservice/ HTTP/1.1" 500 108783
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Unauthorized: /api/paystack/initialize/
+"POST /api/paystack/initialize/ HTTP/1.1" 401 141
+Unauthorized: /api/paystack/initialize/
+"POST /api/paystack/initialize/ HTTP/1.1" 401 141
+Unauthorized: /api/paystack/initialize/
+"POST /api/paystack/initialize/ HTTP/1.1" 401 141
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902

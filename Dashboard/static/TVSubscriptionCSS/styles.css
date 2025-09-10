@@ -96,59 +96,57 @@ h1 {
 .floating-label-group input[type="tel"] {
   width: 100%;
   border: none;
-  border-bottom: 2px solid #bdc3c7; /* Light grey border */
-  padding: 12px 0 8px 0; /* Adjust padding for label space */
+  border-bottom: 2px solid #bdc3c7;
+  padding: 12px 0 8px 0;
   font-size: 1.7rem !important;
   background-color: transparent;
   position: relative;
-  transition: border-color 0.3s ease;
+  color: #333; /* Always visible */
+  transition: border-color 0.3s ease, color 0.3s ease;
 }
 
+/* Label floating animation */
 .floating-label-group label {
   position: absolute;
-  top: 10px; /* Align with input text */
+  top: 10px;
   left: 0;
   font-size: 1.4rem !important;
-  color: #7f8c8d; /* Label color */
+  color: #7f8c8d;
   pointer-events: none;
   transition: all 0.2s ease-out;
-  z-index: 0; /* Label below input */
+  z-index: 0;
 }
 
-/* Floating label animation */
+/* Float label if input has a value or is readonly and has a value */
 .floating-label-group input:focus + label,
-.floating-label-group input:not(:placeholder-shown) + label {
-  top: -20px !important; /* Move label up */
-  font-size: 1.5rem !important; /* Make label smaller */
-  color: #3498db; /* Accent color on focus */
+.floating-label-group input:not(:placeholder-shown) + label,
+.floating-label-group input[value]:not([value=""]) + label,
+.floating-label-group input[readonly][value]:not([value=""]) + label {
+  top: -20px !important;
+  font-size: 1.5rem !important;
+  color: #3498db;
+  z-index: 100;
 }
 
-/* Focus Border Animation */
+/* Ensure text is always visible for readonly inputs */
+.floating-label-group input[readonly] {
+    color: #000 !important; /* Force visible text */
+}
+
+/* Focus border */
 .focus-border {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 0;
   height: 2px;
-  background-color: #3498db; /* Accent color */
+  background-color: #3498db;
   transition: width 0.3s ease;
   z-index: 2;
 }
 .floating-label-group input:focus ~ .focus-border {
   width: 100%;
 }
-
-/* Readonly state for floating labels */
-.floating-label-group.readonly input {
-  color: #555;
-  border-bottom-style: dashed !important; /* Indicate readonly */
-}
-.floating-label-group.readonly label {
-  color: #555; /* Make label less prominent */
-  top: -10px; /* Keep label floated up for readonly fields with value */
-  font-size: 1.5rem !important;
-}
-
 
 /* --- Select Group Styling --- */
 .select-group {

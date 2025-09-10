@@ -24,74 +24,6 @@
             </div>
         </div>
 
-        <!-- <div class="form-container" id="formContainer">
-            <form class="formStyle step" id="buyDataForm" novalidate>
-                {% csrf_token %}
-                <article class="formHeading">
-                    <p>TopUp your Data With BigSheriffData</p>
-                    <h2 id="networkName">Data Bundles</h2>
-                </article>
-                <div class="inputField">
-                    <label>Network</label>
-                    <input type="text" id="network" name="network" readonly> 
-                </div> -->
-                <!-- Hidden Original Data Plan Field -->
-                <!-- <div class="inputField inputFieldDropdown" style="display: none;">
-                    <label>Data Plan</label>
-                    <select name="data_plan" id="dataPlan">
-                        <option value="" disabled selected>Select a Data Plan</option> -->
-                        <!-- Options will be populated dynamically by JS -->
-                    <!-- </select>
-                </div> -->
-
-                <!-- Visible Data Plan + ₦10 Field -->
-                <!-- <div class="inputField inputFieldDropdown">
-                    <label>Data Plan</label>
-                    <select name="data_plan_plus" id="dataPlanPlus">
-                        <option value="" disabled selected>Select a Data Plan</option> -->
-                        <!-- Will be filled dynamically -->
-                    <!-- </select>
-                </div>
-                
-                <div class="inputField inputFieldDropdown" id="gloDataTypeContainer" style="display: none;">
-                    <label>Data Type</label>
-                    <select name="data_type" id="gloDataType">
-                        <option value="Glo Data">Glo Data</option>
-                        <option value="Glo SME Data">Glo SME Data</option>
-                    </select>
-                </div>
-
-                <div class="inputField inputFieldDropdown" id="nineMobileDataTypeContainer" style="display: none;">
-                    <label>Data Type</label>
-                    <select name="data_type" id="nineMobileDataType">
-                        <option value="9mobile Data">9mobile Data</option>
-                        <option value="9mobile SME Data">9mobile SME Data</option>
-                    </select>
-                </div>               
-
-                <div class="inputField">
-                    <label>Mobile Number</label>
-                    <input type="text" name="mobile_number" maxlength="11" minlength="11" required=""/>
-                </div>
-                <div class="inputField">
-                    <label>Amount</label>
-                    <input type="text" name="amount" id="amountField" maxlength="11" minlength="2" required="" disabled/>
-                </div>                
-                <button type="submit" class="form-Btn w-100" id="submitButton">
-                    Buy Now
-                </button>
-                <button type="button" id="loadingSpinner" class="form-Btn w-100"  style="display: none;" disabled>
-                    <span>Please Wait...<i class="fa fa-spinner fa-spin"></i></span>
-                </button>
-                
-            </form> -->
-            <!-- Loading Spinner HTML -->
-            <!-- <div id="loading-spinner" class="loading-spinner" style="display: none;">
-                <div class="spinner"></div>
-                <p>Please wait...</p>
-            </div>
-        </div> -->
-
         <div class="form-container modern" id="formContainer">
             <form class="formStyle step" id="buyDataForm" novalidate>
                 {% csrf_token %}
@@ -133,7 +65,7 @@
                     <label for="nineMobileDataType">9mobile Data Type</label>
                     <select name="data_type_9mobile" id="nineMobileDataType">
                         <option value="9mobile Data">9mobile Data</option>
-                        <option value="9mobile SME Data">9mobile SME Data</option>
+                        <option value="9mobile SME Data" disabled>9mobile SME Data</option>
                     </select>
                 </div>
     
@@ -276,7 +208,8 @@
                 $.ajax({
                     url: "/api/buy-data/",  // Your API endpoint
                     type: "POST",
-                    data: formData + "&data_plan=" + $('#dataPlan').val(),  // Add necessary data
+                    data: formData + "&data_plan=" + encodeURIComponent($('#dataPlan').val()),  // Encode + properly
+                    // data: formData + "&data_plan=" + $('#dataPlan').val(),  // Add necessary data
                     success: function(response) {
                         document.getElementById('loading-spinner').style.display = 'none';
 

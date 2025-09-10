@@ -446,7 +446,7 @@ class WebhookView(APIView):
 
             # Check and apply first deposit reward
             was_first_deposit = not getattr(user, 'first_deposit_reward_given', True)
-            handle_first_deposit_reward(user)
+            # handle_first_deposit_reward(user)
 
             # Deduct Monnify fee only if this is NOT the first deposit
 
@@ -1082,6 +1082,7 @@ class BuyDataAPIView(APIView):
 
                     # Get data plan and validate
                     data_plan = request.data.get('data_plan', None)
+                    print("Data-plan", data_plan)
                     if not data_plan:
                         return JsonResponse({
                             'status': 'error',

@@ -238,7 +238,7 @@ PAYSTACK_PUBLIC_KEY = os.getenv("PAYSTACK_PUBLIC_KEY")
 PAYSTACK_SECRET_KEY = os.getenv("PAYSTACK_SECRET_KEY")
 
 # RestAPI
-VTPASS_BASE_URL = os.getenv("VTPASS_BASE_URL", "https://vtpass.com/api/pay")
+VTPASS_BASE_URL = os.getenv("VTPASS_BASE_URL", "https://vtpass.com")
 VTPASS_EMAIL = os.getenv("VTPASS_EMAIL")
 VTPASS_PASSWORD = os.getenv("VTPASS_PASSWORD")
 

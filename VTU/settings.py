@@ -44,10 +44,14 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*', 'bigsheriffdata.com']
+ALLOWED_HOSTS = [
+    'bigsheriffdata.com',
+    'www.bigsheriffdata.com'
+]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://bigsheriffdata.com'
+    'https://bigsheriffdata.com',
+    'https://www.bigsheriffdata.com'
 ]
 
 

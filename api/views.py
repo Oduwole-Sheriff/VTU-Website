@@ -664,7 +664,7 @@ class InitializeTransactionView(APIView):
         payload = {
             "email": email,
             "amount": amount_kobo,
-            "callback_url": "http://bigsheriffdata.onrender.com/payment-complete/",
+            "callback_url": "http://bigsheriffdata.com/payment-complete/",
             "metadata": {
                 "user_id": request.user.id,
                 "purpose": "wallet_funding"

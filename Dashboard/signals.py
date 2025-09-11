@@ -57,7 +57,11 @@ def log_transfer(sender, instance, created, **kwargs):
 
 
 @receiver(post_save, sender=CustomUser)
-def create_account_details_for_new_user(sender, instance, created, **kwargs):
+def create_account_details_for_new_user(sender, instance, created, raw, **kwargs):
+
+    # if raw:
+    #     return
+    
     if created:
         # Step 1: Prepare the Basic Authorization Header
         client_id = settings.MONNIFY_CLIENT_ID # Replace with your Monnify client ID

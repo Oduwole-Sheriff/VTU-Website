@@ -44,10 +44,10 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*', 'bigsheriffdata.onrender.com']
+ALLOWED_HOSTS = ['*', 'bigsheriffdata.com']
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://bigsheriffdata.onrender.com'
+    'https://bigsheriffdata.com'
 ]
 
 
@@ -146,10 +146,15 @@ WSGI_APPLICATION = 'VTU.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+if os.environ.get("RENDER"):  # running on Render
+    DB_PATH = os.path.join("/opt/render/project/db", "db.sqlite3")
+else:  # running locally
+    DB_PATH = BASE_DIR / "db.sqlite3"
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': DB_PATH,
     }
 }
 

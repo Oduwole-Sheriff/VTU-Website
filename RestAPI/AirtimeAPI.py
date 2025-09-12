@@ -35,7 +35,7 @@ class VTPassAPI():
 
 
 if __name__ == "__main__":
-    base_url = "https://sandbox.vtpass.com"
+    base_url = "https://vtpass.com/api/pay"
     auth_token = settings.VTPASS_AUTH_TOKEN
     secret_key = settings.VTPASS_SECRET_KEY
 

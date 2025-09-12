@@ -18,7 +18,7 @@ class VTPassElectricity:
         }
 
     def verify_meter_number(self, data):
-        url = "https://sandbox.vtpass.com/api/merchant-verify"
+        url = "https://vtpass.com/api/merchant-verify"
         print("Sending data to API:", data)
         
         # Sending POST request to the API
@@ -78,7 +78,7 @@ def create_random_id():
 # Main program execution
 if __name__ == "__main__":
     # URL and authentication details
-    base_url = "https://sandbox.vtpass.com"
+    base_url = "https://vtpass.com/api/pay"
     auth_token = settings.VTPASS_AUTH_TOKEN
     secret_key = settings.VTPASS_SECRET_KEY
 

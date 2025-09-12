@@ -45,7 +45,6 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '*',
     'bigsheriffdata.com',
     'www.bigsheriffdata.com'
 ]

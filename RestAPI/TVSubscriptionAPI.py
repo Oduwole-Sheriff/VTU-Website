@@ -17,7 +17,7 @@ class VTPassTVSubscription:
         }
 
     def verify_smartCard_number(self, data):
-        url = "https://sandbox.vtpass.com/api/merchant-verify"
+        url = "https://vtpass.com/api/merchant-verify"
         print("Sending data to API:", data)
         
         # Sending POST request to the API
@@ -54,7 +54,7 @@ class VTPassTVSubscription:
         """
         Helper method to fetch service variations from the external API.
         """
-        url = "https://sandbox.vtpass.com/api/service-variations?serviceID="
+        url = "https://vtpass.com/api/service-variations?serviceID="
         payload = json.dumps({
             "serviceID": f"{network_name}"
         })
@@ -82,7 +82,7 @@ def create_random_id():
 # Main program execution
 if __name__ == "__main__":
     # URL and authentication details
-    base_url = "https://sandbox.vtpass.com"
+    base_url = " https://vtpass.com/api/pay"
     auth_token = settings.VTPASS_AUTH_TOKEN
     secret_key = settings.VTPASS_SECRET_KEY
 

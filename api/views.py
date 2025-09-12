@@ -1203,13 +1203,16 @@ class BuyDataAPIView(APIView):
         except json.JSONDecodeError:
             raise ValidationError("Failed to decode the service variations response. Response was not valid JSON.")
 
-        selected_variation_code = None
-
         if service_variations.get("response_description") == "000":
-            variations = service_variations["content"]["varations"]
+            variations = service_variations["content"].get("variations", [])
+            selected_variation_code = None
+
             # Loop through variations to find the selected data plan
             for variation in variations:
-                if variation["name"].lower() == data_plan.lower():
+                print("Variation available:", variation)  # DEBUG
+
+                # Use plan name from frontend to search (but fuzzy match)
+                if data_plan.lower().replace(" ", "") in variation["name"].lower().replace(" ", ""):
                     selected_variation_code = variation["variation_code"]
                     break
 
@@ -1219,14 +1222,17 @@ class BuyDataAPIView(APIView):
         # Prepare the data for the external API request
         request_data = {
             'request_id': request_id,
-            "billerCode": "07046799872",  # Example biller code
+            "serviceID": service_variations["content"]["serviceID"],
+            "billerCode": "07046799872", 
             "variation_code": selected_variation_code,
             "phone": buy_data_instance.mobile_number
         }
 
+        print("FINAL request_data ===>", request_data)
+
         # Check if the data_plan contains 'SME' (case-insensitive)
         if "sme" in data_plan.lower():  # If data_plan contains 'sme' (case-insensitive)
-            request_data["serviceID"] = f"{network_name}-sme"  # Modify serviceID for SME data
+            request_data["serviceID"] = f"{network_name}-data" # Modify serviceID for SME data
         else:
             request_data["serviceID"] = f"{network_name}-data"  # Default for other data plans
 

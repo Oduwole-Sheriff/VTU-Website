@@ -6175,3 +6175,108 @@ Not Found: /.well-known/appspecific/com.chrome.devtools.json
 "GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
 "GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
 "GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Bad Request: /api/buy-data/
+"POST /api/buy-data/ HTTP/1.1" 400 150
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/Dashboard/asset/js/popper.min.js.map HTTP/1.1" 404 1867
+"GET /static/Dashboard/asset/js/bootstrap.min.js.map HTTP/1.1" 404 1876
+"GET /static/Dashboard/asset/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1900
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/vendor/bootstrap/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 1900
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Bad Request: /api/buy-data/
+"POST /api/buy-data/ HTTP/1.1" 400 125
+Bad Request: /api/buy-data/
+"POST /api/buy-data/ HTTP/1.1" 400 139
+Bad Request: /api/buy-data/
+"POST /api/buy-data/ HTTP/1.1" 400 152
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Bad Request: /api/tvservice/
+"POST /api/tvservice/ HTTP/1.1" 400 64
+Bad Request: /api/tvservice/
+"POST /api/tvservice/ HTTP/1.1" 400 64
+Bad Request: /api/tvservice/
+"POST /api/tvservice/ HTTP/1.1" 400 64
+Bad Request: /api/tvservice/
+"POST /api/tvservice/ HTTP/1.1" 400 66
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Bad Request: /api/tvservice/
+"POST /api/tvservice/ HTTP/1.1" 400 66
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Bad Request: /api/tvservice/
+"POST /api/tvservice/ HTTP/1.1" 400 64
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 8902
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+"GET /static/EducationCSS/assets/css/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1924
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/EducationCSS/assets/css/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1924
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Bad Request: /api/jamb-registration/
+"POST /api/jamb-registration/ HTTP/1.1" 400 48
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/EducationCSS/assets/css/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1924
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+"GET /static/EducationCSS/assets/css/bootstrap/bootstrap.min.css.map HTTP/1.1" 404 1924
+Bad Request: /api/jamb-registration/
+"POST /api/jamb-registration/ HTTP/1.1" 400 48
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9013
+"GET /static/assets/maps/style.css.map HTTP/1.1" 404 1834

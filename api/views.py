@@ -446,18 +446,6 @@ class WebhookView(APIView):
 
             # Check and apply first deposit reward
             was_first_deposit = not getattr(user, 'first_deposit_reward_given', True)
-            # handle_first_deposit_reward(user)
-
-            # Deduct Monnify fee only if this is NOT the first deposit
-
-            # should_deduct_fee = getattr(user, 'first_deposit_reward_given', False)
-            # monnify_fee = Decimal(getattr(settings, "MONNIFY_TRANSACTION_FEE", "35.00"))
-
-
-            # # 🛠️ Skip Monnify fee for first deposit
-            # if not was_first_deposit and should_deduct_fee and user.balance >= monnify_fee:
-            #     user.balance -= monnify_fee
-            #     user.save()
 
             # Monnify fee = 03% of amount paid
             monnify_fee = amount_paid * Decimal('0.03')
@@ -1209,9 +1197,6 @@ class BuyDataAPIView(APIView):
 
             # Loop through variations to find the selected data plan
             for variation in variations:
-                print("Variation available:", variation)  # DEBUG
-
-                # Use plan name from frontend to search (but fuzzy match)
                 if data_plan.lower().replace(" ", "") in variation["name"].lower().replace(" ", ""):
                     selected_variation_code = variation["variation_code"]
                     break

@@ -6,28 +6,21 @@ const dataPlans = {
         "1.5GB Weekly Plan (7 Days) - N1,000",
         "7GB Monthly Plan - N3,500",
         "3.5GB Weekly Plan (7 Days) - N1,500",
-        "16.5GB Monthly Plan",
-        "20GB Monthly Plan",
         "30GB Monthly Broadband Plan - N9,000",
-        "36GB Monthly Plan",
-        "75GB Monthly Plan",
         "2.7GB + 2mins + 2GB All Night Streaming + 200MB YouTube Music, Monthly Plan - N2000",
         "1.8GB + 6mins + 5 SMS, Weekly plan - N1500",
         "MTN N24,000 120GB  - 30days",
         "480GB 3-Month Plan - N90,000",
         "MTN N500 1GB + 1.5mins - 1 day",
-        "1GB+5mins Weekly Plan",
         "600MB Xtra Bundle Weekly Data (7 Days) - N500",
         "2GB + 2 Mins Monthly Plan - N1,500",
         "12.5GB Monthly Plan - N5,500",
         "12.5GB + 36mins + 15 SMS, Weekly plan - 5500",
         "MTN N900 2.5GB - 2 days",
-        "150GB 2-Month Plan",
         "MTN N3,500 11GB  - 7 days",
         "500MB Daily Plan (1 Day) - N350",
         "1.5GB Daily Plan (2 Days) - N600",
         "2GB Daily Plan (2 Days) - N750",
-        "2.7GB Xtra Bundle Monthly Plan",
         "MTN N4,500 10GB + 10mins  - 30 days",
         "65GB Monthly Plan (30 Days) - N16,000",
         "500MB + 1GB YouTube (7 Days) - N500",
@@ -73,7 +66,6 @@ const dataPlans = {
         "3.2GB Binge Plan + Youtube & Social Plans Data (2 Days)  - 1000 Naira",
         "10GB Weekly Plan + Youtube & Social Platform (7 Days) - 3000 Naira",
         "18GB Weekly Plan + Youtube & Social Platform (7 Days) - 5000 Naira",
-        "500 Naira Binge Plan -",
         "1GB Weekly Plan (7 Days) - 800 Naira",
         "18GB Monthly Plan + Youtube & Social Plan (30 Days) - 6000 Naira",
         "75MB Daily Plan (1 Day) - 75 Naira",
@@ -118,11 +110,6 @@ const dataPlans = {
             "320GB - Mega N50000 Oneoff",
             "380GB - Mega N60000 Oneoff",
             "475GB - Mega N75000 Oneoff",
-            "Glo TV VOD 500 MB 3days Oneoff",
-            "Glo TV VOD 2GB 7days Oneoff",
-            "Glo TV VOD 6GB 30days Oneoff",
-            "Glo TV Lite 2GB Oneoff",
-            "Glo TV Max 6 GB Oneoff",
             "300MB - GloMyG N100 OneOff",
             "Glo MyG N300 1 GB OneOff (Whatsapp, Instagram, Snapchat, Boomplay, Audiomac, GloTV, Tiktok)",
             "Glo MyG N500 1.5 GB OneOff (Whatsapp, Instagram, Snapchat, Boomplay, Audiomac, GloTV, Tiktok)",
@@ -132,7 +119,7 @@ const dataPlans = {
             "2GB - Camp-Boost N500 Oneoff",
             "4.2GB - Camp-Boost N1000 Oneoff",
             "10.6GB - Camp-Boost 2000 Oneoff",
-            "32GB - Camp-Boost N5000 Oneoff",
+            "32GB - Camp-Boost N5000 Oneoff"
         ],
         "Glo SME Data": [         
             "Glo Data (SME)  1GB - 295 Naira - 3 days",
@@ -316,21 +303,51 @@ document.getElementById('dataPlan').addEventListener('change', function () {
     }
 });
 
+// Format numbers with commas
+function formatWithCommas(num) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 
-
-
-
-// Extract amount from a plan string (handles different formats)
+// Extract the amount from the string
 function extractAmount(plan) {
-    const cleaned = plan.replace(/,/g, '');
-    let match = cleaned.match(/N(\d+)/) || cleaned.match(/(\d+)\s*Naira/);
-    return match ? parseInt(match[1]) : null;
+    const matches = [...plan.matchAll(/(?:N\s?)?(\d[\d,]*)\s*(?:Naira)?/gi)];
+    if (!matches.length) return null;
+    const nums = matches.map(m => parseInt(m[1].replace(/,/g, ''), 10));
+    return Math.max(...nums); // pick biggest candidate
 }
 
-// Replace amount in a plan string
+// Replace the exact price
 function replaceAmount(plan, newAmount) {
-    return plan.replace(/N(\d+)/, `N${newAmount}`).replace(/(\d+)\s*Naira/, `${newAmount} Naira`);
+    const formatted = formatWithCommas(newAmount);
+
+    // Replace "xxxx Naira"
+    if (plan.match(/\d[\d,]*\s*Naira/i)) {
+        return plan.replace(/\d[\d,]*\s*Naira/i, `${formatted} Naira`);
+    }
+    // Replace "Nxxxx"
+    if (plan.match(/N\s?\d[\d,]*/i)) {
+        return plan.replace(/N\s?\d[\d,]*/i, `N${formatted}`);
+    }
+    return plan;
 }
+
+// Extract the amount from the END of the string (the price)
+// function extractAmount(plan) {
+//     // Match ALL possible numbers with optional N or "Naira"
+//     const matches = [...plan.matchAll(/(?:N\s?)?(\d[\d,]*)\s*(?:Naira)?/gi)];
+//     if (!matches.length) return null;
+
+//     // Convert all to integers
+//     const nums = matches.map(m => parseInt(m[1].replace(/,/g, ''), 10));
+
+//     // Take the biggest one (most likely the price)
+//     return Math.max(...nums);
+// }
+
+// // Replace only the LAST amount with the new one
+// function replaceAmount(plan, newAmount) {
+//     return plan.replace(/(?:N\s?)?\d[\d,]*\s*(?:Naira)?$/i, `N${newAmount}`);
+// }
 
 // Populate both dataPlan and dataPlanPlus with original and +₦10 versions
 function populateDualPlans(plans) {

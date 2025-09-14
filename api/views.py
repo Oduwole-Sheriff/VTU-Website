@@ -35,7 +35,7 @@ from rest_framework import status
 from rest_framework.response import Response
 
 from django.contrib.auth import authenticate, login
-from Dashboard.models import CustomUser, BankTransfer, MonnifyTransaction, PaystackTransaction, Transaction, TVService, ElectricityBill, WaecPinGenerator, JambRegistration
+from Dashboard.models import CustomUser, BankTransfer, BuyData, MonnifyTransaction, PaystackTransaction, Transaction, TVService, ElectricityBill, WaecPinGenerator, JambRegistration
 from django.db import IntegrityError
 from django.http import JsonResponse
 from rest_framework.exceptions import ValidationError
@@ -1008,233 +1008,246 @@ class BuyAirtimeView(APIView):
 
 
 
+# class BuyDataAPIView(APIView):
+#     permission_classes = [IsAuthenticated]
+#     NETWORK_MAP = {
+#         1: 'MTN',
+#         2: 'GLO',
+#         3: 'ETISALAT',
+#         4: 'AIRTEL'
+#     }
+
+#     def post(self, request, *args, **kwargs):
+#         """
+#         Create a new BuyData record, process the purchase, and call the external API to complete the transaction.
+#         """
+#         # Serialize the input data
+#         serializer = BuyDataSerializer(data=request.data)
+
+#         if serializer.is_valid():
+#             try:
+#                 with db_transaction.atomic():
+#                     # Extract the amount and convert to Decimal
+#                     amount = serializer.validated_data.get('amount', 0)
+#                     amount_decimal = Decimal(str(amount))  
+
+#                     # Check if the user has enough balance
+#                     if request.user.balance < amount_decimal:
+#                         raise ValidationError({"detail": "Insufficient balance to complete this purchase."})
+
+#                     # Save the BuyData instance (no deduction yet)
+#                     buy_data_instance = serializer.save()
+
+#                     # Create a transaction for this data purchase (even before calling external API)
+#                     transaction = Transaction.objects.create(
+#                         user=request.user,
+#                         transaction_type='Data Purchase',
+#                         amount=buy_data_instance.amount,
+#                         status='pending',  # Mark as pending initially
+#                         description=f"Data purchase for {buy_data_instance.data_plan}",
+#                         product_name=self.NETWORK_MAP.get(buy_data_instance.network, ""),  # Set the network as product_name
+#                         unit_price=buy_data_instance.amount,  # Set the unit_price to the amount
+#                         unique_element=buy_data_instance.mobile_number,
+#                         transaction_id=None,
+#                     )
+
+#                     # Deduct balance from user account using process_purchase
+#                     user = buy_data_instance.process_purchase()  # Deduct balance only once
+#                     remaining_balance = user.balance
+
+#                     # Log the balance after deduction
+#                     print(f"Balance after deduction: {remaining_balance}")
+
+#                     # Validate the network
+#                     network_id = int(request.data.get('network', 0))
+#                     network = self.NETWORK_MAP.get(network_id, None)
+
+#                     if not network:
+#                         return JsonResponse({
+#                             'status': 'error',
+#                             'message': 'Invalid network. Valid options are: MTN, GLO, AIRTEL, ETISALAT'
+#                         }, status=status.HTTP_400_BAD_REQUEST)
+
+#                     # Get data plan and validate
+#                     data_plan = request.data.get('data_plan', None)
+#                     print("Data-plan", data_plan)
+#                     if not data_plan:
+#                         return JsonResponse({
+#                             'status': 'error',
+#                             'message': 'Data plan not provided.'
+#                         }, status=status.HTTP_400_BAD_REQUEST)
+
+#                     # Call external API for the purchase
+#                     api_response, service_variations = self.call_external_api(buy_data_instance, network, data_plan)
+
+#                     # Save the API response in the data_response field
+#                     buy_data_instance.data_response = api_response
+#                     buy_data_instance.transaction_id = api_response.get("requestId", 'N/A')
+
+#                     transaction.transaction_id = api_response.get("requestId", 'N/A')
+
+#                     if api_response.get("content", {}).get("transactions", {}).get("status") == "delivered":
+#                         # Deduct balance and save the successful transaction
+#                         request.user.balance -= Decimal(str(amount))
+#                         request.user.save()
+
+#                         # Extract commission from the API response
+#                         commission = api_response.get("content", {}).get("transactions", {}).get("commission", 0)
+
+#                         # Ensure commission is a Decimal (convert if it's a float)
+#                         commission = Decimal(commission)
+
+#                         # Add ₦10 extra bonus
+#                         bonus_to_add = commission + Decimal('10')
+
+#                         # Save the commission in the user's bonus field
+#                         user = request.user  # Assuming the buy_data_instance has a 'user' field
+#                         user.bonus += bonus_to_add  # Add the commission to the current bonus
+#                         user.save()  # Save the updated bonus field
+
+#                         buy_data_instance.status = 'completed'
+#                         buy_data_instance.save()
+
+#                         # If API call is successful, mark transaction as completed
+#                         transaction.status = 'completed'
+#                         transaction.save()
+
+#                         return Response({
+#                             'message': 'Data purchase successful!',
+#                             'remaining_balance': str(remaining_balance),
+#                             'service_variations': service_variations
+#                         }, status=status.HTTP_201_CREATED)
+
+#                     else:
+#                         # If API call fails, log the failure and revert the user's balance
+#                         print(f"API failed, reverting balance. Original user balance: {remaining_balance}, Deducted amount: {amount_decimal}")
+
+#                         # Revert the balance by adding the deducted amount back
+#                         user.balance += amount_decimal  # Revert the balance deduction
+#                         user.save()  # Save the user after reversion
+
+#                         # Mark BuyData as failed
+#                         buy_data_instance.status = 'failed'
+#                         buy_data_instance.save()
+
+#                         # Mark the transaction as failed
+#                         transaction.status = 'failed'
+#                         transaction.save()
+
+#                         # Log the updated balance after reversion
+#                         print(f"Balance after reversion: {user.balance}")
+
+#                         # Return error response
+#                         return Response({
+#                             'error': 'Transaction failed with an external API.',
+#                             'remaining_balance': str(remaining_balance),
+#                             'details': api_response
+#                         }, status=status.HTTP_200_OK)
+
+#             except ValidationError as e:
+#                 # Handle the exception and ensure balance reversion occurs
+#                 print(f"Error during transaction: {e}")
+#                 return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+#     def call_external_api(self, buy_data_instance, network, data_plan):
+#         """ Helper method to call the external API for purchasing data and fetching service variations. """
+#         base_url = "https://vtpass.com"
+#         auth_token = settings.VTPASS_AUTH_TOKEN,
+#         secret_key = settings.VTPASS_SECRET_KEY
+#         api = VTPassDataAPI(base_url, auth_token, secret_key)
+
+#         # Generate unique request ID
+#         date_time_format = datetime.now().strftime("%Y%m%d%H%M%S")
+#         request_id = str(date_time_format) + create_random_id()
+
+#         # Get the network name from the NETWORK_MAP
+#         network_name = self.NETWORK_MAP.get(buy_data_instance.network, "").lower()
+
+#         if not network_name:
+#             raise ValidationError(f"Invalid network ID: {buy_data_instance.network}")
+
+#         # Handle ETISALAT-specific condition first
+#         if network_name == "etisalat" and "sme" in data_plan.lower():
+#             network_name = "9mobile-sme"  # Change network name to 9mobile-sme if the condition is met
+#             print(f"Modified network for service variation (ETISALAT + SME): {network_name}")  # Debugging line
+#         else:
+#             # For all other networks, check if 'SME' is in data_plan
+#             if "sme" in data_plan.lower():
+#                 network_name += "-sme"  # Append '-sme' to the network name for SME plans
+#                 print(f"Modified network for service variation (SME): {network_name}")  # Debugging line
+#             else:
+#                 print(f"Network for service variation: {network_name}")  # Debugging line
+
+#         # Fetch service variations from external API
+#         service_variations_response = api.fetch_service_variations(network_name)
+
+#         # Parse the response to get variations
+#         try:
+#             service_variations = json.loads(service_variations_response)
+#         except json.JSONDecodeError:
+#             raise ValidationError("Failed to decode the service variations response. Response was not valid JSON.")
+
+#         if service_variations.get("response_description") == "000":
+#             variations = service_variations["content"].get("variations", [])
+#             selected_variation_code = None
+
+#             # Loop through variations to find the selected data plan
+#             for variation in variations:
+#                 if data_plan.lower().replace(" ", "") in variation["name"].lower().replace(" ", ""):
+#                     selected_variation_code = variation["variation_code"]
+#                     break
+
+#         if not selected_variation_code:
+#             raise ValidationError(f"Variation for the selected data plan '{data_plan}' not found.")
+
+#         # Prepare the data for the external API request
+#         request_data = {
+#             'request_id': request_id,
+#             "serviceID": service_variations["content"]["serviceID"],
+#             "billerCode": "07046799872", 
+#             "variation_code": selected_variation_code,
+#             "phone": buy_data_instance.mobile_number
+#         }
+
+#         print("FINAL request_data ===>", request_data)
+
+#         # Check if the data_plan contains 'SME' (case-insensitive)
+#         if "sme" in data_plan.lower():  # If data_plan contains 'sme' (case-insensitive)
+#             request_data["serviceID"] = f"{network_name}-data" # Modify serviceID for SME data
+#         else:
+#             request_data["serviceID"] = f"{network_name}-data"  # Default for other data plans
+
+#         # Call the external API to make the purchase
+#         api_response = api.buy_data(request_data)
+
+#         return api_response, service_variations
+
+
+
+# # Helper function to create random ID
+# def create_random_id():
+#     num = random.randint(1000, 4999)
+#     num_2 = random.randint(5000, 8000)
+#     num_3 = random.randint(111, 999) * 2
+#     return str(num) + str(num_2) + str(num_3) + str(uuid.uuid4())
+
+
 class BuyDataAPIView(APIView):
     permission_classes = [IsAuthenticated]
-    NETWORK_MAP = {
-        1: 'MTN',
-        2: 'GLO',
-        3: 'ETISALAT',
-        4: 'AIRTEL'
-    }
 
     def post(self, request, *args, **kwargs):
-        """
-        Create a new BuyData record, process the purchase, and call the external API to complete the transaction.
-        """
-        # Serialize the input data
-        serializer = BuyDataSerializer(data=request.data)
-
+        serializer = BuyDataSerializer(
+            data=request.data,
+            context={"request": request} 
+        )
         if serializer.is_valid():
-            try:
-                with db_transaction.atomic():
-                    # Extract the amount and convert to Decimal
-                    amount = serializer.validated_data.get('amount', 0)
-                    amount_decimal = Decimal(str(amount))  
-
-                    # Check if the user has enough balance
-                    if request.user.balance < amount_decimal:
-                        raise ValidationError({"detail": "Insufficient balance to complete this purchase."})
-
-                    # Save the BuyData instance (no deduction yet)
-                    buy_data_instance = serializer.save()
-
-                    # Create a transaction for this data purchase (even before calling external API)
-                    transaction = Transaction.objects.create(
-                        user=request.user,
-                        transaction_type='Data Purchase',
-                        amount=buy_data_instance.amount,
-                        status='pending',  # Mark as pending initially
-                        description=f"Data purchase for {buy_data_instance.data_plan}",
-                        product_name=self.NETWORK_MAP.get(buy_data_instance.network, ""),  # Set the network as product_name
-                        unit_price=buy_data_instance.amount,  # Set the unit_price to the amount
-                        unique_element=buy_data_instance.mobile_number,
-                        transaction_id=None,
-                    )
-
-                    # Deduct balance from user account using process_purchase
-                    user = buy_data_instance.process_purchase()  # Deduct balance only once
-                    remaining_balance = user.balance
-
-                    # Log the balance after deduction
-                    print(f"Balance after deduction: {remaining_balance}")
-
-                    # Validate the network
-                    network_id = int(request.data.get('network', 0))
-                    network = self.NETWORK_MAP.get(network_id, None)
-
-                    if not network:
-                        return JsonResponse({
-                            'status': 'error',
-                            'message': 'Invalid network. Valid options are: MTN, GLO, AIRTEL, ETISALAT'
-                        }, status=status.HTTP_400_BAD_REQUEST)
-
-                    # Get data plan and validate
-                    data_plan = request.data.get('data_plan', None)
-                    print("Data-plan", data_plan)
-                    if not data_plan:
-                        return JsonResponse({
-                            'status': 'error',
-                            'message': 'Data plan not provided.'
-                        }, status=status.HTTP_400_BAD_REQUEST)
-
-                    # Call external API for the purchase
-                    api_response, service_variations = self.call_external_api(buy_data_instance, network, data_plan)
-
-                    # Save the API response in the data_response field
-                    buy_data_instance.data_response = api_response
-                    buy_data_instance.transaction_id = api_response.get("requestId", 'N/A')
-
-                    transaction.transaction_id = api_response.get("requestId", 'N/A')
-
-                    if api_response.get("content", {}).get("transactions", {}).get("status") == "delivered":
-                        # Deduct balance and save the successful transaction
-                        request.user.balance -= Decimal(str(amount))
-                        request.user.save()
-
-                        # Extract commission from the API response
-                        commission = api_response.get("content", {}).get("transactions", {}).get("commission", 0)
-
-                        # Ensure commission is a Decimal (convert if it's a float)
-                        commission = Decimal(commission)
-
-                        # Add ₦10 extra bonus
-                        bonus_to_add = commission + Decimal('10')
-
-                        # Save the commission in the user's bonus field
-                        user = request.user  # Assuming the buy_data_instance has a 'user' field
-                        user.bonus += bonus_to_add  # Add the commission to the current bonus
-                        user.save()  # Save the updated bonus field
-
-                        buy_data_instance.status = 'completed'
-                        buy_data_instance.save()
-
-                        # If API call is successful, mark transaction as completed
-                        transaction.status = 'completed'
-                        transaction.save()
-
-                        return Response({
-                            'message': 'Data purchase successful!',
-                            'remaining_balance': str(remaining_balance),
-                            'service_variations': service_variations
-                        }, status=status.HTTP_201_CREATED)
-
-                    else:
-                        # If API call fails, log the failure and revert the user's balance
-                        print(f"API failed, reverting balance. Original user balance: {remaining_balance}, Deducted amount: {amount_decimal}")
-
-                        # Revert the balance by adding the deducted amount back
-                        user.balance += amount_decimal  # Revert the balance deduction
-                        user.save()  # Save the user after reversion
-
-                        # Mark BuyData as failed
-                        buy_data_instance.status = 'failed'
-                        buy_data_instance.save()
-
-                        # Mark the transaction as failed
-                        transaction.status = 'failed'
-                        transaction.save()
-
-                        # Log the updated balance after reversion
-                        print(f"Balance after reversion: {user.balance}")
-
-                        # Return error response
-                        return Response({
-                            'error': 'Transaction failed with an external API.',
-                            'remaining_balance': str(remaining_balance),
-                            'details': api_response
-                        }, status=status.HTTP_200_OK)
-
-            except ValidationError as e:
-                # Handle the exception and ensure balance reversion occurs
-                print(f"Error during transaction: {e}")
-                return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-
-    def call_external_api(self, buy_data_instance, network, data_plan):
-        """ Helper method to call the external API for purchasing data and fetching service variations. """
-        base_url = "https://vtpass.com"
-        auth_token = settings.VTPASS_AUTH_TOKEN,
-        secret_key = settings.VTPASS_SECRET_KEY
-        api = VTPassDataAPI(base_url, auth_token, secret_key)
-
-        # Generate unique request ID
-        date_time_format = datetime.now().strftime("%Y%m%d%H%M%S")
-        request_id = str(date_time_format) + create_random_id()
-
-        # Get the network name from the NETWORK_MAP
-        network_name = self.NETWORK_MAP.get(buy_data_instance.network, "").lower()
-
-        if not network_name:
-            raise ValidationError(f"Invalid network ID: {buy_data_instance.network}")
-
-        # Handle ETISALAT-specific condition first
-        if network_name == "etisalat" and "sme" in data_plan.lower():
-            network_name = "9mobile-sme"  # Change network name to 9mobile-sme if the condition is met
-            print(f"Modified network for service variation (ETISALAT + SME): {network_name}")  # Debugging line
-        else:
-            # For all other networks, check if 'SME' is in data_plan
-            if "sme" in data_plan.lower():
-                network_name += "-sme"  # Append '-sme' to the network name for SME plans
-                print(f"Modified network for service variation (SME): {network_name}")  # Debugging line
-            else:
-                print(f"Network for service variation: {network_name}")  # Debugging line
-
-        # Fetch service variations from external API
-        service_variations_response = api.fetch_service_variations(network_name)
-
-        # Parse the response to get variations
-        try:
-            service_variations = json.loads(service_variations_response)
-        except json.JSONDecodeError:
-            raise ValidationError("Failed to decode the service variations response. Response was not valid JSON.")
-
-        if service_variations.get("response_description") == "000":
-            variations = service_variations["content"].get("variations", [])
-            selected_variation_code = None
-
-            # Loop through variations to find the selected data plan
-            for variation in variations:
-                if data_plan.lower().replace(" ", "") in variation["name"].lower().replace(" ", ""):
-                    selected_variation_code = variation["variation_code"]
-                    break
-
-        if not selected_variation_code:
-            raise ValidationError(f"Variation for the selected data plan '{data_plan}' not found.")
-
-        # Prepare the data for the external API request
-        request_data = {
-            'request_id': request_id,
-            "serviceID": service_variations["content"]["serviceID"],
-            "billerCode": "07046799872", 
-            "variation_code": selected_variation_code,
-            "phone": buy_data_instance.mobile_number
-        }
-
-        print("FINAL request_data ===>", request_data)
-
-        # Check if the data_plan contains 'SME' (case-insensitive)
-        if "sme" in data_plan.lower():  # If data_plan contains 'sme' (case-insensitive)
-            request_data["serviceID"] = f"{network_name}-data" # Modify serviceID for SME data
-        else:
-            request_data["serviceID"] = f"{network_name}-data"  # Default for other data plans
-
-        # Call the external API to make the purchase
-        api_response = api.buy_data(request_data)
-
-        return api_response, service_variations
-
-
-
-# Helper function to create random ID
-def create_random_id():
-    num = random.randint(1000, 4999)
-    num_2 = random.randint(5000, 8000)
-    num_3 = random.randint(111, 999) * 2
-    return str(num) + str(num_2) + str(num_3) + str(uuid.uuid4())
-
 
 
 class TVServiceAPIView(APIView):

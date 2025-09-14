@@ -3,8 +3,16 @@ from django.contrib.auth import get_user_model
 from Dashboard.models import CustomUser, BankTransfer, MonnifyTransaction, PaystackTransaction, Transaction, BuyAirtime, BuyData, TVService, ElectricityBill, WaecPinGenerator, JambRegistration
 from authentication.models import Profile
 from django.contrib.auth.password_validation import validate_password
+from RestAPI.KVDataAPI import KVDataAPI
 from django.db import transaction as db_transaction
 from decimal import Decimal
+from django.db import transaction
+from rest_framework.exceptions import APIException
+from django.conf import settings
+import json
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Use get_user_model() to reference the custom user model
 User = get_user_model()
@@ -242,35 +250,183 @@ class BuyAirtimeSerializer(serializers.ModelSerializer):
         return buy_airtime
 
 
+# class BuyDataSerializer(serializers.ModelSerializer):
+#     network = serializers.ChoiceField(choices=BuyData.NETWORK_CHOICES)
+#     data_type = serializers.ChoiceField(choices=BuyData.DATA_TYPE_CHOICES, allow_blank=True, required=False)
+#     mobile_number = serializers.CharField(max_length=11)
+#     data_plan = serializers.CharField(max_length=100)
+#     amount = serializers.DecimalField(max_digits=10, decimal_places=2)
+#     user = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
+#     request_id = serializers.CharField(max_length=100, required=False, allow_blank=True)
+#     status = serializers.ChoiceField(choices=[('success', 'Success'), ('failed', 'Failed')], default='failed')
+#     data_response = serializers.JSONField(required=False, allow_null=True)
+#     date_created = serializers.DateTimeField(read_only=True)
+#     date_updated = serializers.DateTimeField(read_only=True)
+#     transaction_id = serializers.CharField(max_length=255, required=False, allow_blank=True)
+
+#     # Calculate the remaining balance after airtime purchase (read-only field)
+#     remaining_balance = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
+
+#     class Meta:
+#         model = BuyData
+#         fields = '__all__'
+
+#     def create(self, validated_data):
+#         """
+#         Override create method to handle data purchase and transaction creation.
+#         We will remove the balance deduction here since it's handled in the view.
+#         """
+#         # Simply create the BuyData instance and return
+#         buy_data_instance = BuyData.objects.create(**validated_data)
+#         return buy_data_instance
+    
+
+class UnexpectedDataError(APIException):
+    status_code = 400
+    default_code = "data_purchase_failed"
+    default_detail = "Unexpected data purchase error."
+
+    def __init__(self, detail=None, code=None):
+        if detail is not None:
+            self.detail = detail
+        else:
+            self.detail = {"detail": self.default_detail}
+        self.code = code or self.default_code
+
+    def get_full_details(self):
+        return self.detail
+
 class BuyDataSerializer(serializers.ModelSerializer):
-    network = serializers.ChoiceField(choices=BuyData.NETWORK_CHOICES)
-    data_type = serializers.ChoiceField(choices=BuyData.DATA_TYPE_CHOICES, allow_blank=True, required=False)
-    mobile_number = serializers.CharField(max_length=11)
-    data_plan = serializers.CharField(max_length=100)
-    amount = serializers.DecimalField(max_digits=10, decimal_places=2)
-    user = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
-    request_id = serializers.CharField(max_length=100, required=False, allow_blank=True)
-    status = serializers.ChoiceField(choices=[('success', 'Success'), ('failed', 'Failed')], default='failed')
-    data_response = serializers.JSONField(required=False, allow_null=True)
-    date_created = serializers.DateTimeField(read_only=True)
-    date_updated = serializers.DateTimeField(read_only=True)
-    transaction_id = serializers.CharField(max_length=255, required=False, allow_blank=True)
-
-    # Calculate the remaining balance after airtime purchase (read-only field)
-    remaining_balance = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
-
     class Meta:
         model = BuyData
-        fields = '__all__'
+        fields = [
+            "id", "network", "data_type", "mobile_number",
+            "data_plan", "amount", "user", "request_id",
+            "status", "data_response", "transaction_id",
+            "date_created", "date_updated"
+        ]
+        read_only_fields = [
+            "status", "data_response", "transaction_id",
+            "date_created", "date_updated", "user"
+        ]
 
     def create(self, validated_data):
-        """
-        Override create method to handle data purchase and transaction creation.
-        We will remove the balance deduction here since it's handled in the view.
-        """
-        # Simply create the BuyData instance and return
-        buy_data_instance = BuyData.objects.create(**validated_data)
-        return buy_data_instance
+        user = self.context["request"].user
+        User = get_user_model()
+
+        with transaction.atomic():
+            user = User.objects.select_for_update().get(pk=user.pk)
+            buy_data = BuyData(user=user, **validated_data)
+
+            if user.balance < buy_data.amount:
+                raise serializers.ValidationError("Insufficient balance.")
+
+            user.balance -= buy_data.amount
+            user.save()
+
+            try:
+                TOKEN = settings.KVDATA_AUTH_TOKEN
+                kv_api = KVDataAPI(TOKEN, use_bearer=False)
+                api_response = kv_api.buy_data(
+                    network_id=buy_data.network,
+                    mobile_number=buy_data.mobile_number,
+                    plan_id=int(buy_data.data_plan),
+                    ported_number=True
+                )
+
+                print(json.dumps(api_response, indent=4))
+
+                # Determine success
+                status_val = api_response.get("status_code") or api_response.get("Status")
+                success = str(status_val).lower() in ["200", "201", "successful"]
+
+                if not success:
+                    error_obj = api_response.get("response", {}).get("error") or api_response.get("message") or "Unknown API error"
+                    if isinstance(error_obj, list):
+                        error_message = " ".join(map(str, error_obj))
+                    else:
+                        error_message = str(error_obj)
+
+                    # Refund
+                    user.balance += buy_data.amount
+                    user.save()
+
+                    buy_data.data_response = api_response
+                    buy_data.status = "failed"
+                    buy_data.save()
+
+                    Transaction.objects.create(
+                        user=user,
+                        transaction_type="Data Purchase",
+                        amount=buy_data.amount,
+                        status="failed",
+                        product_name=dict(BuyData.NETWORK_CHOICES).get(buy_data.network),
+                        unique_element=buy_data.mobile_number,
+                        unit_price=buy_data.amount,
+                        data_plan=str(buy_data.data_plan),
+                        description=f"FAILED data purchase on {buy_data.mobile_number} ({buy_data.data_plan}) via {buy_data.get_network_display()} Error: {error_message}"
+                    )
+
+                    raise UnexpectedDataError({
+                        "detail": f"Data purchase failed: {error_message}",
+                        "refunded_balance": str(user.balance),
+                    })
+
+                # Success path
+                buy_data.status = "success"
+                buy_data.data_response = api_response
+                buy_data.transaction_id = api_response.get("response", {}).get("ident") or api_response.get("ident")
+                buy_data.save()
+
+                # Add commission
+                user.bonus += Decimal("20.00")
+                user.save()
+
+                Transaction.objects.create(
+                    user=user,
+                    transaction_type="Data Purchase",
+                    amount=buy_data.amount,
+                    status="success",
+                    product_name=dict(BuyData.NETWORK_CHOICES).get(buy_data.network),
+                    unique_element=buy_data.mobile_number,
+                    unit_price=buy_data.amount,
+                    data_plan=str(buy_data.data_plan),
+                    transaction_id=buy_data.transaction_id,
+                    description=f"Data purchase on {buy_data.mobile_number} ({buy_data.data_plan}) via {buy_data.get_network_display()}"
+                )
+
+            except Exception as e:
+                user.balance += buy_data.amount
+                user.save()
+                buy_data.status = "failed"
+                buy_data.data_response = {"error": str(e)}
+                buy_data.save()
+
+                Transaction.objects.create(
+                    user=user,
+                    transaction_type="Data Purchase",
+                    amount=buy_data.amount,
+                    status="failed",
+                    product_name=dict(BuyData.NETWORK_CHOICES).get(buy_data.network),
+                    unique_element=buy_data.mobile_number,
+                    unit_price=buy_data.amount,
+                    data_plan=str(buy_data.data_plan),
+                    description=f"FAILED data purchase on {buy_data.mobile_number}: {e}"
+                )
+
+                raise UnexpectedDataError({
+                    "detail": f"Data purchase failed: {str(e)}",
+                    "refunded_balance": str(user.balance)
+                })
+
+        return buy_data
+
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        user = instance.user
+        rep["updated_balance"] = str(user.balance)  # always local user balance
+        rep["updated_bonus"] = str(user.bonus)
+        return rep
 
 
 class TVServiceSerializer(serializers.ModelSerializer):

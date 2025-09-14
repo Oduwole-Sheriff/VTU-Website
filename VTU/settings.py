@@ -222,8 +222,8 @@ REST_FRAMEWORK = {
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-# 5 minutes = 300 seconds
-SESSION_COOKIE_AGE = 300  # Time in seconds
+# 2 hours = 7200 seconds
+SESSION_COOKIE_AGE = 7200  # Time in seconds
 SESSION_SAVE_EVERY_REQUEST = True
 
 LOGIN_URL = 'login'
@@ -250,6 +250,8 @@ PAYSTACK_SECRET_KEY = os.getenv("PAYSTACK_SECRET_KEY")
 VTPASS_BASE_URL = os.getenv("VTPASS_BASE_URL", "https://vtpass.com")
 VTPASS_EMAIL = os.getenv("VTPASS_EMAIL")
 VTPASS_PASSWORD = os.getenv("VTPASS_PASSWORD")
+
+KVDATA_AUTH_TOKEN = os.getenv("KVDATA_AUTH_TOKEN")
 
 
 MIN_REFERRAL_TRANSFER_AMOUNT = 50.00  # or Decimal('50.00') if you're working with Decimals

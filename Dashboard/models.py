@@ -340,8 +340,18 @@ class BuyData(models.Model):
     ]
 
     DATA_TYPE_CHOICES = [
+        # MTN options
+        ('SME', 'SME'),
+        ('GIFTING', 'GIFTING'),
+        ('CORPORATE GIFTING', 'Corporate Gifting'),
+        ('SME2', 'SME2'),
+        ('DATA COUPONS', 'Data Coupons'),
+
+        # Glo
         ('Glo Data', 'Glo Data'),
         ('Glo SME Data', 'Glo SME Data'),
+
+        # 9mobile
         ('9mobile Data', '9mobile Data'),
         ('9mobile SME Data', '9mobile SME Data'),
     ]

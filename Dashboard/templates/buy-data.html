@@ -24,7 +24,7 @@
             </div>
         </div>
 
-        <div class="form-container modern" id="formContainer">
+        <!-- <div class="form-container modern" id="formContainer">
             <form class="formStyle step" id="buyDataForm" novalidate>
                 {% csrf_token %}
                 <article class="formHeading">
@@ -36,17 +36,17 @@
                     <input type="text" id="network" name="network" placeholder=" " readonly>
                     <label for="network">Network</label>
                     <span class="focus-border"></span>
-                </div>
+                </div> -->
                 
                 <!-- Hidden Original Data Plan Field -->
-                <div style="display: none;">
+                <!-- <div style="display: none;">
                     <select name="data_plan" id="dataPlan">
                         <option value="" disabled selected>Select a Data Plan</option>
                     </select>
-                </div>
+                </div> -->
 
                 <!-- Visible Data Plan + ₦10 Field -->
-                <div class="inputField select-group">
+                <!-- <div class="inputField select-group">
                     <label for="dataPlanPlus">Data Plan</label>
                     <select name="data_plan_plus" id="dataPlanPlus" required>
                         <option value="" disabled selected>Select available plan...</option>
@@ -91,6 +91,74 @@
     
             </form>
             <p class="form-footer-note">Secured Transaction</p>
+        </div> -->
+
+        <div class="form-container modern" id="formContainer">
+            <form class="formStyle step" id="buyDataForm" method="post" novalidate>
+                {% csrf_token %}
+                <article class="formHeading">
+                    <p>Top Up Your Data</p>
+                    <h2 id="networkName">Data Bundles</h2>
+                </article>
+
+                <!-- Network -->
+                <div class="inputField floating-label-group readonly">
+                    <input type="text" id="network" name="network" placeholder=" " readonly>
+                    <label for="network">Network</label>
+                    <span class="focus-border"></span>
+                </div>
+
+                <!-- Data Type -->
+                <div class="inputField select-group">
+                    <label for="dataType">Data Type</label>
+                    <select name="data_type" id="dataType" class="form-control">
+                        <option value="" selected>---------</option>
+                        <option value="SME">SME</option>
+                        <option value="GIFTING">GIFTING</option>
+                        <option value="CORPORATE GIFTING">CORPORATE GIFTING</option>
+                        <option value="SME2">SME2</option>
+                        <option value="DATA COUPONS">DATA COUPONS</option>
+                    </select>
+                    <small class="form-text text-muted">Select Plan Type SME, GIFTING or CORPORATE GIFTING</small>
+                </div>
+
+                <!-- Mobile Number -->
+                <div class="inputField floating-label-group">
+                    <input type="tel" id="mobileNumber" name="mobile_number" placeholder=" " inputmode="tel" pattern="[0-9]{11}" maxlength="11" minlength="11" required />
+                    <label for="mobileNumber">Mobile Number</label>
+                    <span class="focus-border"></span>
+                </div>
+
+                <!-- Plan -->
+                <div class="inputField select-group">
+                    <label for="plan">Plan</label>
+                    <select name="plan" id="plan" class="form-control" required>
+                        <option value="">---------</option>
+                    </select>
+                </div>
+
+                <!-- Amount -->
+                <div class="inputField floating-label-group readonly">
+                    <input type="text" name="amount" id="amountField" placeholder=" " readonly>
+                    <label for="amountField">Amount (₦)</label>
+                    <span class="focus-border"></span>
+                </div>
+
+                <!-- Ported Number -->
+                <div class="inputField checkbox-group">
+                    <input type="checkbox" name="Ported_number" id="PortedNumber" class="form-check-input">
+                    <label for="PortedNumber">Bypass number validator</label>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="form-Btn modern w-100" id="submitButton">
+                    <span class="btn-text">Purchase Data</span>
+                    <span class="btn-spinner" style="display: none;">
+                        <i class="fa fa-spinner fa-spin"></i> Processing...
+                    </span>
+                </button>
+            </form>
+            <p class="form-footer-note">Secured Transaction</p>
         </div>
 
         <div id="loading-spinner" class="loading-spinner" style="display: none;">
@@ -101,7 +169,8 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{% static 'DataCSS/assets/script.js' %}"></script>
+    <!-- <script src="{% static 'DataCSS/assets/script.js' %}"></script> -->
+    <script src="{% static 'DataCSS/assets/KVDataDataPlans.js' %}"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.js"></script>
     <script>
@@ -133,190 +202,328 @@
                 $('#network').data('network-id', networkId); // Store the network number in a data attribute
             });
 
-            // Enable amount field before submitting
             $('#buyDataForm').submit(function(e) {
-                e.preventDefault();  // Prevent the default form submission
+                e.preventDefault();
 
+                // Show loading spinner
                 document.getElementById('loading-spinner').style.display = 'flex';
-
-                // Show loading spinner and change button text
-                // $('#submitButton').hide(); // hide the submit button
-                // $('#loadingSpinner').show();  // Show the loading spinner
 
                 var $submitButton = $('#submitButton');
                 var $buttonText = $submitButton.find('.btn-text');
                 var $buttonSpinner = $submitButton.find('.btn-spinner');
 
-                // --- Show Loading State ---
                 $buttonText.hide();
                 $buttonSpinner.css('display', 'inline-flex');
                 $submitButton.prop('disabled', true).addClass('loading');
 
-                // Check if the mobile number field is empty
-                var mobileNumber = $('input[name="mobile_number"]').val();
-                if (!mobileNumber) {
+                // Collect field values
+                var networkId   = $('#network').data('network-id');  // 👈 numeric ID (1,2,3,4)
+                var mobile      = $('#mobileNumber').val();
+                var dataPlan    = parseInt($('#plan').val());        // 👈 plan ID
+                var dataType    = $('#dataType').val() || "";        // 👈 only for MTN
+                var amount      = parseInt($('#plan option:selected').data('price')); // 👈 price
+
+                // Validate inputs
+                if (!mobile) {
+                    resetButtonState();
+                    Swal.fire({ icon: 'warning', title: 'Mobile Number Missing', text: 'Please enter your mobile number.' });
                     document.getElementById('loading-spinner').style.display = 'none';
-                    $buttonSpinner.css('display', 'none');
-                    $submitButton.prop('disabled', false).addClass('loading');
-                    $buttonText.show();
-                    // Show SweetAlert if mobile number is not entered
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Mobile Number Missing',
-                        text: 'Please enter your mobile number.',
-                        confirmButtonText: 'OK'
-                    });
-                    return;  // Stop the form submission
+                    return;
                 }
 
-                // Get the amount from the amountField and remove the "N" prefix
-                var amount = $('#amountField').val().replace('N', '');  // Remove the "N" character
-
-                // Check if the amount is empty or not a valid number
-                if (!amount || isNaN(amount) || amount <= 0) {
+                if (!dataPlan || isNaN(dataPlan)) {
+                    resetButtonState();
+                    Swal.fire({ icon: 'warning', title: 'Invalid Plan', text: 'Please select a valid plan.' });
                     document.getElementById('loading-spinner').style.display = 'none';
-                    $buttonSpinner.css('display', 'none');
-                    $submitButton.prop('disabled', false).addClass('loading');
-                    $buttonText.show();
-                    // Show SweetAlert if the amount is not entered or invalid
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Invalid Amount',
-                        text: 'Please enter a valid amount greater than zero.',
-                        confirmButtonText: 'OK'
-                    });
-                    return;  // Stop the form submission
+                    return;
                 }
 
-                // Ensure the amount field is enabled and has a valid value
-                $('#amountField').prop('disabled', false);  // Enable the amount field if it's disabled
+                if (!amount || isNaN(amount)) {
+                    resetButtonState();
+                    Swal.fire({ icon: 'warning', title: 'Invalid Amount', text: 'Plan amount could not be determined.' });
+                    document.getElementById('loading-spinner').style.display = 'none';
+                    return;
+                }
 
-                // Update the amount value in the hidden input field (if necessary)
-                $('#amountField').val(amount);  // This ensures the amount is sent without the "N" prefix
+                // Build payload 👇
+                var payload = {
+                    network: networkId,
+                    mobile_number: mobile,
+                    data_plan: dataPlan,
+                    data_type: dataType,
+                    amount: amount,
+                    Ported_number: true,
+                    request_id: Date.now().toString()
+                };
 
-                // Get the network value (number) from the data attribute
-                var networkId = $('#network').data('network-id');
+                console.log("Payload being sent:", payload);
 
-                // Add the network ID to the form data
-                var formData = $(this).serialize();  // Serialize the form data
-                formData += "&network=" + networkId;  // Append the network ID
-
-                // Add the user ID from the server context (ensure the user ID is passed from Django)
-                formData += "&user={{ user.id }}";  // Add user ID to the form data
-
-                // Send the data using AJAX
+                // Ajax call
                 $.ajax({
-                    url: "/api/buy-data/",  // Your API endpoint
+                    url: "/api/buy-data/",
                     type: "POST",
-                    data: formData + "&data_plan=" + encodeURIComponent($('#dataPlan').val()),  // Encode + properly
-                    // data: formData + "&data_plan=" + $('#dataPlan').val(),  // Add necessary data
+                    data: JSON.stringify(payload),
+                    contentType: "application/json",
+                    headers: {
+                        "X-CSRFToken": getCookie("csrftoken")
+                    },
                     success: function(response) {
                         document.getElementById('loading-spinner').style.display = 'none';
 
-                        if (response.message) {
-                            // Success response handling
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Data Purchase Successful!',
-                                text: 'Data purchase successful! Your remaining balance is: ₦' + response.remaining_balance,
-                                confirmButtonText: 'OK'
-                            }).then(() => {
-                                // Optionally, redirect after success
-                                window.location.href = "{% url 'index' %}"; // Adjust this URL as needed
-                            });
+                        let updatedBalance = response.updated_balance || '';
 
-                            // Optionally reset the form
-                            $('#buyDataForm')[0].reset();
-                            $('#amountField').prop('disabled', true);
-                            $buttonSpinner.css('display', 'none');
-                            $submitButton.prop('disabled', false).addClass('loading');
-                            $buttonText.show();
-                        } else {
-                            document.getElementById('loading-spinner').style.display = 'none';
-                            // Handle error response
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Data Purchase Failed!',
-                                text: response.error,  // Display the error string
-                                confirmButtonText: 'OK'
-                            }).then(() => {
-                                // Clear the form after failed submission
-                                $('#buyDataForm')[0].reset();
-                                $('#amountField').prop('disabled', true);
-                                $buttonSpinner.css('display', 'none');
-                                $submitButton.prop('disabled', false).addClass('loading');
-                                $buttonText.show();
-                            });
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        document.getElementById('loading-spinner').style.display = 'none';
-                        // Default error message
-                        var errorMessage = "There was an error. Please try again.";
-
-                        // Check if responseJSON exists
-                        if (xhr.responseJSON) {
-                            // Case 1: If there's an error field, extract the message
-                            if (xhr.responseJSON.error) {
-                                errorMessage = xhr.responseJSON.error; // If general error exists, use it
-                            }
-
-                            // Case 2: Handle the 'detail' field for error messages
-                            if (xhr.responseJSON.detail) {
-                                var detail = xhr.responseJSON.detail;
-
-                                // Extracting the actual message from the 'detail' string
-                                console.log("Detail:", detail); // Log the detail for debugging
-                                
-                                // If the detail is like this: "ErrorDetail(string='message', code='invalid')"
-                                var regex = /string='([^']+)'/; // This will capture the message inside 'string=''
-                                var matches = regex.exec(detail);
-                                
-                                if (matches && matches[1]) {
-                                    errorMessage = matches[1];  // Extracted message (e.g., 'Insufficient balance to complete this purchase.')
-                                }
-                            }
-
-                            if (xhr.responseJSON) {
-                                // Check if 'detail' field exists and extract the actual error message
-                                if (xhr.responseJSON.error) {
-                                    var errorText = xhr.responseJSON.error;
-                                    
-                                    // Clean the error string to extract the actual message
-                                    // Removing the unnecessary characters and extracting the message
-                                    var regex = /string='(.*?)'/;
-                                    var matches = regex.exec(errorText);
-
-                                    if (matches && matches[1]) {
-                                        errorMessage = matches[1];  // Extracted message
-                                    }
-                                }
-                            }
-
-                            // Case 3: If response contains 'details' with 'response_description', use it
-                            if (xhr.responseJSON.details && xhr.responseJSON.details.response_description) {
-                                var responseDescription = xhr.responseJSON.details.response_description;
-                                errorMessage = responseDescription; // If there's a response description, use it
-                            }
-                        }
-
-                        // Display the error message using SweetAlert
                         Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: errorMessage,  // Display the error string
+                            icon: 'success',
+                            title: 'Data Purchase Successful!',
+                            html: `<p>Your remaining balance is: ₦${updatedBalance}</p>`,
                             confirmButtonText: 'OK'
                         }).then(() => {
-                            // Reset the form data if there is an error
-                            $('#buyDataForm')[0].reset();
-                            $('#amountField').prop('disabled', true);
-                            $buttonSpinner.css('display', 'none');
-                            $submitButton.prop('disabled', false).addClass('loading');
-                            $buttonText.show();
+                            window.location.href = "{% url 'index' %}";
                         });
+
+                        $('#buyDataForm')[0].reset();
+                        resetButtonState();
+                    },
+                    error: function(xhr) {
+                        document.getElementById('loading-spinner').style.display = 'none';
+                        let errorMessage = "There was an error. Please try again.";
+                        let refundedBalance = "";
+
+                        if (xhr.responseJSON) {
+                            if (xhr.responseJSON.detail) {
+                                if (Array.isArray(xhr.responseJSON.detail)) {
+                                    errorMessage = xhr.responseJSON.detail.join(" ");
+                                } else if (typeof xhr.responseJSON.detail === "string") {
+                                    errorMessage = xhr.responseJSON.detail;
+                                }
+                            } else if (xhr.responseJSON.non_field_errors) {
+                                errorMessage = xhr.responseJSON.non_field_errors.join(" ");
+                            } else {
+                                // fallback: flatten any object values
+                                errorMessage = Object.values(xhr.responseJSON).flat().join(" ");
+                            }
+
+                            refundedBalance = xhr.responseJSON.refunded_balance || "";
+                        }
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Data Purchase Failed',
+                            html: `
+                                <p>${errorMessage}</p>
+                                <p>Refunded Balance: ₦${refundedBalance}</p>
+                            `
+                        });
+                        resetButtonState();
                     }
                 });
+
+                function resetButtonState() {
+                    $buttonSpinner.css('display', 'none');
+                    $submitButton.prop('disabled', false).removeClass('loading');
+                    $buttonText.show();
+                }
+
+                function getCookie(name) {
+                    let cookieValue = null;
+                    if (document.cookie && document.cookie !== '') {
+                        const cookies = document.cookie.split(';');
+                        for (let i = 0; i < cookies.length; i++) {
+                            const cookie = cookies[i].trim();
+                            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                break;
+                            }
+                        }
+                    }
+                    return cookieValue;
+                }
             });
+
+            // Enable amount field before submitting
+            // $('#buyDataForm').submit(function(e) {
+            //     e.preventDefault();  // Prevent the default form submission
+
+            //     document.getElementById('loading-spinner').style.display = 'flex';
+
+            //     // Show loading spinner and change button text
+            //     // $('#submitButton').hide(); // hide the submit button
+            //     // $('#loadingSpinner').show();  // Show the loading spinner
+
+            //     var $submitButton = $('#submitButton');
+            //     var $buttonText = $submitButton.find('.btn-text');
+            //     var $buttonSpinner = $submitButton.find('.btn-spinner');
+
+            //     // --- Show Loading State ---
+            //     $buttonText.hide();
+            //     $buttonSpinner.css('display', 'inline-flex');
+            //     $submitButton.prop('disabled', true).addClass('loading');
+
+            //     // Check if the mobile number field is empty
+            //     var mobileNumber = $('input[name="mobile_number"]').val();
+            //     if (!mobileNumber) {
+            //         document.getElementById('loading-spinner').style.display = 'none';
+            //         $buttonSpinner.css('display', 'none');
+            //         $submitButton.prop('disabled', false).addClass('loading');
+            //         $buttonText.show();
+            //         // Show SweetAlert if mobile number is not entered
+            //         Swal.fire({
+            //             icon: 'warning',
+            //             title: 'Mobile Number Missing',
+            //             text: 'Please enter your mobile number.',
+            //             confirmButtonText: 'OK'
+            //         });
+            //         return;  // Stop the form submission
+            //     }
+
+            //     // Get the amount from the amountField and remove the "N" prefix
+            //     var amount = $('#amountField').val().replace('N', '');  // Remove the "N" character
+
+            //     // Check if the amount is empty or not a valid number
+            //     if (!amount || isNaN(amount) || amount <= 0) {
+            //         document.getElementById('loading-spinner').style.display = 'none';
+            //         $buttonSpinner.css('display', 'none');
+            //         $submitButton.prop('disabled', false).addClass('loading');
+            //         $buttonText.show();
+            //         // Show SweetAlert if the amount is not entered or invalid
+            //         Swal.fire({
+            //             icon: 'warning',
+            //             title: 'Invalid Amount',
+            //             text: 'Please enter a valid amount greater than zero.',
+            //             confirmButtonText: 'OK'
+            //         });
+            //         return;  // Stop the form submission
+            //     }
+
+            //     // Ensure the amount field is enabled and has a valid value
+            //     $('#amountField').prop('disabled', false);  // Enable the amount field if it's disabled
+
+            //     // Update the amount value in the hidden input field (if necessary)
+            //     $('#amountField').val(amount);  // This ensures the amount is sent without the "N" prefix
+
+            //     // Get the network value (number) from the data attribute
+            //     var networkId = $('#network').data('network-id');
+
+            //     // Add the network ID to the form data
+            //     var formData = $(this).serialize();  // Serialize the form data
+            //     formData += "&network=" + networkId;  // Append the network ID
+
+            //     // Add the user ID from the server context (ensure the user ID is passed from Django)
+            //     formData += "&user={{ user.id }}";  // Add user ID to the form data
+
+            //     // Send the data using AJAX
+            //     $.ajax({
+            //         url: "/api/buy-data/",  // Your API endpoint
+            //         type: "POST",
+            //         data: formData + "&data_plan=" + encodeURIComponent($('#dataPlan').val()),  // Encode + properly
+            //         // data: formData + "&data_plan=" + $('#dataPlan').val(),  // Add necessary data
+            //         success: function(response) {
+            //             document.getElementById('loading-spinner').style.display = 'none';
+
+            //             if (response.message) {
+            //                 // Success response handling
+            //                 Swal.fire({
+            //                     icon: 'success',
+            //                     title: 'Data Purchase Successful!',
+            //                     text: 'Data purchase successful! Your remaining balance is: ₦' + response.remaining_balance,
+            //                     confirmButtonText: 'OK'
+            //                 }).then(() => {
+            //                     // Optionally, redirect after success
+            //                     window.location.href = "{% url 'index' %}"; // Adjust this URL as needed
+            //                 });
+
+            //                 // Optionally reset the form
+            //                 $('#buyDataForm')[0].reset();
+            //                 $('#amountField').prop('disabled', true);
+            //                 $buttonSpinner.css('display', 'none');
+            //                 $submitButton.prop('disabled', false).addClass('loading');
+            //                 $buttonText.show();
+            //             } else {
+            //                 document.getElementById('loading-spinner').style.display = 'none';
+            //                 // Handle error response
+            //                 Swal.fire({
+            //                     icon: 'error',
+            //                     title: 'Data Purchase Failed!',
+            //                     text: response.error,  // Display the error string
+            //                     confirmButtonText: 'OK'
+            //                 }).then(() => {
+            //                     // Clear the form after failed submission
+            //                     $('#buyDataForm')[0].reset();
+            //                     $('#amountField').prop('disabled', true);
+            //                     $buttonSpinner.css('display', 'none');
+            //                     $submitButton.prop('disabled', false).addClass('loading');
+            //                     $buttonText.show();
+            //                 });
+            //             }
+            //         },
+            //         error: function(xhr, status, error) {
+            //             document.getElementById('loading-spinner').style.display = 'none';
+            //             // Default error message
+            //             var errorMessage = "There was an error. Please try again.";
+
+            //             // Check if responseJSON exists
+            //             if (xhr.responseJSON) {
+            //                 // Case 1: If there's an error field, extract the message
+            //                 if (xhr.responseJSON.error) {
+            //                     errorMessage = xhr.responseJSON.error; // If general error exists, use it
+            //                 }
+
+            //                 // Case 2: Handle the 'detail' field for error messages
+            //                 if (xhr.responseJSON.detail) {
+            //                     var detail = xhr.responseJSON.detail;
+
+            //                     // Extracting the actual message from the 'detail' string
+            //                     console.log("Detail:", detail); // Log the detail for debugging
+                                
+            //                     // If the detail is like this: "ErrorDetail(string='message', code='invalid')"
+            //                     var regex = /string='([^']+)'/; // This will capture the message inside 'string=''
+            //                     var matches = regex.exec(detail);
+                                
+            //                     if (matches && matches[1]) {
+            //                         errorMessage = matches[1];  // Extracted message (e.g., 'Insufficient balance to complete this purchase.')
+            //                     }
+            //                 }
+
+            //                 if (xhr.responseJSON) {
+            //                     // Check if 'detail' field exists and extract the actual error message
+            //                     if (xhr.responseJSON.error) {
+            //                         var errorText = xhr.responseJSON.error;
+                                    
+            //                         // Clean the error string to extract the actual message
+            //                         // Removing the unnecessary characters and extracting the message
+            //                         var regex = /string='(.*?)'/;
+            //                         var matches = regex.exec(errorText);
+
+            //                         if (matches && matches[1]) {
+            //                             errorMessage = matches[1];  // Extracted message
+            //                         }
+            //                     }
+            //                 }
+
+            //                 // Case 3: If response contains 'details' with 'response_description', use it
+            //                 if (xhr.responseJSON.details && xhr.responseJSON.details.response_description) {
+            //                     var responseDescription = xhr.responseJSON.details.response_description;
+            //                     errorMessage = responseDescription; // If there's a response description, use it
+            //                 }
+            //             }
+
+            //             // Display the error message using SweetAlert
+            //             Swal.fire({
+            //                 icon: 'error',
+            //                 title: 'Oops...',
+            //                 text: errorMessage,  // Display the error string
+            //                 confirmButtonText: 'OK'
+            //             }).then(() => {
+            //                 // Reset the form data if there is an error
+            //                 $('#buyDataForm')[0].reset();
+            //                 $('#amountField').prop('disabled', true);
+            //                 $buttonSpinner.css('display', 'none');
+            //                 $submitButton.prop('disabled', false).addClass('loading');
+            //                 $buttonText.show();
+            //             });
+            //         }
+            //     });
+            // });
         });
 
     </script>

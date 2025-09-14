@@ -344,18 +344,19 @@
             </div>
         </div>
 
-        <div>
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endif %}
-            {% block content %}
-            
-            {% endblock %}
-        </div>
+    <div>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    <strong>{{ message|safe }}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+    </div>
 
     </div>
 
@@ -466,7 +467,7 @@
 
         function timerIncrement() {
             idleTime += 1;
-            if (idleTime >= 5) {  // 5 minutes
+            if (idleTime >= 120) {  // 120 minutes = 2 hours
                 window.location.href = "{% url 'logout' %}";
             }
         }

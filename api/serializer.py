@@ -386,7 +386,7 @@ class BuyDataSerializer(serializers.ModelSerializer):
                     user=user,
                     transaction_type="Data Purchase",
                     amount=buy_data.amount,
-                    status="success",
+                    status="completed",
                     product_name=dict(BuyData.NETWORK_CHOICES).get(buy_data.network),
                     unique_element=buy_data.mobile_number,
                     unit_price=buy_data.amount,
